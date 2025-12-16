@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROZPRAWKA PRO | Kompletny kurs pisania rozprawek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-elevated: #1a1a25;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-gold: #ffd700;
+            --accent-amber: #ffb347;
+            --accent-coral: #ff6b6b;
+            --accent-mint: #4ecdc4;
+            --accent-lavender: #a78bfa;
+            --accent-blue: #60a5fa;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffb347 50%, #ff8c00 100%);
+            --gradient-cosmic: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-accent: rgba(255, 215, 0, 0.3);
+            --glow-gold: 0 0 60px rgba(255, 215, 0, 0.3);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+        .bg-animation { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+        .bg-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; animation: float 20s ease-in-out infinite; }
+        .bg-orb-1 { width: 600px; height: 600px; background: var(--gradient-cosmic); top: -200px; left: -200px; }
+        .bg-orb-2 { width: 500px; height: 500px; background: var(--gradient-gold); bottom: -150px; right: -150px; animation-delay: -7s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -30px) scale(1.05); } }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-subtle); }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-primary); }
+        .nav-logo-icon { width: 40px; height: 40px; background: var(--gradient-gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--bg-dark); }
+        .nav-logo-text { font-weight: 700; font-size: 1.25rem; }
+        .nav-logo-text span { color: var(--accent-gold); }
+        .nav-links { display: flex; gap: 0.5rem; list-style: none; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 500; transition: all 0.3s ease; }
+        .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+        .nav-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--gradient-gold); width: 0%; transition: width 0.1s ease; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8rem 2rem 4rem; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--bg-elevated); border: 1px solid var(--border-accent); border-radius: 50px; font-size: 0.85rem; color: var(--accent-gold); margin-bottom: 2rem; animation: fadeInDown 1s ease-out; }
+        .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 10vw, 6rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; animation: fadeInUp 1s ease-out 0.2s both; }
+        .hero-title .highlight { background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-subtitle { font-size: 1.2rem; color: var(--text-secondary); max-width: 650px; margin-bottom: 3rem; animation: fadeInUp 1s ease-out 0.4s both; }
+        .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeInUp 1s ease-out 0.6s both; }
+        .btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; border-radius: 50px; font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; border: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-family: 'Outfit', sans-serif; }
+        .btn-primary { background: var(--gradient-gold); color: var(--bg-dark); box-shadow: var(--glow-gold); }
+        .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 0 80px rgba(255, 215, 0, 0.5); }
+        .btn-secondary { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+        .btn-secondary:hover { border-color: var(--accent-gold); transform: translateY(-2px); }
+        .hero-stats { display: flex; gap: 3rem; margin-top: 4rem; animation: fadeInUp 1s ease-out 0.8s both; }
+        .hero-stat-value { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700; color: var(--accent-gold); }
+        .hero-stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        section { padding: 6rem 2rem; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-badge { display: inline-flex; padding: 0.4rem 1rem; background: var(--bg-elevated); border-radius: 50px; font-size: 0.8rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; margin-bottom: 1rem; }
+        .section-subtitle { font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .features-section { background: var(--bg-card); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 2rem; transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-gold); transform: scaleX(0); transition: transform 0.4s ease; }
+        .feature-card:hover { transform: translateY(-8px); border-color: var(--border-accent); }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-icon { width: 60px; height: 60px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.5rem; }
+        .feature-icon.gold { background: rgba(255, 215, 0, 0.15); }
+        .feature-icon.coral { background: rgba(255, 107, 107, 0.15); }
+        .feature-icon.mint { background: rgba(78, 205, 196, 0.15); }
+        .feature-icon.lavender { background: rgba(167, 139, 250, 0.15); }
+        .feature-icon.blue { background: rgba(96, 165, 250, 0.15); }
+        .feature-icon.amber { background: rgba(255, 179, 71, 0.15); }
+        .feature-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .feature-card p { color: var(--text-secondary); font-size: 0.95rem; }
+        /* Structure Builder */
+        .structure-section { background: var(--bg-dark); }
+        .structure-builder { display: grid; grid-template-columns: 280px 1fr; gap: 0; background: var(--bg-card); border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--border-subtle); }
+        .structure-nav { background: var(--bg-elevated); padding: 2rem; border-right: 1px solid var(--border-subtle); }
+        .structure-nav h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+        .structure-steps { display: flex; flex-direction: column; gap: 0.5rem; }
+        .structure-step { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: transparent; border: 1px solid transparent; border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease; text-align: left; color: var(--text-secondary); font-family: 'Outfit', sans-serif; }
+        .structure-step:hover { background: var(--bg-card); }
+        .structure-step.active { background: var(--bg-card); border-color: var(--accent-gold); color: var(--text-primary); }
+        .structure-step.completed { color: var(--accent-green); }
+        .step-number { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; flex-shrink: 0; }
+        .structure-step.active .step-number { background: var(--accent-gold); color: var(--bg-dark); }
+        .structure-step.completed .step-number { background: var(--accent-green); color: var(--bg-dark); }
+        .step-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .step-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .structure-content { padding: 2rem; }
+        .structure-panel { display: none; }
+        .structure-panel.active { display: block; animation: fadeIn 0.4s ease; }
+        .panel-header { margin-bottom: 2rem; }
+        .panel-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        .panel-header p { color: var(--text-secondary); }
+        .tips-box { background: rgba(255, 215, 0, 0.05); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 2rem; }
+        .tips-box h4 { color: var(--accent-gold); font-size: 0.9rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .tips-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .tips-box li { color: var(--text-secondary); font-size: 0.9rem; padding-left: 1.5rem; position: relative; }
+        .tips-box li::before { content: '→'; position: absolute; left: 0; color: var(--accent-gold); }
+        .example-box { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem; }
+        .example-box.good { border-left: 4px solid var(--accent-green); }
+        .example-box.bad { border-left: 4px solid var(--accent-red); }
+        .example-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; }
+        .example-box.good .example-label { color: var(--accent-green); }
+        .example-box.bad .example-label { color: var(--accent-red); }
+        .example-box p { color: var(--text-secondary); font-size: 0.95rem; }
+        .writing-area { margin-top: 2rem; }
+        .writing-area label { display: block; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary); }
+        .writing-area textarea { width: 100%; min-height: 150px; padding: 1.25rem; background: var(--bg-dark); border: 2px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 1rem; resize: vertical; transition: border-color 0.3s ease; }
+        .writing-area textarea:focus { outline: none; border-color: var(--accent-gold); }
+        .writing-area textarea::placeholder { color: var(--text-muted); }
+        .char-counter { text-align: right; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; }
+        .panel-actions { display: flex; gap: 1rem; margin-top: 2rem; justify-content: space-between; }
+        /* Generator */
+        .generator-section { background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-card) 100%); }
+        .generator-container { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); padding: 3rem; }
+        .generator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .generator-input h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .input-group input, .input-group select { width: 100%; padding: 1rem; background: var(--bg-dark); border: 2px solid var(--border-subtle); border-radius: var(--radius-md); color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 1rem; transition: border-color 0.3s ease; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: var(--accent-gold); }
+        .input-group select { cursor: pointer; }
+        .input-group select option { background: var(--bg-dark); color: var(--text-primary); }
+        .generator-output { background: var(--bg-dark); border-radius: var(--radius-lg); padding: 2rem; min-height: 300px; }
+        .generator-output h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent-gold); }
+        .generated-item { background: var(--bg-elevated); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1rem; border-left: 3px solid var(--accent-gold); cursor: pointer; transition: all 0.3s ease; }
+        .generated-item:hover { transform: translateX(4px); background: var(--bg-card); }
+        .generated-item-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-gold); margin-bottom: 0.5rem; }
+        .generated-item p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+        .copy-hint { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 1rem; }
+        /* Quiz */
+        .quiz-section { background: var(--bg-card); }
+        .quiz-container { max-width: 800px; margin: 0 auto; }
+        .quiz-progress { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+        .quiz-progress-dot { flex: 1; height: 4px; background: var(--bg-elevated); border-radius: 2px; transition: background 0.3s ease; }
+        .quiz-progress-dot.completed { background: var(--accent-green); }
+        .quiz-progress-dot.current { background: var(--accent-gold); }
+        .quiz-card { background: var(--bg-elevated); border-radius: var(--radius-xl); padding: 3rem; border: 1px solid var(--border-subtle); }
+        .quiz-question-number { font-size: 0.85rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .quiz-question { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; margin-bottom: 2rem; line-height: 1.4; }
+        .quiz-options { display: flex; flex-direction: column; gap: 1rem; }
+        .quiz-option { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; background: var(--bg-dark); border: 2px solid var(--border-subtle); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease; }
+        .quiz-option:hover { border-color: var(--accent-gold); }
+        .quiz-option.selected { border-color: var(--accent-gold); background: rgba(255, 215, 0, 0.05); }
+        .quiz-option.correct { border-color: var(--accent-green); background: rgba(52, 211, 153, 0.1); }
+        .quiz-option.incorrect { border-color: var(--accent-red); background: rgba(248, 113, 113, 0.1); }
+        .option-letter { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0; }
+        .quiz-option.selected .option-letter { background: var(--accent-gold); color: var(--bg-dark); }
+        .quiz-option.correct .option-letter { background: var(--accent-green); color: var(--bg-dark); }
+        .quiz-option.incorrect .option-letter { background: var(--accent-red); color: var(--bg-dark); }
+        .quiz-feedback { margin-top: 2rem; padding: 1.5rem; border-radius: var(--radius-md); display: none; }
+        .quiz-feedback.show { display: block; animation: fadeIn 0.4s ease; }
+        .quiz-feedback.correct { background: rgba(52, 211, 153, 0.1); border: 1px solid var(--accent-green); }
+        .quiz-feedback.incorrect { background: rgba(248, 113, 113, 0.1); border: 1px solid var(--accent-red); }
+        .quiz-feedback h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .quiz-feedback.correct h4 { color: var(--accent-green); }
+        .quiz-feedback.incorrect h4 { color: var(--accent-red); }
+        .quiz-feedback p { color: var(--text-secondary); font-size: 0.95rem; }
+        .quiz-actions { display: flex; justify-content: space-between; margin-top: 2rem; }
+        .quiz-score { text-align: center; padding: 3rem; }
+        .quiz-score-value { font-family: 'Cormorant Garamond', serif; font-size: 5rem; font-weight: 700; color: var(--accent-gold); }
+        .quiz-score-label { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        /* Phrases Bank */
+        .phrases-section { background: var(--bg-dark); }
+        .phrases-tabs { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .phrase-tab { padding: 0.75rem 1.5rem; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 50px; color: var(--text-secondary); font-weight: 500; cursor: pointer; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; font-size: 0.95rem; }
+        .phrase-tab:hover { color: var(--text-primary); border-color: var(--accent-gold); }
+        .phrase-tab.active { background: var(--gradient-gold); color: var(--bg-dark); border-color: transparent; }
+        .phrases-grid { display: none; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+        .phrases-grid.active { display: grid; animation: fadeIn 0.4s ease; }
+        .phrase-card { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem; cursor: pointer; transition: all 0.3s ease; position: relative; }
+        .phrase-card:hover { border-color: var(--accent-gold); transform: translateY(-2px); }
+        .phrase-card::after { content: '📋'; position: absolute; top: 1rem; right: 1rem; opacity: 0; transition: opacity 0.3s ease; }
+        .phrase-card:hover::after { opacity: 1; }
+        .phrase-card.copied { border-color: var(--accent-green); }
+        .phrase-card.copied::after { content: '✓'; opacity: 1; }
+        .phrase-text { color: var(--text-primary); font-size: 0.95rem; line-height: 1.5; }
+        .phrase-usage { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem; }
+        /* Examples Gallery */
+        .examples-section { background: var(--bg-card); }
+        .examples-filter { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.6rem 1.25rem; background: transparent; border: 1px solid var(--border-subtle); border-radius: 50px; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; }
+        .filter-btn:hover, .filter-btn.active { background: var(--bg-elevated); color: var(--text-primary); border-color: var(--accent-gold); }
+        .examples-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+        .example-card { background: var(--bg-elevated); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: all 0.4s ease; }
+        .example-card:hover { transform: translateY(-4px); border-color: var(--border-accent); }
+        .example-card-header { padding: 1.5rem; background: var(--bg-dark); border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+        .example-type { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.35rem 0.75rem; border-radius: 50px; }
+        .example-type.wstep { background: rgba(255, 215, 0, 0.15); color: var(--accent-gold); }
+        .example-type.teza { background: rgba(255, 107, 107, 0.15); color: var(--accent-coral); }
+        .example-type.argument { background: rgba(78, 205, 196, 0.15); color: var(--accent-mint); }
+        .example-type.zakonczenie { background: rgba(167, 139, 250, 0.15); color: var(--accent-lavender); }
+        .example-rating { display: flex; gap: 0.25rem; }
+        .example-rating span { color: var(--accent-gold); }
+        .example-card-body { padding: 1.5rem; }
+        .example-card-body p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+        .example-card-footer { padding: 1rem 1.5rem; background: var(--bg-dark); border-top: 1px solid var(--border-subtle); }
+        .example-topic { font-size: 0.85rem; color: var(--text-muted); }
+        /* Checklist */
+        .checklist-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        .checklist-container { max-width: 800px; margin: 0 auto; }
+        .checklist-card { background: var(--bg-elevated); border-radius: var(--radius-xl); padding: 3rem; border: 1px solid var(--border-subtle); }
+        .checklist-items { display: flex; flex-direction: column; gap: 1rem; }
+        .checklist-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-dark); border-radius: var(--radius-md); cursor: pointer; transition: all 0.3s ease; }
+        .checklist-item:hover { background: rgba(255, 215, 0, 0.05); }
+        .checklist-checkbox { width: 24px; height: 24px; border: 2px solid var(--border-subtle); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; color: white; }
+        .checklist-item.checked .checklist-checkbox { background: var(--accent-green); border-color: var(--accent-green); }
+        .checklist-content h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+        .checklist-content p { font-size: 0.85rem; color: var(--text-muted); }
+        .checklist-item.checked .checklist-content h4 { text-decoration: line-through; color: var(--text-muted); }
+        .checklist-progress { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle); }
+        .progress-bar { height: 8px; background: var(--bg-dark); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; }
+        .progress-fill { height: 100%; background: var(--gradient-gold); border-radius: 4px; transition: width 0.5s ease; width: 0%; }
+        .progress-text { font-size: 0.9rem; color: var(--text-secondary); text-align: center; }
+        /* Footer */
+        footer { padding: 4rem 2rem; background: var(--bg-dark); border-top: 1px solid var(--border-subtle); }
+        .footer-content { max-width: 1400px; margin: 0 auto; text-align: center; }
+        .footer-logo { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .footer-logo-icon { width: 48px; height: 48px; background: var(--gradient-gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 700; color: var(--bg-dark); }
+        .footer-logo-text { font-size: 1.5rem; font-weight: 700; }
+        .footer-logo-text span { color: var(--accent-gold); }
+        .footer-tagline { color: var(--text-secondary); margin-bottom: 2rem; }
+        .footer-copy { font-size: 0.85rem; color: var(--text-muted); }
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .structure-builder { grid-template-columns: 1fr; }
+            .structure-nav { border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .structure-steps { flex-direction: row; overflow-x: auto; padding-bottom: 1rem; gap: 1rem; }
+            .structure-step { flex-direction: column; text-align: center; min-width: 100px; }
+            .generator-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .features-grid, .examples-grid { grid-template-columns: 1fr; }
+            .quiz-card, .checklist-card, .generator-container { padding: 2rem; }
+            .quiz-question { font-size: 1.4rem; }
+            section { padding: 4rem 1.5rem; }
+            .phrases-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">R</div>
+                <div class="nav-logo-text">Rozprawka<span>PRO</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features" class="nav-link">Kurs</a></li>
+                <li><a href="#struktura" class="nav-link">Struktura</a></li>
+                <li><a href="#generator" class="nav-link">Generator</a></li>
+                <li><a href="#phrases" class="nav-link">Zwroty</a></li>
+                <li><a href="#examples" class="nav-link">Przykłady</a></li>
+                <li><a href="#quiz" class="nav-link">Quiz</a></li>
+            </ul>
+        </div>
+        <div class="nav-progress" id="navProgress"></div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-badge">✨ Kompletny kurs dla licealistów</div>
+        <h1 class="hero-title">
+            <span>Opanuj sztukę</span><br>
+            <span class="highlight">pisania rozprawek</span>
+        </h1>
+        <p class="hero-subtitle">
+            Interaktywny kurs z generatorem, quizami i bankiem przykładów. 
+            Wszystko, czego potrzebujesz, żeby pisać rozprawki na 100%.
+        </p>
+        <div class="hero-actions">
+            <a href="#struktura" class="btn btn-primary">Zacznij naukę →</a>
+            <a href="#generator" class="btn btn-secondary">Generator rozprawki</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">12</div>
+                <div class="hero-stat-label">Lekcji</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">50+</div>
+                <div class="hero-stat-label">Przykładów</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">∞</div>
+                <div class="hero-stat-label">Za darmo</div>
+            </div>
+        </div>
+    </section>
+    <section class="features-section" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">📚 Co znajdziesz w kursie</div>
+                <h2 class="section-title">Wszystko, czego potrzebujesz</h2>
+                <p class="section-subtitle">Kompleksowy zestaw narzędzi i wiedzy do opanowania sztuki pisania rozprawek</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon gold">📖</div>
+                    <h3>Teoria krok po kroku</h3>
+                    <p>Szczegółowe wyjaśnienie każdego elementu rozprawki z przykładami i wskazówkami.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon coral">🏗️</div>
+                    <h3>Interaktywny konstruktor</h3>
+                    <p>Zbuduj rozprawkę element po elemencie z podpowiedziami na każdym kroku.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon mint">✍️</div>
+                    <h3>Generator tez i argumentów</h3>
+                    <p>Narzędzie pomagające tworzyć mocne tezy i przekonujące argumenty.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon lavender">📝</div>
+                    <h3>Bank przykładów</h3>
+                    <p>Ponad 50 wzorcowych fragmentów rozprawek do analizy i inspiracji.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon blue">🎯</div>
+                    <h3>Quizy i testy</h3>
+                    <p>Sprawdź swoją wiedzę interaktywnymi quizami z natychmiastową informacją zwrotną.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon amber">💬</div>
+                    <h3>Zwroty i frazy</h3>
+                    <p>Bogata baza gotowych sformułowań do użycia we wstępie, argumentacji i zakończeniu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="structure-section" id="struktura">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">🏗️ Krok po kroku</div>
+                <h2 class="section-title">Budowa rozprawki</h2>
+                <p class="section-subtitle">Poznaj każdy element i naucz się go tworzyć</p>
+            </div>
+            <div class="structure-builder reveal">
+                <div class="structure-nav">
+                    <h3>Etapy pisania</h3>
+                    <div class="structure-steps">
+                        <button class="structure-step active" data-panel="temat">
+                            <span class="step-number">1</span>
+                            <div class="step-info"><h4>Analiza tematu</h4><span>5 min</span></div>
+                        </button>
+                        <button class="structure-step" data-panel="teza">
+                            <span class="step-number">2</span>
+                            <div class="step-info"><h4>Teza</h4><span>10 min</span></div>
+                        </button>
+                        <button class="structure-step" data-panel="wstep">
+                            <span class="step-number">3</span>
+                            <div class="step-info"><h4>Wstęp</h4><span>10 min</span></div>
+                        </button>
+                        <button class="structure-step" data-panel="argumenty">
+                            <span class="step-number">4</span>
+                            <div class="step-info"><h4>Argumenty</h4><span>15 min</span></div>
+                        </button>
+                        <button class="structure-step" data-panel="zakonczenie">
+                            <span class="step-number">5</span>
+                            <div class="step-info"><h4>Zakończenie</h4><span>10 min</span></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="structure-content">
+                    <div class="structure-panel active" id="panel-temat">
+                        <div class="panel-header">
+                            <h3>📌 Analiza tematu</h3>
+                            <p>Zanim zaczniesz pisać, musisz dokładnie zrozumieć, o co pytają.</p>
+                        </div>
+                        <div class="tips-box">
+                            <h4>💡 Wskazówki</h4>
+                            <ul>
+                                <li>Podkreśl słowa kluczowe w temacie</li>
+                                <li>Określ typ rozprawki: udowadniająca czy rozważająca</li>
+                                <li>Zadaj sobie pytanie: „Co mam udowodnić/rozważyć?"</li>
+                                <li>Pomyśl, jakie lektury możesz wykorzystać</li>
+                            </ul>
+                        </div>
+                        <div class="example-box good">
+                            <div class="example-label">✓ Przykładowa analiza</div>
+                            <p><strong>Temat:</strong> „Czy warto mieć marzenia?"<br><br>
+                            <strong>Analiza:</strong> Typ: rozprawka rozważająca (pytanie „czy"). 
+                            Słowo kluczowe: „warto" – muszę podać argumenty ZA i PRZECIW, 
+                            a na końcu zająć stanowisko. Lektury: „Alchemik", „Mały Książę".</p>
+                        </div>
+                        <div class="writing-area">
+                            <label>🖊️ Przeanalizuj temat: „Czy przyjaźń jest ważniejsza od miłości?"</label>
+                            <textarea placeholder="Napisz swoją analizę tematu..." oninput="updateCharCount(this)"></textarea>
+                            <div class="char-counter"><span>0</span> / 500 znaków</div>
+                        </div>
+                    </div>
+                    <div class="structure-panel" id="panel-teza">
+                        <div class="panel-header">
+                            <h3>🎯 Formułowanie tezy</h3>
+                            <p>Teza to Twoje stanowisko – fundament całej rozprawki.</p>
+                        </div>
+                        <div class="tips-box">
+                            <h4>💡 Dobra teza musi być:</h4>
+                            <ul>
+                                <li><strong>Konkretna</strong> – nie ogólnikowa ani banalna</li>
+                                <li><strong>Jednoznaczna</strong> – jasno określone stanowisko</li>
+                                <li><strong>Możliwa do udowodnienia</strong> – poparta argumentami</li>
+                                <li><strong>Powiązana z tematem</strong> – odpowiedź na pytanie</li>
+                            </ul>
+                        </div>
+                        <div class="example-box bad">
+                            <div class="example-label">✗ Słaba teza</div>
+                            <p>„Marzenia są ważne i każdy je ma."</p>
+                        </div>
+                        <div class="example-box good">
+                            <div class="example-label">✓ Dobra teza</div>
+                            <p>„Marzenia nadają życiu sens i kierunek, motywując człowieka do rozwoju i pokonywania przeszkód."</p>
+                        </div>
+                        <div class="writing-area">
+                            <label>🖊️ Sformułuj tezę do tematu: „Czy warto pomagać innym?"</label>
+                            <textarea placeholder="Napisz swoją tezę..." oninput="updateCharCount(this)"></textarea>
+                            <div class="char-counter"><span>0</span> / 300 znaków</div>
+                        </div>
+                    </div>
+                    <div class="structure-panel" id="panel-wstep">
+                        <div class="panel-header">
+                            <h3>📝 Pisanie wstępu</h3>
+                            <p>Wstęp wprowadza w temat i przedstawia tezę. To ok. 1/5 całości.</p>
+                        </div>
+                        <div class="tips-box">
+                            <h4>💡 Struktura wstępu</h4>
+                            <ul>
+                                <li><strong>Haczyk</strong> – zainteresuj czytelnika (pytanie, cytat, obraz)</li>
+                                <li><strong>Wprowadzenie</strong> – przedstaw problem własnymi słowami</li>
+                                <li><strong>Teza</strong> – jasno sformułowane stanowisko</li>
+                            </ul>
+                        </div>
+                        <div class="example-box bad">
+                            <div class="example-label">✗ Nudny wstęp</div>
+                            <p>„Od zarania dziejów ludzie zastanawiali się nad szczęściem. W tej rozprawce postaram się odpowiedzieć na pytanie, czy pieniądze dają szczęście."</p>
+                        </div>
+                        <div class="example-box good">
+                            <div class="example-label">✓ Ciekawy wstęp</div>
+                            <p>„Milioner w pustym apartamencie wpatruje się w okno. Ma wszystko, a jednak czegoś mu brakuje. Paradoks bogactwa pokazuje, że szczęście nie mieszka w portfelu – jego źródłem są relacje z innymi ludźmi, nie stan konta bankowego."</p>
+                        </div>
+                        <div class="writing-area">
+                            <label>🖊️ Napisz wstęp do tematu: „Czy książki kształtują charakter?"</label>
+                            <textarea placeholder="Napisz wstęp z haczykiem, wprowadzeniem i tezą..." oninput="updateCharCount(this)"></textarea>
+                            <div class="char-counter"><span>0</span> / 600 znaków</div>
+                        </div>
+                    </div>
+                    <div class="structure-panel" id="panel-argumenty">
+                        <div class="panel-header">
+                            <h3>🧱 Budowanie argumentów</h3>
+                            <p>Argumenty to serce rozprawki – ok. 3/5 całego tekstu.</p>
+                        </div>
+                        <div class="tips-box">
+                            <h4>💡 Struktura argumentu</h4>
+                            <ul>
+                                <li><strong>Twierdzenie</strong> – co chcesz udowodnić</li>
+                                <li><strong>Uzasadnienie</strong> – dlaczego tak uważasz</li>
+                                <li><strong>Przykład</strong> – literacki lub z życia</li>
+                                <li><strong>Wniosek</strong> – podsumowanie argumentu</li>
+                            </ul>
+                        </div>
+                        <div class="example-box good">
+                            <div class="example-label">✓ Wzorcowy argument</div>
+                            <p><strong>Twierdzenie:</strong> Marzenia nadają życiu sens i kierunek.<br><br>
+                            <strong>Uzasadnienie:</strong> Bez celu człowiek traci motywację do działania i rozwoju.<br><br>
+                            <strong>Przykład:</strong> Santiago z „Alchemika" Paula Coelho porzucił spokojne życie pasterza, by podążyć za swoim marzeniem. W tej podróży odkrył nie tylko skarb, ale przede wszystkim siebie.<br><br>
+                            <strong>Wniosek:</strong> Historia Santiago dowodzi, że marzenia są kompasem ludzkiej duszy.</p>
+                        </div>
+                        <div class="writing-area">
+                            <label>🖊️ Zbuduj argument do tezy: „Przyjaźń jest niezbędna do szczęścia"</label>
+                            <textarea placeholder="Twierdzenie:&#10;&#10;Uzasadnienie:&#10;&#10;Przykład:&#10;&#10;Wniosek:" oninput="updateCharCount(this)"></textarea>
+                            <div class="char-counter"><span>0</span> / 800 znaków</div>
+                        </div>
+                    </div>
+                    <div class="structure-panel" id="panel-zakonczenie">
+                        <div class="panel-header">
+                            <h3>🏁 Pisanie zakończenia</h3>
+                            <p>Zakończenie to ostatnie wrażenie – niech będzie mocne!</p>
+                        </div>
+                        <div class="tips-box">
+                            <h4>💡 Co powinno zawierać zakończenie</h4>
+                            <ul>
+                                <li><strong>Podsumowanie</strong> – synteza głównych argumentów (nie powtórzenie!)</li>
+                                <li><strong>Potwierdzenie tezy</strong> – wracasz do stanowiska ze wstępu</li>
+                                <li><strong>Refleksja</strong> – uniwersalny wniosek lub pytanie otwarte</li>
+                            </ul>
+                        </div>
+                        <div class="example-box bad">
+                            <div class="example-label">✗ Słabe zakończenie</div>
+                            <p>„Podsumowując, udowodniłem w mojej rozprawce, że marzenia są ważne. Mam nadzieję, że moje argumenty były przekonujące."</p>
+                        </div>
+                        <div class="example-box good">
+                            <div class="example-label">✓ Mocne zakończenie</div>
+                            <p>„Marzenia są kompasem ludzkiej duszy – bez nich błądzimy bez celu. Zarówno literatura, jak i życie pokazują, że to nie osiągnięcie marzeń czyni nas szczęśliwymi, lecz sama droga ku nim. Może więc warto zapytać siebie: dokąd prowadzą moje marzenia i czy mam odwagę za nimi podążyć?"</p>
+                        </div>
+                        <div class="writing-area">
+                            <label>🖊️ Napisz zakończenie do rozprawki o wartości przyjaźni</label>
+                            <textarea placeholder="Napisz mocne zakończenie..." oninput="updateCharCount(this)"></textarea>
+                            <div class="char-counter"><span>0</span> / 500 znaków</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="generator-section" id="generator">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">✨ Narzędzie AI</div>
+                <h2 class="section-title">Generator rozprawki</h2>
+                <p class="section-subtitle">Wpisz temat, a otrzymasz gotowe propozycje tezy i argumentów</p>
+            </div>
+            <div class="generator-container reveal">
+                <div class="generator-grid">
+                    <div class="generator-input">
+                        <h3>Wprowadź dane</h3>
+                        <div class="input-group">
+                            <label>Temat rozprawki</label>
+                            <input type="text" id="generatorTopic" placeholder="np. Czy warto mieć marzenia?">
+                        </div>
+                        <div class="input-group">
+                            <label>Typ rozprawki</label>
+                            <select id="generatorType">
+                                <option value="udowadniajaca">Udowadniająca (teza)</option>
+                                <option value="rozwazajaca">Rozważająca (za i przeciw)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Twoje stanowisko</label>
+                            <select id="generatorStance">
+                                <option value="za">Za / Tak</option>
+                                <option value="przeciw">Przeciw / Nie</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateEssay()" style="width: 100%; margin-top: 1rem;">
+                            Generuj propozycje ✨
+                        </button>
+                    </div>
+                    <div class="generator-output" id="generatorOutput">
+                        <h3>Propozycje</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">
+                            Wpisz temat i kliknij „Generuj", aby otrzymać propozycje tezy i argumentów.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="phrases-section" id="phrases">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">💬 Ściąga</div>
+                <h2 class="section-title">Bank zwrotów</h2>
+                <p class="section-subtitle">Kliknij na zwrot, aby go skopiować</p>
+            </div>
+            <div class="phrases-tabs reveal">
+                <button class="phrase-tab active" data-category="wstep">Wstęp</button>
+                <button class="phrase-tab" data-category="teza">Teza</button>
+                <button class="phrase-tab" data-category="argument">Argumenty</button>
+                <button class="phrase-tab" data-category="przyklad">Przykłady</button>
+                <button class="phrase-tab" data-category="kontra">Kontrargumenty</button>
+                <button class="phrase-tab" data-category="zakonczenie">Zakończenie</button>
+            </div>
+            <div class="phrases-grid active" id="phrases-wstep">
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Czym tak naprawdę jest...</div><div class="phrase-usage">Rozpoczęcie od pytania</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Trudno wyobrazić sobie życie bez...</div><div class="phrase-usage">Wprowadzenie tematu</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Każdy z nas przynajmniej raz zastanawiał się...</div><div class="phrase-usage">Uniwersalne odwołanie</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">W świecie pełnym... szczególnego znaczenia nabiera...</div><div class="phrase-usage">Kontekst współczesny</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Nie ulega wątpliwości, że...</div><div class="phrase-usage">Pewność stanowiska</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Zastanówmy się wspólnie nad...</div><div class="phrase-usage">Zaproszenie do refleksji</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Problem... towarzyszy ludzkości od wieków.</div><div class="phrase-usage">Perspektywa historyczna</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Czy możliwe jest, że...?</div><div class="phrase-usage">Pytanie retoryczne</div></div>
+            </div>
+            <div class="phrases-grid" id="phrases-teza">
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Uważam, że...</div><div class="phrase-usage">Proste stanowisko</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Jestem głęboko przekonany, że...</div><div class="phrase-usage">Mocne stanowisko</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Stoję na stanowisku, że...</div><div class="phrase-usage">Formalne</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Moim zdaniem...</div><div class="phrase-usage">Neutralne</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Postaram się udowodnić, że...</div><div class="phrase-usage">Zapowiedź argumentacji</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">W mojej opinii...</div><div class="phrase-usage">Osobiste zdanie</div></div>
+            </div>
+            <div class="phrases-grid" id="phrases-argument">
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Po pierwsze...</div><div class="phrase-usage">Pierwszy argument</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Kolejnym argumentem jest...</div><div class="phrase-usage">Następny argument</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Warto również zauważyć, że...</div><div class="phrase-usage">Dodatkowy punkt</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Nie można pominąć faktu, że...</div><div class="phrase-usage">Ważny aspekt</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Przede wszystkim należy podkreślić...</div><div class="phrase-usage">Kluczowy argument</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Co więcej...</div><div class="phrase-usage">Rozwinięcie</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Istotne jest również to, że...</div><div class="phrase-usage">Dodatkowy punkt</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Należy zwrócić uwagę na fakt, że...</div><div class="phrase-usage">Podkreślenie</div></div>
+            </div>
+            <div class="phrases-grid" id="phrases-przyklad">
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Dowodem na to jest...</div><div class="phrase-usage">Wprowadzenie dowodu</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Przykładem może być...</div><div class="phrase-usage">Podanie przykładu</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Potwierdza to postać... z utworu...</div><div class="phrase-usage">Przykład literacki</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Historia pokazuje, że...</div><div class="phrase-usage">Odwołanie historyczne</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">W literaturze znajdziemy wiele przykładów...</div><div class="phrase-usage">Ogólne odwołanie</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Losy bohatera... dowodzą, że...</div><div class="phrase-usage">Analiza postaci</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Świadczy o tym choćby...</div><div class="phrase-usage">Prosty przykład</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Wystarczy spojrzeć na...</div><div class="phrase-usage">Bezpośrednie odwołanie</div></div>
+            </div>
+            <div class="phrases-grid" id="phrases-kontra">
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Z drugiej strony...</div><div class="phrase-usage">Wprowadzenie kontrargumentu</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Można jednak zauważyć, że...</div><div class="phrase-usage">Łagodny kontrargument</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Przeciwnicy twierdzą, że...</div><div class="phrase-usage">Stanowisko opozycji</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Mimo że niektórzy uważają...</div><div class="phrase-usage">Uznanie innego zdania</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Choć istnieje pogląd, że...</div><div class="phrase-usage">Alternatywne stanowisko</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Nie wszyscy się z tym zgadzają...</div><div class="phrase-usage">Opozycja</div></div>
+            </div>
+            <div class="phrases-grid" id="phrases-zakonczenie">
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Reasumując...</div><div class="phrase-usage">Formalne podsumowanie</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Powyższe rozważania prowadzą do wniosku, że...</div><div class="phrase-usage">Logiczny wniosek</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Nie ulega więc wątpliwości, że...</div><div class="phrase-usage">Pewność</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Wszystko to pozwala stwierdzić, że...</div><div class="phrase-usage">Podsumowanie argumentów</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Przedstawione argumenty dowodzą, że...</div><div class="phrase-usage">Odwołanie do argumentacji</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">W świetle powyższych rozważań...</div><div class="phrase-usage">Formalne zakończenie</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Podsumowując powyższe rozważania...</div><div class="phrase-usage">Klasyczne zakończenie</div></div>
+                <div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-text">Można zatem stwierdzić, że...</div><div class="phrase-usage">Konkluzja</div></div>
+            </div>
+        </div>
+    </section>
+    <section class="examples-section" id="examples">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">📝 Galeria</div>
+                <h2 class="section-title">Wzorcowe przykłady</h2>
+                <p class="section-subtitle">Analizuj i ucz się od najlepszych</p>
+            </div>
+            <div class="examples-filter reveal">
+                <button class="filter-btn active" data-filter="all">Wszystkie</button>
+                <button class="filter-btn" data-filter="wstep">Wstępy</button>
+                <button class="filter-btn" data-filter="teza">Tezy</button>
+                <button class="filter-btn" data-filter="argument">Argumenty</button>
+                <button class="filter-btn" data-filter="zakonczenie">Zakończenia</button>
+            </div>
+            <div class="examples-grid reveal">
+                <div class="example-card" data-type="wstep">
+                    <div class="example-card-header">
+                        <span class="example-type wstep">Wstęp</span>
+                        <div class="example-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    </div>
+                    <div class="example-card-body">
+                        <p>„Samotny podróżnik stoi na szczycie góry. Przed nim rozpościera się bezkres możliwości, za nim – długa droga pełna wyrzeczeń. Czy było warto? Marzenia, niczym kompas, prowadzą człowieka przez życie, nadając mu sens i kierunek. Jestem przekonany, że warto za nimi podążać, nawet jeśli droga jest trudna."</p>
+                    </div>
+                    <div class="example-card-footer">
+                        <span class="example-topic">Temat: Czy warto mieć marzenia?</span>
+                    </div>
+                </div>
+                <div class="example-card" data-type="teza">
+                    <div class="example-card-header">
+                        <span class="example-type teza">Teza</span>
+                        <div class="example-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    </div>
+                    <div class="example-card-body">
+                        <p>„Prawdziwa przyjaźń, oparta na wzajemnym szacunku i bezinteresowności, jest jedną z najcenniejszych wartości w życiu człowieka, ponieważ daje poczucie bezpieczeństwa, wspiera w trudnych chwilach i pozwala rozwijać się jako jednostka."</p>
+                    </div>
+                    <div class="example-card-footer">
+                        <span class="example-topic">Temat: Czy przyjaźń jest ważna?</span>
+                    </div>
+                </div>
+                <div class="example-card" data-type="argument">
+                    <div class="example-card-header">
+                        <span class="example-type argument">Argument</span>
+                        <div class="example-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    </div>
+                    <div class="example-card-body">
+                        <p>„Literatura uczy empatii i zrozumienia dla drugiego człowieka. Czytelnik, wchodząc w skórę bohaterów, poznaje różne perspektywy i doświadczenia. Raskolnikow z „Zbrodni i kary" Dostojewskiego pokazuje, jak poczucie winy i sumienie kształtują ludzką psychikę. Dzięki tej lekturze możemy zrozumieć mechanizmy moralne, nawet jeśli sami nigdy nie znajdziemy się w podobnej sytuacji."</p>
+                    </div>
+                    <div class="example-card-footer">
+                        <span class="example-topic">Temat: Czy książki kształtują charakter?</span>
+                    </div>
+                </div>
+                <div class="example-card" data-type="zakonczenie">
+                    <div class="example-card-header">
+                        <span class="example-type zakonczenie">Zakończenie</span>
+                        <div class="example-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    </div>
+                    <div class="example-card-body">
+                        <p>„Podsumowując powyższe rozważania, można stwierdzić, że przyjaźń stanowi fundament ludzkiego szczęścia. Zarówno przykłady literackie, jak i codzienne doświadczenia pokazują, że człowiek jest istotą społeczną, która potrzebuje bliskich relacji. Może warto zadać sobie pytanie: czy pielęgnujemy nasze przyjaźnie tak, jak na to zasługują?"</p>
+                    </div>
+                    <div class="example-card-footer">
+                        <span class="example-topic">Temat: Czy przyjaźń jest ważniejsza od sukcesu?</span>
+                    </div>
+                </div>
+                <div class="example-card" data-type="wstep">
+                    <div class="example-card-header">
+                        <span class="example-type wstep">Wstęp</span>
+                        <div class="example-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span></div>
+                    </div>
+                    <div class="example-card-body">
+                        <p>„Książka leży otwarta na stole. Jej kartki noszą ślady wielu palców, a marginesy pełne są notatek. Ten przedmiot, pozornie zwykły, ma niezwykłą moc – kształtuje umysły i serca pokoleń. Jestem przekonany, że literatura odgrywa kluczową rolę w budowaniu charakteru człowieka."</p>
+                    </div>
+                    <div class="example-card-footer">
+                        <span class="example-topic">Temat: Czy książki wpływają na nasze życie?</span>
+                    </div>
+                </div>
+                <div class="example-card" data-type="argument">
+                    <div class="example-card-header">
+                        <span class="example-type argument">Argument</span>
+                        <div class="example-rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                    </div>
+                    <div class="example-card-body">
+                        <p>„Marzenia mobilizują do działania i pomagają pokonywać przeszkody. Człowiek z jasno określonym celem jest w stanie znieść więcej trudności niż ten, który dryfuje bez kierunku. Mały Książę z powieści Antoine'a de Saint-Exupéry'ego wyruszył w podróż między planetami, szukając sensu. Jego determinacja i wiara w wartość poszukiwań pokazują, że marzenia nadają życiu głębszy wymiar."</p>
+                    </div>
+                    <div class="example-card-footer">
+                        <span class="example-topic">Temat: Czy marzenia pomagają w życiu?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="quiz-section" id="quiz">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">🎯 Sprawdź się</div>
+                <h2 class="section-title">Quiz wiedzy</h2>
+                <p class="section-subtitle">Przetestuj, ile już wiesz o pisaniu rozprawek</p>
+            </div>
+            <div class="quiz-container reveal">
+                <div class="quiz-progress" id="quizProgress">
+                    <div class="quiz-progress-dot current"></div>
+                    <div class="quiz-progress-dot"></div>
+                    <div class="quiz-progress-dot"></div>
+                    <div class="quiz-progress-dot"></div>
+                    <div class="quiz-progress-dot"></div>
+                </div>
+                <div class="quiz-card" id="quizCard">
+                    <div class="quiz-question-number">Pytanie <span id="currentQuestion">1</span> z 5</div>
+                    <h3 class="quiz-question" id="quizQuestion">Jaka jest prawidłowa kolejność elementów rozprawki?</h3>
+                    <div class="quiz-options" id="quizOptions">
+                        <div class="quiz-option" onclick="selectOption(this, 0)">
+                            <span class="option-letter">A</span>
+                            <span>Teza → Wstęp → Argumenty → Zakończenie</span>
+                        </div>
+                        <div class="quiz-option" onclick="selectOption(this, 1)">
+                            <span class="option-letter">B</span>
+                            <span>Wstęp z tezą → Argumenty → Zakończenie</span>
+                        </div>
+                        <div class="quiz-option" onclick="selectOption(this, 2)">
+                            <span class="option-letter">C</span>
+                            <span>Argumenty → Teza → Wstęp → Zakończenie</span>
+                        </div>
+                        <div class="quiz-option" onclick="selectOption(this, 3)">
+                            <span class="option-letter">D</span>
+                            <span>Zakończenie → Argumenty → Wstęp</span>
+                        </div>
+                    </div>
+                    <div class="quiz-feedback" id="quizFeedback">
+                        <h4 id="feedbackTitle">Świetnie!</h4>
+                        <p id="feedbackText">Prawidłowa kolejność to: wstęp z tezą, rozwinięcie z argumentami, zakończenie.</p>
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()" disabled>← Poprzednie</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Następne →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="checklist-section" id="checklist">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">✅ Przed oddaniem</div>
+                <h2 class="section-title">Checklista</h2>
+                <p class="section-subtitle">Sprawdź, czy Twoja rozprawka jest kompletna</p>
+            </div>
+            <div class="checklist-container reveal">
+                <div class="checklist-card">
+                    <div class="checklist-items" id="checklistItems">
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Teza jest jasna i konkretna</h4>
+                                <p>Czytelnik od razu wie, jakie jest Twoje stanowisko</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Wstęp zawiera haczyk i tezę</h4>
+                                <p>Zaczynasz ciekawie i przedstawiasz swoje stanowisko</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Mam co najmniej 2-3 argumenty</h4>
+                                <p>Każdy argument ma twierdzenie, uzasadnienie i przykład</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Użyłem przykładów literackich</h4>
+                                <p>Przynajmniej jeden argument oparty na lekturze</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Każdy argument to osobny akapit</h4>
+                                <p>Tekst jest przejrzysty i logicznie podzielony</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Zakończenie podsumowuje i nie powtarza</h4>
+                                <p>Synteza argumentów + refleksja końcowa</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Sprawdziłem ortografię i interpunkcję</h4>
+                                <p>Brak błędów językowych</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item" onclick="toggleCheck(this)">
+                            <div class="checklist-checkbox">✓</div>
+                            <div class="checklist-content">
+                                <h4>Przeczytałem tekst na głos</h4>
+                                <p>Sprawdziłem płynność i logikę</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checklist-progress">
+                        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                        <div class="progress-text"><span id="progressText">0</span> z 8 punktów zaznaczonych</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="footer-logo-icon">R</div>
+                <div class="footer-logo-text">Rozprawka<span>PRO</span></div>
+            </div>
+            <p class="footer-tagline">Kompletny kurs pisania rozprawek dla uczniów szkół średnich.</p>
+            <p class="footer-copy">© 2025 RozprawkaPRO | Stworzono z 💛 dla polskich licealistów</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('navProgress').style.width = scrolled + '%';
+        });
+
+        // Reveal on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        function revealOnScroll() {
+            reveals.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) el.classList.add('active');
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Structure panels
+        document.querySelectorAll('.structure-step').forEach(step => {
+            step.addEventListener('click', () => {
+                document.querySelectorAll('.structure-step').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.structure-panel').forEach(p => p.classList.remove('active'));
+                step.classList.add('active');
+                document.getElementById('panel-' + step.dataset.panel).classList.add('active');
+            });
+        });
+
+        function nextPanel(panelId) {
+            document.querySelectorAll('.structure-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.structure-panel').forEach(p => p.classList.remove('active'));
+            document.querySelector(`[data-panel="${panelId}"]`).classList.add('active');
+            document.getElementById('panel-' + panelId).classList.add('active');
+        }
+
+        // Char counter
+        function updateCharCount(textarea) {
+            const counter = textarea.parentElement.querySelector('.char-counter span');
+            counter.textContent = textarea.value.length;
+        }
+
+        // Phrases tabs
+        document.querySelectorAll('.phrase-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.phrase-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.phrases-grid').forEach(g => g.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('phrases-' + tab.dataset.category).classList.add('active');
+            });
+        });
+
+        // Copy phrase
+        function copyPhrase(card) {
+            const text = card.querySelector('.phrase-text').textContent;
+            navigator.clipboard.writeText(text);
+            card.classList.add('copied');
+            setTimeout(() => card.classList.remove('copied'), 1500);
+        }
+
+        // Examples filter
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.example-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.type === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Checklist
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.checklist-item').length;
+            const checked = document.querySelectorAll('.checklist-item.checked').length;
+            document.getElementById('progressFill').style.width = (checked / total * 100) + '%';
+            document.getElementById('progressText').textContent = checked;
+        }
+
+        // Quiz data
+        const quizData = [
+            {
+                question: "Jaka jest prawidłowa kolejność elementów rozprawki?",
+                options: ["Teza → Wstęp → Argumenty → Zakończenie", "Wstęp z tezą → Argumenty → Zakończenie", "Argumenty → Teza → Wstęp → Zakończenie", "Zakończenie → Argumenty → Wstęp"],
+                correct: 1,
+                explanation: "Prawidłowa kolejność to: wstęp z tezą, rozwinięcie z argumentami, zakończenie."
+            },
+            {
+                question: "Która teza jest poprawnie sformułowana?",
+                options: ["Miłość jest ważna.", "Uważam, że miłość jest siłą, która motywuje człowieka do poświęceń i pozwala pokonywać trudności.", "Wszyscy kochają.", "Miłość może być różna."],
+                correct: 1,
+                explanation: "Dobra teza jest konkretna, jednoznaczna i możliwa do udowodnienia argumentami."
+            },
+            {
+                question: "Ile argumentów powinno zawierać rozwinięcie rozprawki?",
+                options: ["Dokładnie 1", "Co najmniej 2-3", "Minimum 10", "Nie ma znaczenia"],
+                correct: 1,
+                explanation: "Standardowo rozprawka powinna zawierać 2-3 dobrze rozwinięte argumenty z przykładami."
+            },
+            {
+                question: "Co NIE powinno znaleźć się w zakończeniu?",
+                options: ["Podsumowanie argumentów", "Nowe argumenty", "Potwierdzenie tezy", "Refleksja końcowa"],
+                correct: 1,
+                explanation: "Zakończenie podsumowuje wcześniejsze argumenty – nie wprowadzamy nowych!"
+            },
+            {
+                question: "Jakiego zwrotu lepiej unikać na początku rozprawki?",
+                options: ["'Zastanówmy się nad...'", "'Od zarania dziejów...'", "'Czy możliwe jest, że...?'", "'Wyobraźmy sobie...'"],
+                correct: 1,
+                explanation: "'Od zarania dziejów' to banalne, wyświechtane otwarcie. Lepiej zacząć ciekawiej!"
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        let answered = false;
+
+        function selectOption(option, index) {
+            if (answered) return;
+            answered = true;
+            const correct = quizData[currentQ].correct;
+            document.querySelectorAll('.quiz-option').forEach((o, i) => {
+                if (i === correct) o.classList.add('correct');
+                else if (i === index && i !== correct) o.classList.add('incorrect');
+            });
+            option.classList.add('selected');
+            const feedback = document.getElementById('quizFeedback');
+            const isCorrect = index === correct;
+            if (isCorrect) score++;
+            feedback.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackTitle').textContent = isCorrect ? '✓ Świetnie!' : '✗ Niestety nie...';
+            document.getElementById('feedbackText').textContent = quizData[currentQ].explanation;
+        }
+
+        function nextQuestion() {
+            if (!answered) return;
+            currentQ++;
+            if (currentQ >= quizData.length) {
+                showScore();
+                return;
+            }
+            loadQuestion();
+        }
+
+        function prevQuestion() {
+            if (currentQ > 0) {
+                currentQ--;
+                loadQuestion();
+            }
+        }
+
+        function loadQuestion() {
+            answered = false;
+            const q = quizData[currentQ];
+            document.getElementById('currentQuestion').textContent = currentQ + 1;
+            document.getElementById('quizQuestion').textContent = q.question;
+            const optionsHtml = q.options.map((opt, i) => 
+                `<div class="quiz-option" onclick="selectOption(this, ${i})">
+                    <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                    <span>${opt}</span>
+                </div>`
+            ).join('');
+            document.getElementById('quizOptions').innerHTML = optionsHtml;
+            document.getElementById('quizFeedback').className = 'quiz-feedback';
+            document.getElementById('prevBtn').disabled = currentQ === 0;
+            document.getElementById('nextBtn').textContent = currentQ === quizData.length - 1 ? 'Zakończ →' : 'Następne →';
+            // Update progress dots
+            document.querySelectorAll('.quiz-progress-dot').forEach((dot, i) => {
+                dot.className = 'quiz-progress-dot';
+                if (i < currentQ) dot.classList.add('completed');
+                if (i === currentQ) dot.classList.add('current');
+            });
+        }
+
+        function showScore() {
+            const percent = Math.round(score / quizData.length * 100);
+            document.getElementById('quizCard').innerHTML = `
+                <div class="quiz-score">
+                    <div class="quiz-score-value">${percent}%</div>
+                    <div class="quiz-score-label">Twój wynik: ${score} z ${quizData.length} poprawnych odpowiedzi</div>
+                    <button class="btn btn-primary" onclick="restartQuiz()">Spróbuj ponownie</button>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQ = 0; score = 0; answered = false;
+            location.reload();
+        }
+
+        // Generator
+        function generateEssay() {
+            const topic = document.getElementById('generatorTopic').value.trim();
+            if (!topic) {
+                alert('Wpisz temat rozprawki!');
+                return;
+            }
+            const type = document.getElementById('generatorType').value;
+            const stance = document.getElementById('generatorStance').value;
+            
+            const theses = {
+                za: [
+                    `Uważam, że ${topic.replace('Czy ', '').replace('?', '')} ma kluczowe znaczenie dla rozwoju człowieka.`,
+                    `Jestem przekonany, że odpowiedź na pytanie "${topic}" jest twierdząca, ponieważ wpływa to pozytywnie na nasze życie.`,
+                    `Stoję na stanowisku, że warto, gdyż przynosi to wymierne korzyści dla jednostki i społeczeństwa.`
+                ],
+                przeciw: [
+                    `Uważam, że ${topic.replace('Czy ', '').replace('?', '')} nie jest tak istotne, jak powszechnie się sądzi.`,
+                    `Jestem przekonany, że odpowiedź jest przecząca – istnieją ważniejsze wartości.`,
+                    `Stoję na stanowisku, że nie warto, gdyż korzyści są iluzoryczne.`
+                ]
+            };
+            
+            const args = {
+                za: [
+                    "Rozwija charakter i kształtuje pozytywne cechy osobowości.",
+                    "Literatura i historia dostarczają licznych przykładów potwierdzających tę tezę.",
+                    "Współczesne badania naukowe potwierdzają pozytywny wpływ na człowieka.",
+                    "Doświadczenia życiowe pokazują, że jest to wartość uniwersalna."
+                ],
+                przeciw: [
+                    "Istnieją ważniejsze wartości, które zasługują na uwagę.",
+                    "Przykłady literackie pokazują również negatywne konsekwencje.",
+                    "Współczesny świat wymaga innych priorytetów.",
+                    "Nie każdy musi podążać tą samą drogą."
+                ]
+            };
+
+            const thesis = theses[stance][Math.floor(Math.random() * theses[stance].length)];
+            const selectedArgs = args[stance].sort(() => Math.random() - 0.5).slice(0, 3);
+
+            document.getElementById('generatorOutput').innerHTML = `
+                <h3>Propozycje</h3>
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">💡 Teza</div>
+                    <p class="phrase-text">${thesis}</p>
+                </div>
+                ${selectedArgs.map((arg, i) => `
+                    <div class="generated-item" onclick="copyPhrase(this)">
+                        <div class="generated-item-label">🧱 Argument ${i + 1}</div>
+                        <p class="phrase-text">${arg}</p>
+                    </div>
+                `).join('')}
+                <p class="copy-hint">Kliknij na element, aby skopiować</p>
+            `;
+        }
+    </script>
+</body>
+</html>
