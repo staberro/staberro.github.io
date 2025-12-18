@@ -259,6 +259,9 @@
         .footer-logo-text span { color: var(--accent-gold); }
         .footer-tagline { color: var(--text-secondary); margin-bottom: 2rem; }
         .footer-copy { font-size: 0.85rem; color: var(--text-muted); }
+
+        .footer-copy a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px dashed rgba(255, 215, 0, 0.35); padding-bottom: 1px; }
+        .footer-copy a:hover { color: var(--accent-gold); border-bottom-color: rgba(255, 215, 0, 0.75); }
         /* Responsive */
         @media (max-width: 1024px) {
             .structure-builder { grid-template-columns: 1fr; }
@@ -276,7 +279,76 @@
             section { padding: 4rem 1.5rem; }
             .phrases-grid { grid-template-columns: 1fr; }
         }
-    </style>
+    
+
+        /* Dark select dropdown (lepsze pod ciemne tło) */
+        .input-group select { color-scheme: dark; background: rgba(20, 22, 34, 0.85); color: var(--text-primary); }
+        .input-group select option { background: #0f111a; color: #e7e8f2; }
+
+        /* Copy feedback also for generated items */
+        .generated-item { position: relative; }
+        .generated-item::after { content: '📋'; position: absolute; top: 1rem; right: 1rem; opacity: 0; transition: opacity 0.3s ease; }
+        .generated-item:hover::after { opacity: 1; }
+        .generated-item.copied { border-color: var(--accent-green); }
+        .generated-item.copied::after { content: '✓'; opacity: 1; }
+
+        /* Workshop PRO */
+        .workshop-section { padding: 6rem 0; }
+        .workshop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+        .workshop-row { margin-top: 1.75rem; }
+        .tool-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-soft); }
+        .tool-card.tool-wide { width: 100%; }
+        .tool-head { padding: 1.75rem 1.75rem 0.75rem; }
+        .tool-head h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin: 0 0 0.5rem; color: var(--text-primary); }
+        .tool-head p { margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+        .tool-body { padding: 1.25rem 1.75rem 1.75rem; }
+        .tool-inputs { background: rgba(20, 22, 34, 0.55); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; }
+        .tool-output { margin-top: 1rem; background: rgba(20, 22, 34, 0.35); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; min-height: 220px; }
+        .tool-muted { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+        .input-row { display: flex; gap: 1rem; align-items: flex-end; }
+        .tool-actions { display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        .btn.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+        .btn.btn-ghost:hover { border-color: var(--accent-gold); transform: translateY(-2px); }
+
+        .arg-result { margin-top: 1rem; }
+        .arg-scoreline { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+        .score-pill { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid var(--border); background: rgba(20, 22, 34, 0.6); color: var(--text-secondary); font-size: 0.85rem; }
+        .score-pill strong { color: var(--text-primary); }
+        .meter { width: 220px; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+        .meter > div { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-orange), var(--accent-gold), var(--accent-green)); border-radius: 999px; transition: width 0.6s ease; }
+        .arg-tips { display: grid; gap: 0.6rem; }
+        .tip { padding: 0.9rem 1rem; border-radius: 14px; background: rgba(20, 22, 34, 0.55); border: 1px solid var(--border); color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
+        .tip strong { color: var(--accent-gold); }
+        .tip .phrase-text { margin: 0.4rem 0 0; }
+
+        /* Exam */
+        .exam-top { padding: 1.25rem 1.75rem 0.5rem; border-top: 1px solid var(--border); background: rgba(20, 22, 34, 0.35); }
+        .exam-buttons { display: flex; gap: 0.5rem; }
+        .exam-hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+        .hud-item { padding: 0.9rem 1rem; border-radius: 14px; border: 1px solid var(--border); background: rgba(20, 22, 34, 0.55); }
+        .hud-label { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+        .hud-value { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--text-primary); margin-top: 0.2rem; }
+        .exam-body { padding: 1.25rem 1.75rem 1.75rem; }
+        #examText { width: 100%; background: rgba(10,10,15,0.7); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; color: var(--text-primary); font-size: 1rem; line-height: 1.6; resize: vertical; }
+        #examText:focus { outline: none; border-color: var(--accent-gold); }
+        .exam-actions { display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        .exam-report { margin-top: 1rem; display: grid; gap: 0.75rem; }
+        .report-card { padding: 1rem 1.1rem; border-radius: 16px; border: 1px solid var(--border); background: rgba(20, 22, 34, 0.45); }
+        .report-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .report-title h4 { margin: 0; font-size: 1rem; color: var(--text-primary); }
+        .badge { font-size: 0.75rem; padding: 0.25rem 0.55rem; border-radius: 999px; border: 1px solid var(--border); color: var(--text-secondary); }
+        .badge.ok { border-color: rgba(0, 255, 170, 0.35); color: var(--accent-green); }
+        .badge.no { border-color: rgba(255, 120, 120, 0.35); color: #ff8a8a; }
+        .report-card p { margin: 0; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+
+        @media (max-width: 980px) {
+            .workshop-grid { grid-template-columns: 1fr; }
+            .exam-hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .input-row { flex-direction: column; align-items: stretch; }
+            .exam-buttons { justify-content: flex-start; }
+        }
+
+</style>
 </head>
 <body>
     <div class="bg-animation">
@@ -294,7 +366,8 @@
                 <li><a href="#features" class="nav-link">Kurs</a></li>
                 <li><a href="#struktura" class="nav-link">Struktura</a></li>
                 <li><a href="#generator" class="nav-link">Generator</a></li>
-                <li><a href="#phrases" class="nav-link">Zwroty</a></li>
+                                <li><a href="#workshop" class="nav-link">Warsztat</a></li>
+<li><a href="#phrases" class="nav-link">Zwroty</a></li>
                 <li><a href="#examples" class="nav-link">Przykłady</a></li>
                 <li><a href="#quiz" class="nav-link">Quiz</a></li>
             </ul>
@@ -589,7 +662,161 @@
             </div>
         </div>
     </section>
-    <section class="phrases-section" id="phrases">
+    
+    <section class="workshop-section" id="workshop">
+        <div class="container">
+            <div class="section-header reveal">
+                <div class="section-badge">🛠️ Warsztat PRO</div>
+                <h2 class="section-title">Killery do rozprawki: teza, argument, egzamin</h2>
+                <p class="section-subtitle">Narzędzia, które robią „aha!” — szybciej układasz plan, piszesz mocniej i sprawdzasz tekst w minutę.</p>
+            </div>
+
+            <div class="workshop-grid reveal">
+                <div class="tool-card">
+                    <div class="tool-head">
+                        <h3>🔥 Teza + plan w 30 sekund</h3>
+                        <p>Wpisz temat i wybierz stanowisko. Dostaniesz: hook, tezę, antytezę, 3 argumenty (z przykładem) i zakończenie. Kliknij element, żeby skopiować.</p>
+                    </div>
+
+                    <div class="tool-body">
+                        <div class="tool-inputs">
+                            <div class="input-group">
+                                <label>Temat</label>
+                                <input type="text" id="proTopic" placeholder="np. Czy warto mieć marzenia?">
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Rodzaj rozprawki</label>
+                                    <select id="proType">
+                                        <option value="argumentacyjna">argumentacyjna</option>
+                                        <option value="problemowa">problemowa</option>
+                                        <option value="porownawcza">porównawcza</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Stanowisko</label>
+                                    <select id="proStance">
+                                        <option value="za">za</option>
+                                        <option value="przeciw">przeciw</option>
+                                        <option value="rozwaz">rozważ (plusy i minusy)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" onclick="buildProPlan()" style="width: 100%; margin-top: 0.75rem;">
+                                Zbuduj plan PRO ⚡
+                            </button>
+                        </div>
+
+                        <div class="tool-output" id="proPlanOutput">
+                            <p class="tool-muted">Wpisz temat i kliknij „Zbuduj plan PRO”.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-head">
+                        <h3>💪 Klinika argumentu (siła 0–10)</h3>
+                        <p>Wklej swój argument. Dostaniesz ocenę, krótkie wskazówki i gotowy szkielet ulepszenia.</p>
+                    </div>
+
+                    <div class="tool-body">
+                        <div class="input-group">
+                            <label>Argument (Twoimi słowami)</label>
+                            <textarea id="argText" rows="6" placeholder="Napisz argument: twierdzenie + uzasadnienie + (najlepiej) przykład..."></textarea>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group" style="flex: 1.2;">
+                                <label>Przykład (opcjonalnie)</label>
+                                <input type="text" id="argExample" placeholder='np. „Kamienie na szaniec” – Rudy...'>
+                            </div>
+                            <div class="input-group" style="flex: 0.8;">
+                                <label>Cel</label>
+                                <select id="argGoal">
+                                    <option value="matura">matura / egzamin</option>
+                                    <option value="szkola">szkoła (kl. 7–8)</option>
+                                    <option value="olimp">olimpiada (mocniej)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="tool-actions">
+                            <button class="btn btn-secondary" onclick="analyzeArgument()">Oceń argument</button>
+                            <button class="btn btn-ghost" onclick="clearArgument()">Wyczyść</button>
+                        </div>
+
+                        <div class="arg-result" id="argResult" aria-live="polite"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workshop-row reveal">
+                <div class="tool-card tool-wide">
+                    <div class="tool-head">
+                        <h3>⏱️ Tryb Egzamin (Focus)</h3>
+                        <p>Minimalny tryb pisania: timer + licznik słów + szybka analiza „czy to jest rozprawka”. Zero lania wody.</p>
+                    </div>
+
+                    <div class="exam-top">
+                        <div class="input-row">
+                            <div class="input-group" style="flex: 1.4;">
+                                <label>Temat (opcjonalnie)</label>
+                                <input type="text" id="examTopic" placeholder="Wpisz temat, żeby analiza była dokładniejsza…">
+                            </div>
+                            <div class="input-group" style="flex: 0.6;">
+                                <label>Czas</label>
+                                <select id="examMinutes">
+                                    <option value="10">10 min</option>
+                                    <option value="15">15 min</option>
+                                    <option value="20">20 min</option>
+                                </select>
+                            </div>
+                            <div class="input-group" style="flex: 0.7;">
+                                <label>Start</label>
+                                <div class="exam-buttons">
+                                    <button class="btn btn-primary" onclick="startExam()">Start</button>
+                                    <button class="btn btn-ghost" onclick="stopExam()">Stop</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="exam-hud">
+                            <div class="hud-item">
+                                <div class="hud-label">⏳ czas</div>
+                                <div class="hud-value" id="examTimer">00:00</div>
+                            </div>
+                            <div class="hud-item">
+                                <div class="hud-label">📝 słowa</div>
+                                <div class="hud-value" id="examWords">0</div>
+                            </div>
+                            <div class="hud-item">
+                                <div class="hud-label">📄 akapity</div>
+                                <div class="hud-value" id="examParas">0</div>
+                            </div>
+                            <div class="hud-item">
+                                <div class="hud-label">🧱 argumenty</div>
+                                <div class="hud-value" id="examArgs">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exam-body">
+                        <textarea id="examText" rows="10" placeholder="Piszesz. Entery rób jako akapity. Na końcu kliknij „Sprawdź”."></textarea>
+
+                        <div class="exam-actions">
+                            <button class="btn btn-secondary" onclick="checkExam()">Sprawdź ✅</button>
+                            <button class="btn btn-ghost" onclick="resetExam()">Reset</button>
+                        </div>
+
+                        <div class="exam-report" id="examReport"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section class="phrases-section" id="phrases">
         <div class="container">
             <div class="section-header reveal">
                 <div class="section-badge">💬 Ściąga</div>
@@ -880,11 +1107,17 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
-                <div class="footer-logo-icon">R</div>
-                <div class="footer-logo-text">Rozprawka<span>PRO</span></div>
+                <div class="footer-logo-icon">V</div>
+                <div class="footer-logo-text">Virallo<span>Lab</span></div>
             </div>
-            <p class="footer-tagline">Kompletny kurs pisania rozprawek dla uczniów szkół średnich.</p>
-            <p class="footer-copy">© 2025 RozprawkaPRO | Stworzono z 💛 dla polskich licealistów</p>
+            <p class="footer-tagline">Zrobione pod styl „PRO” – produkt premium, a nie jak kserówka z pokoju nauczycielskiego.</p>
+            <p class="footer-copy">
+                © 2025
+                <a href="https://staberek.com" target="_blank" rel="noopener">Staberek</a>
+                •
+                <a href="https://staberek.com" target="_blank" rel="noopener">dr inż. Kacper Stabrawa</a>
+                • Wykonanie: <strong>ViralloLab</strong>
+            </p>
         </div>
     </footer>
 
@@ -1145,6 +1378,444 @@
                 <p class="copy-hint">Kliknij na element, aby skopiować</p>
             `;
         }
-    </script>
+    
+
+        // ===== Warsztat PRO =====
+        const PRO_TEMPLATES = {
+            hooks: [
+                (topic, core) => `Czy ${core}? To pytanie wraca częściej, niż myślimy — i dotyka tego, jak budujemy swoje decyzje oraz wartości.`,
+                (topic, core) => `W świecie, w którym codziennie podejmujemy wybory, temat „${core}” jest zaskakująco aktualny i praktyczny.`,
+                (topic, core) => `Niektóre sprawy wyglądają na proste — dopóki nie spróbujemy je uzasadnić. Tak jest z tematem: ${core}.`,
+                (topic, core) => `Temat „${core}” można rozpatrywać na wiele sposobów: moralnie, praktycznie i społecznie. Warto to uporządkować.`
+            ],
+            theses: {
+                za: [
+                    (topic, core) => `Uważam, że ${core}, ponieważ pomaga człowiekowi lepiej rozumieć siebie i podejmować mądrzejsze decyzje.`,
+                    (topic, core) => `Jestem przekonany, że ${core}, gdyż przynosi realne korzyści zarówno jednostce, jak i otoczeniu.`,
+                    (topic, core) => `Moim zdaniem ${core} — i można to uzasadnić argumentami moralnymi, praktycznymi oraz przykładami.`
+                ],
+                przeciw: [
+                    (topic, core) => `Uważam, że ${core} nie zawsze jest dobrym rozwiązaniem, ponieważ może prowadzić do błędnych wyborów i rozczarowań.`,
+                    (topic, core) => `Moim zdaniem ${core} bywa przeceniane — w praktyce liczą się inne czynniki, które mają większe znaczenie.`,
+                    (topic, core) => `Sądzę, że ${core} nie jest konieczne, gdyż istnieją skuteczniejsze sposoby osiągania celów i rozwoju.`
+                ],
+                rozwaz: [
+                    (topic, core) => `Uważam, że ${core} ma zarówno zalety, jak i wady — wszystko zależy od okoliczności i sposobu podejścia.`,
+                    (topic, core) => `Moim zdaniem ${core} może pomagać, ale w pewnych sytuacjach może też szkodzić — dlatego warto spojrzeć na oba aspekty.`,
+                    (topic, core) => `Sądzę, że ${core} nie daje jednej, prostej odpowiedzi: czasem jest wartościowe, a czasem problematyczne.`
+                ]
+            },
+            antithesis: {
+                za: [
+                    (topic, core) => `Z drugiej strony można twierdzić, że ${core} bywa złudne lub niepraktyczne i może prowadzić do rozczarowań.`
+                ],
+                przeciw: [
+                    (topic, core) => `Z drugiej strony wielu uważa, że ${core} buduje motywację i pomaga przekraczać własne ograniczenia.`
+                ],
+                rozwaz: [
+                    (topic, core) => `Można więc bronić tezy „za”, ale równie sensownie można wskazać argumenty „przeciw” — klucz to równowaga i kontekst.`
+                ]
+            },
+            arguments: {
+                za: [
+                    (core, ex) => `Po pierwsze, ${core}, ponieważ rozwija samodzielność i odpowiedzialność. Przykładem jest ${ex}.`,
+                    (core, ex) => `Kolejny argument: ${core} ułatwia budowanie relacji i zaufania, gdyż daje poczucie sensu. Przykładem może być ${ex}.`,
+                    (core, ex) => `Ponadto ${core} ma wymiar społeczny — wpływa na postawy i decyzje ludzi. Przykładem jest ${ex}.`,
+                    (core, ex) => `Wreszcie ${core} pomaga w rozwoju: człowiek uczy się konsekwencji i planowania. Przykładem jest ${ex}.`
+                ],
+                przeciw: [
+                    (core, ex) => `Po pierwsze, ${core} może prowadzić do błędnych wyborów, bo człowiek kieruje się emocjami zamiast faktami. Przykładem jest ${ex}.`,
+                    (core, ex) => `Kolejny argument: ${core} bywa nierealne i skutkuje frustracją. Przykładem może być ${ex}.`,
+                    (core, ex) => `Ponadto ${core} może osłabiać odpowiedzialność — łatwo zrzucić winę na „okoliczności”. Przykładem jest ${ex}.`,
+                    (core, ex) => `Wreszcie ${core} nie gwarantuje szczęścia — często liczą się konkretne działania i praca. Przykładem jest ${ex}.`
+                ],
+                rozwaz: [
+                    (core, ex) => `Z jednej strony ${core} może pomagać, ponieważ wzmacnia motywację i poczucie sensu. Przykładem jest ${ex}.`,
+                    (core, ex) => `Z drugiej strony ${core} może szkodzić, gdy staje się ucieczką od realnych problemów. Przykładem może być ${ex}.`,
+                    (core, ex) => `W praktyce ${core} działa najlepiej wtedy, gdy idzie w parze z rozsądkiem i konsekwencją. Przykładem jest ${ex}.`,
+                    (core, ex) => `Ostatecznie ${core} zależy od człowieka: dla jednych będzie wsparciem, dla innych obciążeniem. Przykładem jest ${ex}.`
+                ]
+            },
+            counter: {
+                za: [
+                    (core) => `Kontrargument: Ktoś może uznać, że ${core} jest naiwne i nieprzydatne. Odpowiedź: nawet jeśli, to w rozsądnych granicach potrafi budować motywację i prowadzić do działania.`
+                ],
+                przeciw: [
+                    (core) => `Kontrargument: Można powiedzieć, że ${core} daje nadzieję i siłę. Odpowiedź: to prawda, ale bez konkretów i odpowiedzialności łatwo zmienia się w iluzję.`
+                ],
+                rozwaz: [
+                    (core) => `Kontrargument i odpowiedź: Obie strony mają rację częściowo — dlatego najważniejsze jest pokazanie warunków, kiedy „to działa”, a kiedy „nie działa”.`
+                ]
+            },
+            conclusion: {
+                za: [
+                    (core) => `Podsumowując, ${core} jest wartościowe, bo rozwija człowieka i pomaga mu iść do przodu. Najważniejsze, by łączyć to z rozsądkiem i konsekwencją.`
+                ],
+                przeciw: [
+                    (core) => `Podsumowując, ${core} nie jest zawsze korzystne — bywa źródłem błędów i rozczarowań. Dlatego lepiej opierać decyzje na faktach i odpowiedzialności.`
+                ],
+                rozwaz: [
+                    (core) => `Reasumując, ${core} ma plusy i minusy. O wyniku decyduje kontekst oraz to, czy człowiek potrafi zachować równowagę między emocjami a rozsądkiem.`
+                ]
+            },
+            examplePlaceholders: [
+                `bohater z lektury (np. „Kamienie na szaniec”)`,
+                `sytuacja z życia codziennego`,
+                `wydarzenie historyczne lub społeczny przykład`,
+                `bohater filmu/książki, którego znasz`
+            ]
+        };
+
+        function _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        function _coreFromTopic(topic) {
+            let t = (topic || '').trim().replace(/\s+/g, ' ');
+            t = t.replace(/\?+$/g, '');
+            t = t.replace(/^\s*Czy\s+/i, '');
+            // jeśli nadal pusto, wróć do oryginału
+            return t.trim() || (topic || '').trim();
+        }
+
+        function buildProPlan() {
+            const topic = document.getElementById('proTopic').value.trim();
+            if (!topic) { alert('Wpisz temat!'); return; }
+
+            const type = document.getElementById('proType').value;
+            const stance = document.getElementById('proStance').value;
+
+            const core = _coreFromTopic(topic);
+            const hook = _pick(PRO_TEMPLATES.hooks)(topic, core);
+            const thesis = _pick(PRO_TEMPLATES.theses[stance])(topic, core);
+            const antith = _pick(PRO_TEMPLATES.antithesis[stance])(topic, core);
+
+            // arguments
+            const ex1 = _pick(PRO_TEMPLATES.examplePlaceholders);
+            const ex2 = _pick(PRO_TEMPLATES.examplePlaceholders.filter(x => x !== ex1));
+            const ex3 = _pick(PRO_TEMPLATES.examplePlaceholders.filter(x => x !== ex1 && x !== ex2));
+
+            const pool = [...PRO_TEMPLATES.arguments[stance]];
+            pool.sort(() => Math.random() - 0.5);
+            const a1 = pool[0](core, ex1);
+            const a2 = pool[1](core, ex2);
+            const a3 = pool[2](core, ex3);
+
+            const counter = _pick(PRO_TEMPLATES.counter[stance])(core);
+            const concl = _pick(PRO_TEMPLATES.conclusion[stance])(core);
+
+            document.getElementById('proPlanOutput').innerHTML = `
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">🎣 Hook (wstęp)</div>
+                    <p class="phrase-text">${hook}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">💡 Teza (${type})</div>
+                    <p class="phrase-text">${thesis}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">⚖️ Antyteza (na „przeciw” / balans)</div>
+                    <p class="phrase-text">${antith}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">🧱 Argument 1 (z przykładem)</div>
+                    <p class="phrase-text">${a1}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">🧱 Argument 2 (z przykładem)</div>
+                    <p class="phrase-text">${a2}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">🧱 Argument 3 (z przykładem)</div>
+                    <p class="phrase-text">${a3}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">🧨 Kontrargument + odpowiedź</div>
+                    <p class="phrase-text">${counter}</p>
+                </div>
+
+                <div class="generated-item" onclick="copyPhrase(this)">
+                    <div class="generated-item-label">🏁 Zakończenie</div>
+                    <p class="phrase-text">${concl}</p>
+                </div>
+
+                <p class="copy-hint">Kliknij na element, aby skopiować</p>
+            `;
+        }
+
+        function clearArgument() {
+            document.getElementById('argText').value = '';
+            document.getElementById('argExample').value = '';
+            document.getElementById('argResult').innerHTML = '';
+        }
+
+        function analyzeArgument() {
+            const text = document.getElementById('argText').value.trim();
+            const example = document.getElementById('argExample').value.trim();
+            const goal = document.getElementById('argGoal').value;
+
+            if (!text) { alert('Wklej argument do oceny!'); return; }
+
+            let score = 0;
+            const tips = [];
+
+            const len = text.length;
+            if (len >= 220) score += 3;
+            else if (len >= 120) score += 2;
+            else if (len >= 60) score += 1;
+            else tips.push('Rozwiń argument: jest zbyt krótki. Minimum: twierdzenie + uzasadnienie + przykład.');
+
+            const hasCausal = /(ponieważ|bo|dlatego|zatem|w efekcie|wynika z|przez to|w związku z)/i.test(text);
+            if (hasCausal) score += 2;
+            else tips.push('Dodaj logikę „bo → więc”: użyj „ponieważ / dlatego / zatem”, żeby było widać związek przyczynowo‑skutkowy.');
+
+            const hasExample = example.length > 0 || /(np\.|na przykład|przykładem|w lekturze|w utworze|w \"|w „|bohater|postać)/i.test(text);
+            if (hasExample) score += 3;
+            else tips.push('Brakuje konkretu. Dopisz przykład (lektura / film / życie). Bez przykładu argument jest „w powietrzu”.');
+
+            const sentences = text.split(/[.!?]/).map(s => s.trim()).filter(Boolean).length;
+            if (sentences >= 2) score += 1;
+            else tips.push('Zrób minimum 2 zdania: 1) twierdzenie, 2) uzasadnienie. Przykład może być 3. zdaniem.');
+
+            const hasConnectors = /(po pierwsze|po drugie|ponadto|dodatkowo|z drugiej strony|co więcej|wreszcie)/i.test(text);
+            if (hasConnectors) score += 1;
+
+            // penalty: ogólniki + absoluty
+            if (/(zawsze|nigdy|każdy|wszyscy|na pewno|w 100%)/i.test(text)) {
+                score -= 1;
+                tips.push('Uważaj na absoluty („zawsze / nigdy”). Lepiej: „często / czasem / w wielu sytuacjach”.');
+            }
+            if (/(jakby|w sumie|mega|spoko|fajne|coś tam|jakieś|no bo)/i.test(text)) {
+                score -= 1;
+                tips.push('Usuń potoczność i ogólniki. Doprecyzuj: kto? co? dlaczego? jaki skutek?');
+            }
+
+            score = Math.max(0, Math.min(10, score));
+
+            const label = score >= 8 ? 'Mocny' : (score >= 5 ? 'OK' : 'Do poprawy');
+            const labelBadge = score >= 8 ? 'ok' : (score >= 5 ? 'ok' : 'no');
+
+            // skeleton
+            const ex = example || _pick(PRO_TEMPLATES.examplePlaceholders);
+            const skeleton = `Szkielet (ulepsz): [Twierdzenie]. Wynika to z tego, że [Uzasadnienie]. Przykładem jest ${ex}. Dlatego [Wniosek].`;
+
+            // goal hint
+            const goalHint = goal === 'olimp'
+                ? 'Dopnij precyzję: jeden konkret + jeden skutek + jedno uogólnienie.'
+                : (goal === 'matura' ? 'Najważniejsze: logiczne „ponieważ” + przykład.' : 'Pisz prosto: 2–3 zdania, bez lania wody.');
+
+            const meterPct = Math.round((score / 10) * 100);
+            const tipsList = tips.length ? tips : ['Jest dobrze. Dopnij tylko przykład i łączniki, żeby brzmiało „na ocenę 5”.'];
+
+            document.getElementById('argResult').innerHTML = `
+                <div class="arg-scoreline">
+                    <span class="score-pill"><strong>${label}</strong> • ${score}/10</span>
+                    <div class="meter" aria-hidden="true"><div style="width:${meterPct}%"></div></div>
+                    <span class="score-pill">🎯 ${goalHint}</span>
+                </div>
+
+                <div class="arg-tips">
+                    ${tipsList.slice(0, 3).map(t => `<div class="tip"><strong>Wskazówka:</strong> ${t}</div>`).join('')}
+                    <div class="tip generated-item" onclick="copyPhrase(this)">
+                        <div class="generated-item-label">🧩 Gotowy szkielet do skopiowania</div>
+                        <p class="phrase-text">${skeleton}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===== Tryb Egzamin =====
+        let _examInterval = null;
+        let _examRemaining = 0;
+
+        function _formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+
+        function _countWords(text) {
+            const words = (text || '').trim().match(/\b[\p{L}\p{N}']+\b/gu);
+            return words ? words.length : 0;
+        }
+
+        function _countParagraphs(text) {
+            const parts = (text || '').split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+            return parts.length;
+        }
+
+        function _estimateArgs(text) {
+            const markers = (text || '').match(/po pierwsze|po drugie|po trzecie|kolejnym argumentem|ponadto|dodatkowo|wreszcie|z drugiej strony/gi);
+            const m = markers ? markers.length : 0;
+            // fallback: paragrafy minus wstęp i zakończenie
+            const paras = _countParagraphs(text);
+            const approx = Math.max(0, paras - 2);
+            return Math.max(m, approx);
+        }
+
+        function _updateExamHUD() {
+            const text = document.getElementById('examText')?.value || '';
+            document.getElementById('examWords').textContent = _countWords(text);
+            document.getElementById('examParas').textContent = _countParagraphs(text);
+            document.getElementById('examArgs').textContent = _estimateArgs(text);
+        }
+
+        function startExam() {
+            const minutes = parseInt(document.getElementById('examMinutes').value, 10) || 10;
+            _examRemaining = minutes * 60;
+
+            if (_examInterval) clearInterval(_examInterval);
+
+            document.getElementById('examTimer').textContent = _formatTime(_examRemaining);
+            _updateExamHUD();
+
+            _examInterval = setInterval(() => {
+                _examRemaining = Math.max(0, _examRemaining - 1);
+                document.getElementById('examTimer').textContent = _formatTime(_examRemaining);
+                if (_examRemaining === 0) {
+                    stopExam();
+                    // auto-check at end
+                    checkExam(true);
+                }
+            }, 1000);
+
+            // user initiated: focus ok
+            document.getElementById('examText').focus();
+        }
+
+        function stopExam() {
+            if (_examInterval) {
+                clearInterval(_examInterval);
+                _examInterval = null;
+            }
+        }
+
+        function resetExam() {
+            stopExam();
+            document.getElementById('examTopic').value = '';
+            document.getElementById('examText').value = '';
+            document.getElementById('examReport').innerHTML = '';
+            document.getElementById('examTimer').textContent = '00:00';
+            document.getElementById('examWords').textContent = '0';
+            document.getElementById('examParas').textContent = '0';
+            document.getElementById('examArgs').textContent = '0';
+        }
+
+        function checkExam(auto=false) {
+            const topic = document.getElementById('examTopic').value.trim();
+            const text = document.getElementById('examText').value.trim();
+
+            if (!text) { if(!auto) alert('Wpisz tekst do analizy.'); return; }
+
+            _updateExamHUD();
+
+            const first = text.slice(0, 600);
+            const last = text.slice(Math.max(0, text.length - 600));
+
+            const hasThesis = /(uważam|moim zdaniem|sądzę|jestem przekonan|stoję na stanowisku|teza)/i.test(first);
+            const hasIntro = first.split(/\n\s*\n/)[0]?.length >= 80; // wstęp nie-za-krótki
+            const argCount = _estimateArgs(text);
+            const hasExamples = /(np\.|na przykład|przykładem|w lekturze|w utworze|bohater|postać|wydarzenie)/i.test(text);
+            const hasConclusion = /(podsumowując|reasumując|wnioskując|zatem|na koniec|konkludując)/i.test(last);
+
+            const words = _countWords(text);
+            const paras = _countParagraphs(text);
+
+            const coherenceMarkers = (text.match(/po pierwsze|po drugie|ponadto|dodatkowo|w rezultacie|dlatego|zatem|jednak|natomiast/gi) || []).length;
+            const hasCoherence = coherenceMarkers >= 3;
+
+            const targetWords = 200; // bezpieczny „matura-ish” próg
+            const lengthOk = words >= targetWords;
+
+            const hints = [];
+            if (topic && !text.toLowerCase().includes(_coreFromTopic(topic).toLowerCase().split(' ')[0])) {
+                hints.push('Uwaga: nie widzę tematu wprost w tekście — upewnij się, że wstęp nawiązuje do tematu.');
+            }
+            if (paras < 3) hints.push('Dodaj akapity: wstęp → argumenty → zakończenie. Jeden blok tekstu wygląda słabiej.');
+            if (argCount < 2) hints.push('Daj minimum 2 argumenty. Najprościej: „Po pierwsze… Po drugie…”.');
+            if (!hasExamples) hints.push('Wstaw przykład (lektura/film/życie). To najszybszy boost jakości.');
+            if (!hasConclusion) hints.push('Dopnij zakończenie („Podsumowując… zatem…”) — bez tego tekst jest urwany.');
+
+            const report = [
+                {
+                    title: 'Teza wstępu',
+                    ok: hasThesis,
+                    msg: hasThesis
+                        ? 'Jest stanowisko/teza — super. To prowadzi czytelnika.'
+                        : 'Brakuje jasnej tezy. Dodaj w 1–2 zdaniach: „Uważam, że… ponieważ…”.'
+                },
+                {
+                    title: 'Struktura (wstęp/argumenty/zakończenie)',
+                    ok: hasIntro && paras >= 3,
+                    msg: (hasIntro && paras >= 3)
+                        ? 'Wygląda jak rozprawka: wstęp ma sens, są akapity.'
+                        : 'Zrób wyraźne akapity. Wstęp niech ma 3–5 zdań i kończy się tezą.'
+                },
+                {
+                    title: 'Argumenty',
+                    ok: argCount >= 2,
+                    msg: argCount >= 2
+                        ? `Jest ok: widzę ok. ${argCount} argument(y).`
+                        : 'Za mało argumentów. Minimum 2 — każdy w osobnym akapicie.'
+                },
+                {
+                    title: 'Przykłady',
+                    ok: hasExamples,
+                    msg: hasExamples
+                        ? 'Są konkrety (przykład/odwołanie). To mocno podbija ocenę.'
+                        : 'Brakuje konkretu. Dopisz: „Przykładem jest…” i wskaż lekturę/zdarzenie.'
+                },
+                {
+                    title: 'Spójność (łączniki)',
+                    ok: hasCoherence,
+                    msg: hasCoherence
+                        ? 'Są łączniki, tekst „płynie”.'
+                        : 'Dodaj łączniki: „po pierwsze, ponadto, jednak, dlatego, zatem…”.'
+                },
+                {
+                    title: 'Zakończenie',
+                    ok: hasConclusion,
+                    msg: hasConclusion
+                        ? 'Jest domknięcie. Tekst brzmi kompletnie.'
+                        : 'Dopisz 2–3 zdania zakończenia: podsumuj argumenty + refleksja.'
+                },
+                {
+                    title: 'Długość',
+                    ok: lengthOk,
+                    msg: lengthOk
+                        ? `OK: ${words} słów.`
+                        : `Za krótko: ${words} słów. Celuj w ok. ${targetWords}+ (zależnie od wymagań).`
+                }
+            ];
+
+            const extra = hints.length ? `<div class="report-card"><div class="report-title"><h4>📌 Najszybsze poprawki</h4><span class="badge">${hints.length} tip</span></div><p>${hints.join(' ')}</p></div>` : '';
+
+            document.getElementById('examReport').innerHTML = `
+                ${report.map(r => `
+                    <div class="report-card">
+                        <div class="report-title">
+                            <h4>${r.title}</h4>
+                            <span class="badge ${r.ok ? 'ok' : 'no'}">${r.ok ? 'OK' : 'DO POPRAWY'}</span>
+                        </div>
+                        <p>${r.msg}</p>
+                    </div>
+                `).join('')}
+                ${extra}
+            `;
+        }
+
+        // HUD updates
+        document.addEventListener('DOMContentLoaded', () => {
+            const examText = document.getElementById('examText');
+            if (examText) {
+                examText.addEventListener('input', _updateExamHUD);
+            }
+        });
+
+</script>
 </body>
 </html>
