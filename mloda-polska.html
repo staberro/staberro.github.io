@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mloda Polska - Kasprowicz i Tetmajer | Lekcja interaktywna</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0d0d12;--card:#14141c;--elevated:#1c1c28;--text:#f0f0f5;--text2:#a0a0b5;--muted:#606075;--red:#dc2626;--orange:#f97316;--gold:#eab308;--green:#22c55e;--purple:#a855f7;--blue:#3b82f6;--border:rgba(255,255,255,0.06)}
@@ -51,40 +52,7 @@ section{padding:80px 20px}
 .utwor-tab.active{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border-color:transparent}
 .utwor-content{display:none}
 .utwor-content.active{display:block}
-</style>
-</head>
-<body>
 
-<nav class="nav">
-<div class="nav-inner">
-<a href="#" class="logo"><div class="logo-icon">📚</div>Mloda Polska</a>
-<div class="nav-links">
-<a href="#utwory">Utwory</a>
-<a href="#kierunki">Kierunki</a>
-<a href="#konteksty">Konteksty</a>
-<a href="#srodki">Srodki</a>
-<a href="#quiz">Quiz</a>
-<a href="#fiszki">Fiszki</a>
-</div>
-</div>
-</nav>
-
-<section class="hero">
-<div class="hero-badge">Lekcja interaktywna</div>
-<h1><span>Mloda Polska</span></h1>
-<p class="hero-desc">Kasprowicz i Tetmajer - trzy kluczowe utwory epoki. Dies Irae, Krzak dzikiej rozy, Melodia mgiel nocnych.</p>
-<div class="hero-cards">
-<div class="hero-card"><h3>🔥 Dies Irae</h3><p>Kasprowicz - hymn</p></div>
-<div class="hero-card"><h3>🌹 Krzak dzikiej rozy</h3><p>Kasprowicz - sonet</p></div>
-<div class="hero-card"><h3>🌫️ Melodia mgiel</h3><p>Tetmajer - wiersz</p></div>
-</div>
-<a href="#utwory" class="hero-btn">Rozpocznij lekcje →</a>
-</section>
-
-</body>
-</html>
-
-<style>
 /* UTWOR SECTIONS */
 .utwor-header{text-align:center;margin-bottom:40px}
 .utwor-icon{font-size:4rem;margin-bottom:16px}
@@ -146,9 +114,7 @@ td{color:var(--text2);font-size:0.9rem}
 .example-block blockquote{font-size:1.05rem;margin-bottom:8px;font-style:italic}
 .example-block cite{color:var(--text2);font-size:0.85rem}
 .example-block .source{font-size:0.75rem;color:var(--muted);margin-top:8px}
-</style>
 
-<style>
 /* QUIZ */
 #quiz{background:var(--bg)}
 .quiz-box{max-width:700px;margin:0 auto;background:var(--card);border-radius:20px;padding:32px;border:1px solid var(--border)}
@@ -213,7 +179,95 @@ footer{padding:40px 20px;text-align:center;border-top:1px solid var(--border)}
 .quiz-question{font-size:1.1rem}
 .info-grid{grid-template-columns:1fr}
 }
+
+/* === ViralloLab / Staberek footer === */
+footer{padding:48px 20px;text-align:center;border-top:1px solid var(--border);background:linear-gradient(180deg, rgba(255,255,255,0.00), rgba(255,255,255,0.02))}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.25rem;margin-bottom:12px}
+.footer-copy{color:var(--muted);font-size:0.9rem}
+.footer-copy a{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.16);padding-bottom:2px;transition:0.25s}
+.footer-copy a:hover{border-bottom-color:rgba(234,179,8,0.75);color:var(--gold)}
+.footer-brand{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--elevated);border:1px solid var(--border);color:var(--text2);margin-left:10px}
+.footer-brand b{color:var(--gold)}
+
+/* === Scroll progress in nav === */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 20px;background:rgba(13,13,18,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:transparent}
+.nav-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--purple),var(--blue),var(--gold));border-radius:0 6px 6px 0;box-shadow:0 0 22px rgba(234,179,8,0.25)}
+
+/* === Notebook killer === */
+#notatnik{background:var(--bg)}
+.notebook-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:18px;align-items:start}
+@media(max-width:900px){.notebook-grid{grid-template-columns:1fr}}
+.nb-panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
+.nb-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.nb-head h3{font-family:'Cinzel',serif;font-size:1.15rem}
+.nb-head .nb-pill{font-size:0.8rem;color:var(--text2);background:var(--elevated);border:1px solid var(--border);padding:6px 10px;border-radius:999px}
+.nb-items{display:flex;flex-direction:column;gap:10px}
+.nb-item{display:flex;gap:12px;align-items:flex-start;background:var(--elevated);border:1px solid var(--border);border-radius:14px;padding:12px}
+.nb-item input{margin-top:4px}
+.nb-item .txt{flex:1;color:var(--text2);font-size:0.95rem}
+.nb-item .tag{display:inline-flex;gap:6px;align-items:center;font-size:0.75rem;color:var(--muted);margin-top:6px}
+.nb-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.nb-btn{padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;transition:0.25s}
+.nb-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,0.45)}
+.nb-btn.primary{border:none;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
+.nb-btn.danger{border-color:rgba(220,38,38,0.35)}
+.nb-btn.danger:hover{border-color:rgba(220,38,38,0.65)}
+.nb-note{color:var(--muted);font-size:0.85rem;margin-top:10px}
+
+/* === Focus mode killer === */
+#fokus{background:var(--card)}
+.focus-box{max-width:900px;margin:0 auto;background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:26px}
+.focus-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.focus-title{font-family:'Cinzel',serif;font-size:1.3rem}
+.focus-controls{display:flex;gap:10px;flex-wrap:wrap}
+.focus-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;min-height:170px}
+.focus-q{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:10px}
+.focus-a{color:var(--text2);display:none}
+.focus-a.show{display:block}
+.focus-meta{margin-top:12px;color:var(--muted);font-size:0.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.focus-progress{height:8px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;margin-top:14px}
+.focus-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--gold),var(--purple));transition:width 0.2s}
+.kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:0.78rem;padding:3px 8px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text2)}
+
 </style>
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="#" class="logo"><div class="logo-icon">📚</div>Mloda Polska</a>
+<div class="nav-links">
+<a href="#utwory">Utwory</a>
+<a href="#kierunki">Kierunki</a>
+<a href="#konteksty">Konteksty</a>
+<a href="#srodki">Srodki</a>
+<a href="#quiz">Quiz</a>
+<a href="#fiszki">Fiszki</a>
+<a href="#notatnik">Notatnik</a>
+<a href="#fokus">Fokus</a>
+</div>
+</div>
+<div class="nav-progress" aria-hidden="true"><div class="nav-progress-bar" id="scrollBar"></div></div>
+</nav>
+
+<section class="hero">
+<div class="hero-badge">Lekcja interaktywna</div>
+<h1><span>Mloda Polska</span></h1>
+<p class="hero-desc">Kasprowicz i Tetmajer - trzy kluczowe utwory epoki. Dies Irae, Krzak dzikiej rozy, Melodia mgiel nocnych.</p>
+<div class="hero-cards">
+<div class="hero-card"><h3>🔥 Dies Irae</h3><p>Kasprowicz - hymn</p></div>
+<div class="hero-card"><h3>🌹 Krzak dzikiej rozy</h3><p>Kasprowicz - sonet</p></div>
+<div class="hero-card"><h3>🌫️ Melodia mgiel</h3><p>Tetmajer - wiersz</p></div>
+</div>
+<a href="#utwory" class="hero-btn">Rozpocznij lekcje →</a>
+</section>
+
+
+
+
+
+
 
 <!-- UTWORY -->
 <section id="utwory">
@@ -223,9 +277,9 @@ footer{padding:40px 20px;text-align:center;border-top:1px solid var(--border)}
 <p class="section-desc">Wybierz utwor, aby poznac jego analize</p>
 </div>
 <div class="utwory-tabs container">
-<button class="utwor-tab active" onclick="showUtwor('dies')">🔥 Dies Irae</button>
-<button class="utwor-tab" onclick="showUtwor('krzak')">🌹 Krzak dzikiej rozy</button>
-<button class="utwor-tab" onclick="showUtwor('melodia')">🌫️ Melodia mgiel nocnych</button>
+<button class="utwor-tab active" onclick="showUtwor('dies', this)">🔥 Dies Irae</button>
+<button class="utwor-tab" onclick="showUtwor('krzak', this)">🌹 Krzak dzikiej rozy</button>
+<button class="utwor-tab" onclick="showUtwor('melodia', this)">🌫️ Melodia mgiel nocnych</button>
 </div>
 
 <!-- DIES IRAE -->
@@ -447,12 +501,12 @@ footer{padding:40px 20px;text-align:center;border-top:1px solid var(--border)}
 <p class="section-desc">Jak autorzy buduja ekspresje utworow</p>
 </div>
 <div class="tabs container">
-<button class="tab-btn active" onclick="showTab('hiperbola')">Hiperbola</button>
-<button class="tab-btn" onclick="showTab('oksymoron')">Oksymoron</button>
-<button class="tab-btn" onclick="showTab('symbol')">Symbol</button>
-<button class="tab-btn" onclick="showTab('synestezja')">Synestezja</button>
-<button class="tab-btn" onclick="showTab('onomatopeja')">Onomatopeja</button>
-<button class="tab-btn" onclick="showTab('epitet')">Epitet</button>
+<button class="tab-btn active" onclick="showTab('hiperbola', this)">Hiperbola</button>
+<button class="tab-btn" onclick="showTab('oksymoron', this)">Oksymoron</button>
+<button class="tab-btn" onclick="showTab('symbol', this)">Symbol</button>
+<button class="tab-btn" onclick="showTab('synestezja', this)">Synestezja</button>
+<button class="tab-btn" onclick="showTab('onomatopeja', this)">Onomatopeja</button>
+<button class="tab-btn" onclick="showTab('epitet', this)">Epitet</button>
 </div>
 <div class="container">
 <div class="tab-content active" id="tab-hiperbola">
@@ -537,9 +591,85 @@ footer{padding:40px 20px;text-align:center;border-top:1px solid var(--border)}
 </div>
 </section>
 
+<!-- NOTATNIK MATURALNY (KILLER) -->
+<section id="notatnik">
+  <div class="container text-center">
+    <div class="section-badge">Killer</div>
+    <h2 class="section-title">Notatnik maturalny</h2>
+    <p class="section-desc">Zaznacz kluczowe punkty, zbuduj własną powtórkę i wyeksportuj ją jednym kliknięciem.</p>
+  </div>
+
+  <div class="container notebook-grid">
+    <div class="nb-panel">
+      <div class="nb-head">
+        <h3>🧱 Klocki wiedzy</h3>
+        <span class="nb-pill">klikaj / zaznaczaj</span>
+      </div>
+      <div id="nbBlocks" class="nb-items"></div>
+      <div class="nb-actions">
+        <button class="nb-btn primary" type="button" onclick="nbAddSelected()">Dodaj zaznaczone →</button>
+        <button class="nb-btn" type="button" onclick="nbSelectAll(true)">Zaznacz wszystko</button>
+        <button class="nb-btn" type="button" onclick="nbSelectAll(false)">Odznacz</button>
+      </div>
+      <p class="nb-note">Tip: rób swoją powtórkę pod temat. To jest gotowy „szkielet” odpowiedzi maturalnej.</p>
+    </div>
+
+    <div class="nb-panel">
+      <div class="nb-head">
+        <h3>🗒️ Twoje notatki</h3>
+        <span class="nb-pill" id="nbCount">0 punktów</span>
+      </div>
+      <div id="nbList" class="nb-items"></div>
+      <div class="nb-actions">
+        <button class="nb-btn primary" type="button" onclick="nbExport()">Kopiuj do schowka</button>
+        <button class="nb-btn" type="button" onclick="nbDownload()">Pobierz .txt</button>
+        <button class="nb-btn danger" type="button" onclick="nbClear()">Wyczyść</button>
+      </div>
+      <p class="nb-note">Notatki zapisują się lokalnie w przeglądarce (localStorage).</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOKUS: SZYBKA POWTÓRKA (KILLER) -->
+<section id="fokus">
+  <div class="container text-center">
+    <div class="section-badge">Tryb fokus</div>
+    <h2 class="section-title">Szybka powtórka: 90 sekund</h2>
+    <p class="section-desc">Losowe pytania z fiszek. Najpierw odpowiedz w głowie, potem odsłoń odpowiedź. Bez litości, ale działa.</p>
+  </div>
+
+  <div class="focus-box">
+    <div class="focus-top">
+      <div class="focus-title">🎯 Fokus — pytanie <span id="fNum">1</span>/<span id="fTotal">0</span></div>
+      <div class="focus-controls">
+        <button class="nb-btn primary" type="button" onclick="focusStart()">Start</button>
+        <button class="nb-btn" type="button" onclick="focusReveal()">Pokaż odpowiedź <span class="kbd">Space</span></button>
+        <button class="nb-btn" type="button" onclick="focusNext()">Następne <span class="kbd">N</span></button>
+        <button class="nb-btn danger" type="button" onclick="focusReset()">Reset</button>
+      </div>
+    </div>
+
+    <div class="focus-card" id="focusCard">
+      <div class="focus-q" id="focusQ">Kliknij <b>Start</b>, żeby rozpocząć.</div>
+      <div class="focus-a" id="focusA"></div>
+      <div class="focus-meta">
+        <span>Timer: <b id="focusTime">90</b>s</span>
+        <span>Tryb: <span id="focusMode" style="color:var(--gold)">losowy</span></span>
+      </div>
+      <div class="focus-progress"><div class="focus-bar" id="focusBar"></div></div>
+    </div>
+  </div>
+</section>
+
 <footer>
-<div class="footer-logo">📚 Mloda Polska - Lekcja interaktywna</div>
-<p class="footer-copy">Kasprowicz i Tetmajer | 2025</p>
+  <div class="footer-logo">📚 ViralloLab — lekcja interaktywna</div>
+  <p class="footer-copy">
+    Wykonanie:
+    <a href="https://staberek.com" target="_blank" rel="noopener">Staberek</a>
+    (<a href="https://staberek.com" target="_blank" rel="noopener">dr inż. Kacper Stabrawa</a>)
+    <span class="footer-brand">⚡ <b>ViralloLab</b></span>
+  </p>
+  <p class="footer-copy" style="margin-top:10px">Młoda Polska: Kasprowicz i Tetmajer • notatki + quiz + fiszki • 2025</p>
 </footer>
 
 <script>
@@ -605,25 +735,21 @@ var flashData=[
 var curQ=0,score=0,answered=false;
 var curCard=0;
 
-function showUtwor(name){
-var btns=document.querySelectorAll('.utwor-tab');
-var contents=document.querySelectorAll('.utwor-content');
-for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
-for(var i=0;i<contents.length;i++)contents[i].classList.remove('active');
-event.target.classList.add('active');
-document.getElementById('utwor-'+name).classList.add('active');
-}
-
-function showTab(name){
-var btns=document.querySelectorAll('.tab-btn');
-var tabs=document.querySelectorAll('.tab-content');
-for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
-for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('active');
-event.target.classList.add('active');
-document.getElementById('tab-'+name).classList.add('active');
-}
-
-function initQuiz(){
+function showUtwor(name, btn){
+  var btns=document.querySelectorAll('.utwor-tab');
+  var contents=document.querySelectorAll('.utwor-content');
+  for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
+  for(var i=0;i<contents.length;i++)contents[i].classList.remove('active');
+  (btn||event?.target)?.classList?.add('active');
+  document.getElementById('utwor-'+name).classList.add('active');
+}function showTab(name, btn){
+  var btns=document.querySelectorAll('.tab-btn');
+  var tabs=document.querySelectorAll('.tab-content');
+  for(var i=0;i<btns.length;i++)btns[i].classList.remove('active');
+  for(var i=0;i<tabs.length;i++)tabs[i].classList.remove('active');
+  (btn||event?.target)?.classList?.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}function initQuiz(){
 document.getElementById("qTotal").textContent=quizData.length;
 var dots="";for(var i=0;i<quizData.length;i++)dots+='<div class="quiz-dot"></div>';
 document.getElementById("quizProgress").innerHTML=dots;
@@ -715,6 +841,220 @@ loadCard();
 
 initQuiz();
 initFlash();
+/* === Scroll progress === */
+(function(){
+  try{
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+  }catch(e){}
+  var bar=document.getElementById('scrollBar');
+  function update(){
+    if(!bar) return;
+    var h=document.documentElement;
+    var max=(h.scrollHeight - h.clientHeight) || 1;
+    var p=(h.scrollTop / max) * 100;
+    bar.style.width = Math.min(100, Math.max(0, p)) + '%';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* === Notebook killer === */
+var nbData = [
+  {cat:"🔥 Dies Irae", items:[
+    "Tytuł: <b>Dies irae</b> = „Dzień gniewu” (łac.), nawiązanie do hymnu o Sądzie Ostatecznym.",
+    "Geneza: skandal obyczajowy — <b>zdrada żony</b> i porzucenie poety.",
+    "Obraz Boga: <b>obojętny, okrutny</b>, „słucha nie słyszącym uchem” — ignoruje cierpienie.",
+    "Katastrofizm: wizja <b>zagłady świata</b> i mas ginących ludzi, dynamika, kontrasty.",
+    "Środki: <b>hiperbola</b> („miliardy krzyży”), <b>oksymoron</b> („blask ciemnieje”)."
+  ]},
+  {cat:"🌹 Krzak dzikiej róży", items:[
+    "Forma: cykl <b>4 sonetów</b> (Tatry jako tło).",
+    "Symbolizm: <b>róża</b> = młodość/płękno/zdrowie, <b>limba</b> = starość/choroba/śmierć.",
+    "Kontrast róża–limba buduje sens: życie vs rozpad.",
+    "Impresjonizm: epitet („turnia śliska”), onomatopeje i ulotne wrażenia.",
+    "Kontekst: <b>Schopenhauer</b> — pesymizm, samotność, bezsilność."
+  ]},
+  {cat:"🌫️ Melodia mgieł nocnych", items:[
+    "Podmiot: <b>spersonifikowane mgły</b>.",
+    "Impresjonizm: ulotność pejzażu, gra zmysłów, dynamika obrazu.",
+    "Synestezja: łączenie zmysłów (np. <b>„barwne i wonne”</b>).",
+    "Warstwy zmysłowe: dotyk / wzrok / węch / słuch — wzmacniają lekkość mgieł.",
+    "Funkcja: ucieczka od rzeczywistości — ukojenie w naturze."
+  ]},
+  {cat:"🎨 Kierunki epoki", items:[
+    "<b>Impresjonizm</b> — tajemniczy nastrój, ulotność wrażeń zmysłowych.",
+    "<b>Ekspresjonizm</b> — krzyk emocji, deformacja, skrajność, katastrofizm.",
+    "<b>Symbolizm</b> — symbole niosą ukryte znaczenia (róża/limba).",
+    "<b>Dekadentyzm</b> — pesymizm, schyłkowość, fascynacja rozkładem.",
+    "<b>Naturalizm</b> — wierne ukazanie także brzydoty (próchniejąca limba)."
+  ]},
+  {cat:"📚 Konteksty maturalne", items:[
+    "Nietzsche — idea <b>nadczłowieka</b> (wywyższanie człowieka).",
+    "Schopenhauer — <b>życie = cierpienie</b>, pesymizm i samotność.",
+    "Księga Koheleta — <b>vanitas</b>, przemijanie („marność nad marnościami”).",
+    "Impresjonizm w malarstwie — uchwycenie momentu, gra światła.",
+    "Dekadentyzm — bezsilność wobec zła, poczucie końca epoki."
+  ]}
+];
+
+var NB_KEY="virallolab_notatnik_mloda_polska_v1";
+function nbRenderBlocks(){
+  var host=document.getElementById('nbBlocks');
+  if(!host) return;
+  var html="";
+  nbData.forEach(function(b,bi){
+    html += '<div class="nb-item" style="align-items:center"><div class="txt" style="font-weight:700;color:var(--text)">'+b.cat+'</div><div class="tag">zaznacz punkty ↓</div></div>';
+    b.items.forEach(function(it,ii){
+      var id='nb_'+bi+'_'+ii;
+      html += '<label class="nb-item" for="'+id+'">';
+      html += '<input type="checkbox" id="'+id+'" data-cat="'+b.cat.replace(/"/g,'&quot;')+'" data-text="'+it.replace(/"/g,'&quot;')+'"/>';
+      html += '<div class="txt">'+it+'</div>';
+      html += '</label>';
+    });
+  });
+  host.innerHTML = html;
+}
+function nbLoad(){
+  try{ return JSON.parse(localStorage.getItem(NB_KEY) || "[]"); }catch(e){ return []; }
+}
+function nbSave(list){
+  try{ localStorage.setItem(NB_KEY, JSON.stringify(list)); }catch(e){}
+}
+function nbUpdateCount(list){
+  var el=document.getElementById('nbCount');
+  if(el) el.textContent = (list.length||0) + " punktów";
+}
+function nbRenderList(){
+  var host=document.getElementById('nbList');
+  if(!host) return;
+  var list=nbLoad();
+  nbUpdateCount(list);
+  if(!list.length){
+    host.innerHTML = '<div class="nb-item"><div class="txt">Na razie pusto. Dodaj punkty z lewej i zbuduj swoją powtórkę.</div></div>';
+    return;
+  }
+  host.innerHTML = list.map(function(x,idx){
+    return '<div class="nb-item"><div class="txt">'+x.text+'<div class="tag">🏷️ '+x.cat+'</div></div><button class="nb-btn" style="padding:8px 12px" type="button" onclick="nbRemove('+idx+')">Usuń</button></div>';
+  }).join("");
+}
+function nbSelectAll(state){
+  document.querySelectorAll('#nbBlocks input[type="checkbox"]').forEach(function(cb){ cb.checked=!!state; });
+}
+function nbAddSelected(){
+  var list=nbLoad();
+  var added=0;
+  document.querySelectorAll('#nbBlocks input[type="checkbox"]').forEach(function(cb){
+    if(!cb.checked) return;
+    var cat=cb.getAttribute('data-cat') || '—';
+    var txt=cb.getAttribute('data-text') || '';
+    // avoid duplicates
+    if(list.some(function(x){ return x.text===txt; })) return;
+    list.push({cat:cat, text:txt});
+    cb.checked=false;
+    added++;
+  });
+  nbSave(list);
+  nbRenderList();
+}
+function nbRemove(idx){
+  var list=nbLoad();
+  list.splice(idx,1);
+  nbSave(list);
+  nbRenderList();
+}
+function nbClear(){
+  nbSave([]);
+  nbRenderList();
+}
+function nbExport(){
+  var list=nbLoad();
+  if(!list.length) return;
+  var out = "VIRALLOLAB — NOTATNIK MATURALNY (MŁODA POLSKA)\n\n" + list.map(function(x,i){
+    return (i+1)+". ["+x.cat+"] " + x.text.replace(/<[^>]*>/g,'');
+  }).join("\n");
+  navigator.clipboard?.writeText(out).then(function(){
+    alert("Skopiowano notatki do schowka ✅");
+  }).catch(function(){
+    prompt("Skopiuj ręcznie:", out);
+  });
+}
+function nbDownload(){
+  var list=nbLoad();
+  if(!list.length) return;
+  var out = "VIRALLOLAB — NOTATNIK MATURALNY (MŁODA POLSKA)\n\n" + list.map(function(x,i){
+    return (i+1)+". ["+x.cat+"] " + x.text.replace(/<[^>]*>/g,'');
+  }).join("\n");
+  var blob=new Blob([out], {type:"text/plain;charset=utf-8"});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download="notatnik-mloda-polska.txt";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* === Focus mode killer === */
+var focusTimer=null, focusLeft=90, focusIdx=0, focusOrder=[];
+function focusRender(){
+  var total=focusOrder.length||0;
+  document.getElementById('fTotal').textContent = total;
+  document.getElementById('fNum').textContent = total? (focusIdx+1) : 0;
+  document.getElementById('focusTime').textContent = focusLeft;
+  var qEl=document.getElementById('focusQ');
+  var aEl=document.getElementById('focusA');
+  if(!total){ qEl.textContent="Brak danych."; aEl.textContent=""; return; }
+  var item=flashData[ focusOrder[focusIdx] ];
+  qEl.textContent=item.q;
+  aEl.textContent=item.a;
+  aEl.classList.remove('show');
+  document.getElementById('focusBar').style.width = ((90-focusLeft)/90*100).toFixed(1) + '%';
+}
+function focusStart(){
+  // create random order
+  focusOrder = Array.from({length: flashData.length}, (_,i)=>i);
+  for(var i=focusOrder.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=focusOrder[i]; focusOrder[i]=focusOrder[j]; focusOrder[j]=t;
+  }
+  focusIdx=0; focusLeft=90;
+  focusRender();
+  if(focusTimer) clearInterval(focusTimer);
+  focusTimer=setInterval(function(){
+    focusLeft--;
+    if(focusLeft<=0){ focusLeft=0; focusRender(); clearInterval(focusTimer); focusTimer=null; return; }
+    document.getElementById('focusTime').textContent = focusLeft;
+    document.getElementById('focusBar').style.width = ((90-focusLeft)/90*100).toFixed(1) + '%';
+  }, 1000);
+}
+function focusReveal(){
+  var aEl=document.getElementById('focusA');
+  if(aEl) aEl.classList.add('show');
+}
+function focusNext(){
+  if(!focusOrder.length) return;
+  focusIdx = (focusIdx+1) % focusOrder.length;
+  focusRender();
+}
+function focusReset(){
+  if(focusTimer) clearInterval(focusTimer);
+  focusTimer=null; focusLeft=90; focusIdx=0; focusOrder=[];
+  document.getElementById('focusQ').innerHTML='Kliknij <b>Start</b>, żeby rozpocząć.';
+  document.getElementById('focusA').textContent='';
+  document.getElementById('focusA').classList.remove('show');
+  document.getElementById('focusTime').textContent='90';
+  document.getElementById('fNum').textContent='0';
+  document.getElementById('fTotal').textContent='0';
+  document.getElementById('focusBar').style.width='0%';
+}
+// keyboard shortcuts (Space = reveal, N = next)
+window.addEventListener('keydown', function(e){
+  if(e.code==='Space'){ e.preventDefault(); focusReveal(); }
+  if(e.key==='n' || e.key==='N'){ focusNext(); }
+});
+
+/* init notebook */
+nbRenderBlocks();
+nbRenderList();
+
 </script>
 </body>
 </html>
