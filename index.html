@@ -4,13 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#0b0c10" />
-  <title>ViralloLab • Lekcje</title>
-
-  <!-- Optional: if you later add these to lesson files, this index can read them:
-       <meta name="lesson-title" content="..." />
-       <meta name="lesson-desc"  content="..." />
-       <meta name="lesson-tags"  content="Niemiecki,Jedzenie" />
-  -->
+  <title>ViralloLab • Zbiór lekcji</title>
 
   <style>
     :root{
@@ -43,14 +37,12 @@
       overflow-x:hidden;
     }
 
-    /* top accent line */
     .accent-line{
       position:fixed; top:0; left:0; right:0; height:3px; z-index:50;
       background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3), var(--a4));
       opacity:.95;
     }
 
-    /* grain */
     .grain{
       pointer-events:none;
       position:fixed; inset:0; z-index:0;
@@ -81,7 +73,7 @@
       display:flex;
       align-items:center;
       gap:12px;
-      min-width: 220px;
+      min-width: 240px;
     }
     .logo{
       width:40px; height:40px; border-radius:14px;
@@ -123,6 +115,7 @@
       border:1px solid rgba(255,255,255,.09);
       color:var(--muted);
       font-size: 13px;
+      white-space:nowrap;
     }
 
     .input{
@@ -201,7 +194,7 @@
       color: var(--muted);
       line-height: 1.6;
       font-size: 14px;
-      max-width: 70ch;
+      max-width: 72ch;
     }
 
     .stats{
@@ -221,6 +214,7 @@
       border:1px solid rgba(255,255,255,.10);
       color: rgba(233,236,241,.82);
       font-size: 13px;
+      white-space:nowrap;
     }
 
     .grid{
@@ -365,11 +359,9 @@
 
     .small{ font-size:12px; color: rgba(233,236,241,.52); }
 
-    /* reveal */
     .reveal{ opacity:0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
     .reveal.on{ opacity:1; transform: translateY(0); }
 
-    /* scroll progress */
     .progress{
       position:fixed; top:3px; left:0; height:2px; width:0%;
       background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3), var(--a4));
@@ -377,7 +369,15 @@
       opacity:.9;
     }
 
-    /* reduce motion */
+    code{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: rgba(233,236,241,.86);
+    }
+
     @media (prefers-reduced-motion: reduce){
       *{transition:none !important; scroll-behavior:auto !important}
       .reveal{opacity:1 !important; transform:none !important}
@@ -394,13 +394,13 @@
       <div class="brand">
         <div class="logo">VL</div>
         <div>
-          <h1>ViralloLab • Lekcje</h1>
-          <div class="sub" id="repoLine">Ładowanie listy…</div>
+          <h1>ViralloLab • Zbiór lekcji</h1>
+          <div class="sub" id="statusLine">Ładowanie listy…</div>
         </div>
       </div>
 
       <div class="tools">
-        <div class="input" title="Szukaj po tytule/skrótach">
+        <div class="input" title="Szukaj po tytule/opisie">
           <span aria-hidden="true">🔎</span>
           <input id="q" type="search" placeholder="Szukaj: niemiecki, rozprawka, polska, lekcja…" />
         </div>
@@ -420,48 +420,41 @@
       <div class="card">
         <h2 class="title">Zbiór lekcji</h2>
         <p class="subtitle">
-          Ta strona sama wyciąga listę plików <b>.html</b> z Twojego repo (GitHub API) i buduje z tego eleganckie panele.
-          Jak wrzucisz nową lekcję do roota — pojawi się automatycznie jako nowa karta.
+          Wybierz panel i wbijaj w lekcję. Lista odświeża się automatycznie — jak dojdą nowe materiały, pojawią się tutaj jako nowe karty.
         </p>
 
         <div class="stats">
-          <span class="pill" id="pillOwner">👤 owner: —</span>
-          <span class="pill" id="pillRepo">📦 repo: —</span>
-          <span class="pill" id="pillBranch">🌿 branch: —</span>
+          <span class="pill">🧠 ViralloLab</span>
+          <span class="pill">👑 właściciel: Staberek</span>
+          <span class="pill" id="lastRefresh">⏱️ odświeżono: —</span>
         </div>
 
         <div class="muteline"></div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <a class="btn primary" href="#" id="openRepoBtn" target="_blank" rel="noreferrer">Otwórz repo na GitHub</a>
+          <a class="btn primary" href="https://staberek.com" target="_blank" rel="noreferrer">Staberek.com →</a>
           <button class="btn" id="refreshBtn" type="button">Odśwież listę</button>
         </div>
       </div>
 
       <div class="card">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
-          <div>
-            <div class="badge">⚙️ Jak to działa</div>
-            <h3 style="margin:12px 0 6px; font-size:18px;">Auto-listing bez ręcznej roboty</h3>
-            <p class="subtitle" style="margin:0">
-              GitHub Pages nie daje “directory listing”, więc bierzemy listę plików przez publiczne API GitHuba.
-              Jest szybkie i działa od razu na <code>username.github.io</code>.
-            </p>
-          </div>
-        </div>
+        <div class="badge">⚙️ Panel</div>
+        <h3 style="margin:12px 0 6px; font-size:18px;">Szybko • czytelnie • mobilnie</h3>
+        <p class="subtitle" style="margin:0">
+          Wyszukaj lekcję po nazwie, posortuj listę, skopiuj link i wyślij komuś. Linki zawsze prowadzą do <b>staberro.github.io</b> (niezależnie gdzie hostujesz ten index).
+        </p>
 
         <div class="muteline"></div>
         <div class="small">
-          Tip: jak chcesz ładniejsze tytuły/opisy, dodaj w każdej lekcji w <code>&lt;head&gt;</code>:
+          Tip: jeśli chcesz super-ładne tytuły/opisy na panelach, dodaj w lekcji w <code>&lt;head&gt;</code>:
           <br/><code>&lt;meta name="lesson-title" content="..."&gt;</code>
-          <br/><code>&lt;meta name="lesson-desc" content="..."&gt;</code>
+          <br/><code>&lt;meta name="lesson-desc"  content="..."&gt;</code>
+          <br/><code>&lt;meta name="lesson-tags"  content="Niemiecki,Jedzenie"&gt;</code>
         </div>
       </div>
     </section>
 
     <section class="reveal" style="margin-top:16px;">
-      <div class="grid" id="grid">
-        <!-- cards injected -->
-      </div>
+      <div class="grid" id="grid"></div>
       <div id="empty" class="empty" style="display:none; margin-top:14px;">
         Brak pasujących lekcji. Zmień filtr/szukajkę.
       </div>
@@ -475,22 +468,19 @@
         <a href="https://staberek.com" target="_blank" rel="noreferrer">Staberek</a>
         (<a href="https://staberek.com" target="_blank" rel="noreferrer">dr inż. Kacper Stabrawa</a>)
       </div>
-      <div class="small">
-        Strona główna generuje listę lekcji automatycznie z repozytorium. Dodajesz plik → masz panel.
-      </div>
+      <div class="small">Panel lekcji • linki gotowe do udostępniania • styl: dark / premium.</div>
     </div>
   </footer>
 
   <script>
-    // ====== CONFIG ======
-    // Jeśli kiedyś zmienisz konto/repo: ustaw ręcznie tutaj.
-    const GH = {
-      owner: "staberro",
-      repo:  "staberro.github.io",
-      branch:"main"
-    };
+    // === KONFIG (TYLKO 2 RZECZY) ===
+    // 1) Skąd mają prowadzić linki "Otwórz" i "Kopiuj link"
+    const LESSONS_BASE_URL = "https://staberro.github.io/"; // <- tu ustawiasz docelową bazę (może być /edu/ itd.)
 
-    // Optional overrides (ładniejsze tytuły dla znanych plików)
+    // 2) Źródło listy plików (publiczna lista plików html z Twojej biblioteki)
+    const SOURCE = { owner: "staberro", repo: "staberro.github.io", branch: "main" };
+
+    // Ładniejsze tytuły/opisy dla znanych plików (opcjonalnie)
     const OVERRIDE = {
       "lektion-3b-essen.html": {
         title: "Lektion 3b — Essen & Getränke",
@@ -509,52 +499,40 @@
     // ====== UTIL ======
     const $ = (id)=>document.getElementById(id);
 
-    function siteBase(){
-      // Works for user pages (/) and project pages (/repo/).
-      const p = location.pathname;
-      // if ends with ".html" keep directory, else keep as is
-      if (p.endsWith(".html")) return location.origin + p.slice(0, p.lastIndexOf("/") + 1);
-      return location.origin + (p.endsWith("/") ? p : (p + "/"));
-    }
-
     function normalizeTitle(file){
       const noExt = file.replace(/\.html?$/i, "");
       const raw = noExt.replace(/[_-]+/g," ").replace(/\s+/g," ").trim();
-
-      // Title-case with some exceptions
       const keep = new Set(["PRO","DE","PL","AI","3b","3A","3B"]);
       return raw.split(" ").map(w=>{
         if(!w) return w;
         const up = w.toUpperCase();
         if(keep.has(up)) return up === "3B" ? "3b" : up;
         if(/^\d+[a-z]$/i.test(w)) return w.toLowerCase();
-        // Polish-friendly: leave as-is if already has diacritics
         return w.charAt(0).toUpperCase() + w.slice(1);
       }).join(" ");
     }
 
     function detectBadge(file){
       const f = file.toLowerCase();
-      if (f.includes("lektion") || f.includes("deutsch") || f.includes("essen")) return {t:"🇩🇪 Niemiecki", c:"de"};
-      if (f.includes("rozprawk")) return {t:"✍️ Polski", c:"pl"};
-      if (f.includes("polska") || f.includes("mloda")) return {t:"📚 Polski", c:"pl"};
-      return {t:"📄 Lekcja", c:"gen"};
+      if (f.includes("lektion") || f.includes("deutsch") || f.includes("essen")) return "🇩🇪 Niemiecki";
+      if (f.includes("rozprawk")) return "✍️ Polski";
+      if (f.includes("polska") || f.includes("mloda")) return "📚 Polski";
+      return "📄 Lekcja";
     }
 
     function safeText(s){ return (s || "").replace(/[<>]/g, ""); }
 
-    async function fetchJSON(url, opts={}){
+    async function fetchJSON(url){
       const controller = new AbortController();
       const t = setTimeout(()=>controller.abort(), 9000);
       try{
-        const res = await fetch(url, {...opts, signal: controller.signal, headers: {"Accept":"application/vnd.github+json"}});
+        const res = await fetch(url, {signal: controller.signal, headers: {"Accept":"application/vnd.github+json"}});
         if(!res.ok) throw new Error("HTTP "+res.status);
         return await res.json();
       } finally { clearTimeout(t); }
     }
 
     async function fetchMetaFor(fileUrl){
-      // Reads only <head> and looks for <meta name="lesson-title/desc/tags">
       try{
         const controller = new AbortController();
         const t = setTimeout(()=>controller.abort(), 4500);
@@ -607,12 +585,11 @@
       grid.innerHTML = "";
 
       for(const it of items){
-        const badge = it.badge?.t || "📄 Lekcja";
         const card = document.createElement("article");
         card.className = "lesson";
         card.innerHTML = `
           <div class="top">
-            <span class="badge">${safeText(badge)}</span>
+            <span class="badge">${safeText(it.badge)}</span>
             <span class="badge" title="Plik">${safeText(it.file)}</span>
           </div>
           <h3>${safeText(it.title)}</h3>
@@ -622,6 +599,7 @@
             <button class="btn" type="button" data-copy="${it.href}">Kopiuj link</button>
           </div>
         `;
+
         card.querySelector('button[data-copy]').addEventListener("click", async (e)=>{
           const url = e.currentTarget.getAttribute("data-copy");
           try{
@@ -638,23 +616,19 @@
     }
 
     async function loadLessons(){
-      $("repoLine").textContent = "Ładowanie listy lekcji z GitHuba…";
+      $("statusLine").textContent = "Ładowanie listy lekcji…";
       $("grid").innerHTML = "";
       $("empty").style.display = "none";
       $("countChip").textContent = "…";
 
-      const api = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/?ref=${GH.branch}`;
-      const repoUrl = `https://github.com/${GH.owner}/${GH.repo}`;
-
-      $("openRepoBtn").href = repoUrl;
-      $("pillOwner").textContent = "👤 owner: " + GH.owner;
-      $("pillRepo").textContent = "📦 repo: " + GH.repo;
-      $("pillBranch").textContent = "🌿 branch: " + GH.branch;
+      // Docelowa baza linków (żeby nie było file:/// albo edu.staberek.com/…)
+      const base = (LESSONS_BASE_URL || "").endsWith("/") ? LESSONS_BASE_URL : (LESSONS_BASE_URL + "/");
 
       try{
+        // Pobierz listę plików html (z biblioteki)
+        const api = `https://api.github.com/repos/${SOURCE.owner}/${SOURCE.repo}/contents/?ref=${SOURCE.branch}`;
         const data = await fetchJSON(api);
 
-        const base = siteBase();
         const htmlFiles = (Array.isArray(data) ? data : [])
           .filter(x => x && x.type === "file" && /\.html?$/i.test(x.name))
           .map(x => x.name)
@@ -662,26 +636,22 @@
 
         lessons = [];
 
-        // Build objects first (fast)
         for(const file of htmlFiles){
           const ovr = OVERRIDE[file] || null;
-          const badge = detectBadge(file);
           lessons.push({
             file,
             title: ovr?.title || normalizeTitle(file),
             desc:  ovr?.desc  || "Kliknij, żeby otworzyć lekcję.",
             tags:  ovr?.tags  || "",
-            badge,
+            badge: detectBadge(file),
             href:  new URL(file, base).href
           });
         }
 
-        // Optional: try to read meta tags from each lesson (few files => ok).
-        // If you don't want extra requests, set this to false.
+        // Meta (ładne tytuły/opisy) — opcjonalnie
         const USE_META = true;
         if(USE_META){
           await Promise.all(lessons.map(async (it)=>{
-            // don't override if we already have OVERRIDE
             if(OVERRIDE[it.file]) return;
             const meta = await fetchMetaFor(it.href);
             if(meta){
@@ -692,16 +662,17 @@
           }));
         }
 
-        $("repoLine").textContent = `Źródło: ${GH.owner}/${GH.repo} • ${htmlFiles.length} plików .html`;
+        const now = new Date();
+        $("lastRefresh").textContent = "⏱️ odświeżono: " + now.toLocaleTimeString("pl-PL",{hour:"2-digit", minute:"2-digit"});
+        $("statusLine").textContent = `Gotowe — ${htmlFiles.length} lekcji`;
         render();
       }catch(err){
-        $("repoLine").textContent = "Nie udało się pobrać listy z GitHuba (limit API albo offline).";
+        $("statusLine").textContent = "Nie udało się wczytać listy (offline / limit / błąd źródła).";
         lessons = [];
         $("grid").innerHTML = `
           <div class="empty" style="grid-column:1/-1;">
-            <b>Błąd ładowania listy plików.</b><br/>
-            Najczęstsze powody: limit GitHub API / brak neta / zła nazwa repo/brancha.<br/>
-            <span class="small">Sprawdź w kodzie obiekt <code>GH</code> (owner/repo/branch).</span>
+            <b>Błąd ładowania listy lekcji.</b><br/>
+            Odśwież stronę albo spróbuj później.
           </div>
         `;
         $("countChip").textContent = "0 lekcji";
@@ -727,12 +698,10 @@
     document.addEventListener("scroll", updateProgress, {passive:true});
     updateProgress();
 
-    // search/sort events
     $("q").addEventListener("input", ()=>render());
     $("sort").addEventListener("change", ()=>render());
     $("refreshBtn").addEventListener("click", ()=>loadLessons());
 
-    // Start
     loadLessons();
   </script>
 </body>
