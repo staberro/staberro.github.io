@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lektion 3b – Essen & Getränke | Interaktywna Lekcja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --bg-dark: #0d0d12;
+            --bg-card: #14141c;
+            --bg-elevated: #1c1c28;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b5;
+            --text-muted: #606075;
+            --accent-red: #22c55e;
+            --accent-orange: #f97316;
+            --accent-gold: #eab308;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --gradient-fire: linear-gradient(135deg, #22c55e 0%, #f97316 50%, #eab308 100%);
+            --gradient-apocalypse: linear-gradient(135deg, #06140d 0%, #0b1a14 50%, #0d0d12 100%);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-accent: rgba(34, 197, 94, 0.45);
+            --glow-fire: 0 0 60px rgba(34, 197, 94, 0.25);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-red); }
+
+        /* Animated fire background */
+    .bg-animation {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        background: var(--gradient-apocalypse);
+    }
+    .bg-flames {
+        position: absolute;
+        bottom: -50%;
+        left: -10%;
+        width: 120%;
+        height: 100%;
+        background: radial-gradient(ellipse at bottom, rgba(34, 197, 94, 0.14) 0%, transparent 70%);
+        animation: flicker 3s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+        0% { opacity: 0.3; transform: scale(1); }
+        100% { opacity: 0.5; transform: scale(1.05); }
+    }
+
+    /* Navigation */
+    .nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1000;
+        padding: 1rem 2rem;
+        background: rgba(13, 13, 18, 0.9);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--text-primary);
+    }
+    .nav-logo-icon {
+        width: 44px; height: 44px;
+        background: var(--gradient-fire);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    .nav-logo-text {
+        font-family: 'Cinzel', serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+        letter-spacing: 0.05em;
+    }
+    .nav-logo-text span { color: var(--accent-red); }
+    .nav-links {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+    }
+    .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+    .nav-progress {
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 2px;
+        background: var(--gradient-fire);
+        width: 0%;
+        transition: width 0.1s ease;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8rem 2rem 4rem;
+        position: relative;
+    }
+    .hero::before {
+        content: '🔥';
+        position: absolute;
+        font-size: 15rem;
+        opacity: 0.05;
+        top: 20%;
+        animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.05; }
+        50% { transform: scale(1.1); opacity: 0.08; }
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-accent);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        color: var(--accent-red);
+        margin-bottom: 2rem;
+        animation: fadeInDown 1s ease-out;
+    }
+    .hero-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(3rem, 12vw, 7rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+        animation: fadeInUp 1s ease-out 0.2s both;
+        letter-spacing: 0.05em;
+    }
+    .hero-title .highlight {
+        background: var(--gradient-fire);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-author {
+        font-family: 'Crimson Text', serif;
+        font-size: 1.5rem;
+        font-style: italic;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out 0.4s both;
+    }
+    .hero-meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background: var(--bg-elevated);
+        border-radius: 50px;
+        font-size: 0.9rem;
+    }
+    .meta-item span:first-child { font-size: 1.2rem; }
+    .hero-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-family: 'Outfit', sans-serif;
+    }
+    .btn-primary {
+        background: var(--gradient-fire);
+        color: white;
+        box-shadow: var(--glow-fire);
+    }
+    .btn-primary:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 0 80px rgba(220, 38, 38, 0.5);
+    }
+    .btn-secondary {
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+        border: 1px solid var(--border-subtle);
+    }
+    .btn-secondary:hover { border-color: var(--accent-red); transform: translateY(-2px); }
+
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Sections */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-badge {
+        display: inline-flex;
+        padding: 0.4rem 1rem;
+        background: var(--bg-elevated);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        color: var(--accent-red);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+    }
+    .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .reveal {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Author Section */
+    .author-section { background: var(--bg-card); border-top: 1px solid var(--border-subtle); }
+    .author-card {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 3rem;
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .author-image {
+        width: 200px;
+        height: 250px;
+        background: var(--gradient-fire);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .author-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    }
+    .author-info h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    .author-dates {
+        color: var(--accent-red);
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    .author-bio { color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .author-facts {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .fact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: var(--bg-dark);
+        border-radius: var(--radius-sm);
+    }
+    .fact-icon {
+        width: 36px; height: 36px;
+        background: rgba(34, 197, 94, 0.14);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .fact-item p { font-size: 0.9rem; color: var(--text-secondary); }
+    .fact-item strong { color: var(--text-primary); }
+
+    /* Ekspresjonizm */
+    .expressionism-section { background: var(--bg-dark); }
+    .expressionism-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    .exp-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .exp-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--gradient-fire);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+    .exp-card:hover { transform: translateY(-8px); border-color: var(--border-accent); }
+    .exp-card:hover::before { transform: scaleX(1); }
+    .exp-icon {
+        width: 60px; height: 60px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        background: rgba(220, 38, 38, 0.1);
+    }
+    .exp-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .exp-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Geneza */
+    .genesis-section { background: var(--bg-card); }
+    .genesis-timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .genesis-timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--gradient-fire);
+        transform: translateX(-50%);
+    }
+    .timeline-item {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+    .timeline-item:nth-child(odd) { flex-direction: row-reverse; text-align: right; }
+    .timeline-content {
+        flex: 1;
+        background: var(--bg-elevated);
+        padding: 2rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-subtle);
+    }
+    .timeline-dot {
+        position: absolute;
+        left: 50%;
+        top: 2rem;
+        width: 20px;
+        height: 20px;
+        background: var(--accent-red);
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+    }
+    .timeline-content h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.25rem;
+        color: var(--accent-red);
+        margin-bottom: 0.75rem;
+    }
+    .timeline-content p { color: var(--text-secondary); }
+
+    /* Apokalipsa - znaki */
+    .apocalypse-section { background: var(--bg-dark); }
+    .apocalypse-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    .apo-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.4s ease;
+    }
+    .apo-card:hover {
+        transform: scale(1.05);
+        border-color: var(--accent-red);
+        box-shadow: var(--glow-fire);
+    }
+    .apo-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    .apo-card h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent-orange);
+    }
+    .apo-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .apo-card .srodek {
+        font-size: 0.8rem;
+        color: var(--accent-purple);
+        margin-top: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: rgba(168, 85, 247, 0.1);
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    /* Obrazy - postacie */
+    .characters-section { background: var(--bg-card); }
+    .characters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+    .char-card {
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border-subtle);
+        transition: all 0.4s ease;
+    }
+    .char-card:hover { transform: translateY(-8px); border-color: var(--border-accent); }
+    .char-header {
+        padding: 1.5rem;
+        background: var(--gradient-fire);
+        position: relative;
+    }
+    .char-header h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.5rem;
+        color: white;
+    }
+    .char-header .char-icon {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2.5rem;
+        opacity: 0.5;
+    }
+    .char-body { padding: 1.5rem; }
+    .char-body p { color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem; }
+    .char-traits {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .trait {
+        padding: 0.35rem 0.75rem;
+        background: var(--bg-dark);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        color: var(--accent-gold);
+        border: 1px solid rgba(234, 179, 8, 0.2);
+    }
+
+    /* Środki stylistyczne */
+    .devices-section { background: var(--bg-dark); }
+    .devices-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+    .device-tab {
+        padding: 0.75rem 1.5rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: 50px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Outfit', sans-serif;
+    }
+    .device-tab:hover { color: var(--text-primary); border-color: var(--accent-red); }
+    .device-tab.active { background: var(--gradient-fire); color: white; border-color: transparent; }
+    .devices-content {
+        display: none;
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .devices-content.active { display: block; animation: fadeIn 0.4s ease; }
+    .device-example {
+        background: var(--bg-dark);
+        border-left: 4px solid var(--accent-red);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .device-example blockquote {
+        font-family: 'Crimson Text', serif;
+        font-size: 1.2rem;
+        font-style: italic;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    .device-example cite {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    /* Quiz */
+    .quiz-section { background: var(--bg-card); }
+    .quiz-container { max-width: 800px; margin: 0 auto; }
+    .quiz-progress { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .quiz-progress-dot {
+        flex: 1;
+        height: 4px;
+        background: var(--bg-elevated);
+        border-radius: 2px;
+        transition: background 0.3s ease;
+    }
+    .quiz-progress-dot.completed { background: var(--accent-green); }
+    .quiz-progress-dot.current { background: var(--accent-red); }
+    .quiz-card {
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .quiz-question-number {
+        font-size: 0.85rem;
+        color: var(--accent-red);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+    }
+    .quiz-question {
+        font-family: 'Cinzel', serif;
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 1rem; }
+    .quiz-option {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem;
+        background: var(--bg-dark);
+        border: 2px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .quiz-option:hover { border-color: var(--accent-red); }
+    .quiz-option.selected { border-color: var(--accent-red); background: rgba(220, 38, 38, 0.1); }
+    .quiz-option.correct { border-color: var(--accent-green); background: rgba(34, 197, 94, 0.1); }
+    .quiz-option.incorrect { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+    .option-letter {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: var(--bg-elevated);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+    .quiz-option.selected .option-letter { background: var(--accent-red); color: white; }
+    .quiz-option.correct .option-letter { background: var(--accent-green); color: white; }
+    .quiz-option.incorrect .option-letter { background: #ef4444; color: white; }
+    .quiz-feedback {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        display: none;
+    }
+    .quiz-feedback.show { display: block; animation: fadeIn 0.4s ease; }
+    .quiz-feedback.correct { background: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent-green); }
+    .quiz-feedback.incorrect { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; }
+    .quiz-feedback h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .quiz-feedback.correct h4 { color: var(--accent-green); }
+    .quiz-feedback.incorrect h4 { color: #ef4444; }
+    .quiz-feedback p { color: var(--text-secondary); font-size: 0.95rem; }
+    .quiz-actions { display: flex; justify-content: space-between; margin-top: 2rem; }
+    .quiz-score { text-align: center; padding: 3rem; }
+    .quiz-score-value {
+        font-family: 'Cinzel', serif;
+        font-size: 5rem;
+        font-weight: 700;
+        background: var(--gradient-fire);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .quiz-score-label { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; }
+
+    /* Flashcards */
+    .flashcards-section { background: var(--bg-dark); }
+    .flashcard-container {
+        max-width: 600px;
+        margin: 0 auto;
+        perspective: 1000px;
+    }
+    .flashcard {
+        width: 100%;
+        height: 350px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+        cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        text-align: center;
+    }
+    .flashcard-front {
+        background: var(--bg-elevated);
+        border: 2px solid var(--accent-red);
+    }
+    .flashcard-back {
+        background: var(--gradient-fire);
+        transform: rotateY(180deg);
+    }
+    .flashcard-front h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+    .flashcard-front p { color: var(--text-muted); font-size: 0.9rem; }
+    .flashcard-back p {
+        color: white;
+        font-size: 1.25rem;
+        line-height: 1.6;
+    }
+    .flashcard-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .flashcard-counter {
+        text-align: center;
+        margin-top: 1rem;
+        color: var(--text-muted);
+    }
+
+    /* Summary */
+    .summary-section { background: var(--bg-card); }
+    .summary-card {
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+    .summary-item h4 {
+        font-family: 'Cinzel', serif;
+        color: var(--accent-red);
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+    }
+    .summary-item p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Footer */
+    footer {
+        padding: 4rem 2rem;
+        background: var(--bg-dark);
+        border-top: 1px solid var(--border-subtle);
+        text-align: center;
+    }
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    .footer-logo-icon {
+        width: 40px; height: 40px;
+        background: var(--gradient-fire);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+    .footer-logo-text {
+        font-family: 'Cinzel', serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+    .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
+
+    .footer-link{color:var(--text-primary);text-decoration:none;} .footer-link:hover{color:var(--accent-gold);text-decoration:underline;} /* Responsive */
+    @media (max-width: 1024px) {
+        .author-card { grid-template-columns: 1fr; }
+        .author-image { width: 150px; height: 180px; margin: 0 auto; }
+        .timeline-item, .timeline-item:nth-child(odd) { flex-direction: column; text-align: left; }
+        .genesis-timeline::before { left: 20px; }
+        .timeline-dot { left: 20px; }
+    }
+    @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .hero-meta { flex-direction: column; align-items: center; }
+        .author-facts { grid-template-columns: 1fr; }
+        .quiz-card { padding: 2rem; }
+        section { padding: 4rem 1.5rem; }
+        .flashcard { height: 300px; }
+    }
+    
+
+/* --- Lesson-specific components (Deutsch: Essen) --- */
+.pill-tabs{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:2rem auto 1.5rem;}
+.pill-tab{padding:.6rem 1.1rem;border-radius:999px;background:var(--bg-elevated);border:1px solid var(--border-subtle);color:var(--text-secondary);cursor:pointer;font-weight:600;transition:all .25s ease;user-select:none;}
+.pill-tab:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.35);color:var(--text-primary);}
+.pill-tab.active{background:var(--gradient-fire);border-color:transparent;color:#0d0d12;}
+.vocab-top{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;margin:1rem 0 1.5rem;}
+.progress-wrap{flex:1;min-width:220px;}
+.progress-label{display:flex;justify-content:space-between;align-items:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:.5rem;}
+.progress-bar{width:100%;height:10px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid var(--border-subtle);}
+.progress-fill{height:100%;width:0%;background:var(--gradient-fire);transition:width .35s ease;}
+.mini-tools{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:flex-end;}
+.input{background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);border-radius:999px;padding:.7rem 1rem;color:var(--text-primary);outline:none;min-width:240px;}
+.input:focus{border-color:rgba(234,179,8,.45);box-shadow:0 0 0 6px rgba(234,179,8,.08);}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:1.25rem;}
+.vocab-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1.25rem;position:relative;overflow:hidden;transition:all .25s ease;}
+.vocab-card:hover{transform:translateY(-3px);border-color:rgba(234,179,8,.25);}
+.vocab-card.mastered{border-color:rgba(34,197,94,.45);box-shadow:0 0 0 1px rgba(34,197,94,.1) inset;}
+.vocab-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.75rem;}
+.vocab-word{font-family:'Cinzel',serif;font-weight:700;font-size:1.15rem;line-height:1.25;}
+.vocab-sub{color:var(--text-secondary);font-size:.9rem;margin-top:.25rem;}
+.vocab-actions{display:flex;gap:.5rem;}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--border-subtle);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease;user-select:none;}
+.icon-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.35);}
+.icon-btn.good{border-color:rgba(34,197,94,.35);}
+.vocab-body{color:var(--text-secondary);font-size:.95rem;}
+.hint-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem;}
+.chip{font-size:.78rem;padding:.25rem .55rem;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--border-subtle);color:var(--text-secondary);}
+.chip.gold{border-color:rgba(234,179,8,.35);color:rgba(234,179,8,.95);background:rgba(234,179,8,.08);}
+.exercise-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1.5rem;margin-top:1.5rem;}
+.exercise-title{font-family:'Cinzel',serif;font-weight:700;margin-bottom:.75rem;}
+.fill-line{color:var(--text-primary);font-size:1.05rem;line-height:1.9;}
+select.fill-select{background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);border-radius:10px;padding:.35rem .5rem;color:var(--text-primary);margin:0 .25rem;outline:none;color-scheme:dark;}select.fill-select option{background:rgba(10,13,20,.98);color:var(--text-primary);}select.fill-select optgroup{background:rgba(10,13,20,.98);color:var(--text-secondary);}select.fill-select:focus{border-color:rgba(234,179,8,.55);box-shadow:0 0 0 3px rgba(234,179,8,.12);}
+select.fill-select.correct{border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.08);}
+select.fill-select.wrong{border-color:rgba(220,38,38,.55);background:rgba(220,38,38,.08);}
+.dialog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1.25rem;}
+.dialog-q{color:var(--text-primary);font-weight:600;margin-bottom:.75rem;}
+.option-list{display:flex;flex-direction:column;gap:.6rem;}
+.option-btn{background:rgba(255,255,255,.03);border:1px solid var(--border-subtle);color:var(--text-primary);padding:.75rem .85rem;border-radius:14px;cursor:pointer;text-align:left;transition:all .2s ease;}
+.option-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.35);}
+.option-btn.correct{border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.08);}
+.option-btn.wrong{border-color:rgba(220,38,38,.55);background:rgba(220,38,38,.08);}
+.dialog-feedback{margin-top:.9rem;font-size:.9rem;color:var(--text-secondary);}
+.typing-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;align-items:start;margin-top:1.25rem;}
+.typing-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1.5rem;}
+.typing-prompt{font-family:'Cinzel',serif;font-size:1.4rem;margin-bottom:.5rem;}
+.typing-hint{color:var(--text-secondary);margin-bottom:1rem;}
+.typing-input{width:100%;border-radius:14px;padding:.9rem 1rem;font-size:1.05rem;background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);color:var(--text-primary);outline:none;}
+.typing-input:focus{border-color:rgba(234,179,8,.45);box-shadow:0 0 0 6px rgba(234,179,8,.08);}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem;}
+.stat{background:rgba(255,255,255,.03);border:1px solid var(--border-subtle);border-radius:14px;padding:.9rem;}
+.stat .k{color:var(--text-secondary);font-size:.85rem;}
+.stat .v{font-family:'Cinzel',serif;font-size:1.4rem;margin-top:.25rem;}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:rgba(20,20,28,.95);border:1px solid var(--border-subtle);padding:.85rem 1rem;border-radius:14px;color:var(--text-primary);z-index:2000;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+.toast small{color:var(--text-secondary);display:block;margin-top:.15rem;}
+@media (max-width:900px){.typing-wrap{grid-template-columns:1fr;}.input{min-width:180px;width:100%;}.mini-tools{justify-content:flex-start;}}
+
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="bg-flames"></div>
+    </div>
+
+<nav class="nav">
+    <div class="nav-container">
+        <a href="#top" class="nav-logo" aria-label="Start">
+            <div class="nav-logo-icon">🍽️</div>
+            <div class="nav-logo-text">Deutsch <span>Essen</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#slownictwo" class="nav-link">Słownictwo</a></li>
+            <li><a href="#fiszki" class="nav-link">Fiszki</a></li>
+            <li><a href="#quiz" class="nav-link">Quiz</a></li>
+            <li><a href="#uzupelnij" class="nav-link">Uzupełnij</a></li>
+            <li><a href="#dialogi" class="nav-link">Dialogi</a></li>
+            <li><a href="#typing" class="nav-link">Typing</a></li>
+        </ul>
+    </div>
+    <div class="nav-progress" id="navProgress"></div>
+</nav>
+
+<section class="hero" id="top">
+    <div class="hero-badge">🇩🇪 Lekcja interaktywna • słownictwo o jedzeniu</div>
+    <h1 class="hero-title"><span class="highlight">Lektion 3b</span></h1>
+    <p class="hero-author">Essen & Getränke</p>
+    <p class="hero-subtitle">
+        Fiszki + quiz + ćwiczenia „Es gibt… / Gibt es…?” – czyli realna gadka w sklepie i przy stole.
+        Wszystko w jednej stronie, w tym samym stylu co Twoje poprzednie lekcje.
+    </p>
+    <div class="hero-meta">
+        <div class="meta-item"><span>🧠</span> Cel: 20+ słówek</div>
+        <div class="meta-item"><span>⚡</span> Tryb: szybkie powtórki</div>
+        <div class="meta-item"><span>🔊</span> Opcja: wymowa (TTS)</div>
+    </div>
+    <div class="hero-actions">
+        <a href="#slownictwo" class="btn btn-primary">Rozpocznij lekcję →</a>
+        <a href="#quiz" class="btn btn-secondary">Skocz do quizu</a>
+    </div>
+</section>
+
+<section class="author-section" id="slownictwo">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-badge">🍞 Słownictwo</div>
+            <h2 class="section-title">Szybka baza słów</h2>
+            <p class="section-subtitle">Kliknij kartę, żeby odkryć tłumaczenie. ⭐ oznacz „opanowane”, żeby śledzić progres.</p>
+        </div>
+
+        <div class="pill-tabs reveal" id="catTabs"></div>
+
+        <div class="vocab-top reveal">
+            <div class="progress-wrap">
+                <div class="progress-label">
+                    <span>Progres: <strong><span id="masteredCount">0</span>/<span id="totalCount">0</span></strong></span>
+                    <span style="color:var(--text-muted)">Zapisuje się lokalnie (localStorage)</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="masteredBar"></div></div>
+            </div>
+            <div class="mini-tools">
+                <input class="input" id="searchInput" placeholder="Szukaj: suppe / zupa / saft..." />
+                <button class="btn btn-secondary" onclick="resetProgress()">Reset progresu</button>
+            </div>
+        </div>
+
+        <div class="vocab-grid reveal" id="vocabGrid"></div>
+
+        <div class="exercise-card reveal" style="margin-top:2rem;">
+            <div class="exercise-title">💡 Mikro‑hack (działa serio)</div>
+            <p style="color:var(--text-secondary); margin-bottom: 0.5rem;">
+                <strong>Metoda „talerz”:</strong> wyobraź sobie stół. Na środku kładziesz rzecz (rzeczownik), a z lewej strony
+                zawsze kładziesz <em>rodzajnik</em> (der/die/das). Za każdym razem mów na głos: „<strong>die Suppe</strong>”, nie samo „Suppe”.
+            </p>
+            <p style="color:var(--text-secondary);">
+                Bonus: kliknij 🔊 przy słówku – usłyszysz wymowę po niemiecku (jeśli przeglądarka wspiera TTS).
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="flashcards-section" id="fiszki">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-badge">🃏 Powtórka</div>
+            <h2 class="section-title">Fiszki</h2>
+            <p class="section-subtitle">Kliknij fiszkę, aby zobaczyć odpowiedź. „Umiem” = dodaje do opanowanych.</p>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="flashcard-face flashcard-front">
+                    <h3 id="flashcardQuestion">…</h3>
+                    <p>Kliknij, aby zobaczyć odpowiedź</p>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <p id="flashcardAnswer">…</p>
+                </div>
+            </div>
+
+            <div class="flashcard-nav" style="gap: 0.75rem;">
+                <button class="btn btn-secondary" onclick="prevCard()">← Poprzednia</button>
+                <button class="btn btn-secondary" onclick="speakCurrentCard()">🔊 Wymowa</button>
+                <button class="btn btn-primary" onclick="markCurrentMastered()">Umiem ✓</button>
+                <button class="btn btn-primary" onclick="nextCard()">Następna →</button>
+            </div>
+            <div class="flashcard-counter">
+                Fiszka <span id="currentCard">1</span> z <span id="totalCards">0</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="quiz-section" id="quiz">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-badge">🎯 Sprawdź się</div>
+            <h2 class="section-title">Quiz: słówka + rodzajniki</h2>
+            <p class="section-subtitle">Odpowiedz, a potem dopiero „Następne”. Wynik policzy się na końcu.</p>
+        </div>
+        <div class="quiz-container">
+            <div class="quiz-progress" id="quizProgress"></div>
+            <div class="quiz-card" id="quizCard">
+                <div class="quiz-question-number">Pytanie <span id="currentQuestion">1</span> z <span id="totalQuestions">0</span></div>
+                <h3 class="quiz-question" id="quizQuestion"></h3>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback">
+                    <h4 id="feedbackTitle"></h4>
+                    <p id="feedbackText"></p>
+                </div>
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()" disabled>← Poprzednie</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Następne →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="devices-section" id="uzupelnij">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-badge">✍️ Ćwiczenie</div>
+            <h2 class="section-title">Uzupełnij tekst</h2>
+            <p class="section-subtitle">Jak w podręczniku: wstaw odpowiednie słowa. Potem kliknij „Sprawdź”.</p>
+        </div>
+
+        <div class="exercise-card reveal">
+            <div class="exercise-title">Zum Frühstück…</div>
+            <div class="fill-line" id="fillLine"></div>
+            <div style="display:flex; gap: 0.75rem; flex-wrap:wrap; margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="checkFill()">Sprawdź ✓</button>
+                <button class="btn btn-secondary" onclick="resetFill()">Reset</button>
+            </div>
+            <p id="fillResult" style="margin-top: 0.75rem; color: var(--text-secondary);"></p>
+        </div>
+
+        <div class="exercise-card reveal">
+            <div class="exercise-title">🔥 Mini‑hack (kreatywny): „3 zdania / 30 sekund”</div>
+            <p style="color:var(--text-secondary);">
+                Ustaw timer na <strong>30 sekund</strong> i rzuć 3 zdania na głos:
+                <br>1) <strong>Zum Frühstück</strong> gibt es …
+                <br>2) <strong>Zum Mittagessen</strong> gibt es …
+                <br>3) <strong>Als Dessert</strong> gibt es …
+                <br><br>
+                Nie musisz mówić perfekcyjnie – chodzi o automatyzację. Po 7 dniach to wchodzi jak cheat‑code.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="summary-section" id="dialogi">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-badge">💬 Mówienie</div>
+            <h2 class="section-title">„Es gibt…” / „Gibt es…?”</h2>
+            <p class="section-subtitle">Wybierz odpowiedź, która pasuje do pytania. Jak w realnej rozmowie.</p>
+        </div>
+
+        <div class="dialog-grid reveal" id="dialogGrid"></div>
+    </div>
+</section>
+
+<section class="author-section" id="typing">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-badge">⌨️ Speed</div>
+            <h2 class="section-title">Typing sprint</h2>
+            <p class="section-subtitle">PL → wpisujesz DE. Enter = sprawdź. Shift+Enter = pokaż odpowiedź.</p>
+        </div>
+
+        <div class="typing-wrap reveal">
+            <div class="typing-card">
+                <div class="typing-prompt" id="typingPrompt">…</div>
+                <div class="typing-hint" id="typingHint">Wpisz niemieckie słowo (bez rodzajnika). Przykład: „Suppe”.</div>
+                <input class="typing-input" id="typingInput" autocomplete="off" placeholder="np. Suppe" />
+                <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top: 1rem;">
+                    <button class="btn btn-secondary" onclick="speakTyping()">🔊 Wymowa</button>
+                    <button class="btn btn-primary" onclick="checkTyping()">Sprawdź ✓</button>
+                    <button class="btn btn-secondary" onclick="skipTyping()">Pomiń →</button>
+                    <button class="btn btn-secondary" onclick="resetTyping()">Reset</button>
+                </div>
+                <p id="typingFeedback" style="margin-top: 0.85rem; color: var(--text-secondary);"></p>
+            </div>
+
+            <div class="typing-card">
+                <div class="exercise-title" style="margin-bottom: 0.5rem;">📊 Statystyki</div>
+                <div class="stat-grid">
+                    <div class="stat"><div class="k">Poprawne</div><div class="v" id="statOk">0</div></div>
+                    <div class="stat"><div class="k">Błędne</div><div class="v" id="statBad">0</div></div>
+                    <div class="stat"><div class="k">Streak</div><div class="v" id="statStreak">0</div></div>
+                    <div class="stat"><div class="k">Najlepszy</div><div class="v" id="statBest">0</div></div>
+                </div>
+                <div class="exercise-card" style="margin-top: 1rem;">
+                    <div class="exercise-title">🧠 Kreatywna metoda: „kuchnia w głowie”</div>
+                    <p style="color: var(--text-secondary);">
+                        Zrób mini‑mapę: <strong>garnek = Suppe</strong>, <strong>lodówka = Milch</strong>, <strong>szafka = Marmelade</strong>.
+                        Potem, gdy widzisz kuchnię, słówka „same” się odpalają. To jest memory palace w wersji turbo‑prostej.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-logo">
+        <div class="footer-logo-icon">🍽️</div>
+        <div class="footer-logo-text">Deutsch Essen</div>
+    </div>
+    <p class="footer-copy">
+        Interaktywna lekcja • Lektion 3b •
+        <span style="opacity:.9">Wykonanie:</span>
+        <a class="footer-link" href="https://staberek.com" target="_blank" rel="noopener">
+            <strong>Staberek</strong> <span style="opacity:.9">(Kacper Stabrawa)</span>
+        </a>
+        • <span style="opacity:.9">ViralloLab</span> • © 2025
+    </p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// © ViralloLab – autorski komponent ViralloLab 2025
+const vocab = [
+    {
+        "de": "die Suppe",
+        "base": "Suppe",
+        "art": "die",
+        "pl": "Suppen",
+        "pl_pl": "zupy",
+        "pl_trans": "zupa",
+        "cat": [
+            "Mittagessen",
+            "Allgemein"
+        ],
+        "emoji": "🥣",
+        "example": "Gibt es heute Suppe?",
+        "example_pl": "Czy dziś jest zupa?"
+    },
+    {
+        "de": "der Salat",
+        "base": "Salat",
+        "art": "der",
+        "pl": "Salate",
+        "pl_pl": "sałatki",
+        "pl_trans": "sałatka",
+        "cat": [
+            "Mittagessen",
+            "Allgemein"
+        ],
+        "emoji": "🥗",
+        "example": "Zum Mittagessen gibt es Salat.",
+        "example_pl": "Na obiad jest sałatka."
+    },
+    {
+        "de": "das Müsli",
+        "base": "Müsli",
+        "art": "das",
+        "pl": "(Müsli)",
+        "pl_pl": "(müsli)",
+        "pl_trans": "müsli",
+        "cat": [
+            "Frühstück"
+        ],
+        "emoji": "🥣",
+        "example": "Ich esse Müsli zum Frühstück.",
+        "example_pl": "Jem müsli na śniadanie."
+    },
+    {
+        "de": "die Butter",
+        "base": "Butter",
+        "art": "die",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "masło",
+        "cat": [
+            "Frühstück"
+        ],
+        "emoji": "🧈",
+        "example": "Brot mit Butter.",
+        "example_pl": "Chleb z masłem."
+    },
+    {
+        "de": "die Kartoffel",
+        "base": "Kartoffel",
+        "art": "die",
+        "pl": "Kartoffeln",
+        "pl_pl": "ziemniaki",
+        "pl_trans": "ziemniak",
+        "cat": [
+            "Mittagessen"
+        ],
+        "emoji": "🥔",
+        "example": "Kartoffeln sind lecker.",
+        "example_pl": "Ziemniaki są pyszne."
+    },
+    {
+        "de": "der Obstsalat",
+        "base": "Obstsalat",
+        "art": "der",
+        "pl": "Obstsalate",
+        "pl_pl": "sałatki owocowe",
+        "pl_trans": "sałatka owocowa",
+        "cat": [
+            "Dessert"
+        ],
+        "emoji": "🍓",
+        "example": "Als Dessert gibt es Obstsalat.",
+        "example_pl": "Na deser jest sałatka owocowa."
+    },
+    {
+        "de": "der Apfelsaft",
+        "base": "Apfelsaft",
+        "art": "der",
+        "pl": "Apfelsäfte",
+        "pl_pl": "soki jabłkowe",
+        "pl_trans": "sok jabłkowy",
+        "cat": [
+            "Getränke"
+        ],
+        "emoji": "🧃",
+        "example": "Ich trinke Apfelsaft.",
+        "example_pl": "Piję sok jabłkowy."
+    },
+    {
+        "de": "der Kaffee",
+        "base": "Kaffee",
+        "art": "der",
+        "pl": "Kaffees",
+        "pl_pl": "kawy",
+        "pl_trans": "kawa",
+        "cat": [
+            "Getränke",
+            "Frühstück"
+        ],
+        "emoji": "☕",
+        "example": "Man trinkt oft Kaffee.",
+        "example_pl": "Często pije się kawę."
+    },
+    {
+        "de": "der Tee",
+        "base": "Tee",
+        "art": "der",
+        "pl": "Tees",
+        "pl_pl": "herbaty",
+        "pl_trans": "herbata",
+        "cat": [
+            "Getränke",
+            "Frühstück"
+        ],
+        "emoji": "🍵",
+        "example": "Möchtest du Tee?",
+        "example_pl": "Chcesz herbatę?"
+    },
+    {
+        "de": "die Milch",
+        "base": "Milch",
+        "art": "die",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "mleko",
+        "cat": [
+            "Getränke",
+            "Frühstück"
+        ],
+        "emoji": "🥛",
+        "example": "Cornflakes mit Milch.",
+        "example_pl": "Płatki z mlekiem."
+    },
+    {
+        "de": "der Kakao",
+        "base": "Kakao",
+        "art": "der",
+        "pl": "Kakaos",
+        "pl_pl": "kakao",
+        "pl_trans": "kakao",
+        "cat": [
+            "Getränke"
+        ],
+        "emoji": "🍫",
+        "example": "Ich trinke Kakao.",
+        "example_pl": "Piję kakao."
+    },
+    {
+        "de": "der Schinken",
+        "base": "Schinken",
+        "art": "der",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "szynka",
+        "cat": [
+            "Frühstück",
+            "Abendessen"
+        ],
+        "emoji": "🥓",
+        "example": "Käse und Schinken.",
+        "example_pl": "Ser i szynka."
+    },
+    {
+        "de": "der Käse",
+        "base": "Käse",
+        "art": "der",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "ser",
+        "cat": [
+            "Frühstück",
+            "Abendessen"
+        ],
+        "emoji": "🧀",
+        "example": "Ich mag Käse.",
+        "example_pl": "Lubię ser."
+    },
+    {
+        "de": "die Marmelade",
+        "base": "Marmelade",
+        "art": "die",
+        "pl": "Marmeladen",
+        "pl_pl": "dżemy",
+        "pl_trans": "dżem",
+        "cat": [
+            "Frühstück"
+        ],
+        "emoji": "🍓",
+        "example": "Brot mit Marmelade.",
+        "example_pl": "Chleb z dżemem."
+    },
+    {
+        "de": "das Brot",
+        "base": "Brot",
+        "art": "das",
+        "pl": "Brote",
+        "pl_pl": "chleby",
+        "pl_trans": "chleb",
+        "cat": [
+            "Frühstück",
+            "Abendessen"
+        ],
+        "emoji": "🍞",
+        "example": "Ich kaufe Brot.",
+        "example_pl": "Kupuję chleb."
+    },
+    {
+        "de": "der Honig",
+        "base": "Honig",
+        "art": "der",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "miód",
+        "cat": [
+            "Frühstück"
+        ],
+        "emoji": "🍯",
+        "example": "Müsli mit Honig.",
+        "example_pl": "Müsli z miodem."
+    },
+    {
+        "de": "der Joghurt / das Joghurt",
+        "base": "Joghurt",
+        "art": "der/das",
+        "pl": "Joghurts",
+        "pl_pl": "jogurty",
+        "pl_trans": "jogurt",
+        "cat": [
+            "Frühstück",
+            "Dessert"
+        ],
+        "emoji": "🥣",
+        "example": "Ich esse Joghurt.",
+        "example_pl": "Jem jogurt."
+    },
+    {
+        "de": "das Fleisch",
+        "base": "Fleisch",
+        "art": "das",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "mięso",
+        "cat": [
+            "Mittagessen"
+        ],
+        "emoji": "🥩",
+        "example": "Fleisch oder Fisch?",
+        "example_pl": "Mięso czy ryba?"
+    },
+    {
+        "de": "der Fisch",
+        "base": "Fisch",
+        "art": "der",
+        "pl": "Fische",
+        "pl_pl": "ryby",
+        "pl_trans": "ryba",
+        "cat": [
+            "Mittagessen"
+        ],
+        "emoji": "🐟",
+        "example": "Zum Mittagessen gibt es Fisch.",
+        "example_pl": "Na obiad jest ryba."
+    },
+    {
+        "de": "die Nudeln",
+        "base": "Nudeln",
+        "art": "die (Plural)",
+        "pl": "—",
+        "pl_pl": "—",
+        "pl_trans": "makaron",
+        "cat": [
+            "Mittagessen"
+        ],
+        "emoji": "🍝",
+        "example": "Nein, es gibt Nudeln!",
+        "example_pl": "Nie, jest makaron!"
+    },
+    {
+        "de": "der Pudding",
+        "base": "Pudding",
+        "art": "der",
+        "pl": "Puddings",
+        "pl_pl": "puddingi",
+        "pl_trans": "pudding",
+        "cat": [
+            "Dessert"
+        ],
+        "emoji": "🍮",
+        "example": "Als Dessert gibt es Pudding.",
+        "example_pl": "Na deser jest pudding."
+    },
+    {
+        "de": "der Saft",
+        "base": "Saft",
+        "art": "der",
+        "pl": "Säfte",
+        "pl_pl": "soki",
+        "pl_trans": "sok",
+        "cat": [
+            "Getränke"
+        ],
+        "emoji": "🧃",
+        "example": "Ein Glas Saft, bitte.",
+        "example_pl": "Szklankę soku, proszę."
+    }
+];
+const flashcardsData = [
+    {
+        "q": "🥣  die Suppe",
+        "a": "<strong>zupa</strong> • plural: Suppen<br><span style='color: var(--text-secondary);'>Gibt es heute Suppe?</span>"
+    },
+    {
+        "q": "🥗  der Salat",
+        "a": "<strong>sałatka</strong> • plural: Salate<br><span style='color: var(--text-secondary);'>Zum Mittagessen gibt es Salat.</span>"
+    },
+    {
+        "q": "🥣  das Müsli",
+        "a": "<strong>müsli</strong> • plural: (Müsli)<br><span style='color: var(--text-secondary);'>Ich esse Müsli zum Frühstück.</span>"
+    },
+    {
+        "q": "🧈  die Butter",
+        "a": "<strong>masło</strong> • plural: —<br><span style='color: var(--text-secondary);'>Brot mit Butter.</span>"
+    },
+    {
+        "q": "🥔  die Kartoffel",
+        "a": "<strong>ziemniak</strong> • plural: Kartoffeln<br><span style='color: var(--text-secondary);'>Kartoffeln sind lecker.</span>"
+    },
+    {
+        "q": "🍓  der Obstsalat",
+        "a": "<strong>sałatka owocowa</strong> • plural: Obstsalate<br><span style='color: var(--text-secondary);'>Als Dessert gibt es Obstsalat.</span>"
+    },
+    {
+        "q": "🧃  der Apfelsaft",
+        "a": "<strong>sok jabłkowy</strong> • plural: Apfelsäfte<br><span style='color: var(--text-secondary);'>Ich trinke Apfelsaft.</span>"
+    },
+    {
+        "q": "☕  der Kaffee",
+        "a": "<strong>kawa</strong> • plural: Kaffees<br><span style='color: var(--text-secondary);'>Man trinkt oft Kaffee.</span>"
+    },
+    {
+        "q": "🍵  der Tee",
+        "a": "<strong>herbata</strong> • plural: Tees<br><span style='color: var(--text-secondary);'>Möchtest du Tee?</span>"
+    },
+    {
+        "q": "🥛  die Milch",
+        "a": "<strong>mleko</strong> • plural: —<br><span style='color: var(--text-secondary);'>Cornflakes mit Milch.</span>"
+    },
+    {
+        "q": "🍫  der Kakao",
+        "a": "<strong>kakao</strong> • plural: Kakaos<br><span style='color: var(--text-secondary);'>Ich trinke Kakao.</span>"
+    },
+    {
+        "q": "🥓  der Schinken",
+        "a": "<strong>szynka</strong> • plural: —<br><span style='color: var(--text-secondary);'>Käse und Schinken.</span>"
+    },
+    {
+        "q": "🧀  der Käse",
+        "a": "<strong>ser</strong> • plural: —<br><span style='color: var(--text-secondary);'>Ich mag Käse.</span>"
+    },
+    {
+        "q": "🍓  die Marmelade",
+        "a": "<strong>dżem</strong> • plural: Marmeladen<br><span style='color: var(--text-secondary);'>Brot mit Marmelade.</span>"
+    },
+    {
+        "q": "🍞  das Brot",
+        "a": "<strong>chleb</strong> • plural: Brote<br><span style='color: var(--text-secondary);'>Ich kaufe Brot.</span>"
+    },
+    {
+        "q": "🍯  der Honig",
+        "a": "<strong>miód</strong> • plural: —<br><span style='color: var(--text-secondary);'>Müsli mit Honig.</span>"
+    },
+    {
+        "q": "🥣  der Joghurt / das Joghurt",
+        "a": "<strong>jogurt</strong> • plural: Joghurts<br><span style='color: var(--text-secondary);'>Ich esse Joghurt.</span>"
+    },
+    {
+        "q": "🥩  das Fleisch",
+        "a": "<strong>mięso</strong> • plural: —<br><span style='color: var(--text-secondary);'>Fleisch oder Fisch?</span>"
+    },
+    {
+        "q": "🐟  der Fisch",
+        "a": "<strong>ryba</strong> • plural: Fische<br><span style='color: var(--text-secondary);'>Zum Mittagessen gibt es Fisch.</span>"
+    },
+    {
+        "q": "🍝  die Nudeln",
+        "a": "<strong>makaron</strong> • plural: —<br><span style='color: var(--text-secondary);'>Nein, es gibt Nudeln!</span>"
+    },
+    {
+        "q": "🍮  der Pudding",
+        "a": "<strong>pudding</strong> • plural: Puddings<br><span style='color: var(--text-secondary);'>Als Dessert gibt es Pudding.</span>"
+    },
+    {
+        "q": "🧃  der Saft",
+        "a": "<strong>sok</strong> • plural: Säfte<br><span style='color: var(--text-secondary);'>Ein Glas Saft, bitte.</span>"
+    }
+];
+const quizData = [
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>der Salat</span> ?",
+        "options": [
+            "ryba",
+            "sałatka owocowa",
+            "sałatka",
+            "kakao"
+        ],
+        "correct": 2,
+        "explanation": "der Salat = sałatka."
+    },
+    {
+        "question": "Jak jest po niemiecku: <span style='color: var(--accent-gold);'>chleb</span> ?",
+        "options": [
+            "Brot",
+            "Fisch",
+            "Marmelade",
+            "Tee"
+        ],
+        "correct": 0,
+        "explanation": "chleb = <strong>das Brot</strong>."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>die Kartoffel</span> ?",
+        "options": [
+            "ryba",
+            "chleb",
+            "sałatka",
+            "ziemniak"
+        ],
+        "correct": 3,
+        "explanation": "die Kartoffel = ziemniak."
+    },
+    {
+        "question": "Jak jest po niemiecku: <span style='color: var(--accent-gold);'>sałatka</span> ?",
+        "options": [
+            "Tee",
+            "Salat",
+            "Obstsalat",
+            "Marmelade"
+        ],
+        "correct": 1,
+        "explanation": "sałatka = <strong>der Salat</strong>."
+    },
+    {
+        "question": "Jaki rodzajnik pasuje do: <span style='color: var(--accent-gold);'>Honig</span> ?",
+        "options": [
+            "der",
+            "die",
+            "das"
+        ],
+        "correct": 0,
+        "explanation": "Poprawnie: <strong>der Honig</strong>."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>das Müsli</span> ?",
+        "options": [
+            "ryba",
+            "kakao",
+            "müsli",
+            "makaron"
+        ],
+        "correct": 2,
+        "explanation": "das Müsli = müsli."
+    },
+    {
+        "question": "Jaki rodzajnik pasuje do: <span style='color: var(--accent-gold);'>Saft</span> ?",
+        "options": [
+            "der",
+            "die",
+            "das"
+        ],
+        "correct": 0,
+        "explanation": "Poprawnie: <strong>der Saft</strong>."
+    },
+    {
+        "question": "Jaki rodzajnik pasuje do: <span style='color: var(--accent-gold);'>Brot</span> ?",
+        "options": [
+            "der",
+            "die",
+            "das"
+        ],
+        "correct": 2,
+        "explanation": "Poprawnie: <strong>das Brot</strong>."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>die Marmelade</span> ?",
+        "options": [
+            "dżem",
+            "makaron",
+            "müsli",
+            "ryba"
+        ],
+        "correct": 0,
+        "explanation": "die Marmelade = dżem."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>der Joghurt / das Joghurt</span> ?",
+        "options": [
+            "kakao",
+            "jogurt",
+            "sałatka owocowa",
+            "ziemniak"
+        ],
+        "correct": 1,
+        "explanation": "der Joghurt / das Joghurt = jogurt."
+    },
+    {
+        "question": "Jaki rodzajnik pasuje do: <span style='color: var(--accent-gold);'>Fleisch</span> ?",
+        "options": [
+            "der",
+            "die",
+            "das"
+        ],
+        "correct": 2,
+        "explanation": "Poprawnie: <strong>das Fleisch</strong>."
+    },
+    {
+        "question": "Jak jest po niemiecku: <span style='color: var(--accent-gold);'>müsli</span> ?",
+        "options": [
+            "Kartoffel",
+            "Pudding",
+            "Joghurt",
+            "Müsli"
+        ],
+        "correct": 3,
+        "explanation": "müsli = <strong>das Müsli</strong>."
+    },
+    {
+        "question": "Jaki rodzajnik pasuje do: <span style='color: var(--accent-gold);'>Kartoffel</span> ?",
+        "options": [
+            "der",
+            "die",
+            "das"
+        ],
+        "correct": 1,
+        "explanation": "Poprawnie: <strong>die Kartoffel</strong>."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>der Schinken</span> ?",
+        "options": [
+            "szynka",
+            "sok jabłkowy",
+            "pudding",
+            "jogurt"
+        ],
+        "correct": 0,
+        "explanation": "der Schinken = szynka."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>der Käse</span> ?",
+        "options": [
+            "makaron",
+            "sok",
+            "dżem",
+            "ser"
+        ],
+        "correct": 3,
+        "explanation": "der Käse = ser."
+    },
+    {
+        "question": "Jak jest po niemiecku: <span style='color: var(--accent-gold);'>ryba</span> ?",
+        "options": [
+            "Müsli",
+            "Kartoffel",
+            "Fisch",
+            "Kaffee"
+        ],
+        "correct": 2,
+        "explanation": "ryba = <strong>der Fisch</strong>."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>der Tee</span> ?",
+        "options": [
+            "miód",
+            "szynka",
+            "kakao",
+            "herbata"
+        ],
+        "correct": 3,
+        "explanation": "der Tee = herbata."
+    },
+    {
+        "question": "Co to znaczy: <span style='color: var(--accent-gold);'>die Suppe</span> ?",
+        "options": [
+            "zupa",
+            "herbata",
+            "makaron",
+            "masło"
+        ],
+        "correct": 0,
+        "explanation": "die Suppe = zupa."
+    }
+];
+const fillExercise = {
+    "intro": "Zum Frühstück gibt es oft in Deutschland",
+    "parts": [
+        {
+            "text": "",
+            "blank": "Brot",
+            "hint": "(chleb)"
+        },
+        {
+            "text": " mit Butter,",
+            "blank": "Käse",
+            "hint": "(ser)"
+        },
+        {
+            "text": " und ",
+            "blank": "Schinken",
+            "hint": "(szynka)"
+        },
+        {
+            "text": ". Man trinkt oft eine Tasse ",
+            "blank": "Kaffee",
+            "hint": "(kawa)"
+        },
+        {
+            "text": " und ein Glas ",
+            "blank": "Saft",
+            "hint": "(sok)"
+        },
+        {
+            "text": ".",
+            "blank": null
+        }
+    ]
+};
+const dialogs = [
+    {
+        "q": "Gibt es heute Suppe zum Mittagessen?",
+        "a": "Nein, es gibt Nudeln!",
+        "options": [
+            "Ja, es gibt Suppe!",
+            "Nein, es gibt Nudeln!",
+            "Nein, es gibt Obstsalat!",
+            "Ja, es gibt Kaffee!"
+        ]
+    },
+    {
+        "q": "Gibt es heute Fisch mit Salat?",
+        "a": "Nein, es gibt Fleisch mit Kartoffeln!",
+        "options": [
+            "Nein, es gibt Fleisch mit Kartoffeln!",
+            "Ja, es gibt Fisch mit Salat!",
+            "Nein, es gibt Kaffee!",
+            "Ja, es gibt Obstsalat!"
+        ]
+    },
+    {
+        "q": "Gibt es heute Fisch als Dessert?",
+        "a": "Nein, es gibt Obstsalat.",
+        "options": [
+            "Nein, es gibt Obstsalat.",
+            "Ja, es gibt Fisch.",
+            "Nein, es gibt Käse.",
+            "Ja, es gibt Pudding."
+        ]
+    },
+    {
+        "q": "Gibt es heute Apfelsaft?",
+        "a": "Ja, es gibt Apfelsaft.",
+        "options": [
+            "Ja, es gibt Apfelsaft.",
+            "Nein, es gibt Tee.",
+            "Nein, es gibt Fleisch.",
+            "Ja, es gibt Schinken."
+        ]
+    }
+];
+const typingItems = [
+    {
+        "prompt": "zupa",
+        "answer": "Suppe",
+        "full": "die Suppe"
+    },
+    {
+        "prompt": "sałatka",
+        "answer": "Salat",
+        "full": "der Salat"
+    },
+    {
+        "prompt": "müsli",
+        "answer": "Müsli",
+        "full": "das Müsli"
+    },
+    {
+        "prompt": "masło",
+        "answer": "Butter",
+        "full": "die Butter"
+    },
+    {
+        "prompt": "ziemniak",
+        "answer": "Kartoffel",
+        "full": "die Kartoffel"
+    },
+    {
+        "prompt": "sałatka owocowa",
+        "answer": "Obstsalat",
+        "full": "der Obstsalat"
+    },
+    {
+        "prompt": "sok jabłkowy",
+        "answer": "Apfelsaft",
+        "full": "der Apfelsaft"
+    },
+    {
+        "prompt": "kawa",
+        "answer": "Kaffee",
+        "full": "der Kaffee"
+    },
+    {
+        "prompt": "herbata",
+        "answer": "Tee",
+        "full": "der Tee"
+    },
+    {
+        "prompt": "mleko",
+        "answer": "Milch",
+        "full": "die Milch"
+    },
+    {
+        "prompt": "kakao",
+        "answer": "Kakao",
+        "full": "der Kakao"
+    },
+    {
+        "prompt": "szynka",
+        "answer": "Schinken",
+        "full": "der Schinken"
+    },
+    {
+        "prompt": "ser",
+        "answer": "Käse",
+        "full": "der Käse"
+    },
+    {
+        "prompt": "dżem",
+        "answer": "Marmelade",
+        "full": "die Marmelade"
+    },
+    {
+        "prompt": "chleb",
+        "answer": "Brot",
+        "full": "das Brot"
+    },
+    {
+        "prompt": "miód",
+        "answer": "Honig",
+        "full": "der Honig"
+    },
+    {
+        "prompt": "jogurt",
+        "answer": "Joghurt",
+        "full": "der Joghurt / das Joghurt"
+    },
+    {
+        "prompt": "mięso",
+        "answer": "Fleisch",
+        "full": "das Fleisch"
+    },
+    {
+        "prompt": "ryba",
+        "answer": "Fisch",
+        "full": "der Fisch"
+    },
+    {
+        "prompt": "makaron",
+        "answer": "Nudeln",
+        "full": "die Nudeln"
+    },
+    {
+        "prompt": "pudding",
+        "answer": "Pudding",
+        "full": "der Pudding"
+    },
+    {
+        "prompt": "sok",
+        "answer": "Saft",
+        "full": "der Saft"
+    }
+];
+
+const LS_KEY = "deutsch_essen_lektion3b_mastered";
+function loadMastered(){
+    try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || "[]")); }
+    catch(e){ return new Set(); }
+}
+function saveMastered(set){ localStorage.setItem(LS_KEY, JSON.stringify(Array.from(set))); }
+let mastered = loadMastered();
+
+function toast(msg, small){
+    const el = document.getElementById("toast");
+    el.innerHTML = msg + (small ? `<small>${small}</small>` : "");
+    el.classList.add("show");
+    clearTimeout(toast._t);
+    toast._t = setTimeout(()=>el.classList.remove("show"), 2400);
+}
+
+function speakDE(text){
+    if (!("speechSynthesis" in window)) {
+        toast("Brak TTS w tej przeglądarce 😿", "Spróbuj Chrome/Edge na desktopie.");
+        return;
+    }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "de-DE";
+    u.rate = 0.95;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+}
+
+function updateProgressUI(){
+    const total = vocab.length;
+    const done = mastered.size;
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("masteredCount").textContent = done;
+    document.getElementById("masteredBar").style.width = (done/total*100) + "%";
+}
+
+function resetProgress(){
+    mastered = new Set();
+    saveMastered(mastered);
+    renderVocab(false);
+    updateProgressUI();
+    toast("Progres wyzerowany.", "Możesz zaczynać od nowa ✨");
+}
+
+let activeCategory = "Allgemein";
+function renderTabs(){
+    const tabs = document.getElementById("catTabs");
+    tabs.innerHTML = "";
+    const cats = ["Wszystko","Frühstück","Mittagessen","Dessert","Getränke","Abendessen"];
+    const map = {"Wszystko":"Allgemein"};
+    for (const c of cats){
+        const key = map[c] || c;
+        const btn = document.createElement("button");
+        btn.className = "pill-tab" + (activeCategory === key ? " active" : "");
+        btn.textContent = c;
+        btn.onclick = ()=>{ activeCategory = key; renderTabs(); renderVocab(false); };
+        tabs.appendChild(btn);
+    }
+}
+
+function matchesSearch(v, q){
+    if(!q) return true;
+    q = q.toLowerCase().trim();
+    const bag = (v.de + " " + v.base + " " + v.pl_trans + " " + (v.example||"") + " " + (v.cat||[]).join(" ")).toLowerCase();
+    return bag.includes(q);
+}
+
+function inCategory(v){
+    if(activeCategory === "Allgemein") return true;
+    return (v.cat || []).includes(activeCategory);
+}
+
+function toggleReveal(card){
+    const body = card.querySelector(".vocab-body");
+    const hidden = body.dataset.hidden === "1";
+    if(hidden){
+        body.dataset.hidden = "0";
+        body.innerHTML = body.dataset.full;
+    } else {
+        body.dataset.hidden = "1";
+        body.innerHTML = body.dataset.short;
+    }
+}
+
+function toggleMastered(id){
+    if(mastered.has(id)) mastered.delete(id);
+    else mastered.add(id);
+    saveMastered(mastered);
+    updateProgressUI();
+    // update only styles
+    const el = document.querySelector(`[data-de="${CSS.escape(id)}"]`);
+    if(el){
+        el.classList.toggle("mastered", mastered.has(id));
+    }
+}
+
+function renderVocab(scrollToGrid){
+    const grid = document.getElementById("vocabGrid");
+    const q = document.getElementById("searchInput").value;
+    if(scrollToGrid) grid.scrollIntoView({behavior:"smooth", block:"start"});
+    grid.innerHTML = "";
+
+    const list = vocab.filter(v=>inCategory(v) && matchesSearch(v, q));
+    if(list.length === 0){
+        grid.innerHTML = `<div class="exercise-card" style="grid-column:1/-1;"><strong>Brak wyników.</strong> Zmień kategorię albo wpisz inne hasło.</div>`;
+        return;
+    }
+
+    for (const v of list){
+        const id = v.de;
+        const isDone = mastered.has(id);
+        const card = document.createElement("div");
+        card.className = "vocab-card" + (isDone ? " mastered" : "");
+        card.setAttribute("data-de", id);
+        card.innerHTML = `
+            <div class="vocab-head">
+                <div>
+                    <div class="vocab-word">${v.emoji} ${v.de}</div>
+                    <div class="vocab-sub">PL: <span style="color:var(--accent-gold); font-weight:700;">(kliknij kartę)</span></div>
+                </div>
+                <div class="vocab-actions">
+                    <div class="icon-btn" title="Wymowa" aria-label="Wymowa">🔊</div>
+                    <div class="icon-btn good" title="Oznacz jako opanowane" aria-label="Oznacz opanowane">⭐</div>
+                </div>
+            </div>
+            <div class="vocab-body" data-hidden="1"
+                 data-short="<em>Ukryte</em> — kliknij kartę"
+                 data-full="<strong>${v.pl_trans}</strong> • plural: ${v.pl}<br><span style='color: var(--text-secondary);'>${v.example}</span>">
+                <em>Ukryte</em> — kliknij kartę
+            </div>
+            <div class="hint-row">
+                <span class="chip gold">${(v.cat||[])[0] || "Allgemein"}</span>
+                <span class="chip">plural: ${v.pl}</span>
+                <span class="chip">PL: ${v.pl_trans}</span>
+            </div>
+        `;
+
+        card.addEventListener("click", (e)=>{
+            const target = e.target;
+            if(target.classList.contains("icon-btn")) return;
+            toggleReveal(card);
+        });
+
+        const speakBtn = card.querySelectorAll(".icon-btn")[0];
+        const masterBtn = card.querySelectorAll(".icon-btn")[1];
+
+        speakBtn.addEventListener("click", (e)=>{
+            e.stopPropagation();
+            speakDE(v.de.replace("/", " oder "));
+        });
+        masterBtn.addEventListener("click", (e)=>{
+            e.stopPropagation();
+            toggleMastered(id);
+            toast(mastered.has(id) ? "Dodano do opanowanych ✅" : "Usunięto z opanowanych", v.de);
+        });
+
+        grid.appendChild(card);
+    }
+}
+
+function buildFill(){
+    const line = document.getElementById("fillLine");
+    const opts = Array.from(new Set(vocab.map(v=>v.base))).sort((a,b)=>a.localeCompare(b));
+    let html = `<span style="color:var(--text-secondary)">${fillExercise.intro}</span> `;
+    let blankIndex = 0;
+    for (const p of fillExercise.parts){
+        if(p.blank){
+            html += `<select class="fill-select" data-answer="${p.blank}" data-idx="${blankIndex}">
+                        <option value="">— wybierz — ${p.hint||""}</option>
+                        ${opts.map(o=>`<option value="${o}">${o}</option>`).join("")}
+                    </select>`;
+            blankIndex++;
+        }
+        if(p.text) html += p.text + " ";
+    }
+    line.innerHTML = html;
+}
+
+function checkFill(){
+    const selects = document.querySelectorAll("select.fill-select");
+    let ok = 0;
+    selects.forEach(s=>{
+        s.classList.remove("correct","wrong");
+        const ans = s.dataset.answer;
+        const val = s.value;
+        if(val && val === ans){ s.classList.add("correct"); ok++; }
+        else s.classList.add("wrong");
+    });
+    const total = selects.length;
+    document.getElementById("fillResult").textContent = `Wynik: ${ok} / ${total}.`;
+    toast(ok===total ? "Perfekcyjnie! 🔥" : "Spoko — popraw i jedziemy dalej.", "Kliknij Reset, żeby spróbować od nowa.");
+}
+
+function resetFill(){
+    document.querySelectorAll("select.fill-select").forEach(s=>{
+        s.value = "";
+        s.classList.remove("correct","wrong");
+    });
+    document.getElementById("fillResult").textContent = "";
+}
+
+function renderDialogs(){
+    const wrap = document.getElementById("dialogGrid");
+    wrap.innerHTML = "";
+    dialogs.forEach((d, i)=>{
+        const card = document.createElement("div");
+        card.className = "exercise-card";
+        card.innerHTML = `
+            <div class="dialog-q">${i+1}) ${d.q}</div>
+            <div class="option-list">
+                ${d.options.map((o,idx)=>`<button class="option-btn" data-idx="${idx}">${o}</button>`).join("")}
+            </div>
+            <div class="dialog-feedback" id="dialogFb${i}">Kliknij odpowiedź.</div>
+        `;
+        const btns = card.querySelectorAll(".option-btn");
+        btns.forEach(b=>{
+            b.addEventListener("click", ()=>{
+                btns.forEach(x=>x.disabled=true);
+                const chosen = b.textContent.trim();
+                const ok = chosen === d.a;
+                b.classList.add(ok ? "correct" : "wrong");
+                if(!ok){
+                    btns.forEach(x=>{ if(x.textContent.trim() === d.a) x.classList.add("correct"); });
+                }
+                const fb = card.querySelector(`#dialogFb${i}`);
+                fb.innerHTML = ok ? `<strong style="color:var(--accent-red)">Dobrze!</strong> ${d.a}` :
+                                    `<strong style="color:#dc2626">Nie.</strong> Poprawnie: <strong>${d.a}</strong>`;
+                toast(ok ? "Dialog: dobrze ✅" : "Dialog: poprawione ✍️", d.q);
+            });
+        });
+        wrap.appendChild(card);
+    });
+}
+
+/* Flashcards */
+let currentCardIndex = 0;
+function renderFlashcard(){
+    const card = flashcardsData[currentCardIndex];
+    document.getElementById('flashcardQuestion').innerHTML = card.q;
+    document.getElementById('flashcardAnswer').innerHTML = card.a;
+    document.getElementById('currentCard').textContent = (currentCardIndex + 1);
+    document.getElementById('totalCards').textContent = flashcardsData.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+}
+function flipCard(){ document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard(){ currentCardIndex = (currentCardIndex + 1) % flashcardsData.length; renderFlashcard(); }
+function prevCard(){ currentCardIndex = (currentCardIndex - 1 + flashcardsData.length) % flashcardsData.length; renderFlashcard(); }
+function speakCurrentCard(){ speakDE(vocab[currentCardIndex % vocab.length].de.replace("/", " oder ")); }
+function markCurrentMastered(){ toggleMastered(vocab[currentCardIndex % vocab.length].de); toast("Dodano do opanowanych ✅", vocab[currentCardIndex % vocab.length].de); }
+
+/* Quiz */
+let currentQuestionIndex = 0;
+let quizAnswered = false;
+let quizScore = 0;
+
+function initQuiz(){
+    document.getElementById('totalQuestions').textContent = quizData.length;
+    currentQuestionIndex = 0;
+    quizScore = 0;
+    loadQuestion();
+}
+
+function loadQuestion(){
+    quizAnswered = false;
+    const q = quizData[currentQuestionIndex];
+    document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+    document.getElementById('quizQuestion').innerHTML = q.question;
+
+    const optionsContainer = document.getElementById('quizOptions');
+    optionsContainer.innerHTML = '';
+    q.options.forEach((opt, idx) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'quiz-option';
+        optionDiv.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + idx)}</span><span>${opt}</span>`;
+        optionDiv.onclick = () => selectOption(optionDiv, idx);
+        optionsContainer.appendChild(optionDiv);
+    });
+
+    document.getElementById('quizFeedback').classList.remove('show');
+    document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+    document.getElementById('nextBtn').textContent = currentQuestionIndex === quizData.length - 1 ? 'Zakończ →' : 'Następne →';
+
+    const progressDots = Array.from({length: quizData.length}, (_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        if (i < currentQuestionIndex) dot.classList.add('completed');
+        if (i === currentQuestionIndex) dot.classList.add('active');
+        return dot;
+    });
+    const progress = document.getElementById('quizProgress');
+    progress.innerHTML = '';
+    progressDots.forEach(d => progress.appendChild(d));
+}
+
+function selectOption(optionEl, idx){
+    if (quizAnswered) return;
+    quizAnswered = true;
+
+    const q = quizData[currentQuestionIndex];
+    const options = document.querySelectorAll('.quiz-option');
+
+    options.forEach((optEl, optIdx) => {
+        if (optIdx === q.correct) optEl.classList.add('correct');
+        else if (optIdx === idx) optEl.classList.add('incorrect');
+        optEl.style.pointerEvents = 'none';
+    });
+
+    const ok = idx === q.correct;
+    if (ok) quizScore++;
+
+    const fb = document.getElementById('quizFeedback');
+    fb.classList.add('show');
+    fb.classList.remove('correct', 'incorrect');
+    fb.classList.add(ok ? 'correct' : 'incorrect');
+    document.getElementById('feedbackTitle').textContent = ok ? 'Dobrze! ✅' : 'Źle ✖';
+    document.getElementById('feedbackText').innerHTML = q.explanation;
+
+    toast(ok ? "Quiz: dobrze ✅" : "Quiz: poprawione ✍️", `Wynik na razie: ${quizScore}/${currentQuestionIndex+1}`);
+}
+
+function nextQuestion(){
+    if (!quizAnswered) {
+        toast("Najpierw odpowiedz 🙂", "Quiz liczy się dopiero po wyborze opcji.");
+        return;
+    }
+    if (currentQuestionIndex < quizData.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
+    } else {
+        showQuizResult();
+    }
+}
+
+function prevQuestion(){
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        loadQuestion();
+    }
+}
+
+function showQuizResult(){
+    const percent = Math.round((quizScore / quizData.length) * 100);
+    const card = document.getElementById('quizCard');
+    card.innerHTML = `
+        <div style="text-align:center; padding: 1rem 0;">
+            <div style="font-family:'Cinzel',serif; font-size:4rem; background: var(--gradient-fire); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">${percent}%</div>
+            <p style="color: var(--text-secondary); margin: 0.75rem 0 1.25rem;">Wynik: <strong>${quizScore}</strong> / ${quizData.length}</p>
+            <div style="display:flex; gap: 0.75rem; justify-content:center; flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="location.reload()">Spróbuj ponownie</button>
+                <button class="btn btn-secondary" onclick="location.href='#fiszki'">Wróć do fiszek</button>
+            </div>
+        </div>
+    `;
+    toast("Quiz zakończony 🎉", `Wynik: ${quizScore}/${quizData.length}`);
+}
+
+/* Typing sprint */
+const TYPE_LS = "deutsch_essen_lektion3b_typing_stats";
+let typingState = { ok: 0, bad: 0, streak: 0, best: 0, idx: 0, order: [] };
+
+function loadTyping(){
+    try {
+        const saved = JSON.parse(localStorage.getItem(TYPE_LS) || "null");
+        if(saved) typingState = {...typingState, ...saved};
+    } catch(e) {}
+    if(!typingState.order || typingState.order.length !== typingItems.length){
+        typingState.order = Array.from({length: typingItems.length}, (_,i)=>i);
+        shuffle(typingState.order);
+        typingState.idx = 0;
+    }
+    updateTypingUI();
+    showTypingItem();
+}
+
+function saveTyping(){ localStorage.setItem(TYPE_LS, JSON.stringify(typingState)); }
+
+function shuffle(arr){
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+}
+
+function currentTypingItem(){
+    const i = typingState.order[typingState.idx % typingState.order.length];
+    return typingItems[i];
+}
+
+function showTypingItem(){
+    const it = currentTypingItem();
+    document.getElementById("typingPrompt").textContent = `PL: ${it.prompt}`;
+    document.getElementById("typingFeedback").textContent = "";
+    document.getElementById("typingInput").value = "";
+    // Nie fokusujemy inputa przy starcie, bo przeglądarka przewinie do tej sekcji.
+    if(location.hash === "#typing") document.getElementById("typingInput").focus();
+}
+
+function normalize(s) {
+    return (s||"")
+        .trim()
+        .toLowerCase()
+        .replaceAll("ä","ae")
+        .replaceAll("ö","oe")
+        .replaceAll("ü","ue")
+        .replaceAll("ß","ss");
+}
+
+function updateTypingUI(){
+    document.getElementById("statOk").textContent = typingState.ok;
+    document.getElementById("statBad").textContent = typingState.bad;
+    document.getElementById("statStreak").textContent = typingState.streak;
+    document.getElementById("statBest").textContent = typingState.best;
+}
+
+function checkTyping(forceShow){
+    const it = currentTypingItem();
+    const val = document.getElementById("typingInput").value;
+
+    if(forceShow){
+        document.getElementById("typingFeedback").innerHTML = `Odpowiedź: <strong>${it.answer}</strong> • pełna forma: <strong>${it.full}</strong>`;
+        toast("Pokaż odpowiedź 👀", it.full);
+        typingState.streak = 0;
+        typingState.bad += 1;
+        updateTypingUI();
+        saveTyping();
+        return;
+    }
+
+    const ok = normalize(val) === normalize(it.answer);
+    if(ok){
+        typingState.ok += 1;
+        typingState.streak += 1;
+        typingState.best = Math.max(typingState.best, typingState.streak);
+        document.getElementById("typingFeedback").innerHTML = `✅ Dobrze: <strong>${it.full}</strong>`;
+        toast("Dobrze ✅", it.full);
+        toggleMastered(it.full);
+    } else {
+        typingState.bad += 1;
+        typingState.streak = 0;
+        document.getElementById("typingFeedback").innerHTML = `✖ Nie. Poprawnie: <strong>${it.answer}</strong> • pełna forma: <strong>${it.full}</strong>`;
+        toast("Poprawione ✍️", it.full);
+    }
+
+    typingState.idx = (typingState.idx + 1) % typingState.order.length;
+    updateTypingUI();
+    saveTyping();
+    setTimeout(showTypingItem, 450);
+}
+
+function speakTyping(){
+    const it = currentTypingItem();
+    speakDE(it.full.replace("/", " oder "));
+}
+
+function skipTyping(){
+    typingState.idx = (typingState.idx + 1) % typingState.order.length;
+    typingState.streak = 0;
+    updateTypingUI();
+    saveTyping();
+    showTypingItem();
+}
+
+function resetTyping(){
+    typingState = { ok:0, bad:0, streak:0, best:0, idx:0, order:Array.from({length: typingItems.length}, (_,i)=>i) };
+    shuffle(typingState.order);
+    saveTyping();
+    updateTypingUI();
+    showTypingItem();
+    toast("Typing zresetowany.", "Nowa kolejność pytań ✅");
+}
+
+/* Scroll progress + reveal */
+window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('navProgress').style.width = (winScroll / height * 100) + '%';
+});
+
+const reveals = document.querySelectorAll('.reveal');
+function revealOnScroll() {
+    reveals.forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+    });
+}
+window.addEventListener('scroll', revealOnScroll);
+revealOnScroll();
+
+
+/* Scroll behavior */
+try {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+} catch(e){}
+window.addEventListener('load', () => {
+    if(!location.hash) window.scrollTo({top:0, left:0, behavior:'auto'});
+});
+
+/* Init */
+document.getElementById("searchInput").addEventListener("input", ()=>renderVocab(false));
+renderTabs();
+renderVocab(false);
+updateProgressUI();
+buildFill();
+renderDialogs();
+renderFlashcard();
+initQuiz();
+loadTyping();
+
+document.getElementById("typingInput").addEventListener("keydown", (e)=>{
+    if(e.key === "Enter" && e.shiftKey) { e.preventDefault(); checkTyping(true); }
+    else if(e.key === "Enter") { e.preventDefault(); checkTyping(false); }
+});
+</script>
+</body>
+</html>
