@@ -1,0 +1,2040 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lalka • Matura | ViralloLab</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap">
+  <style>
+
+
+        :root {
+            color-scheme: dark;
+            --bg-dark: #0d0d12;
+            --bg-card: #14141c;
+            --bg-elevated: #1c1c28;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b5;
+            --text-muted: #606075;
+            --accent-red: #22c55e;
+            --accent-orange: #f97316;
+            --accent-gold: #eab308;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --gradient-fire: linear-gradient(135deg, #22c55e 0%, #f97316 50%, #eab308 100%);
+            --gradient-apocalypse: linear-gradient(135deg, #06140d 0%, #0b1a14 50%, #0d0d12 100%);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-accent: rgba(34, 197, 94, 0.45);
+            --glow-fire: 0 0 60px rgba(34, 197, 94, 0.25);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-red); }
+
+        /* Animated fire background */
+    .bg-animation {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        background: var(--gradient-apocalypse);
+    }
+    .bg-flames {
+        position: absolute;
+        bottom: -50%;
+        left: -10%;
+        width: 120%;
+        height: 100%;
+        background: radial-gradient(ellipse at bottom, rgba(34, 197, 94, 0.14) 0%, transparent 70%);
+        animation: flicker 3s ease-in-out infinite alternate;
+    }
+    @keyframes flicker {
+        0% { opacity: 0.3; transform: scale(1); }
+        100% { opacity: 0.5; transform: scale(1.05); }
+    }
+
+    /* Navigation */
+    .nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1000;
+        padding: 1rem 2rem;
+        background: rgba(13, 13, 18, 0.9);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--text-primary);
+    }
+    .nav-logo-icon {
+        width: 44px; height: 44px;
+        background: var(--gradient-fire);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    .nav-logo-text {
+        font-family: 'Cinzel', serif;
+        font-weight: 700;
+        font-size: 1.3rem;
+        letter-spacing: 0.05em;
+    }
+    .nav-logo-text span { color: var(--accent-red); }
+    .nav-links {
+        display: flex;
+        gap: 0.5rem;
+        list-style: none;
+    }
+    .nav-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+    .nav-progress {
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 2px;
+        background: var(--gradient-fire);
+        width: 0%;
+        transition: width 0.1s ease;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8rem 2rem 4rem;
+        position: relative;
+    }
+    .hero::before {
+        content: '🔥';
+        position: absolute;
+        font-size: 15rem;
+        opacity: 0.05;
+        top: 20%;
+        animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.05; }
+        50% { transform: scale(1.1); opacity: 0.08; }
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-accent);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        color: var(--accent-red);
+        margin-bottom: 2rem;
+        animation: fadeInDown 1s ease-out;
+    }
+    .hero-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(3rem, 12vw, 7rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+        animation: fadeInUp 1s ease-out 0.2s both;
+        letter-spacing: 0.05em;
+    }
+    .hero-title .highlight {
+        background: var(--gradient-fire);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-author {
+        font-family: 'Crimson Text', serif;
+        font-size: 1.5rem;
+        font-style: italic;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out 0.4s both;
+    }
+    .hero-meta {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background: var(--bg-elevated);
+        border-radius: 50px;
+        font-size: 0.9rem;
+    }
+    .meta-item span:first-child { font-size: 1.2rem; }
+    .hero-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-family: 'Outfit', sans-serif;
+    }
+    .btn-primary {
+        background: var(--gradient-fire);
+        color: white;
+        box-shadow: var(--glow-fire);
+    }
+    .btn-primary:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 0 80px rgba(220, 38, 38, 0.5);
+    }
+    .btn-secondary {
+        background: var(--bg-elevated);
+        color: var(--text-primary);
+        border: 1px solid var(--border-subtle);
+    }
+    .btn-secondary:hover { border-color: var(--accent-red); transform: translateY(-2px); }
+
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Sections */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-badge {
+        display: inline-flex;
+        padding: 0.4rem 1rem;
+        background: var(--bg-elevated);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        color: var(--accent-red);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+    }
+    .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .reveal {
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Author Section */
+    .author-section { background: var(--bg-card); border-top: 1px solid var(--border-subtle); }
+    .author-card {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 3rem;
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .author-image {
+        width: 200px;
+        height: 250px;
+        background: var(--gradient-fire);
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .author-image::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    }
+    .author-info h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    .author-dates {
+        color: var(--accent-red);
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    .author-bio { color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .author-facts {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .fact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: var(--bg-dark);
+        border-radius: var(--radius-sm);
+    }
+    .fact-icon {
+        width: 36px; height: 36px;
+        background: rgba(34, 197, 94, 0.14);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .fact-item p { font-size: 0.9rem; color: var(--text-secondary); }
+    .fact-item strong { color: var(--text-primary); }
+
+    /* Ekspresjonizm */
+    .expressionism-section { background: var(--bg-dark); }
+    .expressionism-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    .exp-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .exp-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--gradient-fire);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+    .exp-card:hover { transform: translateY(-8px); border-color: var(--border-accent); }
+    .exp-card:hover::before { transform: scaleX(1); }
+    .exp-icon {
+        width: 60px; height: 60px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        background: rgba(220, 38, 38, 0.1);
+    }
+    .exp-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+    .exp-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Geneza */
+    .genesis-section { background: var(--bg-card); }
+    .genesis-timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .genesis-timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--gradient-fire);
+        transform: translateX(-50%);
+    }
+    .timeline-item {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        position: relative;
+    }
+    .timeline-item:nth-child(odd) { flex-direction: row-reverse; text-align: right; }
+    .timeline-content {
+        flex: 1;
+        background: var(--bg-elevated);
+        padding: 2rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-subtle);
+    }
+    .timeline-dot {
+        position: absolute;
+        left: 50%;
+        top: 2rem;
+        width: 20px;
+        height: 20px;
+        background: var(--accent-red);
+        border-radius: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+    }
+    .timeline-content h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.25rem;
+        color: var(--accent-red);
+        margin-bottom: 0.75rem;
+    }
+    .timeline-content p { color: var(--text-secondary); }
+
+    /* Apokalipsa - znaki */
+    .apocalypse-section { background: var(--bg-dark); }
+    .apocalypse-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    .apo-card {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.4s ease;
+    }
+    .apo-card:hover {
+        transform: scale(1.05);
+        border-color: var(--accent-red);
+        box-shadow: var(--glow-fire);
+    }
+    .apo-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    .apo-card h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent-orange);
+    }
+    .apo-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .apo-card .srodek {
+        font-size: 0.8rem;
+        color: var(--accent-purple);
+        margin-top: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: rgba(168, 85, 247, 0.1);
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    /* Obrazy - postacie */
+    .characters-section { background: var(--bg-card); }
+    .characters-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+    .char-card {
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border-subtle);
+        transition: all 0.4s ease;
+    }
+    .char-card:hover { transform: translateY(-8px); border-color: var(--border-accent); }
+    .char-header {
+        padding: 1.5rem;
+        background: var(--gradient-fire);
+        position: relative;
+    }
+    .char-header h4 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.5rem;
+        color: white;
+    }
+    .char-header .char-icon {
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2.5rem;
+        opacity: 0.5;
+    }
+    .char-body { padding: 1.5rem; }
+    .char-body p { color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.95rem; }
+    .char-traits {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .trait {
+        padding: 0.35rem 0.75rem;
+        background: var(--bg-dark);
+        border-radius: 50px;
+        font-size: 0.8rem;
+        color: var(--accent-gold);
+        border: 1px solid rgba(234, 179, 8, 0.2);
+    }
+
+    /* Środki stylistyczne */
+    .devices-section { background: var(--bg-dark); }
+    .devices-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+    .device-tab {
+        padding: 0.75rem 1.5rem;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: 50px;
+        color: var(--text-secondary);
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Outfit', sans-serif;
+    }
+    .device-tab:hover { color: var(--text-primary); border-color: var(--accent-red); }
+    .device-tab.active { background: var(--gradient-fire); color: white; border-color: transparent; }
+    .devices-content {
+        display: none;
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .devices-content.active { display: block; animation: fadeIn 0.4s ease; }
+    .device-example {
+        background: var(--bg-dark);
+        border-left: 4px solid var(--accent-red);
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .device-example blockquote {
+        font-family: 'Crimson Text', serif;
+        font-size: 1.2rem;
+        font-style: italic;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    .device-example cite {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    /* Quiz */
+    .quiz-section { background: var(--bg-card); }
+    .quiz-container { max-width: 800px; margin: 0 auto; }
+    .quiz-progress { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .quiz-progress-dot {
+        flex: 1;
+        height: 4px;
+        background: var(--bg-elevated);
+        border-radius: 2px;
+        transition: background 0.3s ease;
+    }
+    .quiz-progress-dot.completed { background: var(--accent-green); }
+    .quiz-progress-dot.current { background: var(--accent-red); }
+    .quiz-card {
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .quiz-question-number {
+        font-size: 0.85rem;
+        color: var(--accent-red);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
+    }
+    .quiz-question {
+        font-family: 'Cinzel', serif;
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.4;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 1rem; }
+    .quiz-option {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem;
+        background: var(--bg-dark);
+        border: 2px solid var(--border-subtle);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .quiz-option:hover { border-color: var(--accent-red); }
+    .quiz-option.selected { border-color: var(--accent-red); background: rgba(220, 38, 38, 0.1); }
+    .quiz-option.correct { border-color: var(--accent-green); background: rgba(34, 197, 94, 0.1); }
+    .quiz-option.incorrect { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+    .option-letter {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: var(--bg-elevated);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+    .quiz-option.selected .option-letter { background: var(--accent-red); color: white; }
+    .quiz-option.correct .option-letter { background: var(--accent-green); color: white; }
+    .quiz-option.incorrect .option-letter { background: #ef4444; color: white; }
+    .quiz-feedback {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        display: none;
+    }
+    .quiz-feedback.show { display: block; animation: fadeIn 0.4s ease; }
+    .quiz-feedback.correct { background: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent-green); }
+    .quiz-feedback.incorrect { background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; }
+    .quiz-feedback h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .quiz-feedback.correct h4 { color: var(--accent-green); }
+    .quiz-feedback.incorrect h4 { color: #ef4444; }
+    .quiz-feedback p { color: var(--text-secondary); font-size: 0.95rem; }
+    .quiz-actions { display: flex; justify-content: space-between; margin-top: 2rem; }
+    .quiz-score { text-align: center; padding: 3rem; }
+    .quiz-score-value {
+        font-family: 'Cinzel', serif;
+        font-size: 5rem;
+        font-weight: 700;
+        background: var(--gradient-fire);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .quiz-score-label { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; }
+
+    /* Flashcards */
+    .flashcards-section { background: var(--bg-dark); }
+    .flashcard-container {
+        max-width: 600px;
+        margin: 0 auto;
+        perspective: 1000px;
+    }
+    .flashcard {
+        width: 100%;
+        height: 350px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+        cursor: pointer;
+    }
+    .flashcard.flipped { transform: rotateY(180deg); }
+    .flashcard-face {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        border-radius: var(--radius-lg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        text-align: center;
+    }
+    .flashcard-front {
+        background: var(--bg-elevated);
+        border: 2px solid var(--accent-red);
+    }
+    .flashcard-back {
+        background: var(--gradient-fire);
+        transform: rotateY(180deg);
+    }
+    .flashcard-front h3 {
+        font-family: 'Cinzel', serif;
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+    .flashcard-front p { color: var(--text-muted); font-size: 0.9rem; }
+    .flashcard-back p {
+        color: white;
+        font-size: 1.25rem;
+        line-height: 1.6;
+    }
+    .flashcard-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .flashcard-counter {
+        text-align: center;
+        margin-top: 1rem;
+        color: var(--text-muted);
+    }
+
+    /* Summary */
+    .summary-section { background: var(--bg-card); }
+    .summary-card {
+        background: var(--bg-elevated);
+        border-radius: var(--radius-lg);
+        padding: 3rem;
+        border: 1px solid var(--border-subtle);
+    }
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+    .summary-item h4 {
+        font-family: 'Cinzel', serif;
+        color: var(--accent-red);
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+    }
+    .summary-item p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Footer */
+    footer {
+        padding: 4rem 2rem;
+        background: var(--bg-dark);
+        border-top: 1px solid var(--border-subtle);
+        text-align: center;
+    }
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    .footer-logo-icon {
+        width: 40px; height: 40px;
+        background: var(--gradient-fire);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+    .footer-logo-text {
+        font-family: 'Cinzel', serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+    .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .author-card { grid-template-columns: 1fr; }
+        .author-image { width: 150px; height: 180px; margin: 0 auto; }
+        .timeline-item, .timeline-item:nth-child(odd) { flex-direction: column; text-align: left; }
+        .genesis-timeline::before { left: 20px; }
+        .timeline-dot { left: 20px; }
+    }
+    @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .hero-meta { flex-direction: column; align-items: center; }
+        .author-facts { grid-template-columns: 1fr; }
+        .quiz-card { padding: 2rem; }
+        section { padding: 4rem 1.5rem; }
+        .flashcard { height: 300px; }
+    }
+    
+
+/* --- Lesson-specific components (Deutsch: Essen) --- */
+.pill-tabs{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:2rem auto 1.5rem;}
+.pill-tab{padding:.6rem 1.1rem;border-radius:999px;background:var(--bg-elevated);border:1px solid var(--border-subtle);color:var(--text-secondary);cursor:pointer;font-weight:600;transition:all .25s ease;user-select:none;}
+.pill-tab:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.35);color:var(--text-primary);}
+.pill-tab.active{background:var(--gradient-fire);border-color:transparent;color:#0d0d12;}
+.vocab-top{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;margin:1rem 0 1.5rem;}
+.progress-wrap{flex:1;min-width:220px;}
+.progress-label{display:flex;justify-content:space-between;align-items:center;color:var(--text-secondary);font-size:.9rem;margin-bottom:.5rem;}
+.progress-bar{width:100%;height:10px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;border:1px solid var(--border-subtle);}
+.progress-fill{height:100%;width:0%;background:var(--gradient-fire);transition:width .35s ease;}
+.mini-tools{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:flex-end;}
+.input{background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);border-radius:999px;padding:.7rem 1rem;color:var(--text-primary);outline:none;min-width:240px;}
+.input:focus{border-color:rgba(234,179,8,.45);box-shadow:0 0 0 6px rgba(234,179,8,.08);}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:1.25rem;}
+.vocab-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1.25rem;position:relative;overflow:hidden;transition:all .25s ease;}
+.vocab-card:hover{transform:translateY(-3px);border-color:rgba(234,179,8,.25);}
+.vocab-card.mastered{border-color:rgba(34,197,94,.45);box-shadow:0 0 0 1px rgba(34,197,94,.1) inset;}
+.vocab-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.75rem;}
+.vocab-word{font-family:'Cinzel',serif;font-weight:700;font-size:1.15rem;line-height:1.25;}
+.vocab-sub{color:var(--text-secondary);font-size:.9rem;margin-top:.25rem;}
+.vocab-actions{display:flex;gap:.5rem;}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:1px solid var(--border-subtle);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease;user-select:none;}
+.icon-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.35);}
+.icon-btn.good{border-color:rgba(34,197,94,.35);}
+.vocab-body{color:var(--text-secondary);font-size:.95rem;}
+.hint-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem;}
+.chip{font-size:.78rem;padding:.25rem .55rem;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--border-subtle);color:var(--text-secondary);}
+.chip.gold{border-color:rgba(234,179,8,.35);color:rgba(234,179,8,.95);background:rgba(234,179,8,.08);}
+.exercise-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1.5rem;margin-top:1.5rem;}
+.exercise-title{font-family:'Cinzel',serif;font-weight:700;margin-bottom:.75rem;}
+.fill-line{color:var(--text-primary);font-size:1.05rem;line-height:1.9;}
+select.fill-select{background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);border-radius:10px;padding:.35rem .5rem;color:var(--text-primary);margin:0 .25rem;outline:none;}
+select.fill-select.correct{border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.08);}
+select.fill-select.wrong{border-color:rgba(220,38,38,.55);background:rgba(220,38,38,.08);}
+
+/* Ujednolicone dropdowny pod ciemny motyw */
+select{color-scheme: dark;}
+select option{background:#0b0d13;color:var(--text-primary);}
+.dialog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1.25rem;}
+.dialog-q{color:var(--text-primary);font-weight:600;margin-bottom:.75rem;}
+.option-list{display:flex;flex-direction:column;gap:.6rem;}
+.option-btn{background:rgba(255,255,255,.03);border:1px solid var(--border-subtle);color:var(--text-primary);padding:.75rem .85rem;border-radius:14px;cursor:pointer;text-align:left;transition:all .2s ease;}
+.option-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.35);}
+.option-btn.correct{border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.08);}
+.option-btn.wrong{border-color:rgba(220,38,38,.55);background:rgba(220,38,38,.08);}
+.dialog-feedback{margin-top:.9rem;font-size:.9rem;color:var(--text-secondary);}
+.typing-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:1rem;align-items:start;margin-top:1.25rem;}
+.typing-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:1.5rem;}
+.typing-prompt{font-family:'Cinzel',serif;font-size:1.4rem;margin-bottom:.5rem;}
+.typing-hint{color:var(--text-secondary);margin-bottom:1rem;}
+.typing-input{width:100%;border-radius:14px;padding:.9rem 1rem;font-size:1.05rem;background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);color:var(--text-primary);outline:none;}
+.typing-input:focus{border-color:rgba(234,179,8,.45);box-shadow:0 0 0 6px rgba(234,179,8,.08);}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-top:1rem;}
+.stat{background:rgba(255,255,255,.03);border:1px solid var(--border-subtle);border-radius:14px;padding:.9rem;}
+.stat .k{color:var(--text-secondary);font-size:.85rem;}
+.stat .v{font-family:'Cinzel',serif;font-size:1.4rem;margin-top:.25rem;}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:rgba(20,20,28,.95);border:1px solid var(--border-subtle);padding:.85rem 1rem;border-radius:14px;color:var(--text-primary);z-index:2000;opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+.toast small{color:var(--text-secondary);display:block;margin-top:.15rem;}
+@media (max-width:900px){.typing-wrap{grid-template-columns:1fr;}.input{min-width:180px;width:100%;}.mini-tools{justify-content:flex-start;}}
+
+    
+
+/* --- LALKA overrides (minimal) --- */
+.hero::before { content: '🎩'; }
+
+/* --- Components used in LALKA page (tabs + stats + code) --- */
+.tab-row{
+  display:flex;
+  gap:.6rem;
+  flex-wrap:wrap;
+  margin-bottom: 1rem;
+}
+.tab-btn{
+  appearance:none;
+  border:none;
+  cursor:pointer;
+  padding:.7rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+  font-weight: 700;
+}
+.tab-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); color: var(--text-primary); }
+.tab-btn.active{
+  background: linear-gradient(135deg, rgba(168,85,247,.25), rgba(234,179,8,.18));
+  color: var(--text-primary);
+  border-color: rgba(168,85,247,.5);
+  box-shadow: 0 0 0 6px rgba(168,85,247,.08);
+}
+.tab-panel{
+  background: rgba(0,0,0,.22);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+}
+.code{
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.stat-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: .75rem;
+  margin-top: .8rem;
+}
+.stat{
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: .85rem .95rem;
+}
+.stat .k{ color: var(--text-secondary); font-size: .9rem; }
+.stat .v{ font-family:'Cinzel',serif; font-size: 1.5rem; margin-top:.15rem; }
+@media (max-width: 520px){
+  .stat-grid{ grid-template-columns: 1fr; }
+}
+
+  
+/* Accordion (rozszerzone streszczenie) */
+.accordion{display:grid;gap:.75rem;margin-top:.9rem;}
+.acc-item{background:rgba(255,255,255,.03);border:1px solid var(--border-subtle);border-radius:16px;padding:.9rem 1rem;}
+.acc-item summary{cursor:pointer;list-style:none;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:.5rem;}
+.acc-item summary::-webkit-details-marker{display:none;}
+.acc-item[open]{border-color:rgba(34,197,94,.35);box-shadow:0 0 0 6px rgba(34,197,94,.08);}
+.acc-body{margin-top:.75rem;color:var(--text-secondary);line-height:1.65;}
+.acc-body ul{margin:.4rem 0 0 1.1rem;}
+.acc-body li{margin:.25rem 0;}
+
+  </style>
+</head>
+<body id="top">
+<div class="bg-animation">
+<div class="bg-flames"></div>
+</div>
+<div class="nav-progress" id="navProgress"></div>
+<nav class="nav">
+  <div class="nav-container">
+    <a class="nav-logo" href="#top" aria-label="Start">
+      <div class="nav-logo-icon">📚</div>
+      <div class="nav-logo-text">Lalka <span>Matura</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a class="nav-link" href="#omowienie">Omówienie</a></li>
+      <li><a class="nav-link" href="#streszczenie">Streszczenie</a></li>
+      <li><a class="nav-link" href="#bohaterowie">Bohaterowie</a></li>
+      <li><a class="nav-link" href="#motywy">Motywy</a></li>
+      <li><a class="nav-link" href="#generator">Generator</a></li>
+      <li><a class="nav-link" href="#quiz">Quiz</a></li>
+      <li><a class="nav-link" href="#fiszki">Fiszki</a></li>
+      <li><a class="nav-link" href="#typing">Typing</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">📌 Pozytywizm • lektura obowiązkowa • pod maturę</div>
+  <h1 class="hero-title">LALKA</h1>
+  <p class="hero-subtitle">
+    Szybkie omówienie + najważniejsze motywy + ćwiczenia utrwalające (quiz, fiszki, typing).<br/>
+    Zrobione tak, żebyś w 20–30 minut miał/a „szkielet” do rozprawki.
+  </p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#generator">Odpal generator tezy</a>
+    <a class="btn btn-secondary" href="#quiz">Sprawdź quiz</a>
+  </div>
+</section>
+
+<section class="author-section" id="omowienie">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">🧠 W pigułce</div>
+      <h2 class="section-title">Omówienie: co musisz umieć</h2>
+      <p class="section-subtitle">Jeśli umiesz te punkty — jesteś bezpieczny/a na 70–80% pytań.</p>
+    </div>
+
+    <div class="exercise-card reveal">
+      <div class="exercise-title">🎯 10 faktów „must know”</div>
+      <ul class="option-list" style="gap: .6rem;">
+        <li class="option-item">Autor: <b>Bolesław Prus</b> (pozytywizm, realizm).</li>
+        <li class="option-item">Gatunek: <b>powieść realistyczna</b> z elementami panoramy społecznej.</li>
+        <li class="option-item">Oś konfliktu: <b>romantyczny idealizm</b> vs <b>pozytywistyczny pragmatyzm</b>.</li>
+        <li class="option-item">Bohater: <b>Stanisław Wokulski</b> — „człowiek przejścia” między epokami.</li>
+        <li class="option-item">Miłość do <b>Izabeli Łęckiej</b> jako motor działań + źródło klęski.</li>
+        <li class="option-item">Awans społeczny i pieniądz: <b>handel / kapitał</b> vs <b>arystokracja</b>.</li>
+        <li class="option-item">„Pamiętnik starego subiekta” = perspektywa <b>Ignacego Rzeckiego</b> (romantyk, idealista).</li>
+        <li class="option-item">Wątek nauki i postępu: <b>Julian Ochocki</b> (marzenie o wynalazkach, modernizacji).</li>
+        <li class="option-item">Obraz społeczeństwa: arystokracja, mieszczaństwo, inteligencja, bieda (Warszawa).</li>
+        <li class="option-item">Finał (ważne): nie „kto z kim”, tylko <b>co zostaje w bohaterze</b> — rozpad złudzeń, pytanie o sens.</li>
+      </ul>
+    </div>
+
+    <div class="exercise-card reveal">
+      <div class="exercise-title">💥 Killer: „Trójkąt maturalny”</div>
+      <p class="fill-line" style="margin:0;">
+        Gdy dostajesz temat — zawsze odpowiedz 3 rzeczy: <b>teza</b> (co udowodnię), <b>argument</b> (jak), <b>przykład</b> (gdzie w „Lalce” to widać).
+        Poniżej masz generator, który robi to za Ciebie i uczy schematu.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="author-section" id="streszczenie">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">🗺️ Oś fabuły</div>
+      <h2 class="section-title">Streszczenie turbo (bez lania wody)</h2>
+      <p class="section-subtitle">Dwie ścieżki: „tu i teraz” + wspomnienia Rzeckiego.</p>
+    </div>
+
+    <div class="dialog-grid reveal">
+      <div class="exercise-card" style="margin-top:0;">
+        <div class="exercise-title">📍 Linia główna (Warszawa)</div>
+        <div class="fill-line">
+          Wokulski wraca do Warszawy jako bogaty kupiec, wchodzi w świat arystokracji i zakochuje się w Izabeli.
+          Próbuje „kupić” wejście do jej środowiska (inwestycje, spółki, teatr), a przy okazji poznaje brutalną hierarchię i cynizm elit.
+          Z czasem widzi, że jego uczucie jest wykorzystywane, a „klasa” nie chce go naprawdę dopuścić.
+        </div>
+      </div>
+
+      <div class="exercise-card" style="margin-top:0;">
+        <div class="exercise-title">📓 Pamiętnik Rzeckiego (tło epoki)</div>
+        <div class="fill-line">
+          Rzecki opisuje swoją młodość, idee, wiarę w „wielką politykę” i romantyczne mity. Dzięki temu widać,
+          skąd bierze się tęsknota za sensem i dlaczego Wokulski jest rozdarty: z jednej strony praca i pieniądz,
+          z drugiej — marzenia i potrzeba wielkiego uczucia.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-card reveal">
+      <div class="exercise-title">🧩 Uzupełnij streszczenie (1 minuta)</div>
+      <p class="fill-line">
+        Wokulski dorabia się na <select class="fill-select" data-answer="dostawach wojennych">
+          <option value="">— wybierz —</option>
+          <option>dostawach wojennych</option>
+          <option>wygranej na loterii</option>
+          <option>spadku po Łęckich</option>
+        </select>,
+        wraca do <select class="fill-select" data-answer="Warszawy">
+          <option value="">— wybierz —</option>
+          <option>Warszawy</option>
+          <option>Krakowa</option>
+          <option>Wilna</option>
+        </select>
+        i próbuje zdobyć <select class="fill-select" data-answer="Izabelę Łęcką">
+          <option value="">— wybierz —</option>
+          <option>Izabelę Łęcką</option>
+          <option>panią Stawską</option>
+          <option>prezesową Zasławską</option>
+        </select>.
+        Rzecki patrzy na świat jak <select class="fill-select" data-answer="romantyk">
+          <option value="">— wybierz —</option>
+          <option>romantyk</option>
+          <option>scjentysta</option>
+          <option>nihilista</option>
+        </select>, a Ochocki wierzy w <select class="fill-select" data-answer="postęp i naukę">
+          <option value="">— wybierz —</option>
+          <option>postęp i naukę</option>
+          <option>magiczne znaki</option>
+          <option>powrót monarchii</option>
+        </select>.
+      </p>
+      <div style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top: 1rem;">
+        <button class="btn btn-primary" onclick="checkFill()">Sprawdź ✓</button>
+        <button class="btn btn-secondary" onclick="resetFill()">Reset</button>
+      </div>
+      <p id="fillFeedback" style="margin-top: .9rem; color: var(--text-secondary);"></p>
+    </div>
+  </div>
+
+      <div class="exercise-card reveal">
+        <div class="exercise-title">📚 Rozszerzone streszczenie (sceny pod maturę)</div>
+        <div class="exercise-desc">Kliknij segment — dostajesz „co się dzieje” + „po co to jest” (pod argument).</div>
+
+        <div class="accordion">
+          <details class="acc-item">
+            <summary>1) Start: Warszawa, sklep, „wejście” Wokulskiego</summary>
+            <div class="acc-body">
+              <ul>
+                <li>Wokulski wraca jako bogaty kupiec: praca + handel + kapitał.</li>
+                <li>Poznaje Izabelę i wpada w idealizację (romantyczne patrzenie na arystokrację).</li>
+                <li>Sklep = symbol awansu i „nowej klasy”, która chce być uznana.</li>
+                <li><b>Pod tezę:</b> uczucie zderza się z hierarchią społeczną — „nie wystarczy być dobrym i bogatym”.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>2) Rozwój: „kupowanie” akceptacji, spółki, salony</summary>
+            <div class="acc-body">
+              <ul>
+                <li>Wokulski inwestuje, wspiera Łęckich, wchodzi w towarzystwo — ale jest traktowany z góry.</li>
+                <li>Arystokracja bywa pasożytnicza: żyje pozorami i długami, liczy na cudze pieniądze.</li>
+                <li>Rzecki prowadzi pamiętnik — tłumaczy epokę, ideologie, tęsknoty.</li>
+                <li><b>Pod tezę:</b> pieniądz otwiera drzwi, ale nie daje szacunku — konflikt klasowy działa jak beton.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>3) Pęknięcie: zazdrość, upokorzenia, utrata złudzeń</summary>
+            <div class="acc-body">
+              <ul>
+                <li>Wokulski widzi, że Izabela gra, korzysta z jego pozycji i nie traktuje go jak równego.</li>
+                <li>Pojawia się wątek Starskiego — wyzwala w Wokulskim gniew, rozpacz, decyzje skrajne.</li>
+                <li>Ochocki to kontrast: nauka, postęp, przyszłość — bez salonowej gry.</li>
+                <li><b>Pod tezę:</b> idealizm bez granic prowadzi do autodestrukcji; rozum przegrywa z uczuciem.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>4) Finał: co zostaje po Wokulskim (i dlaczego to „maturalne”)</summary>
+            <div class="acc-body">
+              <ul>
+                <li>Wokulski znika — zostaje pytanie: porażka jednostki czy porażka systemu?</li>
+                <li>Rzecki przegrywa ze zmianą epoki (stare ideały nie pasują do nowego świata).</li>
+                <li>U Prusa finał jest celowo „otwarty” — możesz go interpretować pod tezę.</li>
+                <li><b>Pod tezę:</b> krytyka społeczeństwa i mechanizmów klasowych + dramat człowieka rozdartego między romantyzmem a pozytywizmem.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+</section>
+
+<section class="vocab-section" id="bohaterowie">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">👥 Postacie</div>
+      <h2 class="section-title">Bohaterowie (maturalnie)</h2>
+      <p class="section-subtitle">Kliknij kartę, żeby rozwinąć „jak tego użyć w rozprawce”.</p>
+    </div>
+
+    <div class="vocab-grid" id="charGrid"></div>
+  </div>
+</section>
+
+<section class="author-section" id="motywy">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">🧩 Motywy</div>
+      <h2 class="section-title">Motywy i problemy</h2>
+      <p class="section-subtitle">Wybierz motyw — dostajesz gotową formułkę „pod tezę”.</p>
+    </div>
+
+    <div class="exercise-card reveal" style="margin-top: 0;">
+      <div class="tab-row" id="motifTabs"></div>
+      <div class="tab-panel" id="motifPanel"></div>
+    </div>
+  </div>
+</section>
+
+<section class="author-section" id="generator">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">🧨 Killer</div>
+      <h2 class="section-title">Generator tezy + plan z „Lalki”</h2>
+      <p class="section-subtitle">Wybierz temat i stronę. Dostajesz tezę, 2 argumenty, przykłady i wniosek.</p>
+    </div>
+
+    <div class="typing-wrap reveal">
+      <div class="typing-card">
+        <div class="exercise-title" style="margin-bottom: .75rem;">⚙️ Ustawienia</div>
+
+        <label class="typing-hint" for="genTopic">Temat / problem:</label>
+        <select id="genTopic" class="fill-select" style="width:100%; padding:.8rem 1rem; border-radius:14px;">
+          <option value="idealizm">Czy idealizm pomaga czy niszczy człowieka?</option>
+          <option value="milosc">Czy miłość może usprawiedliwiać wybory bohatera?</option>
+          <option value="awans">Czy awans społeczny jest możliwy bez utraty siebie?</option>
+          <option value="pieniadz">Czy pieniądz daje szczęście?</option>
+          <option value="spoleczenstwo">Czy społeczeństwo może złamać jednostkę?</option>
+        </select>
+
+        <label class="typing-hint" for="genSide" style="margin-top: .75rem;">Twoje stanowisko:</label>
+        <select id="genSide" class="fill-select" style="width:100%; padding:.8rem 1rem; border-radius:14px;">
+          <option value="tak">TAK (zgadzam się z tezą)</option>
+          <option value="nie">NIE (polecam)</option>
+        </select>
+
+        <div style="display:flex; gap:.75rem; flex-wrap:wrap; margin-top: 1rem;">
+          <button class="btn btn-primary" onclick="generate()">Generuj ✓</button>
+          <button class="btn btn-secondary" onclick="copyPlan()">Kopiuj plan</button>
+        </div>
+
+        <p class="typing-hint" style="margin-top: .9rem; margin-bottom:0;">
+          Tip: jak dodasz drugi utwór (kontekst) — masz +punkty. W planie zostawiłem miejsce na „drugi przykład”.
+        </p>
+      </div>
+
+      <div class="typing-card">
+        <div class="exercise-title" style="margin-bottom: .75rem;">🧾 Wynik</div>
+        <pre id="genOut" class="code" style="white-space:pre-wrap; margin:0;">Wybierz temat i kliknij „Generuj”.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quiz-section" id="quiz">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">🎯 Sprawdź się</div>
+      <h2 class="section-title">Quiz: „Lalka” (pod maturę)</h2>
+      <p class="section-subtitle">Odpowiedz, a potem dopiero „Następne”. Wynik policzy się na końcu.</p>
+    </div>
+
+    <div class="quiz-container">
+      <div class="quiz-progress" id="quizProgress"></div>
+      <div class="quiz-card" id="quizCard">
+        <div class="quiz-question-number">Pytanie <span id="currentQuestion">1</span> z <span id="totalQuestions">0</span></div>
+        <h3 class="quiz-question" id="quizQuestion"></h3>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback">
+          <h4 id="feedbackTitle"></h4>
+          <p id="feedbackText"></p>
+        </div>
+        <div class="quiz-actions">
+          <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()" disabled>← Poprzednie</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Następne →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flashcards-section" id="fiszki">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">🃏 Powtórka</div>
+      <h2 class="section-title">Fiszki</h2>
+      <p class="section-subtitle">Kliknij fiszkę, aby zobaczyć odpowiedź. „Umiem” = dodaje do opanowanych.</p>
+    </div>
+    <div class="flashcard-container">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-face flashcard-front">
+          <h3 id="flashcardQuestion">…</h3>
+          <p>Kliknij, aby zobaczyć odpowiedź</p>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <p id="flashcardAnswer">…</p>
+        </div>
+      </div>
+      <div class="flashcard-nav" style="gap: 0.75rem;">
+        <button class="btn btn-secondary" onclick="prevCard()">← Poprzednia</button>
+        <button class="btn btn-secondary" onclick="speakCurrentCard()">🔊 Odczytaj</button>
+        <button class="btn btn-primary" onclick="markCurrentMastered()">Umiem ✓</button>
+        <button class="btn btn-primary" onclick="nextCard()">Następna →</button>
+      </div>
+      <div class="flashcard-counter">
+        Fiszka <span id="currentCard">1</span> z <span id="totalCards">0</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="author-section" id="typing">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-badge">⌨️ Speed</div>
+      <h2 class="section-title">Typing sprint</h2>
+      <p class="section-subtitle">Hasło → wpisujesz odpowiedź. Enter = sprawdź. Shift+Enter = pokaż odpowiedź.</p>
+    </div>
+
+    <div class="typing-wrap reveal">
+      <div class="typing-card">
+        <div class="typing-prompt" id="typingPrompt">…</div>
+        <div class="typing-hint" id="typingHint">Wpisz odpowiedź (bez cudzysłowów). Przykład: „Wokulski”.</div>
+        <input class="typing-input" id="typingInput" autocomplete="off" placeholder="np. Wokulski" />
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top: 1rem;">
+          <button class="btn btn-secondary" onclick="speakTyping()">🔊 Odczytaj</button>
+          <button class="btn btn-primary" onclick="checkTyping()">Sprawdź ✓</button>
+          <button class="btn btn-secondary" onclick="skipTyping()">Pomiń →</button>
+          <button class="btn btn-secondary" onclick="resetTyping()">Reset</button>
+        </div>
+        <p id="typingFeedback" style="margin-top: 0.85rem; color: var(--text-secondary);"></p>
+      </div>
+
+      <div class="typing-card">
+        <div class="exercise-title" style="margin-bottom: 0.5rem;">📊 Statystyki</div>
+        <div class="stat-grid">
+          <div class="stat"><div class="k">Poprawne</div><div class="v" id="statOk">0</div></div>
+          <div class="stat"><div class="k">Błędne</div><div class="v" id="statBad">0</div></div>
+          <div class="stat"><div class="k">Streak</div><div class="v" id="statStreak">0</div></div>
+          <div class="stat"><div class="k">Najlepszy</div><div class="v" id="statBest">0</div></div>
+        </div>
+
+        <div class="exercise-card" style="margin-top:1rem;">
+          <div class="exercise-title" style="margin-bottom: 0.5rem;">🧠 Metoda: „1 zdanie – 1 argument”</div>
+          <p class="fill-line" style="margin:0;">
+            Po każdej poprawnej odpowiedzi dopowiedz w głowie 1 zdanie: <i>„To mi się przyda w temacie o… ponieważ…”</i>.
+            To buduje odruch łączenia faktu z tezą — dokładnie to, co egzaminator chce zobaczyć.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <div class="footer-logo-icon">🧪</div>
+    <div class="footer-logo-text">ViralloLab</div>
+  </div>
+  <p class="footer-copy">
+    Interaktywna lekcja maturalna • „Lalka” • wykonanie:
+    <a href="https://staberek.com" target="_blank" rel="noreferrer">Staberek</a>
+    (<a href="https://staberek.com" target="_blank" rel="noreferrer">Kacper Stabrawa</a>)
+  </p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// © ViralloLab – autorski komponent ViralloLab 2025
+
+// Polyfill: replaceAll (dla starszych Safari)
+if (!String.prototype.replaceAll) {
+  // eslint-disable-next-line no-extend-native
+  String.prototype.replaceAll = function(search, replacement){
+    return this.split(search).join(replacement);
+  };
+}
+
+// ----------------- TOAST -----------------
+function toast(msg, small){
+  const el = document.getElementById("toast");
+  el.innerHTML = small ? `<b>${msg}</b><div style="opacity:.85">${small}</div>` : `<b>${msg}</b>`;
+  el.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>el.classList.remove("show"), 2400);
+}
+
+// ----------------- PROGRESS + REVEAL -----------------
+window.addEventListener('scroll', () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  document.getElementById('navProgress').style.width = (height>0 ? (winScroll / height * 100) : 0) + '%';
+}, {passive:true});
+
+function revealOnScroll() {
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+  });
+}
+window.addEventListener('scroll', revealOnScroll, {passive:true});
+revealOnScroll();
+
+// ----------------- DATA -----------------
+
+    // ----------------- DANE -----------------
+
+    const characters = [
+      {
+        id: "wokulski",
+        name: "Stanisław Wokulski",
+        badge: "💼 GŁÓWNY",
+        short: "Kupiec, samouk, człowiek rozdarty między pozytywizmem (praca) a romantyzmem (miłość).",
+        full: `
+<b>Rdzeń postaci:</b> awans dzięki pracy + kapitał, ale psychicznie „romantyk”.<br/>
+<b>Co pamiętać:</b> idealizuje Izabelę, próbuje „kupić” miejsce w arystokracji, przegrywa z hierarchią i własnymi emocjami.<br/>
+<b>Pod rozprawkę:</b> świetny do tematów o <u>miłości</u>, <u>awansie</u>, <u>złudzeniach</u>, <u>konflikcie rozum–uczucie</u>, <u>samotności</u>.<br/>
+<b>Mini-hak (scena):</b> inwestycje i wejście do salonów → pokazuje, że pieniądz ≠ szacunek.`
+      },
+      {
+        id: "izabela",
+        name: "Izabela Łęcka",
+        badge: "👑 ARYSTOKRACJA",
+        short: "Idealizowana „księżniczka” — wychowana w kulcie pozorów i klasy.",
+        full: `
+<b>Rdzeń postaci:</b> pozór, dystans, status społeczny jako religia.<br/>
+<b>Co pamiętać:</b> przyjmuje pomoc Wokulskiego, ale nie widzi w nim równego; traktuje go jak „środek”.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>egoizmie</u>, <u>pozorach</u>, <u>nierówności klas</u>, <u>idealizacji</u>.<br/>
+<b>Mini-hak:</b> jej „wrażliwość” bywa dekoracją — Prus rozbraja mit arystokratycznej wyższości.`
+      },
+      {
+        id: "rzecki",
+        name: "Ignacy Rzecki",
+        badge: "📓 PAMIĘTNIK",
+        short: "Stary subiekt, lojalny, idealista; „serce” powieści i kronikarz epoki.",
+        full: `
+<b>Rdzeń postaci:</b> uczciwość + wierność ideałom (napoleońskie marzenia).<br/>
+<b>Co pamiętać:</b> jego pamiętnik daje tło: przemianę epoki i rozpad dawnych marzeń.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>przyjaźni</u>, <u>wierności</u>, <u>tęsknocie za sensem</u>, <u>zderzeniu ideałów z rzeczywistością</u>.<br/>
+<b>Mini-hak:</b> pokazuje, jak „stare” przegrywa z „nowym” światem.`
+      },
+      {
+        id: "ochocki",
+        name: "Julian Ochocki",
+        badge: "🔬 POSTĘP",
+        short: "Nauka, wynalazki, przyszłość — kontrast do salonów i gry pozorów.",
+        full: `
+<b>Rdzeń postaci:</b> pozytywistyczny projekt: praca dla rozwoju (nie dla pozoru).<br/>
+<b>Co pamiętać:</b> patrzy na społeczeństwo trzeźwo, jest antytezą „arystokracji dla arystokracji”.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>postępie</u>, <u>marzeniach o zmianie</u>, <u>wartości pracy</u>.<br/>
+<b>Mini-hak:</b> zderz go z Wokulskim: rozum vs uczucie.`
+      },
+      {
+        id: "stawska",
+        name: "Helena Stawska",
+        badge: "🧩 KONTRAST",
+        short: "Uczciwość, codzienny trud, normalność — „zdrowa” alternatywa wobec Izabeli.",
+        full: `
+<b>Rdzeń postaci:</b> praca, odpowiedzialność, moralność bez teatru salonów.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>prawdziwych wartościach</u>, <u>godności</u>, <u>krzywdzie i plotce</u>.<br/>
+<b>Mini-hak:</b> zestawienie ze światem Łęckich obnaża fałsz elit.`
+      },
+      {
+        id: "zaslawska",
+        name: "Prezesowa Zasławska",
+        badge: "🌿 ROZSĄDEK",
+        short: "Doświadczona, trzeźwa obserwatorka; widzi Wokulskiego i mechanizmy klasowe.",
+        full: `
+<b>Rdzeń postaci:</b> mądrość życiowa + dystans do salonów.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>ocenie społeczeństwa</u>, <u>rozsądku</u>, <u>dojrzałości</u>.<br/>
+<b>Mini-hak:</b> mówi więcej o świecie niż sami jego uczestnicy.`
+      },
+      {
+        id: "leccy",
+        name: "Tomasz Łęcki",
+        badge: "💸 DŁUGI",
+        short: "Ojciec Izabeli; symbol upadku arystokracji — długi i życie ponad stan.",
+        full: `
+<b>Rdzeń postaci:</b> klasa „z tytułu”, ale bez realnej siły ekonomicznej.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>pozorach</u>, <u>kryzysie elit</u>, <u>pieniądzu</u>.`
+      },
+      {
+        id: "krzeszowska",
+        name: "Baronowa Krzeszowska",
+        badge: "⚖️ KONFLIKT",
+        short: "Zazdrość, obsesje, procesy — pokazuje toksyczne relacje i społeczną hipokryzję.",
+        full: `
+<b>Rdzeń postaci:</b> emocje, urażona duma, plotka jako broń.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>zazdrości</u>, <u>krzywdzie</u>, <u>społecznych mechanizmach</u>.`
+      },
+      {
+        id: "starski",
+        name: "Kazimierz Starski",
+        badge: "🎭 ISKRA",
+        short: "Katalizator upadku złudzeń Wokulskiego — salonowa gra i cynizm.",
+        full: `
+<b>Rdzeń postaci:</b> „łatwość” arystokracji: flirty, pozory, brak konsekwencji.<br/>
+<b>Pod rozprawkę:</b> do tematów o <u>prawdzie</u>, <u>złamanych ideałach</u>, <u>rozczarowaniu</u>.`
+      }
+    ];
+
+    const motifs = [
+      {
+        id: "awans",
+        label: "Awans społeczny",
+        text: "Wokulski udowadnia, że można się „wybić”, ale nie da się łatwo przebić muru klas i pogardy.",
+        examples: [
+          "Sklep, inwestycje, wejście do salonów → pieniądz otwiera drzwi, lecz nie daje szacunku.",
+          "Arystokracja korzysta z kapitału „nowych”, ale traktuje ich jak gorszych."
+        ]
+      },
+      {
+        id: "milosc",
+        label: "Miłość vs rozsądek",
+        text: "Uczucie pcha Wokulskiego do działań wbrew logice; idealizacja kończy się krachem.",
+        examples: [
+          "Idealizacja Izabeli → ślepa wiara w „mit arystokracji”.",
+          "Zazdrość i upokorzenia → pęknięcie psychiczne bohatera."
+        ]
+      },
+      {
+        id: "pieniadz",
+        label: "Pieniądz i pozory",
+        text: "Pieniądz rządzi relacjami, ale w świecie elit liczy się też „urodzenie” i reputacja.",
+        examples: [
+          "Łęccy: tytuł + długi → życie na kredyt prestiżu.",
+          "Wokulski: kapitał + praca → ciągle „nie swój”."
+        ]
+      },
+      {
+        id: "klasy",
+        label: "Konflikt klas",
+        text: "Prus pokazuje brutalną hierarchię: pogardę elit i cyniczne wykorzystywanie innych.",
+        examples: [
+          "Salon: ocena po pochodzeniu, nie po wartości człowieka.",
+          "Plotka i reputacja jako narzędzie kontroli."
+        ]
+      },
+      {
+        id: "idealizm",
+        label: "Idealizm a rzeczywistość",
+        text: "Rzecki i Wokulski wierzą w wielkie idee, ale świat jest praktyczny, zimny, interesowny.",
+        examples: [
+          "Rzecki: marzenia napoleońskie → przegrywają z nową epoką.",
+          "Wokulski: wiara w „miłość jak z romansu” → rozbija się o real."
+        ]
+      },
+      {
+        id: "postep",
+        label: "Postęp i nauka",
+        text: "Ochocki reprezentuje pozytywistyczny motor zmian — naukę i pragmatyzm.",
+        examples: [
+          "Kontrast: laboratorium/idee vs salony/pozory.",
+          "Postęp jako nadzieja na sens poza miłością i statusem."
+        ]
+      },
+      {
+        id: "samotnosc",
+        label: "Samotność jednostki",
+        text: "Bohaterowie są samotni w swoich światach: Wokulski między klasami, Rzecki w przeszłości.",
+        examples: [
+          "Wokulski: „nigdzie nie pasuje” → ani elita, ani mieszczaństwo.",
+          "Rzecki: lojalny, ale coraz bardziej niepotrzebny."
+        ]
+      },
+      {
+        id: "praca",
+        label: "Praca i etos pozytywizmu",
+        text: "Praca jako wartość, ale też jako narzędzie walki o godność i miejsce w świecie.",
+        examples: [
+          "Kariera Wokulskiego = dowód siły pracy, samodoskonalenia.",
+          "Prus pyta: czy sama praca wystarczy, gdy system jest zamknięty?"
+        ]
+      }
+    ];
+
+    const flashcards = [
+      { q: "Kim jest Stanisław Wokulski i co go wewnętrznie rozrywa?", a: "Bogaty kupiec i samouk: żyje etosem pracy (pozytywizm), ale działa jak romantyk w miłości do Izabeli." },
+      { q: "Jaką funkcję ma pamiętnik Rzeckiego?", a: "Daje tło epoki, pokazuje przemianę świata i mentalności; buduje kontrast „stare ideały” vs „nowoczesność”." },
+      { q: "Co symbolizuje arystokracja u Prusa?", a: "Świat pozorów, tytułów i interesów; często pasożytowanie na pieniądzu „nowych”." },
+      { q: "Dlaczego Wokulski nie zostaje zaakceptowany przez salony?", a: "Bo pochodzenie i status są ważniejsze niż pieniądz i zasługi — działa mur klasowy." },
+      { q: "Ochocki — co wnosi do interpretacji?", a: "Postęp, nauka, przyszłość; kontrast do romantycznej idealizacji i salonowej gry." },
+      { q: "Izabela Łęcka — cecha kluczowa maturalnie?", a: "Kult klasy i pozoru; nie traktuje Wokulskiego jak równego, choć korzysta z jego pomocy." },
+      { q: "Motyw: miłość vs rozsądek — przykład z powieści?", a: "Wokulski podejmuje ryzykowne decyzje (inwestycje, wejście do salonów) głównie „pod Izabelę”." },
+      { q: "Motyw: awans społeczny — teza w 1 zdaniu?", a: "Awans jest możliwy ekonomicznie, ale społecznie ograniczony przez hierarchię i pogardę elit." },
+      { q: "Co oznacza „konflikt klas” w 'Lalce'?", a: "Stałe napięcie: mieszczaństwo/nowi bogaci vs arystokracja; ocena po pochodzeniu." },
+      { q: "Stawska — po co jest w powieści?", a: "Jako kontrast: uczciwość i normalność vs salon i pozory; pokazuje inną wersję kobiecości." },
+      { q: "Dlaczego zakończenie jest ważne pod maturę?", a: "Jest otwarte — daje pole do interpretacji: dramat jednostki i krytyka systemu społecznego." },
+      { q: "Baronowa Krzeszowska — co pokazuje?", a: "Plotkę, konflikty, obsesje; społeczne mechanizmy niszczenia reputacji." },
+      { q: "Hasło-klucz do Wokulskiego?", a: "„Między epokami” — pozytywistyczny czyn i romantyczne uczucie w jednym człowieku." },
+      { q: "Hasło-klucz do Rzeckiego?", a: "„Wierność” — ludziom, pracy, ideałom, które odchodzą." },
+      { q: "Co Prus krytykuje najmocniej?", a: "Hipokryzję i pasożytnictwo elit + system klasowy, który blokuje uczciwych." },
+      { q: "Jak użyć 'Lalki' jako kontekstu do tematu o marzeniach?", a: "Marzenia Wokulskiego/Rzeckiego zderzają się z realnością — idealizm bez granic bywa niszczący." }
+    ];
+
+    const quizData = [
+      {
+        q: "Co najlepiej opisuje konflikt wewnętrzny Wokulskiego?",
+        options: ["Miłość vs honor", "Pozytywizm (praca) vs romantyzm (uczucie)", "Religia vs nauka", "Wojna vs pokój"],
+        answer: 1,
+        explanation: "Wokulski działa jak pozytywista w pracy, ale w miłości jest romantycznym idealistą."
+      },
+      {
+        q: "Funkcja pamiętnika Rzeckiego w powieści to przede wszystkim…",
+        options: ["Komizm sytuacyjny", "Tło historyczne i mentalne epoki", "Opis przyrody", "Zastąpienie narratora"],
+        answer: 1,
+        explanation: "Pamiętnik buduje kontekst i pokazuje przemianę świata oraz ideałów."
+      },
+      {
+        q: "Dlaczego arystokracja jest krytykowana przez Prusa?",
+        options: ["Za pracowitość", "Za brak tytułów", "Za pozory i pasożytnictwo", "Za naukowe ambicje"],
+        answer: 2,
+        explanation: "Elity często żyją reputacją i długami, korzystając z cudzych pieniędzy."
+      },
+      {
+        q: "Ochocki reprezentuje w 'Lalce' przede wszystkim…",
+        options: ["Mit romantycznego bohatera", "Postęp i naukę", "Skrajny konserwatyzm", "Moralizatorstwo"],
+        answer: 1,
+        explanation: "Jest figurą pozytywistycznej wiary w rozwój i sens pracy dla przyszłości."
+      },
+      {
+        q: "Motyw awansu społecznego w powieści pokazuje, że…",
+        options: ["Pieniądz zawsze zapewnia szacunek", "Awans jest niemożliwy", "Awans bywa blokowany przez hierarchię klas", "Arystokracja wspiera wszystkich"],
+        answer: 2,
+        explanation: "Wokulski może wejść finansowo, ale nie zostaje w pełni uznany społecznie."
+      },
+      {
+        q: "Izabela Łęcka jest dla Wokulskiego przede wszystkim…",
+        options: ["Realną partnerką", "Symbolem ideału i złudzeń", "Przyjaciółką z dzieciństwa", "Wrogiem politycznym"],
+        answer: 1,
+        explanation: "Wokulski ją idealizuje, widząc w niej „mit” klasy i piękna."
+      },
+      {
+        q: "Która para najlepiej oddaje oś konfliktu społecznego w 'Lalce'?",
+        options: ["Chłopi vs szlachta", "Mieszczaństwo/nowi bogaci vs arystokracja", "Duchowni vs niewierzący", "Uczniowie vs nauczyciele"],
+        answer: 1,
+        explanation: "To powieść o zderzeniu klas w mieście i o barierach awansu."
+      },
+      {
+        q: "Helena Stawska pełni w powieści rolę…",
+        options: ["Antagonistki Wokulskiego", "Kontrastu moralnego dla świata salonów", "Symbolu dekadencji", "Postaci epizodycznej bez znaczenia"],
+        answer: 1,
+        explanation: "Stawska pokazuje uczciwość i codzienny trud, bez salonowej gry."
+      },
+      {
+        q: "Otwarty finał 'Lalki' jest ważny, bo…",
+        options: ["Nie da się go interpretować", "Pozwala dopasować interpretację pod tezę", "Jest czysto humorystyczny", "Dotyczy tylko wątku Ochockiego"],
+        answer: 1,
+        explanation: "Możesz go czytać jako dramat jednostki i/lub krytykę systemu."
+      },
+      {
+        q: "Najtrafniejsza definicja „pozorów” w świecie powieści to…",
+        options: ["Styl ubierania się", "Udawanie wartości poprzez tytuł i reputację", "Praca fizyczna", "Technika wynalazków"],
+        answer: 1,
+        explanation: "U Prusa liczy się „jak wyglądasz w oczach salonu”, nie kim jesteś."
+      },
+      {
+        q: "Co jest jednym z głównych mechanizmów kontroli społecznej w powieści?",
+        options: ["Plotka i reputacja", "Prawo morskie", "Rytuały religijne", "Tajemne bractwa"],
+        answer: 0,
+        explanation: "Plotka niszczy ludzi, a reputacja decyduje o „byciu” w towarzystwie."
+      },
+      {
+        q: "Które zdanie najlepiej pasuje jako teza do 'Lalki' w temacie o idealizmie?",
+        options: [
+          "Idealizm zawsze daje szczęście.",
+          "Idealizm bez granic może prowadzić do autodestrukcji.",
+          "Idealizm jest zbędny w życiu.",
+          "Idealizm dotyczy tylko nauki."
+        ],
+        answer: 1,
+        explanation: "Wokulski (i Rzecki) pokazują, jak ideały przegrywają z realnością."
+      }
+    ];
+
+        const typingItems = [
+      { p: "Główny bohater (nazwisko):", a: "Wokulski" },
+      { p: "Arystokratka – obiekt idealizacji (imię):", a: "Izabela" },
+      { p: "Stary subiekt – autor pamiętnika (nazwisko):", a: "Rzecki" },
+      { p: "Pozytywista od nauki i wynalazków (nazwisko):", a: "Ochocki" },
+      { p: "Motyw: awans ________:", a: "społeczny" },
+      { p: "Motyw: konflikt ________:", a: "klas" },
+      { p: "Motyw: pozory i ________:", a: "reputacja" },
+      { p: "Etos: praca u podstaw (1 słowo):", a: "pozytywizm" },
+      { p: "Przeciwieństwo pozytywizmu (1 słowo):", a: "romantyzm" },
+      { p: "Miłość kontra ________:", a: "rozsądek" },
+      { p: "Warszawa: miejsce pracy Wokulskiego (1 słowo):", a: "sklep" },
+      { p: "Czynnik, który „otwiera drzwi”, ale nie daje szacunku:", a: "pieniądz" }
+    ];
+
+
+// ----------------- CHAR GRID -----------------
+function renderChars(){
+  const grid=document.getElementById("charGrid");
+  grid.innerHTML = characters.map(c=>`
+    <div class="vocab-card reveal" id="char-${c.id}">
+      <div class="vocab-head">
+        <div>
+          <div class="vocab-word">${c.name}</div>
+          <div class="vocab-sub">${c.badge}</div>
+        </div>
+        <div class="vocab-actions">
+          <button class="icon-btn" title="Rozwiń / zwiń" onclick="toggleChar(event, '${c.id}')">↕️</button>
+        </div>
+      </div>
+      <div class="vocab-body" data-hidden="1" data-short="${escapeHtml(c.short)}" data-full="${escapeHtml(c.full)}">
+        ${c.short}
+      </div>
+    </div>
+  `).join("");
+  revealOnScroll();
+}
+function escapeHtml(s) {
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function toggleReveal(card){
+  const body = card.querySelector(".vocab-body");
+  const hidden = body.dataset.hidden === "1";
+  if(hidden){
+    body.dataset.hidden = "0";
+    body.innerHTML = body.dataset.full.replaceAll("&lt;","<").replaceAll("&gt;",">").replaceAll("&amp;","&").replaceAll("&quot;","\"").replaceAll("&#039;","'");
+  } else {
+    body.dataset.hidden = "1";
+    body.innerHTML = body.dataset.short.replaceAll("&lt;","<").replaceAll("&gt;",">").replaceAll("&amp;","&").replaceAll("&quot;","\"").replaceAll("&#039;","'");
+  }
+}
+function toggleChar(ev,id){
+  ev.preventDefault(); ev.stopPropagation();
+  const card=document.getElementById("char-"+id);
+  toggleReveal(card);
+}
+
+// ----------------- MOTIF TABS -----------------
+function renderMotifs(){
+  const tabs=document.getElementById("motifTabs");
+  const panel=document.getElementById("motifPanel");
+  tabs.innerHTML = motifs.map((m,i)=>`
+    <button class="tab-btn ${i===0?'active':''}" onclick="selectMotif('${m.id}')">${m.label}</button>
+  `).join("");
+  window.__motif = motifs[0].id;
+  panel.innerHTML = motifHtml(motifs[0]);
+}
+function motifHtml(m){
+  const ex = (m.examples||[]).map(e=>`<li>${e}</li>`).join("");
+  return `
+    <h3 style="font-family:'Cinzel',serif; margin:0 0 .5rem 0;">${m.label}</h3>
+    <div style="color:var(--text-secondary); line-height:1.85;">${m.text}</div>
+    <div style="margin-top: .9rem;">
+      <div style="opacity:.85; margin-bottom:.4rem;"><b>Przykłady z utworu:</b></div>
+      <ul style="margin:0; padding-left: 1.1rem; color: var(--text-primary);">${ex}</ul>
+    </div>
+  `;
+}
+function selectMotif(id){
+  window.__motif = id;
+  document.querySelectorAll("#motifTabs .tab-btn").forEach(b=>b.classList.remove("active"));
+  const btn=[...document.querySelectorAll("#motifTabs .tab-btn")].find(b=>b.textContent===motifs.find(x=>x.id===id).label);
+  if(btn) btn.classList.add("active");
+  const panel=document.getElementById("motifPanel");
+  panel.innerHTML = motifHtml(motifs.find(x=>x.id===id));
+}
+
+// ----------------- FILL -----------------
+function checkFill(){
+  const selects=[...document.querySelectorAll(".fill-select[data-answer]")];
+  let ok=0;
+  selects.forEach(s=>{
+    const ans=s.dataset.answer;
+    const val=s.value.trim();
+    s.classList.remove("correct","wrong");
+    if(val && val===ans){ ok++; s.classList.add("correct"); }
+    else s.classList.add("wrong");
+  });
+  document.getElementById("fillFeedback").textContent = `Wynik: ${ok}/${selects.length}`;
+  toast(ok===selects.length ? "Perfekcyjnie! 🔥" : "Spoko — popraw i jedziemy dalej.", `Wynik: ${ok}/${selects.length}`);
+}
+function resetFill(){
+  document.querySelectorAll(".fill-select[data-answer]").forEach(s=>{ s.value=""; s.classList.remove("correct","wrong"); });
+  document.getElementById("fillFeedback").textContent="";
+  toast("Zresetowane.", "Uzupełnij jeszcze raz ✅");
+}
+
+// ----------------- GENERATOR -----------------
+const plans = {
+  idealizm: {
+    tak: {
+      thesis:"Idealizm może pomagać — daje sens, ale wymaga kontroli i kontaktu z faktami.",
+      a1:"Wokulski: idealizm napędza działanie (ambicja, praca), ale bez trzeźwej oceny ludzi łatwo o klęskę.",
+      a2:"Rzecki: ideały dają lojalność i moralny kręgosłup, lecz mogą zniekształcać obraz świata.",
+      concl:"W „Lalce” idealizm jest siłą — dopóki nie odcina człowieka od rzeczywistości."
+    },
+    nie: {
+      thesis:"Idealizm, gdy dominuje nad rozsądkiem, niszczy człowieka — prowadzi do złudzeń i błędów.",
+      a1:"Wokulski: ślepa wiara w „uczucie” powoduje, że ignoruje sygnały i pozwala sobą sterować.",
+      a2:"Rzecki: romantyczne mity sprawiają, że żyje wspomnieniem i interpretuje fakty pod tezę.",
+      concl:"Prus pokazuje, że świat nowoczesny wymaga pragmatyzmu; idealizm bez hamulców kończy się rozczarowaniem."
+    }
+  },
+  milosc: {
+    tak: {
+      thesis:"Miłość potrafi usprawiedliwiać wybory bohatera, jeśli prowadzi do rozwoju, a nie do utraty godności.",
+      a1:"Wokulski: uczucie mobilizuje go do pracy i działania — pokazuje siłę emocji jako motoru.",
+      a2:"Granica: gdy relacja opiera się na pozorze i nierówności (salon), miłość staje się toksyczna.",
+      concl:"Miłość ma sens jako wartość — ale nie jako ślepa pogoń za statusem."
+    },
+    nie: {
+      thesis:"Miłość nie usprawiedliwia wyborów, gdy prowadzi do łamania zasad i utraty siebie.",
+      a1:"Wokulski: podporządkowuje życie Izabeli, zamiast widzieć człowieka — gubi własne cele.",
+      a2:"Mechanizm salonu: uczucie bywa wykorzystane jako narzędzie nacisku i gry społecznej.",
+      concl:"W „Lalce” miłość bez wzajemności staje się źródłem upokorzenia i klęski."
+    }
+  },
+  awans: {
+    tak: {
+      thesis:"Awans społeczny jest możliwy, ale często wymaga ceny: kompromisów i zderzenia z uprzedzeniami.",
+      a1:"Wokulski: kapitał daje wpływy i dostęp, lecz nie usuwa barier mentalnych arystokracji.",
+      a2:"Kontrast: praca i kompetencje mają wartość w handlu, ale w salonie liczy się nazwisko.",
+      concl:"Prus pokazuje awans jako trudny proces — zależny od struktur społecznych."
+    },
+    nie: {
+      thesis:"Awans społeczny w „Lalce” jest pozorny — pieniądz nie gwarantuje równości ani szacunku.",
+      a1:"Wokulski: traktowany jak narzędzie finansowe; granica klasowa pozostaje.",
+      a2:"Świat salonu: „forma” i pochodzenie blokują prawdziwą integrację.",
+      concl:"U Prusa awans bez zmiany mentalności społeczeństwa jest iluzją."
+    }
+  },
+  pieniadz: {
+    tak: {
+      thesis:"Pieniądz może dawać poczucie bezpieczeństwa i możliwości, ale sam nie tworzy szczęścia.",
+      a1:"Wokulski: bogactwo otwiera drzwi i daje sprawczość (pomoc innym, inwestycje).",
+      a2:"Jednak: brak sensu i relacji powoduje pustkę — pieniądz nie „leczy” samotności.",
+      concl:"W „Lalce” kapitał to narzędzie, nie odpowiedź na potrzebę sensu."
+    },
+    nie: {
+      thesis:"Pieniądz nie daje szczęścia — może wręcz uwydatniać samotność i fałsz relacji.",
+      a1:"Wokulski: bogactwo przyciąga interesowność; nie kupi szczerego szacunku.",
+      a2:"Salon: relacje często opierają się na statusie, nie na człowieku.",
+      concl:"Prus pokazuje, że wartości i godność są ważniejsze niż stan konta."
+    }
+  },
+  spoleczenstwo: {
+    tak: {
+      thesis:"Społeczeństwo może złamać jednostkę, gdy działa poprzez pogardę, wykluczenie i presję norm.",
+      a1:"Wokulski: zderza się z barierą klasową i grą pozorów — to niszczy jego wiarę w ludzi.",
+      a2:"Panorama: mechanizmy epoki utrudniają uczciwe życie (plotka, interes, hierarchia).",
+      concl:"W „Lalce” człowiek przegrywa nie tylko z sobą, ale i z systemem relacji społecznych."
+    },
+    nie: {
+      thesis:"Społeczeństwo wpływa na jednostkę, ale nie musi jej złamać — kluczowe są granice i świadomość.",
+      a1:"Kontrprzykład: postawy pracy i rozwoju (Ochocki) pokazują możliwość wyjścia poza salon.",
+      a2:"Wokulski przegrywa też przez własne decyzje — to nie wyłącznie „wina świata”.",
+      concl:"Prus pokazuje napięcie: presja jest silna, ale odpowiedzialność jednostki też istnieje."
+    }
+  }
+};
+
+function generate(){
+  const topic=document.getElementById("genTopic").value;
+  const side=document.getElementById("genSide").value;
+  const p=(plans[topic] && plans[topic][side]) ? plans[topic][side] : null;
+  if(!p) return;
+  const out =
+`TEZA:
+- ${p.thesis}
+
+ARGUMENT 1 (LALKA):
+- ${p.a1}
+  Przykład: (wpisz scenę / sytuację) __________________________
+
+ARGUMENT 2 (LALKA lub KONTEKST):
+- ${p.a2}
+  Drugi przykład (inna lektura / film / historia): __________________________
+
+WNIOSKI:
+- ${p.concl}`;
+  document.getElementById("genOut").textContent = out;
+  toast("Wygenerowane ✅", "Masz tezę + plan. Dopisz 1–2 sceny i jedziesz.");
+}
+function copyPlan(){
+  const text=document.getElementById("genOut").textContent.trim();
+  if(!text || text==="Wybierz temat i kliknij „Generuj”.") return toast("Najpierw wygeneruj 🙂");
+  navigator.clipboard?.writeText(text).then(()=>toast("Skopiowane ✅","Plan w schowku"));
+}
+
+// ----------------- QUIZ -----------------
+let currentQuestionIndex = 0;
+let quizScore = 0;
+let selectedOptionIndex = null;
+
+function loadQuiz(){
+  document.getElementById('totalQuestions').textContent = quizData.length;
+  renderQuestion();
+}
+function renderQuestion(){
+  const q = quizData[currentQuestionIndex];
+  document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+  document.getElementById('quizQuestion').textContent = q.q;
+
+  const optionsContainer = document.getElementById('quizOptions');
+  optionsContainer.innerHTML = '';
+  selectedOptionIndex = null;
+
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt;
+    btn.onclick = () => selectOption(idx);
+    optionsContainer.appendChild(btn);
+  });
+
+  document.getElementById('quizFeedback').classList.remove('show');
+  document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+  document.getElementById('nextBtn').textContent = currentQuestionIndex === quizData.length - 1 ? 'Zakończ' : 'Następne →';
+
+  const progress = ((currentQuestionIndex) / quizData.length) * 100;
+  document.getElementById('quizProgress').style.width = progress + '%';
+}
+function selectOption(idx){
+  if (selectedOptionIndex !== null) return;
+  selectedOptionIndex = idx;
+  const q = quizData[currentQuestionIndex];
+  const options = document.querySelectorAll('.quiz-option');
+  options.forEach(o => o.disabled = true);
+
+  const correct = q.correct;
+  options[correct].classList.add('correct');
+  if (idx !== correct) options[idx].classList.add('wrong');
+  else quizScore++;
+
+  const fb = document.getElementById('quizFeedback');
+  fb.classList.add('show');
+  document.getElementById('feedbackTitle').textContent = idx === correct ? 'Dobrze ✅' : 'Nie tym razem ✍️';
+  document.getElementById('feedbackText').textContent = q.exp || '';
+
+  toast(idx === correct ? "Quiz: dobrze ✅" : "Quiz: poprawione ✍️", `Wynik: ${quizScore}/${currentQuestionIndex+1}`);
+}
+function nextQuestion(){
+  if (selectedOptionIndex === null) return toast("Najpierw odpowiedz 🙂","Quiz liczy się dopiero po wyborze opcji.");
+  if (currentQuestionIndex < quizData.length - 1) {
+    currentQuestionIndex++;
+    renderQuestion();
+  } else {
+    document.getElementById('quizProgress').style.width = '100%';
+    const pct = Math.round((quizScore/quizData.length)*100);
+    document.getElementById('quizQuestion').textContent = `Koniec! Wynik: ${quizScore}/${quizData.length} (${pct}%)`;
+    document.getElementById('quizOptions').innerHTML = '';
+    document.getElementById('quizFeedback').classList.add('show');
+    document.getElementById('feedbackTitle').textContent = pct>=80 ? "Matura vibe 🔥" : (pct>=60 ? "Jest okej ✅" : "Jeszcze raz i będzie git 💪");
+    document.getElementById('feedbackText').textContent = "Zjedź do fiszek i typing sprintu — tam najszybciej wchodzi.";
+    document.getElementById('nextBtn').disabled = true;
+    toast("Quiz zakończony 🎉", `Wynik: ${quizScore}/${quizData.length}`);
+  }
+}
+function prevQuestion(){
+  if (currentQuestionIndex === 0) return;
+  currentQuestionIndex--;
+  // cofnięcie nie cofa punktów — celowo (uczenie, nie karanie).
+  renderQuestion();
+}
+
+// ----------------- FLASHCARDS -----------------
+let currentCardIndex = 0;
+let flipped = false;
+const masteredKey = "virallolab_lalka_mastered";
+let mastered = new Set(JSON.parse(localStorage.getItem(masteredKey) || "[]"));
+
+function loadFlashcards(){
+  document.getElementById('totalCards').textContent = flashcards.length;
+  showCard(0);
+}
+function showCard(idx){
+  currentCardIndex = (idx + flashcards.length) % flashcards.length;
+  const c = flashcards[currentCardIndex];
+  document.getElementById('flashcardQuestion').textContent = c.q;
+  document.getElementById('flashcardAnswer').textContent = c.a;
+  document.getElementById('currentCard').textContent = currentCardIndex + 1;
+  const card = document.getElementById('flashcard');
+  flipped = false;
+  card.classList.remove('flipped');
+}
+function flipCard(){
+  const card = document.getElementById('flashcard');
+  flipped = !flipped;
+  card.classList.toggle('flipped', flipped);
+}
+function nextCard(){ showCard(currentCardIndex+1); }
+function prevCard(){ showCard(currentCardIndex-1); }
+function markCurrentMastered(){
+  const id = currentCardIndex;
+  if(mastered.has(id)) mastered.delete(id); else mastered.add(id);
+  localStorage.setItem(masteredKey, JSON.stringify([...mastered]));
+  toast(mastered.has(id) ? "Dodano do opanowanych ✅" : "Usunięto z opanowanych", flashcards[currentCardIndex].q);
+}
+function speakCurrentCard(){
+  if(!('speechSynthesis' in window)) return toast("Brak TTS 😿", "Spróbuj Chrome/Edge.");
+  const c=flashcards[currentCardIndex];
+  const u = new SpeechSynthesisUtterance(`${c.q}. Odpowiedź: ${c.a}`);
+  u.lang='pl-PL';
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+// ----------------- TYPING -----------------
+let typingIndex = 0;
+let statOk=0, statBad=0, statStreak=0, statBest=0;
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+  return arr;
+}
+let typingPool = shuffle([...typingItems]);
+
+function showTyping(){
+  const it = typingPool[typingIndex % typingPool.length];
+  document.getElementById('typingPrompt').textContent = `Hasło: ${it.p}`;
+  document.getElementById('typingHint').textContent = "Wpisz odpowiedź (najczęściej 1 słowo).";
+  const inp=document.getElementById('typingInput');
+  inp.value="";
+  // (bez auto-focusu, żeby strona nie przewijała na iPhone)
+  document.getElementById('typingFeedback').textContent = "";
+}
+function norm(s){ return String(s||"").trim().toLowerCase().replaceAll("ł","l").replaceAll("ó","o").replaceAll("ą","a").replaceAll("ę","e").replaceAll("ś","s").replaceAll("ć","c").replaceAll("ż","z").replaceAll("ź","z").replaceAll("ń","n"); }
+function updateStats(){
+  document.getElementById('statOk').textContent = statOk;
+  document.getElementById('statBad').textContent = statBad;
+  document.getElementById('statStreak').textContent = statStreak;
+  document.getElementById('statBest').textContent = statBest;
+}
+function checkTyping(show=false){
+  const it = typingPool[typingIndex % typingPool.length];
+  const inp=document.getElementById('typingInput');
+  const val=inp.value;
+  if(show){
+    document.getElementById('typingFeedback').textContent = `Odp: ${it.a}`;
+    toast("Pokaż odpowiedź 👀", it.a);
+    return;
+  }
+  const ok = norm(val)===norm(it.a);
+  if(ok){
+    statOk++; statStreak++; statBest=Math.max(statBest, statStreak);
+    document.getElementById('typingFeedback').textContent = "Dobrze ✅";
+    toast("Dobrze ✅", it.a);
+  } else {
+    statBad++; statStreak=0;
+    document.getElementById('typingFeedback').textContent = `Źle ✍️ Popraw: ${it.a}`;
+    toast("Poprawione ✍️", it.a);
+  }
+  updateStats();
+  typingIndex++;
+  setTimeout(showTyping, 260);
+}
+function skipTyping(){
+  typingIndex++; showTyping();
+}
+function resetTyping(){
+  typingIndex=0; statOk=0; statBad=0; statStreak=0; statBest=0;
+  typingPool = shuffle([...typingItems]);
+  updateStats();
+  showTyping();
+  toast("Typing zresetowany.", "Nowa kolejność pytań ✅");
+}
+function speakTyping(){
+  if(!('speechSynthesis' in window)) return toast("Brak TTS 😿", "Spróbuj Chrome/Edge.");
+  const it = typingPool[typingIndex % typingPool.length];
+  const u = new SpeechSynthesisUtterance(`${it.p}. Odpowiedź: ${it.a}`);
+  u.lang='pl-PL';
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+// keyboard shortcuts
+document.addEventListener("keydown",(e)=>{
+  if(e.target && e.target.id==="typingInput"){
+    if(e.key==="Enter" && e.shiftKey){ e.preventDefault(); checkTyping(true); }
+    else if(e.key==="Enter"){ e.preventDefault(); checkTyping(false); }
+  }
+});
+
+// ----------------- INIT -----------------
+renderChars();
+renderMotifs();
+loadQuiz();
+loadFlashcards();
+showTyping();
+updateStats();
+</script>
+</body>
+</html>
