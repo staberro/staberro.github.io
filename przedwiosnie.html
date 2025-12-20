@@ -1,0 +1,1456 @@
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Przedwiośnie — Stefan Żeromski | Lekcja interaktywna (matura)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0d12;
+  --card:#14141c;
+  --elevated:#1c1c28;
+  --text:#f0f0f5;
+  --text2:#a0a0b5;
+  --muted:#606075;
+  --red:#dc2626;
+  --orange:#f97316;
+  --gold:#eab308;
+  --green:#22c55e;
+  --purple:#a855f7;
+  --blue:#3b82f6;
+  --border:rgba(255,255,255,0.06);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+a{color:inherit;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+hr.sep{border:none;height:1px;background:var(--border);margin:22px 0}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:12px 20px;background:rgba(13,13,18,0.95);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  position:relative;
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;white-space:nowrap}
+.logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a{
+  padding:6px 12px;border-radius:8px;font-size:0.85rem;
+  color:var(--text2);transition:.25s;
+}
+.nav-links a:hover{background:var(--elevated);color:var(--text)}
+@media(max-width:980px){.nav-links{display:none}}
+
+/* Scroll progress */
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:transparent}
+.nav-progress-bar{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--gold));
+  border-radius:0 6px 6px 0;
+  box-shadow:0 0 22px rgba(234,179,8,0.25)
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;
+  padding:100px 20px 60px;
+}
+.hero-badge{
+  display:inline-flex;gap:10px;align-items:center;justify-content:center;
+  padding:8px 16px;background:var(--elevated);border-radius:50px;
+  font-size:.85rem;color:var(--gold);margin-bottom:20px;border:1px solid var(--border);
+}
+.hero h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(2rem,8vw,4rem);
+  font-weight:700;margin-bottom:14px;line-height:1.18;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--purple),var(--blue),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-desc{max-width:820px;color:var(--text2);margin-bottom:26px;font-size:1.08rem}
+.hero-cards{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:34px}
+.hero-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:18px 22px;min-width:220px;
+  transition:.25s
+}
+.hero-card:hover{border-color:rgba(168,85,247,.55);transform:translateY(-3px)}
+.hero-card h3{font-size:1rem;margin-bottom:6px}
+.hero-card p{font-size:.87rem;color:var(--text2)}
+.hero-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 30px;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  color:#fff;font-weight:700;border-radius:50px;
+  transition:.25s
+}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(139,92,246,.3)}
+
+/* SECTIONS */
+section{padding:80px 20px}
+.section-badge{
+  display:inline-block;padding:6px 14px;background:var(--elevated);
+  border-radius:50px;font-size:.8rem;color:var(--gold);margin-bottom:14px;
+  border:1px solid var(--border);
+}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.75rem,5vw,2.5rem);margin-bottom:10px}
+.section-desc{color:var(--text2);max-width:760px;margin:0 auto 44px}
+.text-center{text-align:center}
+
+/* Cards / grids */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:22px}
+.info-card{background:var(--card);border-radius:16px;padding:22px;border:1px solid var(--border)}
+.info-card h4{color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.info-card p{color:var(--text2);font-size:.95rem}
+.info-card ul{color:var(--text2);font-size:.92rem;margin-left:18px;margin-top:10px}
+.info-card li{margin-bottom:6px}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pill{font-size:.78rem;color:var(--text2);background:var(--elevated);border:1px solid var(--border);padding:6px 10px;border-radius:999px}
+
+/* Timeline */
+.timeline{display:grid;gap:10px;max-width:920px;margin:0 auto}
+.time-item{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:16px 18px;
+}
+.time-year{
+  min-width:84px;
+  font-family:'Cinzel',serif;font-weight:700;
+  color:var(--gold);
+}
+.time-item p{color:var(--text2);font-size:.95rem}
+
+/* Comparison table */
+.table-wrap{overflow-x:auto;margin-top:14px}
+table{width:100%;border-collapse:collapse;background:var(--elevated);border-radius:12px;overflow:hidden}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--card);color:var(--gold);font-size:.85rem}
+td{color:var(--text2);font-size:.9rem}
+
+/* Symbol cards */
+.symbol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
+.symbol-card{background:var(--elevated);border-radius:14px;padding:18px;border:1px solid var(--border);text-align:left}
+.symbol-card h5{margin-bottom:6px}
+.symbol-card p{font-size:.9rem;color:var(--text2)}
+
+/* Tabs (srodki) */
+#srodki{background:var(--card)}
+.tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:26px}
+.tab-btn{
+  padding:10px 18px;background:var(--elevated);
+  border:1px solid var(--border);border-radius:50px;
+  color:var(--text2);cursor:pointer;transition:.25s;
+  font-family:inherit;font-size:.92rem;font-weight:600
+}
+.tab-btn:hover{border-color:rgba(168,85,247,.55)}
+.tab-btn.active{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;border-color:transparent}
+.tab-content{
+  display:none;max-width:820px;margin:0 auto;
+  background:var(--elevated);border:1px solid var(--border);
+  border-radius:18px;padding:28px
+}
+.tab-content.active{display:block}
+.tab-content h3{color:var(--gold);margin-bottom:10px;font-family:'Cinzel',serif}
+.tab-content p{color:var(--text2);margin-bottom:14px}
+.example-block{
+  background:var(--card);border-radius:14px;padding:16px;margin-top:14px;
+  border-left:4px solid var(--purple)
+}
+.example-block b{color:var(--text)}
+.kit{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.kit .pill{background:rgba(255,255,255,0.03)}
+
+/* Accordion */
+.acc{max-width:920px;margin:0 auto;display:grid;gap:10px}
+.acc-item{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.acc-head{
+  padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px
+}
+.acc-head h4{font-size:1rem}
+.acc-head span{color:var(--muted)}
+.acc-body{display:none;padding:0 18px 18px}
+.acc-body p, .acc-body ul{color:var(--text2)}
+.acc-body ul{margin-left:18px;margin-top:10px}
+
+/* QUIZ */
+#quiz{background:var(--bg)}
+.quiz-box{
+  max-width:760px;margin:0 auto;background:var(--card);
+  border-radius:20px;padding:32px;border:1px solid var(--border)
+}
+.quiz-progress{display:flex;gap:4px;margin-bottom:22px}
+.quiz-dot{flex:1;height:4px;background:var(--elevated);border-radius:2px}
+.quiz-dot.done{background:var(--green)}
+.quiz-dot.current{background:var(--gold)}
+.quiz-num{font-size:.85rem;color:var(--gold);margin-bottom:8px}
+.quiz-question{font-family:'Cinzel',serif;font-size:1.25rem;margin-bottom:22px;line-height:1.35}
+.quiz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.quiz-opt{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;background:var(--elevated);
+  border:2px solid transparent;border-radius:12px;
+  cursor:pointer;transition:.25s
+}
+.quiz-opt:hover{border-color:rgba(234,179,8,.55)}
+.quiz-opt.selected{border-color:var(--gold);background:rgba(234,179,8,.08)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(34,197,94,.10)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(220,38,38,.10)}
+.opt-letter{
+  width:32px;height:32px;background:var(--card);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.9rem;flex-shrink:0
+}
+.quiz-opt.selected .opt-letter{background:var(--gold);color:var(--bg)}
+.quiz-opt.correct .opt-letter{background:var(--green);color:var(--bg)}
+.quiz-opt.wrong .opt-letter{background:var(--red);color:#fff}
+.quiz-feedback{padding:16px;border-radius:12px;margin-bottom:18px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(34,197,94,0.1);border:1px solid var(--green)}
+.quiz-feedback.bad{background:rgba(220,38,38,0.1);border:1px solid var(--red)}
+.quiz-feedback h5{margin-bottom:6px}
+.quiz-feedback.ok h5{color:var(--green)}
+.quiz-feedback.bad h5{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:.92rem}
+.quiz-btns{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.qbtn{
+  padding:12px 22px;border-radius:50px;font-weight:800;
+  cursor:pointer;border:none;font-family:inherit;font-size:.95rem;transition:.25s
+}
+.qbtn-prev{background:var(--elevated);color:var(--text)}
+.qbtn-next{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
+.qbtn:disabled{opacity:.5;cursor:not-allowed}
+.qbtn:not(:disabled):hover{transform:translateY(-2px)}
+.quiz-result{text-align:center;padding:34px 18px}
+.result-score{font-family:'Cinzel',serif;font-size:3.7rem;color:var(--gold)}
+.result-text{color:var(--text2);margin-bottom:18px}
+
+/* FISZKI */
+#fiszki{background:var(--card)}
+.flash-container{max-width:680px;margin:0 auto}
+.flashcard{height:280px;perspective:1000px;cursor:pointer;margin-bottom:18px}
+.flash-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{
+  position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:20px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:24px;text-align:center
+}
+.flash-front{background:var(--elevated);border:2px solid var(--purple)}
+.flash-back{background:var(--elevated);border:2px solid var(--green);transform:rotateY(180deg)}
+.flash-q{font-family:'Cinzel',serif;font-size:1.25rem;line-height:1.35}
+.flash-hint{color:var(--muted);font-size:.85rem;margin-top:14px}
+.flash-a{font-size:1rem;color:var(--text2);line-height:1.55}
+.flash-nav{display:flex;justify-content:center;gap:12px;align-items:center;flex-wrap:wrap}
+.flash-btn{
+  padding:12px 22px;background:var(--elevated);
+  border:1px solid var(--border);border-radius:50px;color:var(--text);
+  font-weight:800;cursor:pointer;font-family:inherit;transition:.25s
+}
+.flash-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.45)}
+.flash-count{color:var(--text2)}
+
+/* NOTEBOOK */
+#notatnik{background:var(--bg)}
+.notebook-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:18px;align-items:start}
+@media(max-width:900px){.notebook-grid{grid-template-columns:1fr}}
+.nb-panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px}
+.nb-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.nb-head h3{font-family:'Cinzel',serif;font-size:1.15rem}
+.nb-head .nb-pill{font-size:.8rem;color:var(--text2);background:var(--elevated);border:1px solid var(--border);padding:6px 10px;border-radius:999px}
+.nb-items{display:flex;flex-direction:column;gap:10px}
+.nb-item{display:flex;gap:12px;align-items:flex-start;background:var(--elevated);border:1px solid var(--border);border-radius:14px;padding:12px}
+.nb-item input{margin-top:4px}
+.nb-item .txt{flex:1;color:var(--text2);font-size:.95rem}
+.nb-item .tag{display:inline-flex;gap:6px;align-items:center;font-size:.75rem;color:var(--muted);margin-top:6px}
+.nb-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.nb-btn{padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font-weight:800;cursor:pointer;font-family:inherit;transition:.25s}
+.nb-btn:hover{transform:translateY(-1px);border-color:rgba(234,179,8,.45)}
+.nb-btn.primary{border:none;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
+.nb-btn.danger{border-color:rgba(220,38,38,0.35)}
+.nb-btn.danger:hover{border-color:rgba(220,38,38,0.65)}
+.nb-note{color:var(--muted);font-size:.85rem;margin-top:10px}
+.nb-input{display:flex;gap:10px;flex-wrap:wrap}
+.nb-input input, .nb-input select{
+  flex:1;min-width:220px;
+  padding:12px 14px;border-radius:14px;border:1px solid var(--border);
+  background:var(--elevated);color:var(--text);outline:none
+}
+.nb-input input::placeholder{color:var(--muted)}
+
+/* FOCUS */
+#fokus{background:var(--card)}
+.focus-box{max-width:920px;margin:0 auto;background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:26px}
+.focus-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.focus-title{font-family:'Cinzel',serif;font-size:1.3rem}
+.focus-pill{font-size:.85rem;color:var(--text2);background:var(--card);border:1px solid var(--border);padding:6px 10px;border-radius:999px}
+.focus-timer{font-family:'Cinzel',serif;font-size:3rem;color:var(--gold);text-align:center;margin:10px 0 18px}
+.focus-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.focus-row .nb-btn{min-width:150px}
+.focus-hint{color:var(--muted);text-align:center;margin-top:10px;font-size:.9rem}
+
+/* FOOTER — jak w mloda-polska.html */
+footer{
+  padding:48px 20px;text-align:center;border-top:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,0.00), rgba(255,255,255,0.02))
+}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.25rem;margin-bottom:12px}
+.footer-copy{color:var(--muted);font-size:0.9rem}
+.footer-copy a{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.16);padding-bottom:2px;transition:0.25s}
+.footer-copy a:hover{border-bottom-color:rgba(234,179,8,0.75);color:var(--gold)}
+.footer-brand{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--elevated);border:1px solid var(--border);color:var(--text2);margin-left:10px}
+.footer-brand b{color:var(--gold)}
+
+@media(max-width:600px){
+  .quiz-box,.tab-content{padding:20px}
+  .quiz-question{font-size:1.1rem}
+  .info-grid{grid-template-columns:1fr}
+  .focus-timer{font-size:2.5rem}
+}
+</style>
+</head>
+
+<body>
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="#start">
+      <span class="logo-icon">📘</span>
+      <span>Przedwiośnie • matura</span>
+    </a>
+
+    <div class="nav-links" aria-label="Skróty do sekcji">
+      <a href="#sciaga">Ściąga</a>
+      <a href="#fabuła">Fabuła</a>
+      <a href="#bohater">Bohater</a>
+      <a href="#polska">Polska</a>
+      <a href="#koncepcje">Koncepcje</a>
+      <a href="#symbole">Symbole</a>
+      <a href="#konteksty">Konteksty</a>
+      <a href="#srodki">Kierunki</a>
+      <a href="#matura">Matura</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#fiszki">Fiszki</a>
+      <a href="#notatnik">Notatnik</a>
+      <a href="#fokus">Fokus</a>
+    </div>
+
+    <div class="nav-progress" aria-hidden="true"><div class="nav-progress-bar" id="navProgress"></div></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero" id="start">
+  <div class="hero-badge">🔥 Lektura obowiązkowa • poziom podstawowy + rozszerzenie</div>
+  <h1><span>Przedwiośnie</span><br/>Stefan Żeromski</h1>
+  <p class="hero-desc">
+    Lekcja zrobiona pod maturę: Twoje notatki (czas akcji, wydarzenia, losy Cezarego, „szklane domy”, reformy Gajowca, typy lektury, konteksty)
+    + maturalne dopowiedzenia (tezy, symbole, porównania, pytania).
+  </p>
+
+  <div class="hero-cards">
+    <div class="hero-card">
+      <h3>🗓️ Czas akcji</h3>
+      <p>1914–1924 (ok. 10 lat) • wojna, rewolucja, narodziny II RP</p>
+    </div>
+    <div class="hero-card">
+      <h3>🧭 O czym to jest?</h3>
+      <p>O Polsce w „przedwiośniu” — między marzeniem a brutalną rzeczywistością.</p>
+    </div>
+    <div class="hero-card">
+      <h3>👤 Bohater</h3>
+      <p>Cezary Baryka: outsider, buntownik, dojrzewa i szuka własnego miejsca.</p>
+    </div>
+  </div>
+
+  <a class="hero-btn" href="#sciaga">Start lekcji →</a>
+</header>
+
+<!-- ŚCIĄGA -->
+<section id="sciaga">
+  <div class="container text-center">
+    <div class="section-badge">⚡ Szybka ściąga</div>
+    <h2 class="section-title">Najważniejsze w 90 sekund</h2>
+    <p class="section-desc">
+      Jeśli masz 2 minuty przed kartkówką — ogarnij to. Jeśli masz 2 godziny przed maturą — ogarnij wszystko niżej.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>🧩 Gatunek i typ</h4>
+        <p><b>Powieść polityczna / społeczna</b> (rozrachunkowa), ale jednocześnie <b>powieść o dojrzewaniu</b>.</p>
+        <div class="pills">
+          <span class="pill">realizm</span>
+          <span class="pill">naturalizm</span>
+          <span class="pill">symbolizm</span>
+          <span class="pill">wizje/utopia</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🎯 Problem główny</h4>
+        <p>
+          <b>Jaki ma być kształt odrodzonej Polski?</b> Jak wyprowadzić kraj z biedy, niesprawiedliwości i chaosu po wojnie?
+        </p>
+        <ul>
+          <li>zderzenie idealizmu z rzeczywistością</li>
+          <li>spór o reformy vs rewolucja</li>
+          <li>młode pokolenie bez jasnej drogi</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h4>🧠 Teza do interpretacji</h4>
+        <p>
+          „Przedwiośnie” pokazuje, że sama niepodległość nie rozwiązuje problemów —
+          Polska dopiero <b>dojrzewa</b> i potrzebuje mądrej, sprawiedliwej odbudowy.
+        </p>
+        <div class="pills">
+          <span class="pill">rozczarowanie</span>
+          <span class="pill">nadzieja</span>
+          <span class="pill">dojrzewanie</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="sep"/>
+
+    <div class="timeline" aria-label="Timeline wydarzeń historycznych">
+      <div class="time-item"><div class="time-year">1914</div><p>Wybuch I wojny światowej — koniec starego porządku.</p></div>
+      <div class="time-item"><div class="time-year">1917</div><p>Rewolucja październikowa — chaos, przemoc, „eksperyment” społeczny.</p></div>
+      <div class="time-item"><div class="time-year">1918</div><p>Polska odzyskuje niepodległość — zaczyna się budowa państwa.</p></div>
+      <div class="time-item"><div class="time-year">1920</div><p>Wojna polsko-bolszewicka — napięcia społeczne i polityczne.</p></div>
+      <div class="time-item"><div class="time-year">1924</div><p>Marsz robotników na Belweder — narastają konflikty klasowe i frustracja.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FABUŁA -->
+<section id="fabuła" style="background:var(--card)">
+  <div class="container text-center">
+    <div class="section-badge">🧵 Losy Cezarego Baryki</div>
+    <h2 class="section-title">Etapy życia bohatera</h2>
+    <p class="section-desc">
+      Z notatek: dzieciństwo → wojna i rewolucja → przyjazd do Polski → Nawłoć → Warszawa.
+      Każdy etap to kolejny „test” dla Cezarego.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>🧒 Dzieciństwo (Baku)</h4>
+        <p>Beztroska i wygoda, ale też brak „prawdziwego” doświadczenia życia zwykłych ludzi.</p>
+        <div class="pills">
+          <span class="pill">dostatki</span>
+          <span class="pill">pycha młodości</span>
+          <span class="pill">brak pokory</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>💥 I wojna i rewolucja</h4>
+        <p>Zderzenie z przemocą i biedą. Cezary widzi, jak ideologie potrafią niszczyć człowieka.</p>
+        <div class="pills">
+          <span class="pill">chaos</span>
+          <span class="pill">okrucieństwo</span>
+          <span class="pill">rozpad świata</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🚂 Droga do Polski</h4>
+        <p>Mit „szklanych domów” jako obietnica lepszego życia i sensu. Potem brutalne przebudzenie.</p>
+        <div class="pills">
+          <span class="pill">utopia</span>
+          <span class="pill">nadzieja</span>
+          <span class="pill">pierwszy szok</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🌿 Nawłoć</h4>
+        <p>Arkadia/sielanka, przepych i „bezproblemowe życie” elit — kontrast wobec nędzy kraju.</p>
+        <div class="pills">
+          <span class="pill">dwór</span>
+          <span class="pill">rozrywki</span>
+          <span class="pill">pozory</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🏙️ Warszawa</h4>
+        <p>Polityka, konflikty społeczne, dzielnice biedy. Cezary szuka kierunku, ale go nie ma.</p>
+        <div class="pills">
+          <span class="pill">spór idei</span>
+          <span class="pill">gniew</span>
+          <span class="pill">szukanie miejsca</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🧨 Marsz na Belweder</h4>
+        <p>Finał w napięciu: bohater idzie z robotnikami — nie wiemy, czy to bunt, rozpacz, czy wybór.</p>
+        <div class="pills">
+          <span class="pill">otwarte zakończenie</span>
+          <span class="pill">próba charakteru</span>
+          <span class="pill">pytanie o Polskę</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOHATER -->
+<section id="bohater">
+  <div class="container text-center">
+    <div class="section-badge">👤 Bohater i sens</div>
+    <h2 class="section-title">Cezary Baryka: outsider + „everyman”</h2>
+    <p class="section-desc">
+      Z Twoich notatek: młody, gniewny outsider; przeciętny uczestnik wydarzeń politycznych; niebezrefleksyjny, ale dojrzewa.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>🔥 Outsider</h4>
+        <p>
+          Cezary nie pasuje do żadnego środowiska w 100%: ani do elit Nawłoci, ani do „urzędowej” Polski Gajowca,
+          ani do rewolucyjnej wizji Lulka. Zawsze jest „pomiędzy”.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h4>🧍‍♂️ Everyman</h4>
+        <p>
+          To „człowiek każdy”: reprezentuje młode pokolenie, które wchodzi w dorosłość w czasach, gdy świat się wali i buduje od nowa.
+        </p>
+      </div>
+
+      <div class="info-card">
+        <h4>🏛️ Jak bohater antyczny</h4>
+        <p>
+          Dokonuje wyborów, które przypieczętowują los — ale nie ma jasnej mapy dobra i zła.
+          U Żeromskiego wybór jest często wyborem „mniejszego bólu”.
+        </p>
+      </div>
+    </div>
+
+    <hr class="sep"/>
+
+    <div class="acc" aria-label="Baryka - ściąga do charakterystyki">
+      <div class="acc-item">
+        <div class="acc-head" data-acc="a1">
+          <h4>✅ Najważniejsze cechy (pod maturę)</h4>
+          <span>rozwiń ▾</span>
+        </div>
+        <div class="acc-body" id="a1">
+          <ul>
+            <li><b>bunt</b> i niezgoda na hipokryzję</li>
+            <li><b>krytycyzm</b> wobec elit i polityki</li>
+            <li><b>niecierpliwość</b> — chce szybkich zmian</li>
+            <li><b>poczucie niesprawiedliwości</b> (szczególnie wobec biedy)</li>
+            <li><b>poszukiwanie tożsamości</b> i miejsca w świecie</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-head" data-acc="a2">
+          <h4>🎓 Gotowa teza: „powieść o dojrzewaniu”</h4>
+          <span>rozwiń ▾</span>
+        </div>
+        <div class="acc-body" id="a2">
+          <p>
+            Cezary dojrzewa „w ogniu historii”: od chłopaka wciągniętego w rewolucyjny entuzjazm,
+            przez rozczarowanie Polską, aż po moment, gdy musi wybrać — choć żadna droga nie jest czysta.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POLSKA -->
+<section id="polska" style="background:var(--card)">
+  <div class="container text-center">
+    <div class="section-badge">🇵🇱 Polska w oczach Cezarego</div>
+    <h2 class="section-title">Mit vs brutalna rzeczywistość</h2>
+    <p class="section-desc">
+      Z notatek: Polska daleka od „szklanych domów” — zróżnicowana, ale dominuje bieda, nędza i ubóstwo.
+      Kontrast: Nawłoć (arkadia) vs Płodek (nędza).
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>🚪 Przybycie do Polski</h4>
+        <p>Rozczarowanie: zamiast cudów — chaos, brud, bieda, nędza gospodarstw.</p>
+        <div class="pills"><span class="pill">przebudzenie</span><span class="pill">szok</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>🌿 Nawłoć</h4>
+        <p>
+          Dwór jako „Soplicowo” XX wieku: dostatek, porządek, gościnność, celebrowanie posiłków,
+          rozrywki, obyczaje, krajobraz. Ale to też bańka odcięta od kraju.
+        </p>
+        <div class="pills"><span class="pill">arkadia</span><span class="pill">pozory</span><span class="pill">kontrast klas</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>🏚️ Płodek</h4>
+        <p><b>Centrum „polszczyzny”</b> w sensie problemów: nędza, ubóstwo, ciężka praca, niedożywienie.</p>
+        <div class="pills"><span class="pill">bieda</span><span class="pill">krzywda</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>🕍 Warszawa</h4>
+        <p>Miasto konfliktów społecznych, biedy i napięć. (W notatkach: dzielnica żydowska — ważny obraz wielkomiejskiej nędzy.)</p>
+        <div class="pills"><span class="pill">polityka</span><span class="pill">społeczne pęknięcie</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONCEPCJE -->
+<section id="koncepcje">
+  <div class="container text-center">
+    <div class="section-badge">🧠 Koncepcje naprawy Polski</div>
+    <h2 class="section-title">Trzy drogi — i żadna nie jest „łatwa”</h2>
+    <p class="section-desc">
+      Z notatek: <b>Szklane domy</b> (Seweryn Baryka – nauka/utopia), <b>Lulek</b> (rewolucja/komunizm), <b>Gajowiec</b> (powolne reformy).
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Wizja</th>
+            <th>Kto ją reprezentuje</th>
+            <th>Jak ma działać</th>
+            <th>Plus / minus (maturalnie)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Utopia „szklanych domów”</b></td>
+            <td>Seweryn Baryka</td>
+            <td>Postęp, nauka, nowoczesność, dobrobyt dla wszystkich.</td>
+            <td>+ daje nadzieję • − jest mitem, ucieczką od realiów</td>
+          </tr>
+          <tr>
+            <td><b>Rewolucja</b></td>
+            <td>Antoni Lulek</td>
+            <td>Komunizm: szybkie, radykalne zmiany społeczne.</td>
+            <td>+ obietnica równości • − ryzyko przemocy i chaosu</td>
+          </tr>
+          <tr>
+            <td><b>Reformy</b></td>
+            <td>Szymon Gajowiec</td>
+            <td>Powolna odbudowa państwa, prawo, instytucje, kompromis.</td>
+            <td>+ stabilność • − wolne tempo, rozczarowujące dla biednych</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="sep"/>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>🛠️ Reformy Gajowca (z notatek)</h4>
+        <ul>
+          <li><b>wzmocniona waluta PLN</b> — próba stabilizacji państwa</li>
+          <li><b>reforma agrarna</b> — poprawa życia chłopów</li>
+          <li><b>reforma służby zdrowia</b> — powszechność</li>
+          <li><b>reforma wojskowa</b> — wzmocnienie i powiększenie armii</li>
+        </ul>
+        <div class="pills"><span class="pill">państwo</span><span class="pill">instytucje</span><span class="pill">realizm</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>🧨 Dlaczego Cezary nie „kupuje” żadnej wizji?</h4>
+        <p>
+          Bo widzi, że ludzie <b>cierpią tu i teraz</b>. Utopia jest odklejona, rewolucja grozi krwią,
+          a reformy są za wolne. Dlatego finał jest tak napięty.
+        </p>
+        <div class="pills"><span class="pill">niecierpliwość</span><span class="pill">gniew</span><span class="pill">bez celu</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYMBOLE -->
+<section id="symbole" style="background:var(--card)">
+  <div class="container text-center">
+    <div class="section-badge">🧿 Symbolika i motywy</div>
+    <h2 class="section-title">Co trzeba umieć nazwać</h2>
+    <p class="section-desc">
+      Z notatek: „szklane domy” (symbol nowej cywilizacji), tytuł, ostatnia scena, walizka Seweryna,
+      początek i koniec „rewolucji” w życiu bohatera.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="symbol-grid">
+      <div class="symbol-card">
+        <h5>🏠 Szklane domy</h5>
+        <p>Symbol <b>utopii</b>, marzenia o nowoczesnej i sprawiedliwej Polsce. Też: „mit założycielski”, który ma pchnąć Cezarego do drogi.</p>
+      </div>
+      <div class="symbol-card">
+        <h5>🌱 Tytuł: „Przedwiośnie”</h5>
+        <p>Okres przejściowy: niby „po zimie”, ale jeszcze brud, błoto i chłód. Metafora Polski, która dopiero się rodzi.</p>
+      </div>
+      <div class="symbol-card">
+        <h5>🧳 Walizka Seweryna</h5>
+        <p>Tożsamość i pamięć (rodowód, przeszłość). Utrata walizki = utrata części „korzeni” i stabilności.</p>
+      </div>
+      <div class="symbol-card">
+        <h5>🚶 Marsz na Belweder</h5>
+        <p>Otwarte zakończenie: pytanie, czy bohater wybiera rewolucję, czy po prostu idzie z gniewem i rozpaczą.</p>
+      </div>
+      <div class="symbol-card">
+        <h5>🌿 Nawłoć</h5>
+        <p>Fałszywa arkadia: piękno i dostatek, ale też moralna ślepota na biedę kraju.</p>
+      </div>
+      <div class="symbol-card">
+        <h5>🏚️ Płodek</h5>
+        <p>Symbol nędzy i krzywdy społecznej — „punkt kontrolny”, który obala wszystkie piękne opowieści.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTEKSTY -->
+<section id="konteksty">
+  <div class="container text-center">
+    <div class="section-badge">🔗 Konteksty (pod maturę)</div>
+    <h2 class="section-title">Co możesz dopisać w wypracowaniu</h2>
+    <p class="section-desc">
+      Z notatek: Nawłoć + Soplica (Soplicowo), „Nie pytaj o Polskę” (Obywatel G.Ciechowski), konteksty do „szklanych domów”.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="info-grid">
+      <div class="info-card">
+        <h4>🏛️ Nawłoć a Soplicowo</h4>
+        <p>
+          Porównanie do <b>„Pana Tadeusza”</b>: dwór jako centrum obyczaju i gościnności.
+          Różnica: u Żeromskiego ta arkadia jest „bańką” — obok niej istnieje Płodek.
+        </p>
+        <div class="pills"><span class="pill">dwór</span><span class="pill">obyczaj</span><span class="pill">kontrast</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>🎵 „Nie pytaj o Polskę”</h4>
+        <p>
+          Tekst kultury o rozczarowaniu i ambiwalencji wobec ojczyzny. W „Przedwiośniu” Cezary też nie ma prostej odpowiedzi,
+          „co dalej z Polską”.
+        </p>
+        <div class="pills"><span class="pill">rozczarowanie</span><span class="pill">tożsamość</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>🏗️ „Szklane domy” i utopie modernizacji</h4>
+        <p>
+          Możesz dopisać kontekst: XX-wieczna wiara w postęp, projekty przebudowy społeczeństwa,
+          ale też ryzyko odklejenia od realiów (błoto, bieda, głód).
+        </p>
+        <div class="pills"><span class="pill">utopia</span><span class="pill">postęp</span><span class="pill">realizm</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KIERUNKI / ŚRODKI -->
+<section id="srodki">
+  <div class="container text-center">
+    <div class="section-badge">🎨 Typy lektury i środki</div>
+    <h2 class="section-title">Realizm • naturalizm • surrealizm • symbolizm</h2>
+    <p class="section-desc">
+      Z notatek: realizm (zwykły bohater, narrator 3-osobowy), naturalizm (opisy rewolucji, biedy), surrealizm (wizja szklanych domów), symbolizm (tytuł, finał).
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="t1">Realizm</button>
+      <button class="tab-btn" data-tab="t2">Naturalizm</button>
+      <button class="tab-btn" data-tab="t3">Surrealizm / wizje</button>
+      <button class="tab-btn" data-tab="t4">Symbolizm</button>
+    </div>
+
+    <div class="tab-content active" id="t1">
+      <h3>Realizm</h3>
+      <p>
+        Realizm = świat przedstawiony ma wyglądać jak prawdziwy. Często pojawia się <b>zwykły, przeciętny bohater</b>,
+        a narrator bywa <b>3-osobowy, wszechwiedzący i obiektywny</b>.
+      </p>
+      <div class="example-block">
+        <p><b>W „Przedwiośniu”:</b> opisy społeczeństwa, instytucji, zderzenia klas i codzienności w Polsce po 1918 roku.</p>
+        <div class="kit">
+          <span class="pill">społeczeństwo</span>
+          <span class="pill">konflikty klas</span>
+          <span class="pill">polityka</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="t2">
+      <h3>Naturalizm</h3>
+      <p>
+        Naturalizm pokazuje rzeczywistość „bez filtra”: brud, biedę, biologiczność, przemoc.
+        Często działa kontrastem i ma uderzyć czytelnika.
+      </p>
+      <div class="example-block">
+        <p><b>W „Przedwiośniu”:</b> obrazy rewolucji i brutalności, nędzy (Płodek), wielkomiejskich dzielnic biedy.</p>
+        <div class="kit">
+          <span class="pill">bieda</span>
+          <span class="pill">przemoc</span>
+          <span class="pill">kontrast z Nawłocią</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="t3">
+      <h3>Surrealizm / wizje</h3>
+      <p>
+        Surrealizm (w ujęciu szkolnym) to wejście w świat <b>wizji</b>, marzeń, utopii — coś, co nie musi być realne,
+        ale mówi prawdę o pragnieniach.
+      </p>
+      <div class="example-block">
+        <p><b>W „Przedwiośniu”:</b> wizja „szklanych domów” — piękna, nierealna opowieść, która buduje nadzieję.</p>
+        <div class="kit">
+          <span class="pill">utopia</span>
+          <span class="pill">nadzieja</span>
+          <span class="pill">mit</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="t4">
+      <h3>Symbolizm</h3>
+      <p>
+        Symbolizm = elementy świata przedstawionego znaczą więcej niż dosłownie. Symbol działa jak skrót do dużej idei.
+      </p>
+      <div class="example-block">
+        <p><b>W „Przedwiośniu”:</b> tytuł, „szklane domy”, walizka Seweryna, ostatnia scena (marsz na Belweder).</p>
+        <div class="kit">
+          <span class="pill">tytuł</span>
+          <span class="pill">walizka</span>
+          <span class="pill">Belweder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MATURA -->
+<section id="matura">
+  <div class="container text-center">
+    <div class="section-badge">🎓 Matura — gotowce</div>
+    <h2 class="section-title">Tezy, argumenty, pytania</h2>
+    <p class="section-desc">
+      Masz tu gotowe rozwinięcia do najczęstszych poleceń. Klikasz, przepisujesz, rozumiesz.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="acc">
+      <div class="acc-item">
+        <div class="acc-head" data-acc="m1"><h4>1) Wyjaśnij znaczenie tytułu „Przedwiośnie”.</h4><span>rozwiń ▾</span></div>
+        <div class="acc-body" id="m1">
+          <p>
+            „Przedwiośnie” to czas przejściowy: już koniec zimy, ale jeszcze błoto i chłód. To metafora Polski po 1918 roku:
+            państwo jest odrodzone, ale bieda, chaos i konflikty społeczne są nadal silne. Tytuł niesie też nadzieję:
+            <b>wiosna może nadejść</b>, jeśli Polska mądrze się przebuduje.
+          </p>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-head" data-acc="m2"><h4>2) Porównaj trzy koncepcje naprawy Polski.</h4><span>rozwiń ▾</span></div>
+        <div class="acc-body" id="m2">
+          <ul>
+            <li><b>Seweryn</b> — mit szklanych domów: wiara w postęp i cud modernizacji (ale utopia).</li>
+            <li><b>Lulek</b> — rewolucja: szybka równość, ale ryzyko przemocy i destabilizacji.</li>
+            <li><b>Gajowiec</b> — reformy: stabilne państwo i prawo, ale wolne tempo i frustracja biednych.</li>
+          </ul>
+          <p style="margin-top:10px">
+            Maturalnie: pokaż, że Żeromski nie daje prostej odpowiedzi — <b>stawia pytanie</b>, a nie podaje instrukcję.
+          </p>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-head" data-acc="m3"><h4>3) Udowodnij, że to „powieść o dojrzewaniu”.</h4><span>rozwiń ▾</span></div>
+        <div class="acc-body" id="m3">
+          <p>
+            Dojrzewanie Cezarego polega na przejściu od młodzieńczej wiary w wielkie idee (rewolucja),
+            przez rozczarowanie mitem szklanych domów, aż po rozpoznanie realnych problemów społecznych (Płodek, Warszawa).
+            Finał jest próbą: czy umie wybrać drogę, czy tylko „idzie z falą gniewu”?
+          </p>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-head" data-acc="m4"><h4>4) Zinterpretuj zakończenie (marsz na Belweder).</h4><span>rozwiń ▾</span></div>
+        <div class="acc-body" id="m4">
+          <p>
+            Otwarte zakończenie podkreśla niepewność i chaos epoki. Marsz może oznaczać bunt przeciw niesprawiedliwości,
+            solidarność z robotnikami, ale też desperację. Żeromski zostawia pytanie: <b>czy Polska da młodym sens</b>,
+            czy zepchnie ich w skrajności?
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="container text-center">
+    <div class="section-badge">🧪 Quiz</div>
+    <h2 class="section-title">Sprawdź się (matura-ready)</h2>
+    <p class="section-desc">15 pytań — od podstaw po interpretację symboli.</p>
+  </div>
+
+  <div class="container">
+    <div class="quiz-box">
+      <div class="quiz-progress" id="quizProgress"></div>
+      <div class="quiz-num" id="quizNum">Pytanie 1/15</div>
+      <div class="quiz-question" id="quizQ">...</div>
+
+      <div class="quiz-options" id="quizOpts"></div>
+
+      <div class="quiz-feedback" id="quizFb">
+        <h5 id="quizFbTitle">...</h5>
+        <p id="quizFbText">...</p>
+      </div>
+
+      <div class="quiz-btns">
+        <button class="qbtn qbtn-prev" id="btnPrev">Wstecz</button>
+        <button class="qbtn qbtn-next" id="btnNext" disabled>Dalej</button>
+      </div>
+
+      <div class="quiz-result" id="quizResult" style="display:none">
+        <div class="result-score" id="scoreBig">0/15</div>
+        <p class="result-text" id="scoreTxt">...</p>
+        <button class="qbtn qbtn-next" id="btnRestart">Zrób jeszcze raz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FISZKI -->
+<section id="fiszki">
+  <div class="container text-center">
+    <div class="section-badge">🃏 Fiszki</div>
+    <h2 class="section-title">Powtórka w 5 minut</h2>
+    <p class="section-desc">Klikasz kartę — odwraca się. Idealne przed sprawdzianem.</p>
+  </div>
+
+  <div class="container flash-container">
+    <div class="flashcard" id="flashCard" aria-label="Fiszka (kliknij, aby odwrócić)">
+      <div class="flash-inner">
+        <div class="flash-front">
+          <div class="flash-q" id="flashQ">...</div>
+          <div class="flash-hint">kliknij, aby zobaczyć odpowiedź</div>
+        </div>
+        <div class="flash-back">
+          <div class="flash-a" id="flashA">...</div>
+          <div class="flash-hint">kliknij, aby wrócić</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flash-nav">
+      <button class="flash-btn" id="flashPrev">← Poprzednia</button>
+      <span class="flash-count" id="flashCount">1/1</span>
+      <button class="flash-btn" id="flashNext">Następna →</button>
+    </div>
+  </div>
+</section>
+
+<!-- NOTATNIK -->
+<section id="notatnik">
+  <div class="container text-center">
+    <div class="section-badge">📝 Notatnik</div>
+    <h2 class="section-title">Twoje własne punkty do matury</h2>
+    <p class="section-desc">Zapisuje się lokalnie w przeglądarce (localStorage). Masz listę powtórkową jak człowiek.</p>
+  </div>
+
+  <div class="container notebook-grid">
+    <div class="nb-panel">
+      <div class="nb-head">
+        <h3>✅ Lista powtórkowa</h3>
+        <span class="nb-pill" id="nbCounter">0 zrobione</span>
+      </div>
+
+      <div class="nb-items" id="nbItems"></div>
+
+      <div class="nb-actions">
+        <button class="nb-btn primary" id="nbAddPreset">Dodaj zestaw „matura”</button>
+        <button class="nb-btn" id="nbClearDone">Usuń zrobione</button>
+        <button class="nb-btn danger" id="nbReset">Reset</button>
+      </div>
+
+      <div class="nb-note">Tip: kliknij checkbox — szybka kontrola, co już umiesz.</div>
+    </div>
+
+    <div class="nb-panel">
+      <div class="nb-head">
+        <h3>➕ Dodaj własną notatkę</h3>
+        <span class="nb-pill">Twoje słowa</span>
+      </div>
+
+      <div class="nb-input">
+        <input id="nbText" placeholder="Np. „Szklane domy = utopia i mit mobilizujący”" />
+        <select id="nbTag">
+          <option value="teza">teza</option>
+          <option value="symbol">symbol</option>
+          <option value="bohater">bohater</option>
+          <option value="kontekst">kontekst</option>
+          <option value="fabuła">fabuła</option>
+          <option value="matura">matura</option>
+        </select>
+        <button class="nb-btn primary" id="nbAdd">Dodaj</button>
+      </div>
+
+      <hr class="sep"/>
+
+      <p class="nb-note">
+        Pro tip: wpisuj „gotowe zdania” — potem w wypracowaniu lecisz jak po sznurku.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOKUS -->
+<section id="fokus">
+  <div class="container text-center">
+    <div class="section-badge">🎯 Fokus</div>
+    <h2 class="section-title">Tryb nauki: 25/5</h2>
+    <p class="section-desc">Włącz, ucz się 25 minut, przerwa 5. Prosto, skutecznie.</p>
+  </div>
+
+  <div class="container">
+    <div class="focus-box">
+      <div class="focus-top">
+        <div class="focus-title">⏳ Pomodoro</div>
+        <div class="focus-pill" id="focusMode">Tryb: Nauka (25:00)</div>
+      </div>
+
+      <div class="focus-timer" id="focusTime">25:00</div>
+
+      <div class="focus-row">
+        <button class="nb-btn primary" id="focusStart">Start / Pauza</button>
+        <button class="nb-btn" id="focusSwitch">Przełącz (nauka/przerwa)</button>
+        <button class="nb-btn danger" id="focusReset">Reset</button>
+      </div>
+
+      <div class="focus-hint">Tip: ustaw cel na dziś w Notatniku i odpal Fokus.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">📚 ViralloLab — lekcja interaktywna</div>
+  <p class="footer-copy">
+    Wykonanie:
+    <a href="https://staberek.com" target="_blank" rel="noopener">Staberek</a>
+    (<a href="https://staberek.com" target="_blank" rel="noopener">dr inż. Kacper Stabrawa</a>)
+    <span class="footer-brand">⚡ <b>ViralloLab</b></span>
+  </p>
+  <p class="footer-copy" style="margin-top:10px">Przedwiośnie • notatki + quiz + fiszki + notatnik • 2025</p>
+</footer>
+
+<script>
+// © StaberekGPT – autorski komponent ViralLab 2025
+
+/* ===== Scroll progress ===== */
+(function(){
+  const bar = document.getElementById('navProgress');
+  function update(){
+    const h = document.documentElement;
+    const max = Math.max(1, h.scrollHeight - window.innerHeight);
+    const pct = (window.scrollY / max) * 100;
+    bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* ===== Tabs ===== */
+(function(){
+  const btns = Array.from(document.querySelectorAll('.tab-btn'));
+  const panels = Array.from(document.querySelectorAll('.tab-content'));
+  btns.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      btns.forEach(x=>x.classList.remove('active'));
+      panels.forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');
+      const id = b.getAttribute('data-tab');
+      document.getElementById(id).classList.add('active');
+    });
+  });
+})();
+
+/* ===== Accordion ===== */
+(function(){
+  const heads = Array.from(document.querySelectorAll('.acc-head'));
+  heads.forEach(h=>{
+    h.addEventListener('click', ()=>{
+      const id = h.getAttribute('data-acc');
+      const body = document.getElementById(id);
+      const open = body.style.display === 'block';
+      body.style.display = open ? 'none' : 'block';
+      h.querySelector('span').textContent = open ? 'rozwiń ▾' : 'zwiń ▴';
+    });
+  });
+})();
+
+/* ===== QUIZ ===== */
+const quizData = [
+  {q:"Czas akcji „Przedwiośnia” to:", opts:["1905–1914","1914–1924","1939–1945","1918–1939"], ans:1, info:"W notatkach: 1914–1924 (ok. 10 lat)."},
+  {q:"Które wydarzenie z 1917 r. jest kluczowe w tle powieści?", opts:["Powstanie listopadowe","Rewolucja październikowa","Bitwa pod Grunwaldem","Konferencja jałtańska"], ans:1, info:"Rewolucja październikowa wprowadza chaos i przemoc."},
+  {q:"„Szklane domy” w powieści to przede wszystkim:", opts:["realny projekt architektoniczny","symbol utopii i marzeń o nowej Polsce","plan wojskowy","nazwa dzielnicy Warszawy"], ans:1, info:"To mit/utopia – obietnica lepszej Polski."},
+  {q:"Kto reprezentuje koncepcję rewolucji/komunizmu?", opts:["Szymon Gajowiec","Seweryn Baryka","Antoni Lulek","Hipolit Wielosławski"], ans:2, info:"W notatkach: Lulek = rewolucja/komunizm."},
+  {q:"Kto reprezentuje powolne reformy i odbudowę państwa?", opts:["Gajowiec","Lulek","Laura Kościeniecka","Karolina"], ans:0, info:"W notatkach: Gajowiec = reformy."},
+  {q:"Nawłoć w „Przedwiośniu” to:", opts:["dzielnica robotnicza","sielanka/arkadia elit w kontrze do nędzy kraju","obóz wojskowy","miejsce cudów „szklanych domów”"], ans:1, info:"Dwór i przepych jako bańka odcięta od realiów."},
+  {q:"Płodek jest w notatkach nazwany:", opts:["„centrum polszczyzny”","„sercem rewolucji”","„miastem szkła”","„nową Arkadią”"], ans:0, info:"Płodek = nędza, ubóstwo, ciężka praca, niedożywienie."},
+  {q:"Znaczenie tytułu „Przedwiośnie” to:", opts:["pełnia szczęścia po wojnie","okres przejściowy: nadzieja + brud i chaos","wyłącznie pora roku w opisie przyrody","symbol końca świata"], ans:1, info:"Metafora Polski: odrodzona, ale jeszcze „błotnista” i niedojrzała."},
+  {q:"Walizka Seweryna Baryki symbolizuje:", opts:["tylko pieniądze","tożsamość i pamięć o przeszłości","plan ataku na Belweder","zdradę"], ans:1, info:"Walizka = korzenie, pamięć, dziedzictwo."},
+  {q:"„Przedwiośnie” można czytać jako:", opts:["powieść o dojrzewaniu bohatera","powieść o smokach","kryminał","legendę średniowieczną"], ans:0, info:"Z notatek: dojrzewanie i kształtowanie bohatera."},
+  {q:"Cezary Baryka w notatkach to:", opts:["typowy romantyczny wieszcz","outsider młody gniewny","wyłącznie bohater komiczny","postać bez konfliktów"], ans:1, info:"Outsider – bunt i krytycyzm."},
+  {q:"Marsz robotników na Belweder (1924) sugeruje:", opts:["jasne szczęśliwe zakończenie","otwarte zakończenie i napięcie społeczne","powrót do Baku","ślub Cezarego"], ans:1, info:"Finał celowo zostaje „w zawieszeniu”."},
+  {q:"Naturalizm w powieści najłatwiej pokazać przez:", opts:["wesołe dialogi","opisy biedy i brutalności (rewolucja, Płodek)","fantastykę","samą lirykę"], ans:1, info:"Naturalizm = brud, bieda, przemoc bez filtra."},
+  {q:"Surrealizm/wizje w powieści to przede wszystkim:", opts:["wizja szklanych domów","scena w sądzie","opis lekcji w szkole","opis banku"], ans:0, info:"Szklane domy – wizja, utopia."},
+  {q:"Główne pytanie powieści brzmi:", opts:["jak zdobyć skarb?","jaki ma być kształt odrodzonej Polski?","kto zabił?","jak pokonać smoka?"], ans:1, info:"Odpowiedź nie jest prosta — Żeromski prowokuje do dyskusji."}
+];
+
+let qi=0, score=0, locked=false, chosen=null;
+
+const elProgress = document.getElementById('quizProgress');
+const elNum = document.getElementById('quizNum');
+const elQ = document.getElementById('quizQ');
+const elOpts = document.getElementById('quizOpts');
+const elFb = document.getElementById('quizFb');
+const elFbTitle = document.getElementById('quizFbTitle');
+const elFbText = document.getElementById('quizFbText');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+const boxResult = document.getElementById('quizResult');
+const btnRestart = document.getElementById('btnRestart');
+const scoreBig = document.getElementById('scoreBig');
+const scoreTxt = document.getElementById('scoreTxt');
+
+function buildDots(){
+  elProgress.innerHTML = '';
+  for(let i=0;i<quizData.length;i++){
+    const d=document.createElement('div');
+    d.className='quiz-dot' + (i<qi?' done':'') + (i===qi?' current':'');
+    elProgress.appendChild(d);
+  }
+}
+function renderQ(){
+  buildDots();
+  locked=false; chosen=null;
+  elFb.className='quiz-feedback'; elFb.style.display='none';
+  btnNext.disabled=true;
+
+  elNum.textContent = `Pytanie ${qi+1}/${quizData.length}`;
+  elQ.textContent = quizData[qi].q;
+
+  elOpts.innerHTML='';
+  const letters = ['A','B','C','D'];
+  quizData[qi].opts.forEach((t,idx)=>{
+    const opt=document.createElement('div');
+    opt.className='quiz-opt';
+    opt.innerHTML = `<div class="opt-letter">${letters[idx]}</div><div>${t}</div>`;
+    opt.addEventListener('click', ()=>pick(idx,opt));
+    elOpts.appendChild(opt);
+  });
+
+  btnPrev.disabled = (qi===0);
+}
+function pick(idx, node){
+  if(locked) return;
+  chosen=idx;
+  Array.from(document.querySelectorAll('.quiz-opt')).forEach(o=>o.classList.remove('selected'));
+  node.classList.add('selected');
+  btnNext.disabled=false;
+}
+function showFeedback(){
+  if(chosen===null) return;
+  locked=true;
+  const correct = quizData[qi].ans;
+  const opts = Array.from(document.querySelectorAll('.quiz-opt'));
+  opts.forEach((o,idx)=>{
+    if(idx===correct) o.classList.add('correct');
+    if(idx===chosen && chosen!==correct) o.classList.add('wrong');
+  });
+
+  const ok = chosen===correct;
+  if(ok) score++;
+
+  elFb.className = 'quiz-feedback show ' + (ok?'ok':'bad');
+  elFb.style.display='block';
+  elFbTitle.textContent = ok ? '✅ Dobrze!' : '❌ Nie tym razem';
+  elFbText.textContent = quizData[qi].info;
+}
+function next(){
+  if(!locked) showFeedback();
+  else{
+    if(qi < quizData.length-1){
+      qi++;
+      renderQ();
+    }else{
+      finish();
+    }
+  }
+}
+function prev(){
+  if(qi===0) return;
+  qi--;
+  renderQ();
+}
+function finish(){
+  document.querySelector('.quiz-question').style.display='none';
+  document.getElementById('quizOpts').style.display='none';
+  document.getElementById('quizFb').style.display='none';
+  document.querySelector('.quiz-btns').style.display='none';
+  boxResult.style.display='block';
+  scoreBig.textContent = `${score}/${quizData.length}`;
+  const pct = Math.round((score/quizData.length)*100);
+  scoreTxt.textContent = pct>=80 ? "🔥 Matura-ready. Jeszcze raz i zamykasz temat." :
+                         pct>=50 ? "✅ Jest baza. Dociśnij symbole + koncepcje." :
+                                   "🛠️ Zrób fiszki i wróć do sekcji 'Ściąga' + 'Matura'.";
+}
+function restart(){
+  qi=0; score=0;
+  document.querySelector('.quiz-question').style.display='block';
+  document.getElementById('quizOpts').style.display='flex';
+  document.querySelector('.quiz-btns').style.display='flex';
+  boxResult.style.display='none';
+  renderQ();
+}
+
+btnNext.addEventListener('click', next);
+btnPrev.addEventListener('click', prev);
+btnRestart.addEventListener('click', restart);
+renderQ();
+
+/* ===== FISZKI ===== */
+const flashData = [
+  {q:"Czas akcji?", a:"1914–1924 (ok. 10 lat) – wojna, rewolucja, narodziny II RP."},
+  {q:"Co oznacza tytuł?", a:"Metafora Polski w okresie przejściowym: nadzieja + błoto/chaos."},
+  {q:"Baryka – jaki typ bohatera?", a:"Outsider, buntownik, „everyman”, powieść o dojrzewaniu."},
+  {q:"Szklane domy – znaczenie?", a:"Utopia/mit: marzenie o nowej, sprawiedliwej cywilizacji."},
+  {q:"Trzy wizje naprawy Polski?", a:"Seweryn (utopia), Lulek (rewolucja), Gajowiec (reformy)."},
+  {q:"Nawłoć – jak działa w utworze?", a:"Arkadia elit w kontrze do nędzy; bańka społeczna."},
+  {q:"Płodek – co symbolizuje?", a:"Nędzę, ubóstwo, ciężką pracę, niedożywienie – obala mity."},
+  {q:"Marsz na Belweder – sens?", a:"Otwarte zakończenie: bunt/rozpacz/pytanie o drogę Polski."},
+  {q:"Realizm – jak pokazać?", a:"Społeczne obrazy II RP, konflikty klas, instytucje, codzienność."},
+  {q:"Naturalizm – przykład?", a:"Opisy brutalności rewolucji i nędzy (Płodek, dzielnice biedy)."},
+  {q:"Surrealizm/wizje – przykład?", a:"Wizja szklanych domów jako nierealna obietnica."},
+  {q:"Symbolizm – co wymienić?", a:"Tytuł, szklane domy, walizka Seweryna, finał (Belweder)."},
+  {q:"Dlaczego Cezary jest „pomiędzy”?", a:"Nie ufa utopii, boi się przemocy rewolucji, reformy są za wolne."},
+  {q:"Najprostsza teza na wypracowanie?", a:"Niepodległość to dopiero start — Polska dojrzewa i musi się sprawiedliwie odbudować."},
+];
+
+let fi=0;
+const flashCard = document.getElementById('flashCard');
+const flashQ = document.getElementById('flashQ');
+const flashA = document.getElementById('flashA');
+const flashCount = document.getElementById('flashCount');
+
+function renderFlash(){
+  flashCard.classList.remove('flipped');
+  flashQ.textContent = flashData[fi].q;
+  flashA.textContent = flashData[fi].a;
+  flashCount.textContent = `${fi+1}/${flashData.length}`;
+}
+document.getElementById('flashPrev').addEventListener('click', ()=>{ fi=(fi-1+flashData.length)%flashData.length; renderFlash(); });
+document.getElementById('flashNext').addEventListener('click', ()=>{ fi=(fi+1)%flashData.length; renderFlash(); });
+flashCard.addEventListener('click', ()=> flashCard.classList.toggle('flipped'));
+renderFlash();
+
+/* ===== NOTEBOOK (localStorage) ===== */
+const NB_KEY = 'virallolab_przedwiosnie_nb_v1';
+const nbItemsEl = document.getElementById('nbItems');
+const nbCounter = document.getElementById('nbCounter');
+
+function loadNB(){
+  try { return JSON.parse(localStorage.getItem(NB_KEY) || '[]'); }
+  catch(e){ return []; }
+}
+function saveNB(items){
+  localStorage.setItem(NB_KEY, JSON.stringify(items));
+}
+function renderNB(){
+  const items = loadNB();
+  nbItemsEl.innerHTML = '';
+  const done = items.filter(x=>x.done).length;
+  nbCounter.textContent = `${done} zrobione`;
+
+  if(items.length===0){
+    const empty = document.createElement('div');
+    empty.className='nb-note';
+    empty.textContent='Tu będzie Twoja lista. Kliknij „Dodaj zestaw matura” albo dopisz własną notatkę.';
+    nbItemsEl.appendChild(empty);
+    return;
+  }
+
+  items.forEach((it, idx)=>{
+    const row = document.createElement('div');
+    row.className='nb-item';
+    row.innerHTML = `
+      <input type="checkbox" ${it.done?'checked':''} aria-label="Zrobione">
+      <div class="txt">
+        ${escapeHtml(it.text)}
+        <div class="tag">🏷️ ${escapeHtml(it.tag || 'matura')}</div>
+      </div>
+      <button class="nb-btn danger" style="padding:8px 12px" aria-label="Usuń">✕</button>
+    `;
+    const cb = row.querySelector('input');
+    const del = row.querySelector('button');
+    cb.addEventListener('change', ()=>{
+      const items2 = loadNB();
+      items2[idx].done = cb.checked;
+      saveNB(items2);
+      renderNB();
+    });
+    del.addEventListener('click', ()=>{
+      const items2 = loadNB();
+      items2.splice(idx,1);
+      saveNB(items2);
+      renderNB();
+    });
+    nbItemsEl.appendChild(row);
+  });
+}
+function addNB(text, tag){
+  const t = (text||'').trim();
+  if(!t) return;
+  const items = loadNB();
+  items.unshift({text:t, tag:tag||'matura', done:false, ts:Date.now()});
+  saveNB(items);
+  renderNB();
+}
+
+document.getElementById('nbAdd').addEventListener('click', ()=>{
+  const t = document.getElementById('nbText').value;
+  const tag = document.getElementById('nbTag').value;
+  addNB(t, tag);
+  document.getElementById('nbText').value='';
+});
+
+document.getElementById('nbAddPreset').addEventListener('click', ()=>{
+  const preset = [
+    ["Teza: Polska w „przedwiośniu” — między marzeniem a biedą", "teza"],
+    ["Symbol: szklane domy = utopia/mit modernizacji", "symbol"],
+    ["Symbol: tytuł = okres przejściowy", "symbol"],
+    ["Kontrast: Nawłoć (arkadia elit) vs Płodek (nędza)", "fabuła"],
+    ["3 koncepcje naprawy: Seweryn/Lulek/Gajowiec", "matura"],
+    ["Zakończenie: marsz na Belweder — interpretacja otwarta", "matura"],
+    ["Baryka = outsider + dojrzewanie + gniew", "bohater"],
+    ["Naturalizm: opisy biedy i brutalności rewolucji", "matura"],
+    ["Kontekst: Nawłoć a Soplicowo", "kontekst"],
+  ];
+  preset.forEach(([t,tag])=>addNB(t,tag));
+});
+
+document.getElementById('nbClearDone').addEventListener('click', ()=>{
+  const items = loadNB().filter(x=>!x.done);
+  saveNB(items);
+  renderNB();
+});
+
+document.getElementById('nbReset').addEventListener('click', ()=>{
+  localStorage.removeItem(NB_KEY);
+  renderNB();
+});
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;');
+}
+renderNB();
+
+/* ===== FOCUS (Pomodoro) ===== */
+let focusMode = 'study'; // study/break
+let remaining = 25*60;
+let timer = null;
+
+const focusModeEl = document.getElementById('focusMode');
+const focusTimeEl = document.getElementById('focusTime');
+
+function fmt(sec){
+  const m = String(Math.floor(sec/60)).padStart(2,'0');
+  const s = String(sec%60).padStart(2,'0');
+  return `${m}:${s}`;
+}
+function syncFocus(){
+  focusTimeEl.textContent = fmt(remaining);
+  focusModeEl.textContent = focusMode==='study' ? 'Tryb: Nauka (25:00)' : 'Tryb: Przerwa (05:00)';
+}
+function tick(){
+  remaining--;
+  if(remaining<=0){
+    clearInterval(timer); timer=null;
+    // Auto switch
+    focusMode = (focusMode==='study') ? 'break' : 'study';
+    remaining = (focusMode==='study') ? 25*60 : 5*60;
+    syncFocus();
+    alert(focusMode==='break' ? 'Przerwa! 5 minut.' : 'Wracamy do nauki! 25 minut.');
+  }else{
+    syncFocus();
+  }
+}
+document.getElementById('focusStart').addEventListener('click', ()=>{
+  if(timer){ clearInterval(timer); timer=null; return; }
+  timer = setInterval(tick, 1000);
+});
+document.getElementById('focusSwitch').addEventListener('click', ()=>{
+  focusMode = (focusMode==='study') ? 'break' : 'study';
+  remaining = (focusMode==='study') ? 25*60 : 5*60;
+  syncFocus();
+});
+document.getElementById('focusReset').addEventListener('click', ()=>{
+  if(timer){ clearInterval(timer); timer=null; }
+  focusMode='study'; remaining=25*60; syncFocus();
+});
+syncFocus();
+</script>
+
+</body>
+</html>
