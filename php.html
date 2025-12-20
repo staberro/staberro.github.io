@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d12">
+<meta name="lesson-title" content="PHP - Kompletne Szkolenie">
+<meta name="lesson-desc" content="Od zera do PRO: zmienne, tablice, funkcje, formularze, bazy danych, bezpieczenstwo, OOP, API.">
+<title>PHP • Kompletne Szkolenie | ViralloLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0d0d12;--card:#14141c;--elevated:#1c1c28;
+--text:#f0f0f5;--text2:#a0a0b5;--muted:#606075;
+--php:#777BB4;--php2:#4F5B93;
+--green:#22c55e;--red:#dc2626;--orange:#f97316;--gold:#eab308;--purple:#a855f7;--blue:#3b82f6;--cyan:#06b6d4;
+--border:rgba(255,255,255,0.06);
+--glow:0 0 40px rgba(119,123,180,0.15);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+a{color:inherit;text-decoration:none}
+code{font-family:'Fira Code',monospace;background:var(--elevated);padding:2px 8px;border-radius:6px;font-size:0.85em;color:var(--cyan)}
+pre{font-family:'Fira Code',monospace;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;overflow-x:auto;font-size:0.85rem;line-height:1.6;color:var(--text2)}
+pre code{background:transparent;padding:0}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--elevated);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--php)}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 20px;background:rgba(13,13,18,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--php),var(--purple));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--glow)}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap}
+.nav-links a{padding:6px 12px;border-radius:8px;font-size:0.85rem;color:var(--text2);transition:0.3s}
+.nav-links a:hover{background:var(--elevated);color:var(--text)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:transparent}
+.nav-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--php),var(--purple),var(--gold));border-radius:0 4px 4px 0}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 20px 60px;position:relative;overflow:hidden}
+.hero::before{content:'<?php';position:absolute;font-family:'Fira Code',monospace;font-size:clamp(8rem,25vw,20rem);opacity:0.03;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;white-space:nowrap}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;font-size:0.9rem;color:var(--php);margin-bottom:24px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.5rem,8vw,5rem);font-weight:700;margin-bottom:16px;line-height:1.1}
+.hero h1 span{background:linear-gradient(135deg,var(--php),var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:700px;color:var(--text2);margin-bottom:32px;font-size:1.1rem}
+.hero-levels{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
+.hero-level{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 24px;min-width:140px;transition:0.3s}
+.hero-level:hover{border-color:var(--php);transform:translateY(-4px)}
+.hero-level h3{font-size:0.9rem;color:var(--gold);margin-bottom:4px}
+.hero-level p{font-size:0.8rem;color:var(--text2)}
+.hero-btn{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;background:linear-gradient(135deg,var(--php),var(--purple));color:#fff;font-weight:600;border-radius:50px;font-size:1rem;transition:0.3s;border:none;cursor:pointer;font-family:inherit}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(119,123,180,0.3)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+<div class="nav-inner">
+<a href="#" class="logo"><div class="logo-icon">🐘</div>PHP <span style="color:var(--php)">PRO</span></a>
+<div class="nav-links">
+<a href="#roadmapa">Roadmapa</a>
+<a href="#slownik">Slownik</a>
+<a href="#moduly">Moduly</a>
+<a href="#codelab">CodeLab</a>
+<a href="#generator">Generator</a>
+<a href="#quiz">Quiz</a>
+<a href="#fiszki">Fiszki</a>
+<a href="#typing">Typing</a>
+<a href="#notatnik">Notatnik</a>
+<a href="#fokus">Fokus</a>
+</div>
+</div>
+<div class="nav-progress"><div class="nav-progress-bar" id="progressBar"></div></div>
+</nav>
+
+<section class="hero">
+<div class="hero-badge">🐘 Kompletne szkolenie PHP</div>
+<h1><span>PHP</span> od zera do PRO</h1>
+<p class="hero-desc">Zmienne, tablice, funkcje, formularze, sesje, bazy danych, bezpieczenstwo, OOP, API. Wszystko czego potrzebujesz zeby pisac backend jak profesjonalista.</p>
+<div class="hero-levels">
+<div class="hero-level"><h3>Poziom 0</h3><p>Fundamenty</p></div>
+<div class="hero-level"><h3>Poziom 1</h3><p>Web + Formularze</p></div>
+<div class="hero-level"><h3>Poziom 2</h3><p>Bazy danych</p></div>
+<div class="hero-level"><h3>Poziom 3</h3><p>PRO + API</p></div>
+</div>
+<a href="#roadmapa" class="hero-btn">Rozpocznij szkolenie →</a>
+</section>
+
+</body>
+</html>
+
+<style>
+/* SECTIONS */
+section{padding:80px 20px}
+.section-badge{display:inline-block;padding:8px 16px;background:var(--elevated);border-radius:50px;font-size:0.85rem;color:var(--gold);margin-bottom:16px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.75rem,5vw,2.5rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:650px;margin:0 auto 48px}
+.text-center{text-align:center}
+
+/* ROADMAPA */
+#roadmapa{background:var(--card)}
+.roadmap-grid{display:grid;gap:24px;max-width:1000px;margin:0 auto}
+.roadmap-level{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:28px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:start;transition:0.3s}
+.roadmap-level:hover{border-color:var(--php)}
+@media(max-width:768px){.roadmap-level{grid-template-columns:1fr}}
+.level-badge{background:var(--card);border-radius:12px;padding:16px 20px;text-align:center;min-width:100px}
+.level-badge h3{font-size:0.8rem;color:var(--muted);margin-bottom:4px}
+.level-badge .num{font-family:'Cinzel',serif;font-size:2rem;color:var(--php)}
+.level-content h4{font-size:1.15rem;margin-bottom:8px}
+.level-content p{color:var(--text2);font-size:0.95rem;margin-bottom:12px}
+.level-topics{display:flex;flex-wrap:wrap;gap:8px}
+.level-topic{padding:6px 12px;background:var(--card);border-radius:8px;font-size:0.8rem;color:var(--text2)}
+.level-check{display:flex;flex-direction:column;gap:8px}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card);border-radius:10px;font-size:0.85rem;color:var(--text2);cursor:pointer;transition:0.2s}
+.check-item:hover{background:rgba(119,123,180,0.1)}
+.check-item input{accent-color:var(--green);width:18px;height:18px}
+.check-item.done{color:var(--green)}
+
+/* SLOWNIK */
+#slownik{background:var(--bg)}
+.slownik-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.slownik-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.3s;cursor:pointer}
+.slownik-card:hover{border-color:var(--php)}
+.slownik-card.open{border-color:var(--green)}
+.slownik-head{padding:16px;display:flex;justify-content:space-between;align-items:center}
+.slownik-name{font-weight:600;font-size:1rem}
+.slownik-badge{font-size:0.75rem;padding:4px 10px;background:var(--elevated);border-radius:20px;color:var(--text2)}
+.slownik-body{padding:0 16px 16px;display:none;color:var(--text2);font-size:0.9rem}
+.slownik-card.open .slownik-body{display:block}
+.slownik-body code{display:block;margin-top:8px}
+
+/* MODULY */
+#moduly{background:var(--card)}
+.module-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.module-tab{padding:12px 24px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text2);cursor:pointer;font-family:inherit;font-size:0.9rem;transition:0.3s}
+.module-tab:hover{border-color:var(--php)}
+.module-tab.active{background:linear-gradient(135deg,var(--php),var(--purple));color:#fff;border-color:transparent}
+.module-content{display:none;max-width:900px;margin:0 auto}
+.module-content.active{display:block}
+.module-card{background:var(--elevated);border-radius:16px;padding:24px;margin-bottom:20px}
+.module-card h4{color:var(--gold);margin-bottom:12px;font-size:1.1rem}
+.module-card p{color:var(--text2);margin-bottom:16px}
+.module-card ul{color:var(--text2);margin-left:20px}
+.module-card li{margin-bottom:6px}
+.module-card pre{margin-top:16px}
+.wtopa{background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:12px;padding:16px;margin-top:16px}
+.wtopa h5{color:var(--red);margin-bottom:8px;font-size:0.9rem}
+.wtopa p{color:var(--text2);font-size:0.85rem;margin:0}
+</style>
+
+<style>
+/* CODELAB */
+#codelab{background:var(--bg)}
+.codelab-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.codelab-wrap{grid-template-columns:1fr}}
+.codelab-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}
+.codelab-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
+.codelab-head h4{font-family:'Cinzel',serif;font-size:1rem}
+.codelab-controls{display:flex;gap:8px;flex-wrap:wrap}
+.codelab-select{padding:10px 16px;background:var(--elevated);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:0.85rem;cursor:pointer}
+.codelab-btn{padding:10px 20px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;transition:0.3s;font-size:0.9rem}
+.codelab-btn.run{background:linear-gradient(135deg,var(--green),var(--cyan));color:#fff}
+.codelab-btn.run:hover{transform:translateY(-2px)}
+.codelab-btn.copy{background:var(--elevated);color:var(--text)}
+.codelab-editor{width:100%;min-height:300px;background:var(--elevated);border:1px solid var(--border);border-radius:12px;padding:16px;font-family:'Fira Code',monospace;font-size:0.9rem;color:var(--text);resize:vertical}
+.codelab-output{min-height:200px;background:var(--elevated);border-radius:12px;padding:16px;font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--cyan);white-space:pre-wrap}
+.codelab-html{min-height:100px;background:#fff;border-radius:12px;padding:16px;color:#000}
+.codelab-note{margin-top:12px;font-size:0.85rem;color:var(--muted)}
+
+/* GENERATOR */
+#generator{background:var(--card)}
+.gen-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;max-width:1000px;margin:0 auto}
+@media(max-width:800px){.gen-wrap{grid-template-columns:1fr}}
+.gen-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px}
+.gen-panel h4{font-family:'Cinzel',serif;margin-bottom:16px}
+.gen-group{margin-bottom:16px}
+.gen-group label{display:block;font-size:0.85rem;color:var(--text2);margin-bottom:6px}
+.gen-group select{width:100%;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:inherit;font-size:0.9rem}
+.gen-btns{display:flex;gap:12px;margin-top:20px}
+.gen-btn{padding:12px 24px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;transition:0.3s}
+.gen-btn.primary{background:linear-gradient(135deg,var(--php),var(--purple));color:#fff}
+.gen-btn.secondary{background:var(--card);color:var(--text)}
+.gen-output{background:var(--card);border-radius:12px;padding:16px;min-height:250px;font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--text2);white-space:pre-wrap;overflow-x:auto}
+
+/* QUIZ */
+#quiz{background:var(--bg)}
+.quiz-box{max-width:750px;margin:0 auto;background:var(--card);border-radius:24px;padding:32px;border:1px solid var(--border)}
+.quiz-progress{display:flex;gap:4px;margin-bottom:24px}
+.quiz-dot{flex:1;height:4px;background:var(--elevated);border-radius:2px;transition:0.3s}
+.quiz-dot.done{background:var(--green)}
+.quiz-dot.current{background:var(--gold)}
+.quiz-num{font-size:0.85rem;color:var(--php);margin-bottom:8px}
+.quiz-question{font-family:'Cinzel',serif;font-size:1.3rem;margin-bottom:24px;line-height:1.4}
+.quiz-options{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.quiz-opt{display:flex;align-items:center;gap:14px;padding:16px;background:var(--elevated);border:2px solid transparent;border-radius:14px;cursor:pointer;transition:0.3s}
+.quiz-opt:hover{border-color:var(--php)}
+.quiz-opt.selected{border-color:var(--gold);background:rgba(234,179,8,0.1)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(34,197,94,0.1)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(220,38,38,0.1)}
+.opt-letter{width:36px;height:36px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
+.quiz-opt.selected .opt-letter{background:var(--gold);color:var(--bg)}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff}
+.quiz-opt.wrong .opt-letter{background:var(--red);color:#fff}
+.quiz-feedback{padding:16px;border-radius:12px;margin-bottom:20px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(34,197,94,0.1);border:1px solid var(--green)}
+.quiz-feedback.bad{background:rgba(220,38,38,0.1);border:1px solid var(--red)}
+.quiz-feedback h5{margin-bottom:6px}
+.quiz-feedback.ok h5{color:var(--green)}
+.quiz-feedback.bad h5{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:0.9rem}
+.quiz-btns{display:flex;justify-content:space-between;gap:12px}
+.qbtn{padding:14px 28px;border-radius:50px;font-weight:600;cursor:pointer;border:none;font-family:inherit;font-size:0.95rem;transition:0.3s}
+.qbtn-prev{background:var(--elevated);color:var(--text)}
+.qbtn-next{background:linear-gradient(135deg,var(--php),var(--purple));color:#fff}
+.qbtn:disabled{opacity:0.5;cursor:not-allowed}
+.qbtn:not(:disabled):hover{transform:translateY(-2px)}
+.quiz-result{text-align:center;padding:40px}
+.result-score{font-family:'Cinzel',serif;font-size:4rem;color:var(--gold)}
+.result-text{color:var(--text2);margin-bottom:24px}
+</style>
+
+<style>
+/* FISZKI */
+#fiszki{background:var(--card)}
+.flash-container{max-width:650px;margin:0 auto}
+.flashcard{height:300px;perspective:1000px;cursor:pointer;margin-bottom:20px}
+.flash-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:24px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;text-align:center}
+.flash-front{background:var(--elevated);border:2px solid var(--php)}
+.flash-back{background:var(--elevated);border:2px solid var(--green);transform:rotateY(180deg)}
+.flash-q{font-family:'Cinzel',serif;font-size:1.3rem;line-height:1.4}
+.flash-hint{color:var(--muted);font-size:0.85rem;margin-top:16px}
+.flash-a{font-size:1.05rem;color:var(--text2);line-height:1.5}
+.flash-a code{display:block;margin-top:12px;font-size:0.9rem}
+.flash-nav{display:flex;justify-content:center;gap:12px;align-items:center;flex-wrap:wrap}
+.flash-btn{padding:12px 24px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;transition:0.3s}
+.flash-btn:hover{border-color:var(--php)}
+.flash-btn.master{background:rgba(34,197,94,0.1);border-color:var(--green);color:var(--green)}
+.flash-count{color:var(--text2);font-size:0.9rem}
+
+/* TYPING */
+#typing{background:var(--bg)}
+.typing-wrap{display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;max-width:1000px;margin:0 auto}
+@media(max-width:800px){.typing-wrap{grid-template-columns:1fr}}
+.typing-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}
+.typing-panel h4{font-family:'Cinzel',serif;margin-bottom:16px}
+.typing-prompt{font-size:1.1rem;margin-bottom:8px;min-height:50px}
+.typing-hint{color:var(--muted);font-size:0.85rem;margin-bottom:16px}
+.typing-input{width:100%;padding:14px 18px;background:var(--elevated);border:2px solid var(--border);border-radius:14px;color:var(--text);font-family:inherit;font-size:1rem;transition:0.3s}
+.typing-input:focus{outline:none;border-color:var(--php)}
+.typing-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.typing-btn{padding:12px 20px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;transition:0.3s;font-size:0.9rem}
+.typing-btn.check{background:linear-gradient(135deg,var(--green),var(--cyan));color:#fff}
+.typing-btn.secondary{background:var(--elevated);color:var(--text)}
+.typing-feedback{margin-top:12px;padding:12px;border-radius:10px;font-size:0.9rem}
+.typing-feedback.ok{background:rgba(34,197,94,0.1);color:var(--green)}
+.typing-feedback.bad{background:rgba(220,38,38,0.1);color:var(--red)}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stat-box{background:var(--elevated);border-radius:12px;padding:16px;text-align:center}
+.stat-box .label{font-size:0.8rem;color:var(--muted);margin-bottom:4px}
+.stat-box .value{font-size:1.5rem;font-weight:700;color:var(--text)}
+
+/* NOTATNIK */
+#notatnik{background:var(--card)}
+.nb-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.nb-grid{grid-template-columns:1fr}}
+.nb-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px}
+.nb-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
+.nb-head h4{font-family:'Cinzel',serif}
+.nb-pill{font-size:0.8rem;padding:6px 12px;background:var(--card);border-radius:50px;color:var(--text2)}
+.nb-items{display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto}
+.nb-item{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;transition:0.2s}
+.nb-item:hover{border-color:var(--php)}
+.nb-item input[type="checkbox"]{accent-color:var(--green);width:18px;height:18px;margin-top:2px;flex-shrink:0}
+.nb-item .txt{flex:1;font-size:0.9rem;color:var(--text2)}
+.nb-item .tag{font-size:0.75rem;color:var(--muted);margin-top:4px}
+.nb-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.nb-btn{padding:10px 16px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;transition:0.3s;font-size:0.85rem}
+.nb-btn:hover{border-color:var(--php)}
+.nb-btn.primary{background:linear-gradient(135deg,var(--php),var(--purple));color:#fff;border:none}
+.nb-btn.danger{border-color:rgba(220,38,38,0.3)}
+.nb-btn.danger:hover{border-color:var(--red)}
+.nb-list{display:flex;flex-direction:column;gap:10px;max-height:350px;overflow-y:auto}
+.nb-list-item{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:12px}
+.nb-list-item .txt{flex:1;font-size:0.9rem;color:var(--text2)}
+</style>
+
+<style>
+/* FOKUS */
+#fokus{background:var(--bg)}
+.fokus-box{max-width:900px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:28px}
+.fokus-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.fokus-top h4{font-family:'Cinzel',serif}
+.fokus-controls{display:flex;gap:10px;flex-wrap:wrap}
+.fokus-btn{padding:10px 18px;border-radius:50px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;transition:0.3s}
+.fokus-btn:hover{border-color:var(--php)}
+.fokus-btn.start{background:linear-gradient(135deg,var(--green),var(--cyan));color:#fff;border:none}
+.fokus-card{background:var(--elevated);border-radius:20px;padding:28px;min-height:180px;margin-bottom:20px}
+.fokus-q{font-family:'Cinzel',serif;font-size:1.2rem;margin-bottom:12px}
+.fokus-a{color:var(--text2);display:none;font-size:1rem}
+.fokus-a.show{display:block}
+.fokus-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:0.85rem;margin-top:16px;flex-wrap:wrap;gap:8px}
+.fokus-progress{height:8px;background:var(--card);border-radius:50px;overflow:hidden;margin-top:16px}
+.fokus-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--gold),var(--php));transition:width 0.3s}
+.kbd{font-family:'Fira Code',monospace;font-size:0.75rem;padding:4px 8px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text2)}
+
+/* FOOTER */
+footer{padding:48px 20px;text-align:center;border-top:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,0.02))}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.25rem;margin-bottom:12px}
+.footer-copy{color:var(--muted);font-size:0.9rem}
+.footer-copy a{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.16);padding-bottom:2px;transition:0.25s}
+.footer-copy a:hover{border-bottom-color:var(--php);color:var(--php)}
+.footer-brand{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:50px;background:var(--elevated);border:1px solid var(--border);color:var(--text2);margin-left:10px}
+.footer-brand b{color:var(--php)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 24px;box-shadow:0 10px 40px rgba(0,0,0,0.3);transform:translateY(150%);transition:0.3s;z-index:2000;max-width:320px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:4px}
+.toast span{color:var(--text2);font-size:0.85rem}
+
+/* UTILS */
+@media(max-width:600px){
+section{padding:60px 16px}
+.quiz-box,.fokus-box{padding:20px}
+.nb-grid,.typing-wrap,.gen-wrap,.codelab-wrap{gap:16px}
+}
+</style>
+
+<!-- ROADMAPA -->
+<section id="roadmapa">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">🗺️ Roadmapa</div>
+<h2 class="section-title">Sciezka nauki PHP</h2>
+<p class="section-desc">Od podstaw do profesjonalnego backendu. Odhaczaj tematy w miare postepow.</p>
+</div>
+<div class="roadmap-grid">
+
+<div class="roadmap-level">
+<div class="level-badge"><h3>POZIOM</h3><div class="num">0</div></div>
+<div class="level-content">
+<h4>Fundamenty (2-4h)</h4>
+<p>Zmienne, typy, stringi, tablice, petle, funkcje, debug. Podstawy bez ktorych nie ruszysz dalej.</p>
+<div class="level-topics">
+<span class="level-topic">Skladnia PHP</span>
+<span class="level-topic">echo/print</span>
+<span class="level-topic">var_dump</span>
+<span class="level-topic">Tablice</span>
+<span class="level-topic">foreach</span>
+<span class="level-topic">Funkcje</span>
+<span class="level-topic">Typy danych</span>
+</div>
+</div>
+<div class="level-check">
+<label class="check-item"><input type="checkbox" data-k="php_0_syntax">Skladnia: echo/print/var_dump</label>
+<label class="check-item"><input type="checkbox" data-k="php_0_arrays">Tablice + foreach</label>
+<label class="check-item"><input type="checkbox" data-k="php_0_func">Funkcje + scope</label>
+<label class="check-item"><input type="checkbox" data-k="php_0_types">Operatory + typy</label>
+</div>
+</div>
+
+<div class="roadmap-level">
+<div class="level-badge"><h3>POZIOM</h3><div class="num">1</div></div>
+<div class="level-content">
+<h4>Web + Formularze (4-6h)</h4>
+<p>GET/POST, walidacja, sesje, cookies, upload plikow, przekierowania. Prawdziwe aplikacje webowe.</p>
+<div class="level-topics">
+<span class="level-topic">$_GET / $_POST</span>
+<span class="level-topic">Walidacja</span>
+<span class="level-topic">Sesje</span>
+<span class="level-topic">Cookies</span>
+<span class="level-topic">Upload</span>
+<span class="level-topic">header()</span>
+</div>
+</div>
+<div class="level-check">
+<label class="check-item"><input type="checkbox" data-k="php_1_forms">Formularze GET/POST</label>
+<label class="check-item"><input type="checkbox" data-k="php_1_valid">Walidacja + sanityzacja</label>
+<label class="check-item"><input type="checkbox" data-k="php_1_session">Sesje + logowanie</label>
+<label class="check-item"><input type="checkbox" data-k="php_1_upload">Upload plikow</label>
+</div>
+</div>
+
+<div class="roadmap-level">
+<div class="level-badge"><h3>POZIOM</h3><div class="num">2</div></div>
+<div class="level-content">
+<h4>Bazy danych PDO (6-8h)</h4>
+<p>Polaczenie z MySQL/SQLite, CRUD, prepared statements, transakcje, paginacja, wyszukiwanie.</p>
+<div class="level-topics">
+<span class="level-topic">PDO</span>
+<span class="level-topic">Prepared statements</span>
+<span class="level-topic">CRUD</span>
+<span class="level-topic">Transakcje</span>
+<span class="level-topic">Paginacja</span>
+</div>
+</div>
+<div class="level-check">
+<label class="check-item"><input type="checkbox" data-k="php_2_pdo">Polaczenie PDO</label>
+<label class="check-item"><input type="checkbox" data-k="php_2_prepared">Prepared statements</label>
+<label class="check-item"><input type="checkbox" data-k="php_2_crud">CRUD kompletny</label>
+<label class="check-item"><input type="checkbox" data-k="php_2_paging">Paginacja + search</label>
+</div>
+</div>
+
+<div class="roadmap-level">
+<div class="level-badge"><h3>POZIOM</h3><div class="num">3</div></div>
+<div class="level-content">
+<h4>PRO: OOP + API (8-12h)</h4>
+<p>Klasy, namespaces, Composer, autoload, REST API, JSON, bezpieczenstwo, architektura MVC.</p>
+<div class="level-topics">
+<span class="level-topic">OOP</span>
+<span class="level-topic">Namespaces</span>
+<span class="level-topic">Composer</span>
+<span class="level-topic">REST API</span>
+<span class="level-topic">JSON</span>
+<span class="level-topic">MVC</span>
+</div>
+</div>
+<div class="level-check">
+<label class="check-item"><input type="checkbox" data-k="php_3_oop">OOP + klasy</label>
+<label class="check-item"><input type="checkbox" data-k="php_3_composer">Composer + autoload</label>
+<label class="check-item"><input type="checkbox" data-k="php_3_api">REST API + JSON</label>
+<label class="check-item"><input type="checkbox" data-k="php_3_mvc">Architektura MVC</label>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- SLOWNIK -->
+<section id="slownik">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📖 Pojecia</div>
+<h2 class="section-title">Slownik PHP</h2>
+<p class="section-desc">Kliknij karte zeby zobaczyc definicje i przyklad kodu.</p>
+</div>
+<div class="slownik-grid" id="slownikGrid"></div>
+</div>
+</section>
+
+<!-- MODULY -->
+<section id="moduly">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📚 Moduly</div>
+<h2 class="section-title">Moduly szkolenia</h2>
+<p class="section-desc">Teoria + przyklady + typowe wtopy. Wybierz modul.</p>
+</div>
+<div class="module-tabs" id="moduleTabs"></div>
+<div id="moduleContent"></div>
+</div>
+</section>
+
+<!-- CODELAB -->
+<section id="codelab">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">💻 Praktyka</div>
+<h2 class="section-title">PHP CodeLab</h2>
+<p class="section-desc">Pisz kod po lewej, wynik po prawej. Symulacja podstawowych konstrukcji PHP w przegladarce.</p>
+</div>
+<div class="codelab-wrap">
+<div class="codelab-panel">
+<div class="codelab-head">
+<h4>Edytor</h4>
+<div class="codelab-controls">
+<select class="codelab-select" id="codeExample">
+<option value="hello">1) Hello + zmienne</option>
+<option value="arrays">2) Tablice + foreach</option>
+<option value="func">3) Funkcje</option>
+<option value="ifelse">4) if/else + petle</option>
+<option value="assoc">5) Tablica asocjacyjna</option>
+</select>
+<button class="codelab-btn copy" onclick="loadExample()">Wczytaj</button>
+</div>
+</div>
+<textarea class="codelab-editor" id="codeEditor">&lt;?php
+$name = "Staberek";
+$age = 28;
+
+echo "Siema, " . $name . "!\n";
+echo "Wiek: " . $age . "\n";
+?&gt;</textarea>
+<div class="codelab-controls" style="margin-top:12px">
+<button class="codelab-btn run" onclick="runCode()">▶ Uruchom</button>
+<button class="codelab-btn copy" onclick="copyCode()">📋 Kopiuj</button>
+</div>
+<p class="codelab-note">Symulacja obsluguje: echo, zmienne, tablice, foreach, if/else, for, funkcje. Pelny PHP odpalasz lokalnie (XAMPP/php -S).</p>
+</div>
+<div class="codelab-panel">
+<div class="codelab-head"><h4>Wynik</h4></div>
+<div class="codelab-output" id="codeOutput">(kliknij "Uruchom")</div>
+<p style="margin-top:16px;color:var(--muted);font-size:0.85rem">Podglad HTML (jesli echo generuje HTML):</p>
+<div class="codelab-html" id="codeHtml"></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- GENERATOR -->
+<section id="generator">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">🎯 Generator</div>
+<h2 class="section-title">Generator cwiczen</h2>
+<p class="section-desc">Wybierz poziom i temat - dostaniesz zadanie + starter code.</p>
+</div>
+<div class="gen-wrap">
+<div class="gen-panel">
+<h4>⚙️ Ustawienia</h4>
+<div class="gen-group">
+<label>Poziom:</label>
+<select id="genLevel">
+<option value="0">Poziom 0 - Fundamenty</option>
+<option value="1">Poziom 1 - Web/Formularze</option>
+<option value="2">Poziom 2 - Bazy danych</option>
+<option value="3">Poziom 3 - OOP/API</option>
+</select>
+</div>
+<div class="gen-group">
+<label>Temat:</label>
+<select id="genTopic">
+<option value="zmienne">Zmienne i typy</option>
+<option value="stringi">Stringi</option>
+<option value="tablice">Tablice + foreach</option>
+<option value="funkcje">Funkcje</option>
+<option value="ifelse">if/else + petle</option>
+</select>
+</div>
+<div class="gen-btns">
+<button class="gen-btn primary" onclick="generateExercise()">Generuj ✓</button>
+<button class="gen-btn secondary" onclick="copyExercise()">Kopiuj</button>
+</div>
+</div>
+<div class="gen-panel">
+<h4>📝 Wynik</h4>
+<div class="gen-output" id="genOutput">Wybierz poziom i temat, kliknij "Generuj".</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">🎯 Quiz</div>
+<h2 class="section-title">Quiz: PHP od podstaw do PRO</h2>
+<p class="section-desc">20 pytan z wyjasnieniami. Sprawdz swoja wiedze.</p>
+</div>
+<div class="quiz-box" id="quizBox">
+<div class="quiz-progress" id="quizProgress"></div>
+<div class="quiz-num">Pytanie <span id="qNum">1</span> z <span id="qTotal">20</span></div>
+<h3 class="quiz-question" id="qText"></h3>
+<div class="quiz-options" id="qOpts"></div>
+<div class="quiz-feedback" id="qFeedback"><h5 id="qFbTitle"></h5><p id="qFbText"></p></div>
+<div class="quiz-btns">
+<button class="qbtn qbtn-prev" id="qPrev" onclick="prevQ()">← Poprzednie</button>
+<button class="qbtn qbtn-next" id="qNext" onclick="nextQ()">Nastepne →</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FISZKI -->
+<section id="fiszki">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">🧠 Fiszki</div>
+<h2 class="section-title">Fiszki PHP</h2>
+<p class="section-desc">Kliknij karte aby odwrocic. Powtarzaj do skutku.</p>
+</div>
+<div class="flash-container">
+<div class="flashcard" id="flashcard" onclick="flipCard()">
+<div class="flash-inner">
+<div class="flash-front">
+<h3 class="flash-q" id="flashQ"></h3>
+<p class="flash-hint">Kliknij aby zobaczyc odpowiedz</p>
+</div>
+<div class="flash-back">
+<p class="flash-a" id="flashA"></p>
+</div>
+</div>
+</div>
+<div class="flash-nav">
+<button class="flash-btn" onclick="prevCard()">← Poprzednia</button>
+<button class="flash-btn" onclick="speakCard()">🔊</button>
+<button class="flash-btn master" onclick="markMastered()">✓ Umiem</button>
+<button class="flash-btn" onclick="nextCard()">Nastepna →</button>
+</div>
+<div class="flash-count" style="text-align:center;margin-top:12px">
+<span id="cardNum">1</span> z <span id="cardTotal">25</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TYPING -->
+<section id="typing">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">⌨️ Typing</div>
+<h2 class="section-title">Typing Sprint: PHP</h2>
+<p class="section-desc">Przepisuj odpowiedzi. Enter = sprawdz. Shift+Enter = pokaz odpowiedz.</p>
+</div>
+<div class="typing-wrap">
+<div class="typing-panel">
+<h4>Zadanie</h4>
+<div class="typing-prompt" id="typingPrompt">...</div>
+<div class="typing-hint" id="typingHint">Wpisz odpowiedz</div>
+<input type="text" class="typing-input" id="typingInput" placeholder="Twoja odpowiedz..." autocomplete="off">
+<div class="typing-btns">
+<button class="typing-btn secondary" onclick="speakTyping()">🔊</button>
+<button class="typing-btn check" onclick="checkTyping()">Sprawdz ✓</button>
+<button class="typing-btn secondary" onclick="skipTyping()">Pomin →</button>
+<button class="typing-btn secondary" onclick="resetTyping()">Reset</button>
+</div>
+<div class="typing-feedback" id="typingFeedback"></div>
+</div>
+<div class="typing-panel">
+<h4>📊 Statystyki</h4>
+<div class="stat-grid">
+<div class="stat-box"><div class="label">Poprawne</div><div class="value" id="statOk">0</div></div>
+<div class="stat-box"><div class="label">Bledne</div><div class="value" id="statBad">0</div></div>
+<div class="stat-box"><div class="label">Streak</div><div class="value" id="statStreak">0</div></div>
+<div class="stat-box"><div class="label">Najlepszy</div><div class="value" id="statBest">0</div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- NOTATNIK -->
+<section id="notatnik">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📝 Notatnik</div>
+<h2 class="section-title">Notatnik PHP</h2>
+<p class="section-desc">Zaznacz wazne punkty i zbuduj wlasna sciage do powtorki.</p>
+</div>
+<div class="nb-grid">
+<div class="nb-panel">
+<div class="nb-head">
+<h4>Tematy do zaznaczenia</h4>
+<span class="nb-pill">wybierz i dodaj →</span>
+</div>
+<div class="nb-items" id="nbBlocks"></div>
+<div class="nb-btns">
+<button class="nb-btn" onclick="nbSelectAll(true)">Zaznacz wszystko</button>
+<button class="nb-btn" onclick="nbSelectAll(false)">Odznacz</button>
+<button class="nb-btn primary" onclick="nbAddSelected()">Dodaj zaznaczone →</button>
+</div>
+</div>
+<div class="nb-panel">
+<div class="nb-head">
+<h4>Twoja sciaga</h4>
+<span class="nb-pill" id="nbCount">0 punktow</span>
+</div>
+<div class="nb-list" id="nbList"></div>
+<div class="nb-btns">
+<button class="nb-btn" onclick="nbExport()">📋 Kopiuj</button>
+<button class="nb-btn" onclick="nbDownload()">💾 Pobierz .txt</button>
+<button class="nb-btn danger" onclick="nbClear()">🗑️ Wyczysc</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOKUS -->
+<section id="fokus">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">🎯 Fokus</div>
+<h2 class="section-title">Tryb Fokus</h2>
+<p class="section-desc">Intensywna powtorka z timerem. <span class="kbd">Space</span> = pokaz odpowiedz, <span class="kbd">N</span> = nastepna.</p>
+</div>
+<div class="fokus-box">
+<div class="fokus-top">
+<h4>Fiszka <span id="fNum">0</span> z <span id="fTotal">0</span> | Czas: <span id="fokusTime">90</span>s</h4>
+<div class="fokus-controls">
+<button class="fokus-btn start" onclick="fokusStart()">▶ Start</button>
+<button class="fokus-btn" onclick="fokusReveal()">Pokaz</button>
+<button class="fokus-btn" onclick="fokusNext()">Nastepna →</button>
+<button class="fokus-btn" onclick="fokusReset()">Reset</button>
+</div>
+</div>
+<div class="fokus-card">
+<div class="fokus-q" id="fokusQ">Kliknij "Start" zeby zaczac.</div>
+<div class="fokus-a" id="fokusA"></div>
+</div>
+<div class="fokus-progress"><div class="fokus-bar" id="fokusBar"></div></div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer-logo">🐘 PHP Kompletne Szkolenie</div>
+<p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">dr inz. Kacper Stabrawa</a>) <span class="footer-brand">🧠 <b>ViralloLab</b></span></p>
+</footer>
+
+<div class="toast" id="toast"><b></b><span></span></div>
+
+<script>
+// ===================== DANE =====================
+
+// SLOWNIK PHP
+const slownikData = [
+{name:"$_GET",badge:"SUPERGLOBAL",short:"Dane z URL (query string).",full:"Tablica z parametrami z adresu URL.<br><code>?id=5</code> → <code>$_GET['id']</code><br>Tip: zawsze waliduj i rzutuj typy."},
+{name:"$_POST",badge:"SUPERGLOBAL",short:"Dane z formularzy POST.",full:"Dane z body requestu HTTP.<br>Uzycie: <code>$_POST['email']</code><br>Tip: nigdy nie ufaj inputowi uzytkownika."},
+{name:"$_SESSION",badge:"SUPERGLOBAL",short:"Dane sesji uzytkownika.",full:"Przechowuje dane miedzy requestami.<br><code>session_start();</code> na poczatku.<br><code>$_SESSION['user'] = 'Jan';</code>"},
+{name:"$_COOKIE",badge:"SUPERGLOBAL",short:"Ciasteczka klienta.",full:"Dane zapisane w przegladarce.<br><code>setcookie('name','value',time()+3600);</code><br>Nie trzymaj wrazliwych danych!"},
+{name:"$_SERVER",badge:"SUPERGLOBAL",short:"Info o serwerze i requescie.",full:"<code>$_SERVER['REQUEST_METHOD']</code> - metoda<br><code>$_SERVER['PHP_SELF']</code> - sciezka skryptu"},
+{name:"echo / print",badge:"OUTPUT",short:"Wypisywanie tekstu.",full:"<code>echo 'Hello';</code><br><code>echo $a . ' ' . $b;</code><br>echo moze przyjac wiele argumentow."},
+{name:"var_dump()",badge:"DEBUG",short:"Debug: typ + wartosc.",full:"Najlepsze do debugowania.<br><code>var_dump($arr);</code><br>Pokazuje typ, dlugosc, zawartosc."},
+{name:"print_r()",badge:"DEBUG",short:"Czytelny print tablicy.",full:"<code>print_r($arr);</code><br>Mniej szczegolowy niz var_dump.<br>Tip: uzyj <code>&lt;pre&gt;</code> dla formatowania."},
+{name:"Tablice",badge:"ARRAY",short:"Indeksowe i asocjacyjne.",full:"Indeksowa: <code>$a = [1,2,3];</code><br>Asocjacyjna: <code>$u = ['id'=>1,'name'=>'Jan'];</code>"},
+{name:"foreach",badge:"PETLA",short:"Iteracja po tablicy.",full:"<code>foreach($arr as $val){}</code><br><code>foreach($arr as $key=>$val){}</code><br>Podstawa pracy z danymi."},
+{name:"for",badge:"PETLA",short:"Petla z licznikiem.",full:"<code>for($i=0; $i<10; $i++){}</code><br>Uzywaj gdy znasz liczbe iteracji."},
+{name:"while",badge:"PETLA",short:"Petla warunkowa.",full:"<code>while($x < 10){ $x++; }</code><br>Uwazaj na nieskonczone petle!"},
+{name:"if/else",badge:"WARUNEK",short:"Instrukcja warunkowa.",full:"<code>if($a > 0){ } elseif($a < 0){ } else { }</code>"},
+{name:"switch",badge:"WARUNEK",short:"Wielokrotny wybor.",full:"<code>switch($x){ case 1: ... break; default: ... }</code>"},
+{name:"Funkcje",badge:"FUNKCJA",short:"Reuzywalna logika.",full:"<code>function add(int $a, int $b): int {<br>  return $a + $b;<br>}</code>"},
+{name:"return",badge:"FUNKCJA",short:"Zwraca wartosc z funkcji.",full:"<code>return $result;</code><br>Konczy wykonywanie funkcji."},
+{name:"include/require",badge:"MODUL",short:"Ladowanie plikow.",full:"<code>require 'config.php';</code> - krytyczny<br><code>include 'header.php';</code> - warning<br>Uzywaj <code>require_once</code> dla klas."},
+{name:"session_start()",badge:"SESJA",short:"Wlacza sesje.",full:"Wywolaj PRZED jakimkolwiek outputem!<br><code>session_start();</code>"},
+{name:"header()",badge:"HTTP",short:"Ustawia naglowek HTTP.",full:"<code>header('Location: /home');</code> - redirect<br><code>header('Content-Type: application/json');</code>"},
+{name:"PDO",badge:"BAZA",short:"Obiekt bazy danych.",full:"<code>$pdo = new PDO('mysql:host=localhost;dbname=test','user','pass');</code><br>Zawsze uzyj prepared statements!"},
+{name:"prepare()",badge:"BAZA",short:"Prepared statement.",full:"<code>$stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');</code><br>Chroni przed SQL Injection."},
+{name:"execute()",badge:"BAZA",short:"Wykonuje prepared statement.",full:"<code>$stmt->execute([$id]);</code><br>Przekazuj dane jako tablice."},
+{name:"fetch()",badge:"BAZA",short:"Pobiera jeden rekord.",full:"<code>$row = $stmt->fetch(PDO::FETCH_ASSOC);</code>"},
+{name:"fetchAll()",badge:"BAZA",short:"Pobiera wszystkie rekordy.",full:"<code>$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);</code>"},
+{name:"password_hash()",badge:"SECURITY",short:"Hashuje haslo.",full:"<code>$hash = password_hash($pass, PASSWORD_DEFAULT);</code><br>NIGDY nie zapisuj hasel plaintext!"},
+{name:"password_verify()",badge:"SECURITY",short:"Weryfikuje haslo.",full:"<code>if(password_verify($input, $hash)){...}</code>"},
+{name:"htmlspecialchars()",badge:"SECURITY",short:"Escapuje HTML (anty-XSS).",full:"<code>echo htmlspecialchars($x, ENT_QUOTES, 'UTF-8');</code><br>ZAWSZE przy wyswietlaniu danych uzytkownika."},
+{name:"json_encode()",badge:"JSON",short:"PHP → JSON string.",full:"<code>echo json_encode(['ok'=>true]);</code>"},
+{name:"json_decode()",badge:"JSON",short:"JSON string → PHP.",full:"<code>$data = json_decode($json, true);</code><br>true = tablica asocjacyjna."},
+{name:"??",badge:"OPERATOR",short:"Null coalescing.",full:"<code>$id = $_GET['id'] ?? 0;</code><br>Zwraca lewa jesli nie null."},
+{name:"===",badge:"OPERATOR",short:"Porownanie scisle.",full:"Porownuje typ I wartosc.<br><code>0 == '0'</code> → true<br><code>0 === '0'</code> → false"},
+{name:"Composer",badge:"NARZEDZIE",short:"Manager pakietow PHP.",full:"<code>composer require vendor/package</code><br>Autoload PSR-4 - standard w PRO projektach."},
+{name:"namespace",badge:"OOP",short:"Przestrzen nazw.",full:"<code>namespace App\\Service;</code><br>Organizuje kod, unika konfliktow nazw."},
+{name:"class",badge:"OOP",short:"Definicja klasy.",full:"<code>class User {<br>  public string $name;<br>  public function __construct($name){...}<br>}</code>"},
+{name:"new",badge:"OOP",short:"Tworzy obiekt.",full:"<code>$user = new User('Jan');</code>"},
+{name:"try/catch",badge:"OOP",short:"Obsluga wyjatkow.",full:"<code>try {<br>  // kod<br>} catch(Exception $e) {<br>  echo $e->getMessage();<br>}</code>"}
+];
+
+// MODULY SZKOLENIA
+const modulyData = [
+{id:"fund",name:"Fundamenty",content:`
+<div class="module-card">
+<h4>Zmienne i typy danych</h4>
+<p>PHP jest dynamicznie typowany, ale od PHP 7+ mozesz (i powinienes) deklarowac typy.</p>
+<pre><code>$name = "Staberek";      // string
+$age = 28;               // int
+$price = 19.99;          // float
+$active = true;          // bool
+$nothing = null;         // null
+
+// Type hints (PHP 7+)
+function greet(string $name): string {
+    return "Czesc, " . $name;
+}</code></pre>
+<div class="wtopa"><h5>⚠️ Typowy wtop</h5><p>Porownywanie <code>==</code> zamiast <code>===</code>. PHP robi automatyczna konwersje: <code>0 == "abc"</code> jest TRUE! Uzywaj <code>===</code>.</p></div>
+</div>
+<div class="module-card">
+<h4>Tablice</h4>
+<p>Podstawowa struktura danych. Dwa typy: indeksowe i asocjacyjne.</p>
+<pre><code>// Indeksowa
+$fruits = ["apple", "banana", "orange"];
+echo $fruits[0]; // apple
+
+// Asocjacyjna
+$user = [
+    "id" => 1,
+    "name" => "Jan",
+    "email" => "jan@example.com"
+];
+echo $user["name"]; // Jan
+
+// Iteracja
+foreach($user as $key => $value) {
+    echo "$key: $value\\n";
+}</code></pre>
+</div>
+`},
+{id:"web",name:"Web + Formularze",content:`
+<div class="module-card">
+<h4>GET vs POST</h4>
+<p>GET - dane w URL (widoczne, limit dlugosci). POST - dane w body (ukryte, bez limitu).</p>
+<pre><code>// Formularz
+&lt;form method="post" action="process.php"&gt;
+    &lt;input name="email" type="email"&gt;
+    &lt;button&gt;Wyslij&lt;/button&gt;
+&lt;/form&gt;
+
+// process.php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST["email"] ?? "");
+    
+    if (empty($email)) {
+        echo "Email wymagany!";
+    } else {
+        echo "Dziekujemy, " . htmlspecialchars($email);
+    }
+}</code></pre>
+<div class="wtopa"><h5>⚠️ Typowy wtop</h5><p>Brak walidacji i escapowania. ZAWSZE: 1) waliduj input, 2) escapuj output z <code>htmlspecialchars()</code>.</p></div>
+</div>
+<div class="module-card">
+<h4>Sesje i logowanie</h4>
+<pre><code>// login.php
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $user = $_POST["user"] ?? "";
+    $pass = $_POST["pass"] ?? "";
+    
+    // W prawdziwej apce: sprawdz z baza + password_verify()
+    if ($user === "admin" && $pass === "secret") {
+        $_SESSION["logged"] = true;
+        $_SESSION["username"] = $user;
+        header("Location: dashboard.php");
+        exit;
+    }
+}
+
+// dashboard.php
+session_start();
+if (!isset($_SESSION["logged"])) {
+    header("Location: login.php");
+    exit;
+}
+echo "Witaj, " . htmlspecialchars($_SESSION["username"]);</code></pre>
+</div>
+`},
+{id:"pdo",name:"Bazy danych PDO",content:`
+<div class="module-card">
+<h4>Polaczenie z baza</h4>
+<pre><code>try {
+    $pdo = new PDO(
+        "mysql:host=localhost;dbname=myapp;charset=utf8mb4",
+        "root",
+        "",
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]
+    );
+} catch (PDOException $e) {
+    die("Blad polaczenia: " . $e->getMessage());
+}</code></pre>
+</div>
+<div class="module-card">
+<h4>Prepared Statements (CRUD)</h4>
+<p>ZAWSZE uzywaj prepared statements. Chronia przed SQL Injection.</p>
+<pre><code>// SELECT
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt->execute([$id]);
+$user = $stmt->fetch();
+
+// INSERT
+$stmt = $pdo->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+$stmt->execute([$name, $email]);
+$newId = $pdo->lastInsertId();
+
+// UPDATE
+$stmt = $pdo->prepare("UPDATE users SET name = ? WHERE id = ?");
+$stmt->execute([$name, $id]);
+
+// DELETE
+$stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+$stmt->execute([$id]);</code></pre>
+<div class="wtopa"><h5>⚠️ Typowy wtop</h5><p>Wklejanie zmiennych bezposrednio do SQL: <code>"SELECT * FROM users WHERE id = $id"</code> - NIGDY! To SQL Injection.</p></div>
+</div>
+`},
+{id:"oop",name:"OOP + Composer",content:`
+<div class="module-card">
+<h4>Klasy i obiekty</h4>
+<pre><code>class User {
+    private int $id;
+    private string $name;
+    private string $email;
+    
+    public function __construct(int $id, string $name, string $email) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+    }
+    
+    public function getName(): string {
+        return $this->name;
+    }
+    
+    public function toArray(): array {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "email" => $this->email
+        ];
+    }
+}
+
+$user = new User(1, "Jan", "jan@example.com");
+echo $user->getName();</code></pre>
+</div>
+<div class="module-card">
+<h4>Composer i Autoload</h4>
+<pre><code>// composer.json
+{
+    "autoload": {
+        "psr-4": {
+            "App\\\\": "src/"
+        }
+    }
+}
+
+// Terminal
+composer dump-autoload
+
+// index.php
+require "vendor/autoload.php";
+
+use App\\Service\\UserService;
+
+$service = new UserService();</code></pre>
+</div>
+`},
+{id:"api",name:"REST API",content:`
+<div class="module-card">
+<h4>Endpoint JSON</h4>
+<pre><code>// api/users.php
+header("Content-Type: application/json; charset=utf-8");
+
+$method = $_SERVER["REQUEST_METHOD"];
+
+switch ($method) {
+    case "GET":
+        $users = [
+            ["id" => 1, "name" => "Jan"],
+            ["id" => 2, "name" => "Anna"]
+        ];
+        echo json_encode(["data" => $users]);
+        break;
+        
+    case "POST":
+        $input = json_decode(file_get_contents("php://input"), true);
+        // walidacja + zapis do bazy
+        http_response_code(201);
+        echo json_encode(["ok" => true, "id" => 3]);
+        break;
+        
+    default:
+        http_response_code(405);
+        echo json_encode(["error" => "Method not allowed"]);
+}</code></pre>
+</div>
+<div class="module-card">
+<h4>Kody HTTP</h4>
+<p><code>200</code> OK | <code>201</code> Created | <code>400</code> Bad Request | <code>401</code> Unauthorized | <code>404</code> Not Found | <code>500</code> Server Error</p>
+<pre><code>http_response_code(404);
+echo json_encode(["error" => "User not found"]);</code></pre>
+</div>
+`},
+{id:"sec",name:"Bezpieczenstwo",content:`
+<div class="module-card">
+<h4>Hasla</h4>
+<pre><code>// Rejestracja - hashowanie
+$hash = password_hash($password, PASSWORD_DEFAULT);
+// Zapisz $hash do bazy (NIE $password!)
+
+// Logowanie - weryfikacja
+$hash = $row["password"]; // z bazy
+if (password_verify($inputPassword, $hash)) {
+    // OK - zaloguj
+} else {
+    // Zle haslo
+}</code></pre>
+<div class="wtopa"><h5>⚠️ Typowy wtop</h5><p>Uzycie <code>md5()</code> lub <code>sha1()</code> do hasel. Te funkcje NIE sa bezpieczne dla hasel!</p></div>
+</div>
+<div class="module-card">
+<h4>XSS i CSRF</h4>
+<pre><code>// XSS - zawsze escapuj output
+echo htmlspecialchars($userInput, ENT_QUOTES, "UTF-8");
+
+// CSRF - token w formularzu
+session_start();
+$_SESSION["csrf"] = bin2hex(random_bytes(32));
+
+// W formularzu
+&lt;input type="hidden" name="csrf" value="&lt;?= $_SESSION['csrf'] ?&gt;"&gt;
+
+// Przy odbiorze
+if ($_POST["csrf"] !== $_SESSION["csrf"]) {
+    die("CSRF attack!");
+}</code></pre>
+</div>
+`}
+];
+
+// QUIZ DATA
+const quizData = [
+{q:"Ktora funkcja poprawnie hashuje hasla?",opts:["md5()","sha1()","password_hash()","base64_encode()"],ans:2,info:"Uzyj password_hash() z PASSWORD_DEFAULT. md5/sha1 nie sa bezpieczne dla hasel."},
+{q:"Najlepsza ochrona przed SQL Injection?",opts:["mysqli_real_escape_string()","prepared statements","usuwanie cudzyslowow","htmlspecialchars()"],ans:1,info:"Prepared statements oddzielaja dane od zapytania SQL."},
+{q:"Skad pochodza dane wyslane formularzem method=post?",opts:["$_GET","$_POST","$_REQUEST","$_SERVER"],ans:1,info:"Dane z POST laduja w superglobalu $_POST."},
+{q:"Co robi htmlspecialchars()?",opts:["Hashuje haslo","Escapuje znaki HTML","Laczy tablice","Waliduje email"],ans:1,info:"Zamienia <, >, & na encje HTML. Chroni przed XSS."},
+{q:"Roznica miedzy include i require?",opts:["Brak roznicy","require przerywa skrypt gdy brak pliku","include zawsze przerywa","require dziala tylko w CLI"],ans:1,info:"require = fatal error, include = warning. Uzywaj require_once dla klas."},
+{q:"Jak sprawdzic metode requestu HTTP?",opts:["$_SERVER['METHOD']","$_SERVER['REQUEST_METHOD']","$_POST['method']","getMethod()"],ans:1,info:"$_SERVER['REQUEST_METHOD'] zwraca GET, POST, PUT itd."},
+{q:"Jak iterowac po tablicy z kluczami i wartosciami?",opts:["for($i=0...)","foreach($a as $v)","foreach($a as $k=>$v)","map($a)"],ans:2,info:"foreach($arr as $key => $value) daje dostep do kluczy."},
+{q:"Ktory operator skleja stringi w PHP?",opts:["+",".","&","||"],ans:1,info:"Konkatenacja to kropka: $a . $b"},
+{q:"Jak wlaczyc sesje?",opts:["session_on()","start_session()","session_start()","init_session()"],ans:2,info:"session_start() musi byc PRZED jakimkolwiek outputem."},
+{q:"Co oznacza PRG pattern?",opts:["Post-Redirect-Get","Put-Redirect-Get","Post-Render-Get","PHP-Request-Get"],ans:0,info:"Po POST robisz redirect, zeby uniknac ponownego wyslania formularza przy F5."},
+{q:"Jak ustawic naglowek Content-Type JSON?",opts:["echo 'json'","header('JSON')","header('Content-Type: application/json')","setJSON()"],ans:2,info:"header('Content-Type: application/json; charset=utf-8')"},
+{q:"Jak bezpiecznie rzutowac id z URL na int?",opts:["$id = $_GET['id']","$id = (int)($_GET['id'] ?? 0)","$id = intval($_GET)","$id = int($_GET['id'])"],ans:1,info:"(int) + ?? operator to bezpieczny standard."},
+{q:"Ktory operator porownuje typ I wartosc?",opts:["==","=","===","~="],ans:2,info:"=== sprawdza typ i wartosc. 0 == '0' jest true, ale 0 === '0' jest false."},
+{q:"Gdzie trzymac sekrety (API keys) w PRO projekcie?",opts:["W kodzie","W komentarzu",".env / zmienne srodowiskowe","W nazwie pliku"],ans:2,info:"Sekrety w .env, nigdy w repozytorium!"},
+{q:"Co robic po zalogowaniu uzytkownika?",opts:["session_regenerate_id(true)","unset($_SESSION)","echo session","die()"],ans:0,info:"Regeneracja ID sesji zmniejsza ryzyko session fixation."},
+{q:"Co robi json_decode($s, true)?",opts:["Koduje do JSON","Dekoduje do tablicy asocjacyjnej","Dekoduje do obiektu","Waliduje JSON"],ans:1,info:"Drugi argument true zwraca tablice asocjacyjna zamiast obiektu."},
+{q:"Co oznacza blad 'Headers already sent'?",opts:["Baza nie dziala","Wyslales output przed header()","PHP nie widzi pliku","Zla wersja PHP"],ans:1,info:"Najczesciej echo, spacja lub BOM przed header(). Sprawdz poczatek plikow."},
+{q:"Ktora funkcja pobiera jeden rekord z PDO?",opts:["fetchOne()","get()","fetch()","select()"],ans:2,info:"$stmt->fetch(PDO::FETCH_ASSOC) pobiera jeden wiersz."},
+{q:"Jak zdefiniowac funkcje z typami?",opts:["def greet(name)","function greet(string $name): string","func greet($name)","greet = ($name) =>"],ans:1,info:"PHP 7+ wspiera type hints dla argumentow i zwracanej wartosci."},
+{q:"Co robi operator ??? (null coalescing)?",opts:["Porownuje null","Zwraca lewy operand jesli nie null","Rzuca wyjatek","Laczy stringi"],ans:1,info:"$x = $a ?? $b - jesli $a nie jest null, zwraca $a, inaczej $b."}
+];
+
+// FISZKI DATA
+const flashData = [
+{q:"Co to jest superglobal $_GET?",a:"Tablica z parametrami z URL (query string).\n$_GET['id'] dla ?id=5"},
+{q:"Co to jest superglobal $_POST?",a:"Tablica danych wyslanych metoda POST (z body requestu)."},
+{q:"Czym rozni sie == od ===?",a:"=== porownuje typ I wartosc.\n== moze rzutowac typy (0 == '0' jest true)."},
+{q:"Jak laczyc stringi w PHP?",a:"Operatorem kropki:\n$a . ' ' . $b"},
+{q:"Jak wlaczyc sesje?",a:"session_start();\nWywolaj PRZED jakimkolwiek outputem!"},
+{q:"Jak hashowac hasla?",a:"password_hash($pass, PASSWORD_DEFAULT)\nWeryfikacja: password_verify()"},
+{q:"Jak zabezpieczyc output przed XSS?",a:"htmlspecialchars($x, ENT_QUOTES, 'UTF-8')\nZAWSZE przy wyswietlaniu danych usera."},
+{q:"Jak zabezpieczyc zapytania SQL?",a:"Prepared statements w PDO:\n$stmt = $pdo->prepare('...?...');\n$stmt->execute([$val]);"},
+{q:"include vs require - roznica?",a:"require przerywa skrypt gdy brak pliku (fatal error).\ninclude tylko warning."},
+{q:"Co robi operator ?? (null coalescing)?",a:"Zwraca lewa wartosc jesli nie jest null, inaczej prawa.\n$id = $_GET['id'] ?? 0;"},
+{q:"Jak sprawdzic metode requestu?",a:"$_SERVER['REQUEST_METHOD']\nZwraca: GET, POST, PUT, DELETE..."},
+{q:"Jak pobrac jeden rekord z PDO?",a:"$stmt->fetch(PDO::FETCH_ASSOC)\nZwraca tablice asocjacyjna lub false."},
+{q:"Jak pobrac wszystkie rekordy z PDO?",a:"$stmt->fetchAll(PDO::FETCH_ASSOC)\nZwraca tablice tablic."},
+{q:"Co to jest PRG pattern?",a:"Post-Redirect-Get.\nPo POST robisz redirect, zeby uniknac ponownego wyslania przy F5."},
+{q:"Co to jest CSRF?",a:"Cross-Site Request Forgery.\nAtak wyslania zadania w imieniu usera. Bronisz sie tokenem."},
+{q:"Co to jest SQL Injection?",a:"Wstrzykniecie kodu SQL.\nBronisz sie prepared statements."},
+{q:"Co to jest XSS?",a:"Cross-Site Scripting.\nWstrzykniecie skryptu JS. Bronisz sie escapowaniem outputu."},
+{q:"Jak zdefiniowac funkcje z typami?",a:"function add(int $a, int $b): int {\n  return $a + $b;\n}"},
+{q:"Jak stworzyc tablice asocjacyjna?",a:"$user = [\n  'id' => 1,\n  'name' => 'Jan'\n];"},
+{q:"Jak dziala foreach?",a:"Iteruje po tablicy:\nforeach($arr as $key => $value) { }"},
+{q:"Co robi header('Location: ...')?",a:"Przekierowanie (redirect).\nUwaga: nie moze byc output przed header()!"},
+{q:"Jak ustawic Content-Type JSON?",a:"header('Content-Type: application/json; charset=utf-8');"},
+{q:"Co robi json_encode()?",a:"Konwertuje dane PHP na string JSON.\necho json_encode(['ok' => true]);"},
+{q:"Co robi json_decode($s, true)?",a:"Konwertuje JSON na tablice asocjacyjna.\ntrue = tablica, false/brak = obiekt."},
+{q:"Co to jest Composer?",a:"Manager zaleznosci dla PHP.\nAutoload PSR-4, instalacja pakietow."},
+{q:"Co to sa namespaces?",a:"Przestrzenie nazw.\nOrganizuja kod, unikaja konfliktow klas.\nnamespace App\\Service;"},
+{q:"Jak stworzyc obiekt klasy?",a:"$user = new User('Jan');\nWywoluje konstruktor __construct()."},
+{q:"Jak obsluzyc wyjatki?",a:"try {\n  // kod\n} catch (Exception $e) {\n  echo $e->getMessage();\n}"},
+{q:"Co oznacza 'Headers already sent'?",a:"Wyslales output (echo, spacja, BOM) przed header().\nSprawdz poczatki plikow PHP."},
+{q:"Jak regenerowac ID sesji?",a:"session_regenerate_id(true);\nRob to po zalogowaniu - chroni przed session fixation."}
+];
+
+// TYPING DATA
+const typingData = [
+{p:"Superglobal dla danych POST:",a:"$_POST"},
+{p:"Superglobal dla danych GET:",a:"$_GET"},
+{p:"Operator konkatenacji stringow:",a:"."},
+{p:"Funkcja do debugowania typu i wartosci:",a:"var_dump"},
+{p:"Funkcja do wlaczenia sesji:",a:"session_start"},
+{p:"Funkcja do escapowania HTML:",a:"htmlspecialchars"},
+{p:"Funkcja do hashowania hasel:",a:"password_hash"},
+{p:"Funkcja do weryfikacji hasel:",a:"password_verify"},
+{p:"Metoda PDO do prepared statement:",a:"prepare"},
+{p:"Metoda do pobrania jednego rekordu:",a:"fetch"},
+{p:"Operator scislego porownania:",a:"==="},
+{p:"Znak rozpoczynajacy zmienna w PHP:",a:"$"},
+{p:"Operator null coalescing:",a:"??"},
+{p:"Klucz serwera z metoda HTTP:",a:"REQUEST_METHOD"},
+{p:"Petla do iteracji po tablicy:",a:"foreach"},
+{p:"Include ktory przerywa skrypt przy braku pliku:",a:"require"},
+{p:"Funkcja do przekierowania (naglowek):",a:"header"},
+{p:"Funkcja do dekodowania JSON:",a:"json_decode"},
+{p:"Funkcja do kodowania do JSON:",a:"json_encode"},
+{p:"Manager pakietow PHP:",a:"Composer"},
+{p:"Metoda do pobrania wszystkich rekordow:",a:"fetchAll"},
+{p:"Klucz do ostatniego wstawionego ID:",a:"lastInsertId"},
+{p:"Naglowek Content-Type dla JSON:",a:"application/json"},
+{p:"Wzorzec po wyslaniu formularza POST:",a:"PRG"},
+{p:"Atak wstrzykniecia SQL:",a:"SQL Injection"}
+];
+
+// NOTATNIK DATA
+const nbData = [
+{cat:"Fundamenty",items:[
+"Zmienne zaczynaja sie od $ (np. $name = 'Jan')",
+"Typy: string, int, float, bool, array, null",
+"Konkatenacja stringow operatorem kropki (.)",
+"var_dump() pokazuje typ i wartosc - najlepsze do debugowania",
+"Tablice: indeksowe [1,2,3] i asocjacyjne ['key'=>'value']",
+"foreach($arr as $k=>$v) - iteracja z kluczem i wartoscia",
+"=== porownuje typ I wartosc (unikaj ==)",
+"Funkcje: function nazwa(typ $arg): typ { return ...; }"
+]},
+{cat:"Web i Formularze",items:[
+"$_GET - dane z URL (query string)",
+"$_POST - dane z body formularza",
+"$_SERVER['REQUEST_METHOD'] - sprawdzenie metody HTTP",
+"Walidacja: sprawdzaj typ, dlugosc, format",
+"htmlspecialchars() - ZAWSZE przy wyswietlaniu danych usera",
+"header('Location: ...') - przekierowanie (przed outputem!)",
+"PRG pattern - Post-Redirect-Get po wyslaniu formularza"
+]},
+{cat:"Sesje i Auth",items:[
+"session_start() - PRZED jakimkolwiek outputem",
+"$_SESSION['key'] = 'value' - zapis do sesji",
+"session_regenerate_id(true) - po zalogowaniu (bezpieczenstwo)",
+"session_destroy() - wylogowanie",
+"Hasla: password_hash() + password_verify()",
+"NIGDY nie zapisuj hasel plaintext!"
+]},
+{cat:"Bazy danych PDO",items:[
+"PDO - PHP Data Objects, obiektowy dostep do bazy",
+"ZAWSZE prepared statements - ochrona przed SQL Injection",
+"$pdo->prepare('SELECT * FROM users WHERE id = ?')",
+"$stmt->execute([$id]) - przekazanie parametrow",
+"fetch(PDO::FETCH_ASSOC) - jeden rekord jako tablica",
+"fetchAll(PDO::FETCH_ASSOC) - wszystkie rekordy",
+"lastInsertId() - ID ostatnio wstawionego rekordu"
+]},
+{cat:"Bezpieczenstwo",items:[
+"SQL Injection - bronisz sie prepared statements",
+"XSS - bronisz sie htmlspecialchars() na outputcie",
+"CSRF - bronisz sie tokenem w formularzu",
+"Session Fixation - regeneruj ID po logowaniu",
+"Sekrety (API keys) trzymaj w .env, nie w kodzie",
+"Walidacja = whitelist (co akceptujesz), nie blacklist"
+]},
+{cat:"OOP i Architektura",items:[
+"class User { public function __construct() {} }",
+"namespace App\\Service - organizacja kodu",
+"Composer - manager pakietow + autoload PSR-4",
+"require 'vendor/autoload.php' - ladowanie klas",
+"try/catch - obsluga wyjatkow",
+"SRP - jedna klasa = jedna odpowiedzialnosc"
+]},
+{cat:"API i JSON",items:[
+"header('Content-Type: application/json; charset=utf-8')",
+"json_encode() - PHP na JSON string",
+"json_decode($s, true) - JSON na tablice PHP",
+"http_response_code(201) - ustawienie kodu HTTP",
+"file_get_contents('php://input') - body requestu",
+"Kody: 200 OK, 201 Created, 400 Bad Request, 404 Not Found"
+]}
+];
+
+// CODELAB EXAMPLES
+const codeExamples = {
+hello:`<?php
+$name = "Staberek";
+$age = 28;
+
+echo "Siema, " . $name . "!\\n";
+echo "Wiek: " . $age . "\\n";
+?>`,
+arrays:`<?php
+$fruits = ["apple", "banana", "orange"];
+
+foreach($fruits as $index => $fruit) {
+    echo $index . ": " . $fruit . "\\n";
+}
+
+echo "Razem: " . count($fruits) . " owocow\\n";
+?>`,
+func:`<?php
+function greet(string $name): string {
+    return "Czesc, " . $name . "!";
+}
+
+function add(int $a, int $b): int {
+    return $a + $b;
+}
+
+echo greet("Staberek") . "\\n";
+echo "2 + 3 = " . add(2, 3) . "\\n";
+?>`,
+ifelse:`<?php
+$score = 75;
+
+if ($score >= 90) {
+    echo "Ocena: 5 (bardzo dobry)\\n";
+} elseif ($score >= 70) {
+    echo "Ocena: 4 (dobry)\\n";
+} elseif ($score >= 50) {
+    echo "Ocena: 3 (dostateczny)\\n";
+} else {
+    echo "Ocena: 2 (niedostateczny)\\n";
+}
+
+echo "\\nLiczby 1-5:\\n";
+for ($i = 1; $i <= 5; $i++) {
+    echo $i . " ";
+}
+?>`,
+assoc:`<?php
+$user = [
+    "id" => 1,
+    "name" => "Jan Kowalski",
+    "email" => "jan@example.com",
+    "active" => true
+];
+
+echo "Uzytkownik:\\n";
+foreach ($user as $key => $value) {
+    if (is_bool($value)) {
+        $value = $value ? "tak" : "nie";
+    }
+    echo "  " . $key . ": " . $value . "\\n";
+}
+?>`
+};
+
+// GENERATOR EXERCISES
+const genExercises = {
+"0": {
+zmienne:{title:"Zmienne i typy",task:"Stworz zmienne roznych typow i wypisz je z var_dump().",code:`<?php
+$name = "Twoje imie";
+$age = 25;
+$price = 19.99;
+$active = true;
+
+var_dump($name);
+var_dump($age);
+var_dump($price);
+var_dump($active);
+?>`},
+stringi:{title:"Stringi i konkatenacja",task:"Polacz kilka stringow i uzyj funkcji strlen(), strtoupper().",code:`<?php
+$first = "Jan";
+$last = "Kowalski";
+$full = $first . " " . $last;
+
+echo $full . "\\n";
+echo "Dlugosc: " . strlen($full) . "\\n";
+echo strtoupper($full) . "\\n";
+?>`},
+tablice:{title:"Tablice + foreach",task:"Stworz tablice asocjacyjna usera i wypisz wszystkie pola.",code:`<?php
+$user = [
+    "id" => 1,
+    "name" => "Anna",
+    "role" => "admin"
+];
+
+foreach ($user as $key => $value) {
+    echo $key . ": " . $value . "\\n";
+}
+?>`},
+funkcje:{title:"Funkcje",task:"Napisz funkcje normalizeName() ktora trimuje i formatuje imie.",code:`<?php
+function normalizeName(string $s): string {
+    $s = trim($s);
+    $s = strtolower($s);
+    return ucfirst($s);
+}
+
+echo normalizeName("  sTABEREK  ") . "\\n";
+echo normalizeName("ANNA") . "\\n";
+?>`},
+ifelse:{title:"if/else + petle",task:"Sprawdz czy liczba jest parzysta i policz sume 1..N.",code:`<?php
+$n = 42;
+
+if ($n % 2 === 0) {
+    echo $n . " jest parzysta\\n";
+} else {
+    echo $n . " jest nieparzysta\\n";
+}
+
+$sum = 0;
+for ($i = 1; $i <= 10; $i++) {
+    $sum += $i;
+}
+echo "Suma 1-10: " . $sum . "\\n";
+?>`}
+},
+"1": {
+zmienne:{title:"Formularz POST",task:"Odbierz dane z formularza i wyswietl z walidacja.",code:`<?php
+// process.php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $name = trim($_POST["name"] ?? "");
+    
+    if (empty($name)) {
+        echo "Podaj imie!";
+    } else {
+        echo "Witaj, " . htmlspecialchars($name, ENT_QUOTES, "UTF-8");
+    }
+}
+?>
+<form method="post">
+    <input name="name" placeholder="Twoje imie">
+    <button>Wyslij</button>
+</form>`},
+stringi:{title:"Sesje - logowanie",task:"Zaimplementuj prosty system logowania z sesja.",code:`<?php
+session_start();
+
+// Wylogowanie
+if (isset($_POST["logout"])) {
+    session_destroy();
+    header("Location: " . $_SERVER["PHP_SELF"]);
+    exit;
+}
+
+// Logowanie
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["user"])) {
+    $user = trim($_POST["user"] ?? "");
+    if ($user !== "") {
+        $_SESSION["user"] = $user;
+        session_regenerate_id(true);
+    }
+}
+
+if (isset($_SESSION["user"])): ?>
+    <p>Zalogowany: <?= htmlspecialchars($_SESSION["user"]) ?></p>
+    <form method="post"><button name="logout">Wyloguj</button></form>
+<?php else: ?>
+    <form method="post">
+        <input name="user" placeholder="Login">
+        <button>Zaloguj</button>
+    </form>
+<?php endif; ?>`},
+tablice:{title:"Upload pliku",task:"Odbierz plik z formularza i zapisz na serwerze.",code:`<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_FILES["file"])) {
+    $file = $_FILES["file"];
+    $allowed = ["image/jpeg", "image/png", "application/pdf"];
+    
+    if ($file["error"] !== UPLOAD_ERR_OK) {
+        echo "Blad uploadu!";
+    } elseif (!in_array($file["type"], $allowed)) {
+        echo "Niedozwolony typ pliku!";
+    } elseif ($file["size"] > 2 * 1024 * 1024) {
+        echo "Plik za duzy (max 2MB)!";
+    } else {
+        $dest = "uploads/" . basename($file["name"]);
+        move_uploaded_file($file["tmp_name"], $dest);
+        echo "Zapisano: " . htmlspecialchars($dest);
+    }
+}
+?>
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button>Upload</button>
+</form>`}
+},
+"2": {
+zmienne:{title:"PDO - polaczenie i SELECT",task:"Polacz sie z baza i pobierz rekordy.",code:`<?php
+try {
+    $pdo = new PDO(
+        "mysql:host=localhost;dbname=test;charset=utf8mb4",
+        "root", "",
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+    
+    $stmt = $pdo->prepare("SELECT id, name FROM users WHERE active = ?");
+    $stmt->execute([1]);
+    
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo $row["id"] . ": " . $row["name"] . "\\n";
+    }
+} catch (PDOException $e) {
+    echo "Blad: " . $e->getMessage();
+}
+?>`},
+stringi:{title:"CRUD - INSERT/UPDATE/DELETE",task:"Zaimplementuj pelny CRUD na tabeli users.",code:`<?php
+// INSERT
+$stmt = $pdo->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+$stmt->execute([$name, $email]);
+$newId = $pdo->lastInsertId();
+
+// UPDATE
+$stmt = $pdo->prepare("UPDATE users SET name = ? WHERE id = ?");
+$stmt->execute([$newName, $id]);
+
+// DELETE
+$stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+$stmt->execute([$id]);
+
+// SELECT z paginacja
+$page = max(1, (int)($_GET["page"] ?? 1));
+$perPage = 10;
+$offset = ($page - 1) * $perPage;
+
+$stmt = $pdo->prepare("SELECT * FROM users LIMIT ? OFFSET ?");
+$stmt->execute([$perPage, $offset]);
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>`}
+},
+"3": {
+zmienne:{title:"OOP - klasa User",task:"Stworz klase User z metodami i wykorzystaj ja.",code:`<?php
+class User {
+    private int $id;
+    private string $name;
+    private string $email;
+    
+    public function __construct(int $id, string $name, string $email) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+    }
+    
+    public function getId(): int { return $this->id; }
+    public function getName(): string { return $this->name; }
+    
+    public function toArray(): array {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "email" => $this->email
+        ];
+    }
+}
+
+$user = new User(1, "Jan", "jan@example.com");
+echo $user->getName() . "\\n";
+print_r($user->toArray());
+?>`},
+stringi:{title:"REST API endpoint",task:"Stworz endpoint API zwracajacy JSON.",code:`<?php
+header("Content-Type: application/json; charset=utf-8");
+
+$method = $_SERVER["REQUEST_METHOD"];
+
+switch ($method) {
+    case "GET":
+        $users = [
+            ["id" => 1, "name" => "Jan"],
+            ["id" => 2, "name" => "Anna"]
+        ];
+        echo json_encode(["data" => $users]);
+        break;
+        
+    case "POST":
+        $input = json_decode(file_get_contents("php://input"), true);
+        if (!$input || empty($input["name"])) {
+            http_response_code(400);
+            echo json_encode(["error" => "Name required"]);
+            break;
+        }
+        http_response_code(201);
+        echo json_encode(["ok" => true, "id" => 3]);
+        break;
+        
+    default:
+        http_response_code(405);
+        echo json_encode(["error" => "Method not allowed"]);
+}
+?>`}
+}
+};
+
+// ===================== FUNKCJE =====================
+
+// TOAST
+function toast(msg, sub) {
+    const t = document.getElementById('toast');
+    t.innerHTML = '<b>' + msg + '</b>' + (sub ? '<span>' + sub + '</span>' : '');
+    t.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// SCROLL PROGRESS
+window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+    document.getElementById('progressBar').style.width = p + '%';
+}, {passive: true});
+
+// CHECKBOXES (localStorage)
+document.querySelectorAll('.check-item input').forEach(inp => {
+    const k = inp.dataset.k;
+    if (!k) return;
+    if (localStorage.getItem('php_' + k) === '1') inp.checked = true;
+    inp.addEventListener('change', () => {
+        localStorage.setItem('php_' + k, inp.checked ? '1' : '0');
+        inp.closest('.check-item').classList.toggle('done', inp.checked);
+    });
+    if (inp.checked) inp.closest('.check-item').classList.add('done');
+});
+
+// ===================== SLOWNIK =====================
+function renderSlownik() {
+    const grid = document.getElementById('slownikGrid');
+    grid.innerHTML = slownikData.map((s, i) => `
+        <div class="slownik-card" onclick="toggleSlownik(this)">
+            <div class="slownik-head">
+                <span class="slownik-name">${s.name}</span>
+                <span class="slownik-badge">${s.badge}</span>
+            </div>
+            <div class="slownik-body">${s.full}</div>
+        </div>
+    `).join('');
+}
+function toggleSlownik(card) {
+    card.classList.toggle('open');
+}
+renderSlownik();
+
+// ===================== MODULY =====================
+function renderModuly() {
+    const tabs = document.getElementById('moduleTabs');
+    const content = document.getElementById('moduleContent');
+    
+    tabs.innerHTML = modulyData.map((m, i) => `
+        <button class="module-tab ${i === 0 ? 'active' : ''}" onclick="showModule('${m.id}')">${m.name}</button>
+    `).join('');
+    
+    content.innerHTML = modulyData.map((m, i) => `
+        <div class="module-content ${i === 0 ? 'active' : ''}" id="mod_${m.id}">${m.content}</div>
+    `).join('');
+}
+function showModule(id) {
+    document.querySelectorAll('.module-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.module-content').forEach(c => c.classList.remove('active'));
+    document.querySelector(`.module-tab[onclick="showModule('${id}')"]`).classList.add('active');
+    document.getElementById('mod_' + id).classList.add('active');
+}
+renderModuly();
+
+// ===================== CODELAB =====================
+function loadExample() {
+    const sel = document.getElementById('codeExample').value;
+    document.getElementById('codeEditor').value = codeExamples[sel] || codeExamples.hello;
+}
+
+function copyCode() {
+    const code = document.getElementById('codeEditor').value;
+    navigator.clipboard.writeText(code);
+    toast('Skopiowano!', 'Wklej do edytora');
+}
+
+function runCode() {
+    const code = document.getElementById('codeEditor').value;
+    const output = document.getElementById('codeOutput');
+    const html = document.getElementById('codeHtml');
+    
+    try {
+        const result = simulatePHP(code);
+        output.textContent = result.output || '(brak outputu)';
+        html.innerHTML = result.output || '';
+    } catch (e) {
+        output.textContent = 'Blad: ' + e.message;
+        html.innerHTML = '';
+    }
+}
+
+function simulatePHP(code) {
+    let output = '';
+    const vars = {};
+    const funcs = {};
+    
+    // Remove <?php and ?>
+    code = code.replace(/<\?php/gi, '').replace(/\?>/g, '');
+    
+    // Simple simulation - handles basic echo, variables, foreach, if, for
+    const lines = code.split('\n');
+    
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (!line || line.startsWith('//')) continue;
+        
+        // Variable assignment
+        const varMatch = line.match(/^\$(\w+)\s*=\s*(.+);$/);
+        if (varMatch) {
+            const name = varMatch[1];
+            let val = varMatch[2].trim();
+            vars[name] = evalValue(val, vars);
+            continue;
+        }
+        
+        // Echo
+        const echoMatch = line.match(/^echo\s+(.+);$/);
+        if (echoMatch) {
+            output += evalExpr(echoMatch[1], vars) + '';
+            continue;
+        }
+        
+        // Simple foreach
+        if (line.startsWith('foreach')) {
+            const fMatch = line.match(/foreach\s*\(\s*\$(\w+)\s+as\s+(?:\$(\w+)\s*=>\s*)?\$(\w+)\s*\)/);
+            if (fMatch) {
+                const arrName = fMatch[1];
+                const keyVar = fMatch[2];
+                const valVar = fMatch[3];
+                const arr = vars[arrName];
+                
+                // Find block
+                let block = '';
+                let depth = 1;
+                i++;
+                while (i < lines.length && depth > 0) {
+                    const l = lines[i].trim();
+                    if (l.includes('{')) depth++;
+                    if (l.includes('}')) depth--;
+                    if (depth > 0) block += l + '\n';
+                    i++;
+                }
+                i--;
+                
+                if (Array.isArray(arr)) {
+                    arr.forEach((v, k) => {
+                        const localVars = {...vars};
+                        if (keyVar) localVars[keyVar] = k;
+                        localVars[valVar] = v;
+                        output += runBlock(block, localVars);
+                    });
+                } else if (typeof arr === 'object') {
+                    Object.entries(arr).forEach(([k, v]) => {
+                        const localVars = {...vars};
+                        if (keyVar) localVars[keyVar] = k;
+                        localVars[valVar] = v;
+                        output += runBlock(block, localVars);
+                    });
+                }
+            }
+            continue;
+        }
+        
+        // Simple for
+        if (line.startsWith('for')) {
+            const forMatch = line.match(/for\s*\(\s*\$(\w+)\s*=\s*(\d+)\s*;\s*\$\w+\s*[<>=]+\s*(\d+)\s*;\s*\$\w+\+\+\s*\)/);
+            if (forMatch) {
+                const varName = forMatch[1];
+                const start = parseInt(forMatch[2]);
+                const end = parseInt(forMatch[3]);
+                
+                let block = '';
+                let depth = 1;
+                i++;
+                while (i < lines.length && depth > 0) {
+                    const l = lines[i].trim();
+                    if (l.includes('{')) depth++;
+                    if (l.includes('}')) depth--;
+                    if (depth > 0) block += l + '\n';
+                    i++;
+                }
+                i--;
+                
+                for (let j = start; j <= end; j++) {
+                    const localVars = {...vars};
+                    localVars[varName] = j;
+                    output += runBlock(block, localVars);
+                }
+            }
+            continue;
+        }
+    }
+    
+    return {output: output.replace(/\\n/g, '\n')};
+}
+
+function runBlock(block, vars) {
+    let out = '';
+    block.split('\n').forEach(line => {
+        line = line.trim();
+        const echoMatch = line.match(/^echo\s+(.+);$/);
+        if (echoMatch) {
+            out += evalExpr(echoMatch[1], vars);
+        }
+    });
+    return out;
+}
+
+function evalValue(expr, vars) {
+    expr = expr.trim();
+    if (expr.startsWith('"') || expr.startsWith("'")) {
+        return expr.slice(1, -1);
+    }
+    if (expr.startsWith('[')) {
+        try {
+            // Simple array parsing
+            const inner = expr.slice(1, -1);
+            if (inner.includes('=>')) {
+                const obj = {};
+                inner.split(',').forEach(pair => {
+                    const [k, v] = pair.split('=>').map(s => s.trim());
+                    const key = k.replace(/['"]/g, '');
+                    obj[key] = evalValue(v, vars);
+                });
+                return obj;
+            } else {
+                return inner.split(',').map(s => evalValue(s.trim(), vars));
+            }
+        } catch (e) {
+            return [];
+        }
+    }
+    if (!isNaN(expr)) return parseFloat(expr);
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (expr.startsWith('$')) return vars[expr.slice(1)];
+    return expr;
+}
+
+function evalExpr(expr, vars) {
+    // Handle concatenation
+    const parts = expr.split('.');
+    return parts.map(p => {
+        p = p.trim();
+        if (p.startsWith('"') || p.startsWith("'")) return p.slice(1, -1);
+        if (p.startsWith('$')) return vars[p.slice(1)] ?? '';
+        if (p.includes('(')) {
+            // Simple function calls
+            const fMatch = p.match(/(\w+)\s*\(\s*(.+)\s*\)/);
+            if (fMatch) {
+                const fn = fMatch[1];
+                const arg = evalExpr(fMatch[2], vars);
+                if (fn === 'strlen') return String(arg).length;
+                if (fn === 'strtoupper') return String(arg).toUpperCase();
+                if (fn === 'strtolower') return String(arg).toLowerCase();
+                if (fn === 'ucfirst') return String(arg).charAt(0).toUpperCase() + String(arg).slice(1);
+                if (fn === 'trim') return String(arg).trim();
+                if (fn === 'count') return Array.isArray(arg) ? arg.length : Object.keys(arg).length;
+            }
+        }
+        return p;
+    }).join('');
+}
+
+// ===================== GENERATOR =====================
+function generateExercise() {
+    const level = document.getElementById('genLevel').value;
+    const topic = document.getElementById('genTopic').value;
+    const out = document.getElementById('genOutput');
+    
+    const pack = genExercises[level] || genExercises["0"];
+    const ex = pack[topic] || Object.values(pack)[0];
+    
+    out.textContent = `# Zadanie: ${ex.title}
+${ex.task}
+
+# Starter code:
+${ex.code}`;
+    
+    toast('Wygenerowano!', ex.title);
+}
+
+function copyExercise() {
+    const out = document.getElementById('genOutput').textContent;
+    if (!out || out.startsWith('Wybierz')) {
+        toast('Najpierw wygeneruj zadanie!');
+        return;
+    }
+    navigator.clipboard.writeText(out);
+    toast('Skopiowano!', 'Wklej do edytora');
+}
+
+// Update topics based on level
+document.getElementById('genLevel').addEventListener('change', function() {
+    const level = this.value;
+    const topicSel = document.getElementById('genTopic');
+    const pack = genExercises[level] || genExercises["0"];
+    
+    topicSel.innerHTML = Object.entries(pack).map(([k, v]) => 
+        `<option value="${k}">${v.title}</option>`
+    ).join('');
+});
+
+// ===================== QUIZ =====================
+let qIdx = 0;
+let qScore = 0;
+let qAnswered = [];
+
+function renderQuiz() {
+    const total = quizData.length;
+    document.getElementById('qTotal').textContent = total;
+    
+    // Progress dots
+    document.getElementById('quizProgress').innerHTML = quizData.map((_, i) => 
+        `<div class="quiz-dot" id="qDot${i}"></div>`
+    ).join('');
+    
+    showQuestion();
+}
+
+function showQuestion() {
+    const q = quizData[qIdx];
+    document.getElementById('qNum').textContent = qIdx + 1;
+    document.getElementById('qText').textContent = q.q;
+    
+    const opts = document.getElementById('qOpts');
+    opts.innerHTML = q.opts.map((o, i) => `
+        <div class="quiz-opt" onclick="selectOpt(${i})" id="opt${i}">
+            <div class="opt-letter">${String.fromCharCode(65 + i)}</div>
+            <span>${o}</span>
+        </div>
+    `).join('');
+    
+    document.getElementById('qFeedback').classList.remove('show', 'ok', 'bad');
+    document.getElementById('qPrev').disabled = qIdx === 0;
+    document.getElementById('qNext').textContent = qIdx === quizData.length - 1 ? 'Zakoncz' : 'Nastepne →';
+    
+    // Update progress
+    quizData.forEach((_, i) => {
+        const dot = document.getElementById('qDot' + i);
+        dot.className = 'quiz-dot';
+        if (i < qIdx) dot.classList.add('done');
+        if (i === qIdx) dot.classList.add('current');
+    });
+    
+    // If already answered, show state
+    if (qAnswered[qIdx] !== undefined) {
+        const selected = qAnswered[qIdx];
+        const correct = quizData[qIdx].ans;
+        document.getElementById('opt' + selected).classList.add(selected === correct ? 'correct' : 'wrong');
+        if (selected !== correct) {
+            document.getElementById('opt' + correct).classList.add('correct');
+        }
+    }
+}
+
+function selectOpt(i) {
+    if (qAnswered[qIdx] !== undefined) return; // Already answered
+    
+    qAnswered[qIdx] = i;
+    const q = quizData[qIdx];
+    const correct = q.ans;
+    const isCorrect = i === correct;
+    
+    document.getElementById('opt' + i).classList.add(isCorrect ? 'correct' : 'wrong');
+    if (!isCorrect) {
+        document.getElementById('opt' + correct).classList.add('correct');
+    }
+    
+    if (isCorrect) qScore++;
+    
+    const fb = document.getElementById('qFeedback');
+    fb.classList.add('show', isCorrect ? 'ok' : 'bad');
+    document.getElementById('qFbTitle').textContent = isCorrect ? 'Dobrze!' : 'Zle!';
+    document.getElementById('qFbText').textContent = q.info;
+}
+
+function nextQ() {
+    if (qIdx === quizData.length - 1) {
+        showResult();
+        return;
+    }
+    qIdx++;
+    showQuestion();
+}
+
+function prevQ() {
+    if (qIdx > 0) {
+        qIdx--;
+        showQuestion();
+    }
+}
+
+function showResult() {
+    const box = document.getElementById('quizBox');
+    const pct = Math.round((qScore / quizData.length) * 100);
+    box.innerHTML = `
+        <div class="quiz-result">
+            <div class="result-score">${qScore}/${quizData.length}</div>
+            <p class="result-text">${pct >= 80 ? 'Swietnie! Opanowales PHP!' : pct >= 50 ? 'Nieźle, ale powtorz slabsze tematy.' : 'Warto wrocic do materialow i sprobowac jeszcze raz.'}</p>
+            <button class="qbtn qbtn-next" onclick="resetQuiz()">Sprobuj ponownie</button>
+        </div>
+    `;
+}
+
+function resetQuiz() {
+    qIdx = 0;
+    qScore = 0;
+    qAnswered = [];
+    document.getElementById('quizBox').innerHTML = `
+        <div class="quiz-progress" id="quizProgress"></div>
+        <div class="quiz-num">Pytanie <span id="qNum">1</span> z <span id="qTotal">20</span></div>
+        <h3 class="quiz-question" id="qText"></h3>
+        <div class="quiz-options" id="qOpts"></div>
+        <div class="quiz-feedback" id="qFeedback"><h5 id="qFbTitle"></h5><p id="qFbText"></p></div>
+        <div class="quiz-btns">
+            <button class="qbtn qbtn-prev" id="qPrev" onclick="prevQ()">← Poprzednie</button>
+            <button class="qbtn qbtn-next" id="qNext" onclick="nextQ()">Nastepne →</button>
+        </div>
+    `;
+    renderQuiz();
+}
+
+renderQuiz();
+
+// ===================== FISZKI =====================
+let cardIdx = 0;
+let cardFlipped = false;
+const masteredCards = new Set(JSON.parse(localStorage.getItem('php_mastered') || '[]'));
+
+function renderFlash() {
+    document.getElementById('cardTotal').textContent = flashData.length;
+    showCard();
+}
+
+function showCard() {
+    const card = flashData[cardIdx];
+    document.getElementById('flashQ').textContent = card.q;
+    document.getElementById('flashA').textContent = card.a;
+    document.getElementById('cardNum').textContent = cardIdx + 1;
+    
+    cardFlipped = false;
+    document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipCard() {
+    cardFlipped = !cardFlipped;
+    document.getElementById('flashcard').classList.toggle('flipped', cardFlipped);
+}
+
+function nextCard() {
+    cardIdx = (cardIdx + 1) % flashData.length;
+    showCard();
+}
+
+function prevCard() {
+    cardIdx = (cardIdx - 1 + flashData.length) % flashData.length;
+    showCard();
+}
+
+function markMastered() {
+    if (masteredCards.has(cardIdx)) {
+        masteredCards.delete(cardIdx);
+        toast('Usunieto z opanowanych');
+    } else {
+        masteredCards.add(cardIdx);
+        toast('Dodano do opanowanych!', flashData[cardIdx].q);
+    }
+    localStorage.setItem('php_mastered', JSON.stringify([...masteredCards]));
+}
+
+function speakCard() {
+    if (!('speechSynthesis' in window)) {
+        toast('Brak TTS', 'Sprobuj Chrome/Edge');
+        return;
+    }
+    const card = flashData[cardIdx];
+    const u = new SpeechSynthesisUtterance(card.q + '. Odpowiedz: ' + card.a);
+    u.lang = 'pl-PL';
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+}
+
+renderFlash();
+
+// ===================== TYPING =====================
+let typingIdx = 0;
+let typingPool = shuffle([...typingData]);
+let statOk = 0, statBad = 0, statStreak = 0, statBest = 0;
+
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function showTyping() {
+    const item = typingPool[typingIdx % typingPool.length];
+    document.getElementById('typingPrompt').textContent = item.p;
+    document.getElementById('typingHint').textContent = 'Wpisz odpowiedz i nacisnij Enter';
+    document.getElementById('typingInput').value = '';
+    document.getElementById('typingFeedback').textContent = '';
+    document.getElementById('typingFeedback').className = 'typing-feedback';
+}
+
+function norm(s) {
+    return String(s || '').trim().toLowerCase()
+        .replace(/ł/g, 'l').replace(/ó/g, 'o')
+        .replace(/ą/g, 'a').replace(/ę/g, 'e')
+        .replace(/ś/g, 's').replace(/ć/g, 'c')
+        .replace(/ż/g, 'z').replace(/ź/g, 'z')
+        .replace(/ń/g, 'n');
+}
+
+function checkTyping(showAnswer) {
+    const item = typingPool[typingIdx % typingPool.length];
+    const input = document.getElementById('typingInput').value;
+    const fb = document.getElementById('typingFeedback');
+    
+    if (showAnswer) {
+        fb.textContent = 'Odpowiedz: ' + item.a;
+        fb.className = 'typing-feedback';
+        toast('Odpowiedz', item.a);
+        return;
+    }
+    
+    const isOk = norm(input) === norm(item.a);
+    
+    if (isOk) {
+        statOk++;
+        statStreak++;
+        statBest = Math.max(statBest, statStreak);
+        fb.textContent = 'Dobrze!';
+        fb.className = 'typing-feedback ok';
+        toast('Dobrze!', item.a);
+    } else {
+        statBad++;
+        statStreak = 0;
+        fb.textContent = 'Zle. Poprawna: ' + item.a;
+        fb.className = 'typing-feedback bad';
+        toast('Poprawna odpowiedz:', item.a);
+    }
+    
+    updateStats();
+    typingIdx++;
+    setTimeout(showTyping, 300);
+}
+
+function skipTyping() {
+    typingIdx++;
+    showTyping();
+}
+
+function resetTyping() {
+    typingIdx = 0;
+    statOk = statBad = statStreak = statBest = 0;
+    typingPool = shuffle([...typingData]);
+    updateStats();
+    showTyping();
+    toast('Zresetowano!');
+}
+
+function updateStats() {
+    document.getElementById('statOk').textContent = statOk;
+    document.getElementById('statBad').textContent = statBad;
+    document.getElementById('statStreak').textContent = statStreak;
+    document.getElementById('statBest').textContent = statBest;
+}
+
+function speakTyping() {
+    if (!('speechSynthesis' in window)) return;
+    const item = typingPool[typingIdx % typingPool.length];
+    const u = new SpeechSynthesisUtterance(item.p);
+    u.lang = 'pl-PL';
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+}
+
+// Keyboard shortcuts for typing
+document.getElementById('typingInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.shiftKey) {
+        e.preventDefault();
+        checkTyping(true);
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        checkTyping(false);
+    }
+});
+
+showTyping();
+updateStats();
+
+// ===================== NOTATNIK =====================
+const NB_KEY = 'php_notatnik_v1';
+
+function nbRenderBlocks() {
+    const host = document.getElementById('nbBlocks');
+    let html = '';
+    
+    nbData.forEach((block, bi) => {
+        html += `<div class="nb-item" style="background:var(--elevated);border:none;padding:8px 12px;">
+            <strong style="color:var(--gold)">${block.cat}</strong>
+        </div>`;
+        
+        block.items.forEach((item, ii) => {
+            const id = 'nb_' + bi + '_' + ii;
+            html += `<label class="nb-item" for="${id}">
+                <input type="checkbox" id="${id}" data-cat="${block.cat}" data-text="${item.replace(/"/g, '&quot;')}">
+                <div class="txt">${item}</div>
+            </label>`;
+        });
+    });
+    
+    host.innerHTML = html;
+}
+
+function nbLoad() {
+    try { return JSON.parse(localStorage.getItem(NB_KEY) || '[]'); }
+    catch (e) { return []; }
+}
+
+function nbSave(list) {
+    localStorage.setItem(NB_KEY, JSON.stringify(list));
+}
+
+function nbUpdateCount(list) {
+    document.getElementById('nbCount').textContent = (list.length || 0) + ' punktow';
+}
+
+function nbRenderList() {
+    const list = nbLoad();
+    const host = document.getElementById('nbList');
+    nbUpdateCount(list);
+    
+    if (!list.length) {
+        host.innerHTML = '<div class="nb-list-item"><div class="txt" style="color:var(--muted)">Pusto. Zaznacz punkty po lewej i dodaj do sciagi.</div></div>';
+        return;
+    }
+    
+    host.innerHTML = list.map((item, idx) => `
+        <div class="nb-list-item">
+            <div class="txt">${item.text}<div class="tag" style="color:var(--muted);font-size:0.75rem;margin-top:4px">🏷️ ${item.cat}</div></div>
+            <button class="nb-btn" style="padding:6px 12px" onclick="nbRemove(${idx})">Usun</button>
+        </div>
+    `).join('');
+}
+
+function nbSelectAll(state) {
+    document.querySelectorAll('#nbBlocks input[type="checkbox"]').forEach(cb => cb.checked = state);
+}
+
+function nbAddSelected() {
+    const list = nbLoad();
+    let added = 0;
+    
+    document.querySelectorAll('#nbBlocks input[type="checkbox"]').forEach(cb => {
+        if (!cb.checked) return;
+        const cat = cb.dataset.cat || '-';
+        const text = cb.dataset.text || '';
+        
+        // Avoid duplicates
+        if (list.some(x => x.text === text)) return;
+        
+        list.push({cat, text});
+        cb.checked = false;
+        added++;
+    });
+    
+    nbSave(list);
+    nbRenderList();
+    if (added) toast('Dodano ' + added + ' punktow');
+}
+
+function nbRemove(idx) {
+    const list = nbLoad();
+    list.splice(idx, 1);
+    nbSave(list);
+    nbRenderList();
+}
+
+function nbClear() {
+    nbSave([]);
+    nbRenderList();
+    toast('Wyczyszczono!');
+}
+
+function nbExport() {
+    const list = nbLoad();
+    if (!list.length) return toast('Sciaga jest pusta!');
+    
+    const out = 'VIRALLOLAB - SCIAGA PHP\\n\\n' + list.map((x, i) => 
+        (i + 1) + '. [' + x.cat + '] ' + x.text
+    ).join('\\n');
+    
+    navigator.clipboard.writeText(out.replace(/\\n/g, '\n'));
+    toast('Skopiowano do schowka!');
+}
+
+function nbDownload() {
+    const list = nbLoad();
+    if (!list.length) return toast('Sciaga jest pusta!');
+    
+    const out = 'VIRALLOLAB - SCIAGA PHP\n\n' + list.map((x, i) => 
+        (i + 1) + '. [' + x.cat + '] ' + x.text
+    ).join('\n');
+    
+    const blob = new Blob([out], {type: 'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sciaga-php.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    toast('Pobrano!');
+}
+
+nbRenderBlocks();
+nbRenderList();
+
+// ===================== FOKUS MODE =====================
+let fokusTimer = null;
+let fokusTime = 90;
+let fokusIdx = 0;
+let fokusOrder = [];
+
+function fokusRender() {
+    const total = fokusOrder.length;
+    document.getElementById('fTotal').textContent = total;
+    document.getElementById('fNum').textContent = total ? fokusIdx + 1 : 0;
+    document.getElementById('fokusTime').textContent = fokusTime;
+    
+    const qEl = document.getElementById('fokusQ');
+    const aEl = document.getElementById('fokusA');
+    
+    if (!total) {
+        qEl.textContent = 'Kliknij "Start" zeby zaczac.';
+        aEl.textContent = '';
+        return;
+    }
+    
+    const item = flashData[fokusOrder[fokusIdx]];
+    qEl.textContent = item.q;
+    aEl.textContent = item.a;
+    aEl.classList.remove('show');
+    
+    document.getElementById('fokusBar').style.width = ((90 - fokusTime) / 90 * 100) + '%';
+}
+
+function fokusStart() {
+    // Create random order
+    fokusOrder = Array.from({length: flashData.length}, (_, i) => i);
+    for (let i = fokusOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [fokusOrder[i], fokusOrder[j]] = [fokusOrder[j], fokusOrder[i]];
+    }
+    
+    fokusIdx = 0;
+    fokusTime = 90;
+    fokusRender();
+    
+    if (fokusTimer) clearInterval(fokusTimer);
+    fokusTimer = setInterval(() => {
+        fokusTime--;
+        if (fokusTime <= 0) {
+            fokusTime = 0;
+            clearInterval(fokusTimer);
+            fokusTimer = null;
+            toast('Czas minol!', 'Mozesz kontynuowac lub zresetowac.');
+        }
+        document.getElementById('fokusTime').textContent = fokusTime;
+        document.getElementById('fokusBar').style.width = ((90 - fokusTime) / 90 * 100) + '%';
+    }, 1000);
+    
+    toast('Start!', 'Space = pokaz, N = nastepna');
+}
+
+function fokusReveal() {
+    document.getElementById('fokusA').classList.add('show');
+}
+
+function fokusNext() {
+    if (!fokusOrder.length) return;
+    fokusIdx = (fokusIdx + 1) % fokusOrder.length;
+    fokusRender();
+}
+
+function fokusReset() {
+    if (fokusTimer) clearInterval(fokusTimer);
+    fokusTimer = null;
+    fokusTime = 90;
+    fokusIdx = 0;
+    fokusOrder = [];
+    
+    document.getElementById('fokusQ').textContent = 'Kliknij "Start" zeby zaczac.';
+    document.getElementById('fokusA').textContent = '';
+    document.getElementById('fokusA').classList.remove('show');
+    document.getElementById('fokusTime').textContent = '90';
+    document.getElementById('fNum').textContent = '0';
+    document.getElementById('fTotal').textContent = '0';
+    document.getElementById('fokusBar').style.width = '0%';
+    
+    toast('Zresetowano!');
+}
+
+// Keyboard shortcuts for focus mode
+window.addEventListener('keydown', (e) => {
+    // Only if not in input field
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+    if (e.code === 'Space') {
+        e.preventDefault();
+        fokusReveal();
+    }
+    if (e.code === 'KeyN') {
+        fokusNext();
+    }
+});
+
+fokusRender();
+
+</script>
+</body>
+</html>
