@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d12">
+<title>✉️ Email Writing PRO | Kompletny kurs pisania maili po angielsku</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0d0d12;--card:#16161d;--elevated:#1e1e27;--border:rgba(255,255,255,0.08);
+--text:#f4f4f7;--text2:#a0a0b0;--muted:#606070;
+--blue:#3b82f6;--cyan:#22d3ee;--teal:#14b8a6;--green:#34d399;--red:#f87171;--amber:#fbbf24;--purple:#a78bfa;
+--grad:linear-gradient(135deg,#3b82f6 0%,#22d3ee 50%,#14b8a6 100%);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--elevated);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+a{color:var(--cyan);text-decoration:none}
+.container{max-width:1300px;margin:0 auto;padding:0 20px}
+section{padding:80px 20px}
+.text-center{text-align:center}
+.section-badge{display:inline-block;padding:6px 16px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;font-size:0.85rem;color:var(--cyan);margin-bottom:16px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(2rem,5vw,3rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:600px;margin:0 auto 40px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 24px;background:rgba(13,13,18,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.25rem;display:flex;align-items:center;gap:10px}
+.nav-logo span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:8px;list-style:none}
+.nav-links a{color:var(--text2);padding:8px 14px;border-radius:8px;font-size:0.9rem;transition:0.25s}
+.nav-links a:hover{color:var(--text);background:var(--elevated)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(59,130,246,0.15) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(34,211,238,0.1) 0%,transparent 50%);pointer-events:none}
+.hero-content{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;font-size:0.9rem;color:var(--cyan);margin-bottom:24px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.5rem,8vw,5rem);margin-bottom:20px;line-height:1.1}
+.hero h1 b{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.15rem;color:var(--text2);max-width:600px;margin:0 auto 32px}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:50px;font-weight:600;font-size:1rem;cursor:pointer;border:none;transition:all 0.3s;font-family:'Outfit',sans-serif}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 0 30px rgba(59,130,246,0.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(59,130,246,0.5)}
+.btn-secondary{background:var(--elevated);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--blue);transform:translateY(-2px)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--text)}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:48px}
+.hero-stat{text-align:center}
+.hero-stat .val{font-family:'Cinzel',serif;font-size:2.5rem;color:var(--cyan)}
+.hero-stat .lbl{font-size:0.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;transition:0.3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transition:0.3s}
+.card:hover{transform:translateY(-5px);border-color:rgba(59,130,246,0.3)}
+.card:hover::before{transform:scaleX(1)}
+.card-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px}
+.card-icon.blue{background:rgba(59,130,246,0.15)}
+.card-icon.cyan{background:rgba(34,211,238,0.15)}
+.card-icon.teal{background:rgba(20,184,166,0.15)}
+.card-icon.green{background:rgba(52,211,153,0.15)}
+.card-icon.amber{background:rgba(251,191,36,0.15)}
+.card-icon.purple{background:rgba(167,139,250,0.15)}
+.card h3{font-size:1.2rem;margin-bottom:10px}
+.card p{color:var(--text2);font-size:0.95rem}
+
+/* STRUKTURA */
+.structure-list{display:flex;flex-direction:column;gap:16px}
+.structure-item{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:16px;transition:0.3s}
+.structure-item:hover{border-color:rgba(59,130,246,0.3);transform:translateX(5px)}
+.structure-num{background:var(--grad);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+.structure-num .n{font-family:'Cinzel',serif;font-size:2rem}
+.structure-num .t{font-size:0.8rem;opacity:0.9;margin-top:4px}
+.structure-body h4{color:var(--cyan);margin-bottom:8px;font-size:1.1rem}
+.structure-body p{color:var(--text2);margin-bottom:12px}
+.phrase-tags{display:flex;flex-wrap:wrap;gap:8px}
+.phrase-tag{background:var(--elevated);padding:8px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;border:1px solid var(--border);cursor:pointer;transition:0.25s}
+.phrase-tag:hover{border-color:var(--blue);transform:translateY(-2px)}
+.phrase-tag.copied{border-color:var(--green);background:rgba(52,211,153,0.1)}
+
+/* TABS */
+.tabs-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.tabs-nav{display:flex;background:var(--elevated);overflow-x:auto;border-bottom:1px solid var(--border)}
+.tab-btn{flex:1;padding:16px 20px;background:none;border:none;color:var(--muted);font-size:0.95rem;font-weight:500;cursor:pointer;transition:0.25s;font-family:'Outfit',sans-serif;white-space:nowrap;border-bottom:3px solid transparent}
+.tab-btn:hover{color:var(--text2);background:rgba(59,130,246,0.05)}
+.tab-btn.active{color:var(--cyan);background:var(--card);border-bottom-color:var(--blue)}
+.tab-content{display:none;padding:28px}
+.tab-content.active{display:block}
+.tab-content h3{font-family:'Cinzel',serif;font-size:1.5rem;margin-bottom:12px}
+.tab-content>p{color:var(--text2);margin-bottom:20px}
+.email-tpl{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative}
+.email-tpl pre{font-family:'JetBrains Mono',monospace;font-size:0.9rem;line-height:1.9;white-space:pre-wrap;color:var(--text)}
+.email-tpl .hl{color:var(--cyan);font-weight:600}
+.tpl-actions{display:flex;gap:10px;margin-top:16px}
+
+/* GENERATOR - NOWY DESIGN */
+.gen-section{background:linear-gradient(180deg,var(--bg) 0%,var(--card) 100%)}
+.gen-box{background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden}
+.gen-header{background:var(--grad);padding:24px 32px;display:flex;align-items:center;gap:16px}
+.gen-header h3{font-family:'Cinzel',serif;font-size:1.5rem;margin:0}
+.gen-header p{margin:0;opacity:0.9;font-size:0.95rem}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;min-height:500px}
+.gen-form{padding:32px;border-right:1px solid var(--border)}
+.gen-preview{padding:32px;background:var(--bg)}
+.gen-preview-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.gen-preview-header h4{font-family:'Cinzel',serif;font-size:1.25rem;color:var(--cyan)}
+.gen-preview-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;min-height:350px}
+.gen-preview-box pre{font-family:'JetBrains Mono',monospace;font-size:0.9rem;line-height:1.8;white-space:pre-wrap;color:var(--text)}
+.gen-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.input-group{margin-bottom:20px}
+.input-group label{display:block;font-weight:500;margin-bottom:8px;color:var(--text2)}
+.input-group input,.input-group select,.input-group textarea{width:100%;padding:14px 16px;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'Outfit',sans-serif;font-size:1rem;transition:0.25s}
+.input-group input:focus,.input-group select:focus,.input-group textarea:focus{outline:none;border-color:var(--blue)}
+.input-group select{cursor:pointer;color-scheme:dark}
+.input-group textarea{min-height:100px;resize:vertical}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* EDYTOR MAILA */
+.editor-section{background:var(--card)}
+.editor-wrap{display:grid;grid-template-columns:1fr 340px;gap:24px}
+.editor-main{background:var(--elevated);border-radius:20px;padding:28px;border:1px solid var(--border)}
+.editor-main h3{font-family:'Cinzel',serif;font-size:1.5rem;margin-bottom:16px}
+.scenario-btns{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.scenario-btn{padding:10px 20px;border-radius:50px;border:1px solid var(--border);background:var(--bg);color:var(--muted);font-weight:500;cursor:pointer;transition:0.25s;font-family:'Outfit',sans-serif}
+.scenario-btn:hover{border-color:var(--blue);color:var(--text2)}
+.scenario-btn.active{background:var(--grad);border-color:transparent;color:#fff}
+.scenario-box{background:var(--bg);border-radius:12px;padding:20px;margin-bottom:20px;border-left:4px solid var(--blue)}
+.scenario-box h4{color:var(--cyan);margin-bottom:10px}
+.scenario-box ul{margin-left:20px;color:var(--text2)}
+.scenario-box li{margin:6px 0}
+.email-editor{width:100%;min-height:400px;padding:20px;background:var(--bg);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.95rem;line-height:1.8;resize:vertical;transition:0.25s}
+.email-editor:focus{outline:none;border-color:var(--blue)}
+.editor-stats{display:flex;gap:24px;margin-top:12px;color:var(--muted);font-size:0.9rem}
+.editor-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.feedback-box{margin-top:20px;padding:20px;border-radius:12px;display:none}
+.feedback-box.show{display:block}
+.feedback-box.success{background:rgba(52,211,153,0.1);border:1px solid var(--green)}
+.feedback-box h4{margin-bottom:12px;color:var(--green)}
+.feedback-item{padding:6px 0;color:var(--text2)}
+
+/* CHEATSHEET SIDEBAR */
+.cheatsheet{background:var(--elevated);border-radius:20px;padding:24px;border:1px solid var(--border);position:sticky;top:100px;max-height:calc(100vh - 120px);overflow-y:auto}
+.cheatsheet h4{font-size:1.1rem;color:var(--cyan);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.cheat-cat{margin-bottom:20px}
+.cheat-cat h5{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.cheat-items{display:flex;flex-direction:column;gap:6px}
+.cheat-item{background:var(--bg);padding:10px 12px;border-radius:8px;font-size:0.85rem;cursor:pointer;transition:0.25s;border:1px solid transparent;font-family:'JetBrains Mono',monospace}
+.cheat-item:hover{border-color:var(--blue);transform:translateX(3px)}
+.cheat-item.copied{border-color:var(--green);background:rgba(52,211,153,0.1)}
+.cheat-item .pl{display:block;font-size:0.75rem;color:var(--muted);margin-top:4px;font-family:'Outfit',sans-serif}
+
+/* BANK ZWROTÓW */
+.phrases-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.phrase-tab{padding:10px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text2);font-weight:500;cursor:pointer;transition:0.25s;font-family:'Outfit',sans-serif}
+.phrase-tab:hover{color:var(--text);border-color:var(--blue)}
+.phrase-tab.active{background:var(--grad);color:#fff;border-color:transparent}
+.phrases-grid{display:none;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.phrases-grid.active{display:grid}
+.phrase-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:0.25s;position:relative}
+.phrase-card:hover{border-color:var(--blue);transform:translateY(-2px)}
+.phrase-card::after{content:'📋';position:absolute;top:12px;right:12px;opacity:0;transition:0.25s}
+.phrase-card:hover::after{opacity:1}
+.phrase-card.copied{border-color:var(--green)}
+.phrase-card.copied::after{content:'✓';opacity:1;color:var(--green)}
+.phrase-en{font-family:'JetBrains Mono',monospace;font-size:0.95rem;margin-bottom:6px}
+.phrase-pl{font-size:0.85rem;color:var(--muted)}
+
+/* QUIZ */
+.quiz-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:800px;margin:0 auto}
+.quiz-progress{display:flex;gap:6px;margin-bottom:24px}
+.quiz-dot{flex:1;height:4px;background:var(--elevated);border-radius:2px}
+.quiz-dot.done{background:var(--green)}
+.quiz-dot.current{background:var(--blue)}
+.quiz-q{font-family:'Cinzel',serif;font-size:1.4rem;margin-bottom:24px;line-height:1.4}
+.quiz-opts{display:flex;flex-direction:column;gap:12px}
+.quiz-opt{display:flex;align-items:center;gap:16px;padding:16px;background:var(--bg);border:2px solid var(--border);border-radius:12px;cursor:pointer;transition:0.25s}
+.quiz-opt:hover{border-color:var(--blue)}
+.quiz-opt.selected{border-color:var(--cyan);background:rgba(34,211,238,0.05)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(52,211,153,0.1)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(248,113,113,0.1)}
+.quiz-opt .letter{width:36px;height:36px;border-radius:50%;background:var(--elevated);display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
+.quiz-opt.selected .letter{background:var(--cyan);color:var(--bg)}
+.quiz-opt.correct .letter{background:var(--green);color:var(--bg)}
+.quiz-opt.wrong .letter{background:var(--red);color:var(--bg)}
+.quiz-feedback{margin-top:20px;padding:16px;border-radius:12px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(52,211,153,0.1);border:1px solid var(--green)}
+.quiz-feedback.wrong{background:rgba(248,113,113,0.1);border:1px solid var(--red)}
+.quiz-feedback h4{margin-bottom:8px}
+.quiz-feedback.correct h4{color:var(--green)}
+.quiz-feedback.wrong h4{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:0.95rem}
+.quiz-actions{display:flex;justify-content:space-between;margin-top:24px}
+.quiz-score{text-align:center;padding:40px}
+.quiz-score .val{font-family:'Cinzel',serif;font-size:4rem;color:var(--cyan)}
+.quiz-score .lbl{font-size:1.1rem;color:var(--text2);margin-bottom:24px}
+
+/* CHECKLIST */
+.checklist-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;max-width:700px;margin:0 auto}
+.checklist-items{display:flex;flex-direction:column;gap:12px}
+.checklist-item{display:flex;align-items:flex-start;gap:16px;padding:16px;background:var(--bg);border-radius:12px;cursor:pointer;transition:0.25s}
+.checklist-item:hover{background:var(--elevated)}
+.checklist-check{width:24px;height:24px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:0.25s;color:transparent}
+.checklist-item.checked .checklist-check{background:var(--green);border-color:var(--green);color:#fff}
+.checklist-txt h5{font-size:1rem;margin-bottom:4px}
+.checklist-txt p{font-size:0.85rem;color:var(--muted)}
+.checklist-item.checked .checklist-txt h5{text-decoration:line-through;color:var(--muted)}
+.checklist-progress{margin-top:24px;padding-top:24px;border-top:1px solid var(--border)}
+.progress-bar{height:8px;background:var(--elevated);border-radius:4px;overflow:hidden;margin-bottom:8px}
+.progress-fill{height:100%;background:var(--grad);width:0%;transition:0.5s}
+.progress-txt{font-size:0.9rem;color:var(--text2);text-align:center}
+
+/* EXAMPLES */
+.examples-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:20px}
+.example-card{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.example-header{padding:16px 20px;background:var(--elevated);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.example-type{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;border-radius:50px}
+.example-type.good{background:rgba(52,211,153,0.15);color:var(--green)}
+.example-type.bad{background:rgba(248,113,113,0.15);color:var(--red)}
+.example-body{padding:20px}
+.example-body pre{font-family:'JetBrains Mono',monospace;font-size:0.85rem;line-height:1.7;white-space:pre-wrap;color:var(--text2)}
+.example-footer{padding:12px 20px;background:var(--bg);border-top:1px solid var(--border);font-size:0.85rem;color:var(--muted)}
+
+/* FOOTER */
+footer{padding:48px 20px;text-align:center;border-top:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,0.02))}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.25rem;margin-bottom:12px}
+.footer-copy{color:var(--muted);font-size:0.9rem}
+.footer-copy a{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.16);padding-bottom:2px;transition:0.25s}
+.footer-copy a:hover{border-bottom-color:var(--blue);color:var(--cyan)}
+.footer-brand{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:50px;background:var(--elevated);border:1px solid var(--border);color:var(--text2);margin-left:10px}
+.footer-brand b{color:var(--cyan)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 24px;box-shadow:0 10px 40px rgba(0,0,0,0.3);transform:translateY(150%);transition:0.3s;z-index:2000;max-width:320px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:4px}
+.toast span{color:var(--text2);font-size:0.85rem}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+.gen-grid{grid-template-columns:1fr}
+.gen-form{border-right:none;border-bottom:1px solid var(--border)}
+.editor-wrap{grid-template-columns:1fr}
+.cheatsheet{position:static;max-height:none;margin-top:24px}
+.structure-item{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+.nav-links{display:none}
+.hero-stats{flex-direction:column;gap:20px}
+section{padding:60px 16px}
+.tabs-nav{flex-direction:column}
+.input-row{grid-template-columns:1fr}
+.examples-grid,.phrases-grid{grid-template-columns:1fr}
+.quiz-box,.checklist-box{padding:20px}
+}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"><b></b><span></span></div>
+
+<!-- NAV -->
+<nav>
+<div class="nav-inner">
+<div class="nav-logo">✉️ <span>Email PRO</span></div>
+<ul class="nav-links">
+<li><a href="#teoria">📚 Teoria</a></li>
+<li><a href="#struktura">📝 Struktura</a></li>
+<li><a href="#typy">📧 Szablony</a></li>
+<li><a href="#generator">⚡ Generator</a></li>
+<li><a href="#pisanie">✍️ Pisz maila</a></li>
+<li><a href="#zwroty">💬 Zwroty</a></li>
+<li><a href="#quiz">🎯 Quiz</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-content">
+<div class="hero-badge">🎓 Kompletny kurs języka angielskiego</div>
+<h1>Pisanie <b>profesjonalnych maili</b> po angielsku</h1>
+<p>Opanuj sztukę komunikacji mailowej. Teoria, struktury, 100+ zwrotów, generator, quiz i praktyczne ćwiczenia z możliwością zapisu.</p>
+<div class="hero-btns">
+<a href="#teoria" class="btn btn-primary">Rozpocznij naukę →</a>
+<a href="#pisanie" class="btn btn-secondary">✍️ Pisz własnego maila</a>
+</div>
+<div class="hero-stats">
+<div class="hero-stat"><div class="val">6</div><div class="lbl">Typów maili</div></div>
+<div class="hero-stat"><div class="val">100+</div><div class="lbl">Zwrotów</div></div>
+<div class="hero-stat"><div class="val">15</div><div class="lbl">Pytań quiz</div></div>
+</div>
+</div>
+</section>
+
+<!-- TEORIA -->
+<section id="teoria">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📚 Podstawy</div>
+<h2 class="section-title">Teoria pisania maili</h2>
+<p class="section-desc">Poznaj najważniejsze zasady pisania profesjonalnych wiadomości email w języku angielskim</p>
+</div>
+<div class="cards-grid">
+<div class="card">
+<div class="card-icon blue">📋</div>
+<h3>Rodzaje maili (Register)</h3>
+<p><strong>Formal</strong> – do firm, urzędów, nieznanych osób. Pełne zdania, brak skrótów.<br><strong>Semi-formal</strong> – do współpracowników, nauczycieli. Uprzejmy, ale mniej sztywny.<br><strong>Informal</strong> – do przyjaciół, rodziny. Swobodny ton, skróty OK.</p>
+</div>
+<div class="card">
+<div class="card-icon cyan">✅</div>
+<h3>Zasady ogólne</h3>
+<p>• Pisz jasno i zwięźle (clear & concise)<br>• Używaj odpowiedniego tonu (appropriate register)<br>• Sprawdzaj pisownię i gramatykę<br>• Jeden mail = jeden główny temat<br>• Odpowiadaj w ciągu 24-48 godzin</p>
+</div>
+<div class="card">
+<div class="card-icon teal">⚠️</div>
+<h3>Częste błędy</h3>
+<p>• Brak tematu (Subject line)<br>• Zbyt długie akapity<br>• Skróty w formalnych mailach (don't → do not)<br>• WIELKIE LITERY = krzyczenie!<br>• Zapominanie o załącznikach<br>• Nieodpowiednie pożegnanie</p>
+</div>
+<div class="card">
+<div class="card-icon purple">🎯</div>
+<h3>Subject line (temat)</h3>
+<p>• Krótki i konkretny (5-7 słów)<br>• Informujący o treści maila<br>• Bez wykrzykników i CAPS LOCK<br><br><em style="color:var(--green)">✓ Meeting Request - Project Friday</em><br><em style="color:var(--red)">✗ URGENT!!! READ THIS!!!</em></p>
+</div>
+<div class="card">
+<div class="card-icon amber">📧</div>
+<h3>Formal vs Informal</h3>
+<p><strong>Formal:</strong> Dear Sir/Madam, I am writing to... Yours faithfully<br><strong>Informal:</strong> Hi/Hey!, Just wanted to... Cheers/Best<br><br>⚠️ W razie wątpliwości – wybierz formalny!</p>
+</div>
+<div class="card">
+<div class="card-icon green">💡</div>
+<h3>Pro tips</h3>
+<p>• Przeczytaj mail przed wysłaniem!<br>• Sprawdź czy załączniki są dodane<br>• Użyj Grammarly lub LanguageTool<br>• Nie pisz w emocjach – poczekaj godzinę<br>• CC tylko gdy naprawdę potrzebne</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- STRUKTURA -->
+<section id="struktura" style="background:var(--card)">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📝 Krok po kroku</div>
+<h2 class="section-title">Struktura maila</h2>
+<p class="section-desc">Każdy profesjonalny email składa się z 5 kluczowych elementów. Kliknij zwrot, aby go skopiować.</p>
+</div>
+<div class="structure-list">
+<div class="structure-item">
+<div class="structure-num"><div class="n">1</div><div class="t">GREETING</div></div>
+<div class="structure-body">
+<h4>Powitanie</h4>
+<p>Wybierz odpowiednie powitanie w zależności od stopnia formalności i czy znasz nazwisko odbiorcy.</p>
+<div class="phrase-tags">
+<span class="phrase-tag" onclick="copyTag(this)">Dear Sir or Madam,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Dear Mr/Mrs/Ms Smith,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Dear Hiring Manager,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Dear John,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Hi John,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Hello everyone,</span>
+</div>
+</div>
+</div>
+<div class="structure-item">
+<div class="structure-num"><div class="n">2</div><div class="t">OPENING</div></div>
+<div class="structure-body">
+<h4>Zdanie otwierające</h4>
+<p>Przedstaw się lub nawiąż do poprzedniej korespondencji. Określ cel maila.</p>
+<div class="phrase-tags">
+<span class="phrase-tag" onclick="copyTag(this)">I am writing to inquire about...</span>
+<span class="phrase-tag" onclick="copyTag(this)">I am writing with reference to...</span>
+<span class="phrase-tag" onclick="copyTag(this)">Thank you for your email...</span>
+<span class="phrase-tag" onclick="copyTag(this)">I hope this email finds you well.</span>
+<span class="phrase-tag" onclick="copyTag(this)">Following our conversation...</span>
+<span class="phrase-tag" onclick="copyTag(this)">I am writing to apply for...</span>
+</div>
+</div>
+</div>
+<div class="structure-item">
+<div class="structure-num"><div class="n">3</div><div class="t">BODY</div></div>
+<div class="structure-body">
+<h4>Treść główna</h4>
+<p>Przedstaw swoją sprawę jasno i zwięźle. Używaj akapitów dla czytelności.</p>
+<div class="phrase-tags">
+<span class="phrase-tag" onclick="copyTag(this)">I would like to request...</span>
+<span class="phrase-tag" onclick="copyTag(this)">Could you please...</span>
+<span class="phrase-tag" onclick="copyTag(this)">I am pleased to inform you...</span>
+<span class="phrase-tag" onclick="copyTag(this)">Unfortunately, I have to...</span>
+<span class="phrase-tag" onclick="copyTag(this)">I would be grateful if...</span>
+<span class="phrase-tag" onclick="copyTag(this)">Please find attached...</span>
+</div>
+</div>
+</div>
+<div class="structure-item">
+<div class="structure-num"><div class="n">4</div><div class="t">CLOSING</div></div>
+<div class="structure-body">
+<h4>Zakończenie</h4>
+<p>Podsumuj i wskaż oczekiwaną akcję. Wyraź nadzieję na odpowiedź.</p>
+<div class="phrase-tags">
+<span class="phrase-tag" onclick="copyTag(this)">I look forward to hearing from you.</span>
+<span class="phrase-tag" onclick="copyTag(this)">Please let me know if you need any further information.</span>
+<span class="phrase-tag" onclick="copyTag(this)">Thank you for your time and consideration.</span>
+<span class="phrase-tag" onclick="copyTag(this)">I would appreciate a prompt reply.</span>
+<span class="phrase-tag" onclick="copyTag(this)">Please do not hesitate to contact me.</span>
+</div>
+</div>
+</div>
+<div class="structure-item">
+<div class="structure-num"><div class="n">5</div><div class="t">SIGN-OFF</div></div>
+<div class="structure-body">
+<h4>Pożegnanie + podpis</h4>
+<p>Dopasuj formułę końcową do całego maila. <strong>Yours faithfully</strong> = nie znamy nazwiska, <strong>Yours sincerely</strong> = znamy nazwisko.</p>
+<div class="phrase-tags">
+<span class="phrase-tag" onclick="copyTag(this)">Yours faithfully,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Yours sincerely,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Kind regards,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Best regards,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Best wishes,</span>
+<span class="phrase-tag" onclick="copyTag(this)">Cheers,</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TYPY MAILI - SZABLONY -->
+<section id="typy">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📧 Szablony</div>
+<h2 class="section-title">Typy maili z przykładami</h2>
+<p class="section-desc">Gotowe szablony do wykorzystania. Kliknij "Kopiuj" aby skopiować cały szablon.</p>
+</div>
+<div class="tabs-wrap">
+<div class="tabs-nav">
+<button class="tab-btn active" data-tab="job">💼 Praca</button>
+<button class="tab-btn" data-tab="complaint">😤 Reklamacja</button>
+<button class="tab-btn" data-tab="inquiry">❓ Zapytanie</button>
+<button class="tab-btn" data-tab="apology">🙏 Przeprosiny</button>
+<button class="tab-btn" data-tab="thank">💝 Podziękowanie</button>
+<button class="tab-btn" data-tab="invitation">🎉 Zaproszenie</button>
+</div>
+<div class="tab-content active" id="tab-job">
+<h3>💼 Job Application Email</h3>
+<p>Mail formalny – wysyłany do potencjalnego pracodawcy w odpowiedzi na ogłoszenie o pracę.</p>
+<div class="email-tpl">
+<pre><span class="hl">Subject:</span> Application for Marketing Assistant Position
+
+Dear Hiring Manager,
+
+I am writing to apply for the Marketing Assistant position advertised on your company website. I am a recent graduate with a degree in Marketing from Warsaw University.
+
+I have completed a 6-month internship at ABC Company, where I gained valuable experience in social media management and content creation. I am proficient in Adobe Creative Suite and have strong analytical skills.
+
+I have attached my CV and cover letter for your review. I would welcome the opportunity to discuss how my skills and enthusiasm could benefit your team.
+
+Thank you for considering my application. I look forward to hearing from you.
+
+<span class="hl">Yours faithfully,</span>
+Anna Kowalska
+Tel: +48 123 456 789
+Email: anna.kowalska@email.com</pre>
+</div>
+<div class="tpl-actions"><button class="btn btn-secondary" onclick="copyTpl('job')">📋 Kopiuj szablon</button></div>
+</div>
+<div class="tab-content" id="tab-complaint">
+<h3>😤 Complaint Email</h3>
+<p>Mail formalny – wyrażanie niezadowolenia z produktu lub usługi, żądanie rozwiązania problemu.</p>
+<div class="email-tpl">
+<pre><span class="hl">Subject:</span> Complaint Regarding Order #12345
+
+Dear Customer Service Team,
+
+I am writing to express my dissatisfaction with the product I received on 15th January 2024 (Order #12345).
+
+The laptop bag I ordered arrived with a broken zipper and visible scratches on the leather. This is unacceptable given the premium price I paid for this item.
+
+I would like to request a full refund or a replacement product. Please find attached photos documenting the damage.
+
+I expect a response within 5 business days. If this matter is not resolved satisfactorily, I will be forced to take further action.
+
+<span class="hl">Yours faithfully,</span>
+Jan Nowak
+Order #12345</pre>
+</div>
+<div class="tpl-actions"><button class="btn btn-secondary" onclick="copyTpl('complaint')">📋 Kopiuj szablon</button></div>
+</div>
+<div class="tab-content" id="tab-inquiry">
+<h3>❓ Inquiry Email</h3>
+<p>Mail formalny – prośba o informacje dotyczące usługi, kursu, produktu itp.</p>
+<div class="email-tpl">
+<pre><span class="hl">Subject:</span> Inquiry About English Language Courses
+
+Dear Sir or Madam,
+
+I am writing to inquire about the English language courses offered at your school.
+
+I am particularly interested in the following information:
+- Available course levels (beginner to advanced)
+- Class schedules and duration
+- Fees and payment options
+- Whether online classes are available
+
+I am an intermediate learner looking to improve my business English skills. Could you please send me a brochure or direct me to where I can find more details?
+
+Thank you for your time. I look forward to your response.
+
+<span class="hl">Kind regards,</span>
+Piotr Wiśniewski
+Tel: +48 987 654 321</pre>
+</div>
+<div class="tpl-actions"><button class="btn btn-secondary" onclick="copyTpl('inquiry')">📋 Kopiuj szablon</button></div>
+</div>
+
+<div class="tab-content" id="tab-apology">
+<h3>🙏 Apology Email</h3>
+<p>Mail formalny/półformalny – przepraszanie za błąd, opóźnienie lub niedogodność.</p>
+<div class="email-tpl">
+<pre><span class="hl">Subject:</span> Apology for Delayed Project Submission
+
+Dear Mr. Thompson,
+
+I am writing to sincerely apologize for the delay in submitting the quarterly report. I understand this has caused inconvenience to the team.
+
+The delay was due to unexpected technical issues with our database system. However, I take full responsibility for not communicating this problem earlier.
+
+The report has now been completed and is attached to this email. I have also implemented measures to ensure this situation does not happen again in the future.
+
+Once again, I apologize for any inconvenience caused and appreciate your understanding.
+
+<span class="hl">Best regards,</span>
+Katarzyna Zielińska
+Project Manager</pre>
+</div>
+<div class="tpl-actions"><button class="btn btn-secondary" onclick="copyTpl('apology')">📋 Kopiuj szablon</button></div>
+</div>
+<div class="tab-content" id="tab-thank">
+<h3>💝 Thank You Email</h3>
+<p>Mail półformalny – podziękowanie po rozmowie kwalifikacyjnej, spotkaniu biznesowym itp.</p>
+<div class="email-tpl">
+<pre><span class="hl">Subject:</span> Thank You - Interview for Sales Manager Position
+
+Dear Ms. Johnson,
+
+Thank you for taking the time to meet with me yesterday to discuss the Sales Manager position at XYZ Company.
+
+I really enjoyed learning more about the role and your company's exciting expansion plans. Our conversation confirmed my strong interest in joining your team.
+
+I was particularly excited to hear about the new European market initiatives. With my experience in international sales, I am confident I could make a meaningful contribution to these efforts.
+
+Please don't hesitate to contact me if you need any additional information. I look forward to hearing from you soon.
+
+<span class="hl">Best regards,</span>
+Michał Kowalczyk
+Tel: +48 555 123 456</pre>
+</div>
+<div class="tpl-actions"><button class="btn btn-secondary" onclick="copyTpl('thank')">📋 Kopiuj szablon</button></div>
+</div>
+<div class="tab-content" id="tab-invitation">
+<h3>🎉 Invitation Email (Informal)</h3>
+<p>Mail nieformalny – zaproszenie znajomego na imprezę, spotkanie itp.</p>
+<div class="email-tpl">
+<pre><span class="hl">Subject:</span> You're Invited! 🎂 Birthday Party
+
+Hey Sarah!
+
+How are you? I hope you're doing great!
+
+I'm throwing a birthday party next Saturday (20th January) at my place and I'd love for you to come! 🎉
+
+Here are the details:
+📅 Date: Saturday, 20th January
+⏰ Time: 7 PM onwards
+📍 Place: My apartment (ul. Kwiatowa 15, Warsaw)
+
+There will be food, drinks, music, and hopefully lots of fun! Feel free to bring a friend if you want.
+
+Let me know if you can make it! No gifts necessary - just bring yourself and your good vibes! 😄
+
+Can't wait to see you!
+
+<span class="hl">Cheers,</span>
+Magda 🌟</pre>
+</div>
+<div class="tpl-actions"><button class="btn btn-secondary" onclick="copyTpl('invitation')">📋 Kopiuj szablon</button></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- GENERATOR -->
+<section id="generator" class="gen-section">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">⚡ Narzędzie</div>
+<h2 class="section-title">Generator maili</h2>
+<p class="section-desc">Wprowadź dane i wygeneruj profesjonalny email gotowy do wysłania lub edycji.</p>
+</div>
+<div class="gen-box">
+<div class="gen-header">
+<div>
+<h3>⚡ Email Generator PRO</h3>
+<p>Wypełnij formularz → Wygeneruj → Pobierz lub skopiuj</p>
+</div>
+</div>
+<div class="gen-grid">
+<div class="gen-form">
+<div class="input-row">
+<div class="input-group">
+<label>Typ maila</label>
+<select id="genType">
+<option value="formal">Formalny (Formal)</option>
+<option value="semi">Półformalny (Semi-formal)</option>
+<option value="informal">Nieformalny (Informal)</option>
+</select>
+</div>
+<div class="input-group">
+<label>Cel maila</label>
+<select id="genPurpose">
+<option value="inquiry">Zapytanie (Inquiry)</option>
+<option value="application">Aplikacja o pracę</option>
+<option value="complaint">Reklamacja (Complaint)</option>
+<option value="apology">Przeprosiny (Apology)</option>
+<option value="thank">Podziękowanie (Thank you)</option>
+<option value="request">Prośba (Request)</option>
+<option value="invitation">Zaproszenie (Invitation)</option>
+<option value="followup">Follow-up</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<label>Temat wiadomości (Subject)</label>
+<input type="text" id="genSubject" placeholder="np. Meeting Request - Project Discussion">
+</div>
+<div class="input-row">
+<div class="input-group">
+<label>Imię/nazwisko odbiorcy</label>
+<input type="text" id="genRecipient" placeholder="np. John Smith">
+</div>
+<div class="input-group">
+<label>Tytuł odbiorcy</label>
+<select id="genTitle">
+<option value="none">Nieznany (Sir or Madam)</option>
+<option value="Mr">Mr (Pan)</option>
+<option value="Mrs">Mrs (Pani - mężatka)</option>
+<option value="Ms">Ms (Pani - neutralne)</option>
+<option value="Dr">Dr (Doktor)</option>
+<option value="Prof">Prof (Profesor)</option>
+</select>
+</div>
+</div>
+<div class="input-group">
+<label>Główna treść maila (opisz o co chodzi)</label>
+<textarea id="genContent" placeholder="np. Chcę zapytać o dostępność kursu angielskiego w styczniu. Interesuje mnie poziom B2 i zajęcia wieczorowe 2x w tygodniu."></textarea>
+</div>
+<div class="input-row">
+<div class="input-group">
+<label>Twoje imię i nazwisko</label>
+<input type="text" id="genSender" placeholder="np. Anna Kowalska">
+</div>
+<div class="input-group">
+<label>Dodatkowe info (opcjonalnie)</label>
+<input type="text" id="genExtra" placeholder="np. Tel: +48 123 456 789">
+</div>
+</div>
+<div class="gen-actions">
+<button class="btn btn-primary" onclick="generateEmail()" style="flex:1">⚡ Generuj email</button>
+</div>
+</div>
+<div class="gen-preview">
+<div class="gen-preview-header">
+<h4>📧 Podgląd wiadomości</h4>
+<span id="genWordCount" style="color:var(--muted);font-size:0.9rem">Słowa: 0</span>
+</div>
+<div class="gen-preview-box">
+<pre id="genOutput">Twój wygenerowany email pojawi się tutaj...
+
+Wypełnij formularz i kliknij "Generuj email".</pre>
+</div>
+<div class="gen-actions">
+<button class="btn btn-secondary" onclick="downloadGen()">💾 Pobierz .txt</button>
+<button class="btn btn-ghost" onclick="copyGen()">📋 Kopiuj</button>
+<button class="btn btn-ghost" onclick="clearGen()">🗑️ Wyczyść</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PISANIE WŁASNEGO MAILA -->
+<section id="pisanie" class="editor-section">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">✍️ Praktyka</div>
+<h2 class="section-title">Napisz własnego maila</h2>
+<p class="section-desc">Wybierz scenariusz, napisz email korzystając ze ściągi obok, i zapisz swoją pracę.</p>
+</div>
+<div class="editor-wrap">
+<div class="editor-main">
+<h3>📝 Edytor maila</h3>
+<div class="scenario-btns">
+<button class="scenario-btn active" data-s="1">Scenariusz 1</button>
+<button class="scenario-btn" data-s="2">Scenariusz 2</button>
+<button class="scenario-btn" data-s="3">Scenariusz 3</button>
+<button class="scenario-btn" data-s="4">Scenariusz 4</button>
+<button class="scenario-btn" data-s="5">Scenariusz 5</button>
+</div>
+<div class="scenario-box" id="scenarioBox">
+<h4>📋 Scenariusz 1: Zapytanie o kurs językowy</h4>
+<p><strong>Sytuacja:</strong> Chcesz zapisać się na kurs języka angielskiego w szkole językowej "English Academy". Napisz email z pytaniem o:</p>
+<ul>
+<li>Dostępne poziomy kursów</li>
+<li>Harmonogram zajęć</li>
+<li>Cennik i metody płatności</li>
+<li>Możliwość zajęć online</li>
+</ul>
+<p style="margin-top:12px"><strong>Typ:</strong> Formalny | <strong>Odbiorca:</strong> Dear Sir or Madam</p>
+</div>
+<textarea class="email-editor" id="emailEditor" placeholder="Subject: [Wpisz temat]
+
+Dear Sir or Madam,
+
+[Tutaj napisz treść swojego maila...]
+
+[Zakończenie]
+
+Yours faithfully,
+[Twoje imię i nazwisko]"></textarea>
+<div class="editor-stats">
+<span>Słowa: <strong id="wordCount">0</strong></span>
+<span>Znaki: <strong id="charCount">0</strong></span>
+</div>
+<div class="editor-actions">
+<button class="btn btn-primary" onclick="checkEmail()">✅ Sprawdź strukturę</button>
+<button class="btn btn-secondary" onclick="downloadEmail()">💾 Zapisz .txt</button>
+<button class="btn btn-ghost" onclick="copyEmail()">📋 Kopiuj</button>
+<button class="btn btn-ghost" onclick="clearEmail()">🗑️ Wyczyść</button>
+</div>
+<div class="feedback-box" id="feedbackBox"></div>
+</div>
+<!-- ŚCIĄGA -->
+<div class="cheatsheet">
+<h4>📚 Ściąga – kliknij aby wstawić</h4>
+<div class="cheat-cat">
+<h5>👋 Powitania</h5>
+<div class="cheat-items">
+<div class="cheat-item" onclick="insertCheat(this)">Dear Sir or Madam,<span class="pl">Szanowni Państwo (nie znamy nazwiska)</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Dear Mr/Mrs [name],<span class="pl">Szanowny Panie/Pani [nazwisko]</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Dear [name],<span class="pl">Drogi/a (półformalny)</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Hi [name]!<span class="pl">Cześć (nieformalny)</span></div>
+</div>
+</div>
+<div class="cheat-cat">
+<h5>📖 Otwarcia</h5>
+<div class="cheat-items">
+<div class="cheat-item" onclick="insertCheat(this)">I am writing to inquire about...<span class="pl">Piszę, aby zapytać o...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">I am writing with reference to...<span class="pl">Piszę w nawiązaniu do...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Thank you for your email...<span class="pl">Dziękuję za email...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">I hope this email finds you well.<span class="pl">Mam nadzieję, że wszystko OK</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Following our conversation...<span class="pl">W nawiązaniu do rozmowy...</span></div>
+</div>
+</div>
+<div class="cheat-cat">
+<h5>📝 Prośby</h5>
+<div class="cheat-items">
+<div class="cheat-item" onclick="insertCheat(this)">I would be grateful if you could...<span class="pl">Byłbym wdzięczny, gdyby...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Could you please...<span class="pl">Czy mógłby Pan/Pani...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Would it be possible to...<span class="pl">Czy byłoby możliwe...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">I would like to request...<span class="pl">Chciałbym poprosić o...</span></div>
+</div>
+</div>
+<div class="cheat-cat">
+<h5>📎 Załączniki</h5>
+<div class="cheat-items">
+<div class="cheat-item" onclick="insertCheat(this)">Please find attached...<span class="pl">W załączeniu przesyłam...</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">I have attached... for your reference.<span class="pl">Załączam... do wglądu</span></div>
+</div>
+</div>
+<div class="cheat-cat">
+<h5>🔚 Zakończenia</h5>
+<div class="cheat-items">
+<div class="cheat-item" onclick="insertCheat(this)">I look forward to hearing from you.<span class="pl">Czekam na odpowiedź</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Please do not hesitate to contact me.<span class="pl">Proszę się nie wahać</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Thank you for your time.<span class="pl">Dziękuję za poświęcony czas</span></div>
+</div>
+</div>
+<div class="cheat-cat">
+<h5>👋 Pożegnania</h5>
+<div class="cheat-items">
+<div class="cheat-item" onclick="insertCheat(this)">Yours faithfully,<span class="pl">Z poważaniem (nie znamy nazwiska)</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Yours sincerely,<span class="pl">Z poważaniem (znamy nazwisko)</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Kind regards,<span class="pl">Serdeczne pozdrowienia</span></div>
+<div class="cheat-item" onclick="insertCheat(this)">Best wishes,<span class="pl">Najlepsze życzenia</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- BANK ZWROTÓW - ROZBUDOWANY -->
+<section id="zwroty">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">💬 100+ zwrotów</div>
+<h2 class="section-title">Bank przydatnych zwrotów</h2>
+<p class="section-desc">Kliknij na zwrot, aby skopiować go do schowka. Podzielone na kategorie.</p>
+</div>
+<div class="phrases-tabs">
+<button class="phrase-tab active" data-cat="greetings">👋 Powitania</button>
+<button class="phrase-tab" data-cat="openings">📖 Otwarcia</button>
+<button class="phrase-tab" data-cat="requests">📝 Prośby</button>
+<button class="phrase-tab" data-cat="info">ℹ️ Informowanie</button>
+<button class="phrase-tab" data-cat="apologies">😔 Przeprosiny</button>
+<button class="phrase-tab" data-cat="attachments">📎 Załączniki</button>
+<button class="phrase-tab" data-cat="closings">🔚 Zakończenia</button>
+<button class="phrase-tab" data-cat="signoffs">✍️ Pożegnania</button>
+</div>
+
+<!-- POWITANIA -->
+<div class="phrases-grid active" id="cat-greetings">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Sir or Madam,</div><div class="phrase-pl">Szanowni Państwo (nie znamy nazwiska)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Mr Smith,</div><div class="phrase-pl">Szanowny Panie Smith</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Mrs Johnson,</div><div class="phrase-pl">Szanowna Pani Johnson (mężatka)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Ms Brown,</div><div class="phrase-pl">Szanowna Pani Brown (neutralne)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Dr Williams,</div><div class="phrase-pl">Szanowny Doktorze Williams</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Hiring Manager,</div><div class="phrase-pl">Szanowny Zespole Rekrutacyjnym</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear Customer Service Team,</div><div class="phrase-pl">Szanowny Dziale Obsługi Klienta</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear All,</div><div class="phrase-pl">Szanowni Państwo (do grupy)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Dear [First name],</div><div class="phrase-pl">Drogi/a [Imię] - półformalny</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Hi [Name],</div><div class="phrase-pl">Cześć [Imię] - nieformalny</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Hello everyone,</div><div class="phrase-pl">Cześć wszystkim</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Hey!</div><div class="phrase-pl">Hej! - bardzo nieformalny</div></div>
+</div>
+
+<!-- OTWARCIA -->
+<div class="phrases-grid" id="cat-openings">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing to inquire about...</div><div class="phrase-pl">Piszę, aby zapytać o...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing with reference to...</div><div class="phrase-pl">Piszę w nawiązaniu do...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing to apply for...</div><div class="phrase-pl">Piszę, aby aplikować na...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing to complain about...</div><div class="phrase-pl">Piszę, aby złożyć skargę na...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing to request...</div><div class="phrase-pl">Piszę, aby poprosić o...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing to confirm...</div><div class="phrase-pl">Piszę, aby potwierdzić...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Thank you for your email dated...</div><div class="phrase-pl">Dziękuję za email z dnia...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Thank you for contacting us.</div><div class="phrase-pl">Dziękujemy za kontakt.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I hope this email finds you well.</div><div class="phrase-pl">Mam nadzieję, że wszystko u Pana/Pani dobrze.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Following our telephone conversation...</div><div class="phrase-pl">W nawiązaniu do naszej rozmowy telefonicznej...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Further to our meeting...</div><div class="phrase-pl">W nawiązaniu do naszego spotkania...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">As discussed previously...</div><div class="phrase-pl">Jak wcześniej omawialiśmy...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">With reference to your advertisement...</div><div class="phrase-pl">W nawiązaniu do Państwa ogłoszenia...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am pleased to inform you that...</div><div class="phrase-pl">Z przyjemnością informuję, że...</div></div>
+</div>
+
+<!-- PROŚBY -->
+<div class="phrases-grid" id="cat-requests">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I would be grateful if you could...</div><div class="phrase-pl">Byłbym wdzięczny, gdyby mógł Pan/mogła Pani...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Could you please...</div><div class="phrase-pl">Czy mógłby Pan/mogłaby Pani...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I would like to request...</div><div class="phrase-pl">Chciałbym poprosić o...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Would it be possible to...</div><div class="phrase-pl">Czy byłoby możliwe, aby...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I would appreciate it if you could...</div><div class="phrase-pl">Byłbym wdzięczny, gdyby...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I was wondering if you could...</div><div class="phrase-pl">Zastanawiałem się, czy mógłbyś...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Would you mind...?</div><div class="phrase-pl">Czy nie miałby Pan/Pani nic przeciwko...?</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I kindly request that...</div><div class="phrase-pl">Uprzejmie proszę o...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please let me know...</div><div class="phrase-pl">Proszę dać mi znać...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Could you send me...?</div><div class="phrase-pl">Czy mógłby Pan/Pani mi wysłać...?</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I need you to...</div><div class="phrase-pl">Potrzebuję, żebyś... (bezpośredni)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Can you help me with...?</div><div class="phrase-pl">Czy możesz mi pomóc z...? (nieformalny)</div></div>
+</div>
+
+<!-- INFORMOWANIE -->
+<div class="phrases-grid" id="cat-info">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am pleased to inform you that...</div><div class="phrase-pl">Z przyjemnością informuję, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am writing to let you know that...</div><div class="phrase-pl">Piszę, aby poinformować, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I would like to inform you that...</div><div class="phrase-pl">Chciałbym poinformować, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I regret to inform you that...</div><div class="phrase-pl">Z przykrością informuję, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Unfortunately, I have to tell you that...</div><div class="phrase-pl">Niestety, muszę poinformować, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am happy to announce that...</div><div class="phrase-pl">Z przyjemnością ogłaszam, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please be advised that...</div><div class="phrase-pl">Informujemy, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">For your information...</div><div class="phrase-pl">Do wiadomości / Dla Twojej informacji...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I wanted to update you on...</div><div class="phrase-pl">Chciałem zaktualizować informacje o...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Just to let you know...</div><div class="phrase-pl">Tylko chciałem dać znać... (nieformalny)</div></div>
+</div>
+
+<!-- PRZEPROSINY -->
+<div class="phrases-grid" id="cat-apologies">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I apologize for any inconvenience caused.</div><div class="phrase-pl">Przepraszam za wszelkie niedogodności.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am sorry for the delay in responding.</div><div class="phrase-pl">Przepraszam za opóźnioną odpowiedź.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please accept my sincere apologies for...</div><div class="phrase-pl">Proszę przyjąć moje szczere przeprosiny za...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I deeply regret that...</div><div class="phrase-pl">Głęboko żałuję, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am sorry to hear that...</div><div class="phrase-pl">Przykro mi to słyszeć, że...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Unfortunately, I am unable to...</div><div class="phrase-pl">Niestety, nie jestem w stanie...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I must apologize for not...</div><div class="phrase-pl">Muszę przeprosić za to, że nie...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I take full responsibility for...</div><div class="phrase-pl">Biorę pełną odpowiedzialność za...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Sorry about that!</div><div class="phrase-pl">Przepraszam za to! (nieformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">My bad!</div><div class="phrase-pl">Moja wina! (bardzo nieformalny)</div></div>
+</div>
+
+<!-- ZAŁĄCZNIKI -->
+<div class="phrases-grid" id="cat-attachments">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please find attached...</div><div class="phrase-pl">W załączeniu przesyłam...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I have attached... for your reference.</div><div class="phrase-pl">Załączam... do wglądu.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">As per your request, I am attaching...</div><div class="phrase-pl">Zgodnie z Pana/Pani prośbą, załączam...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Enclosed you will find...</div><div class="phrase-pl">W załączeniu znajdą Państwo...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I am enclosing...</div><div class="phrase-pl">Załączam...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please see the attached file.</div><div class="phrase-pl">Proszę zobaczyć załączony plik.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">The attachment contains...</div><div class="phrase-pl">Załącznik zawiera...</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Here's the document you asked for.</div><div class="phrase-pl">Oto dokument, o który prosiłeś. (nieformalny)</div></div>
+</div>
+
+<!-- ZAKOŃCZENIA -->
+<div class="phrases-grid" id="cat-closings">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I look forward to hearing from you.</div><div class="phrase-pl">Czekam na odpowiedź.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I look forward to your reply.</div><div class="phrase-pl">Oczekuję na Pana/Pani odpowiedź.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I await your response with interest.</div><div class="phrase-pl">Z zainteresowaniem czekam na odpowiedź.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please do not hesitate to contact me.</div><div class="phrase-pl">Proszę się nie wahać ze mną skontaktować.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Please let me know if you need any further information.</div><div class="phrase-pl">Proszę dać mi znać, jeśli potrzebne są dodatkowe informacje.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Thank you for your time and consideration.</div><div class="phrase-pl">Dziękuję za poświęcony czas.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I would appreciate a prompt reply.</div><div class="phrase-pl">Byłbym wdzięczny za szybką odpowiedź.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Thank you in advance for your help.</div><div class="phrase-pl">Z góry dziękuję za pomoc.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">I hope to hear from you soon.</div><div class="phrase-pl">Mam nadzieję, że wkrótce się odezwiesz.</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Let me know if you have any questions.</div><div class="phrase-pl">Daj znać, jeśli masz pytania. (nieformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Feel free to reach out if needed.</div><div class="phrase-pl">Śmiało się odezwij, jeśli trzeba.</div></div>
+</div>
+
+<!-- POŻEGNANIA -->
+<div class="phrases-grid" id="cat-signoffs">
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Yours faithfully,</div><div class="phrase-pl">Z poważaniem (NIE znamy nazwiska)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Yours sincerely,</div><div class="phrase-pl">Z poważaniem (ZNAMY nazwisko)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Kind regards,</div><div class="phrase-pl">Serdeczne pozdrowienia (półformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Best regards,</div><div class="phrase-pl">Pozdrawiam serdecznie (półformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Warm regards,</div><div class="phrase-pl">Ciepłe pozdrowienia</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">With kind regards,</div><div class="phrase-pl">Z serdecznymi pozdrowieniami</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Best wishes,</div><div class="phrase-pl">Najlepsze życzenia (nieformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">All the best,</div><div class="phrase-pl">Wszystkiego dobrego</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Take care,</div><div class="phrase-pl">Trzymaj się (nieformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Cheers,</div><div class="phrase-pl">Na razie / Pozdrawiam (nieformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Thanks!</div><div class="phrase-pl">Dzięki! (bardzo nieformalny)</div></div>
+<div class="phrase-card" onclick="copyPhrase(this)"><div class="phrase-en">Speak soon!</div><div class="phrase-pl">Do usłyszenia wkrótce!</div></div>
+</div>
+</div>
+</section>
+
+<!-- PRZYKŁADY DOBRE/ZŁE -->
+<section id="przyklady" style="background:var(--card)">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">✅❌ Porównanie</div>
+<h2 class="section-title">Dobre vs złe maile</h2>
+<p class="section-desc">Zobacz typowe błędy i jak ich unikać. Ucz się na porównaniach.</p>
+</div>
+<div class="examples-grid">
+<div class="example-card">
+<div class="example-header">
+<span class="example-type bad">❌ ŹLE</span>
+<span style="color:var(--muted)">Brak struktury</span>
+</div>
+<div class="example-body">
+<pre>hi
+
+i need info about your courses how much they cost and when they start thanks
+
+john</pre>
+</div>
+<div class="example-footer">⚠️ Brak tematu, powitania, struktury. Zbyt krótki i niegrzeczny.</div>
+</div>
+<div class="example-card">
+<div class="example-header">
+<span class="example-type good">✅ DOBRZE</span>
+<span style="color:var(--muted)">Prawidłowa struktura</span>
+</div>
+<div class="example-body">
+<pre>Subject: Inquiry About English Courses
+
+Dear Sir or Madam,
+
+I am writing to inquire about the English courses offered at your school. I would be grateful if you could provide me with information about course fees and start dates.
+
+I look forward to hearing from you.
+
+Kind regards,
+John Smith</pre>
+</div>
+<div class="example-footer">✓ Temat, powitanie, cel, grzeczna prośba, zakończenie, podpis.</div>
+</div>
+<div class="example-card">
+<div class="example-header">
+<span class="example-type bad">❌ ŹLE</span>
+<span style="color:var(--muted)">Zbyt emocjonalny</span>
+</div>
+<div class="example-body">
+<pre>Subject: YOUR PRODUCT IS GARBAGE!!!
+
+This is UNACCEPTABLE!!! I paid good money and got TRASH! I want my money back RIGHT NOW or I'm going to sue you!!!
+
+VERY ANGRY CUSTOMER</pre>
+</div>
+<div class="example-footer">⚠️ CAPS LOCK, wykrzykniki, groźby. Nie osiągniesz celu.</div>
+</div>
+<div class="example-card">
+<div class="example-header">
+<span class="example-type good">✅ DOBRZE</span>
+<span style="color:var(--muted)">Profesjonalna reklamacja</span>
+</div>
+<div class="example-body">
+<pre>Subject: Complaint - Order #12345
+
+Dear Customer Service,
+
+I am writing to express my dissatisfaction with the product received on 15th January. The item arrived damaged.
+
+I would like to request a refund or replacement. Please find attached photos of the damage.
+
+I look forward to your prompt response.
+
+Yours faithfully,
+Anna Brown</pre>
+</div>
+<div class="example-footer">✓ Spokojny ton, fakty, konkretna prośba, dowody.</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">✅ Przed wysłaniem</div>
+<h2 class="section-title">Checklist - sprawdź przed wysłaniem</h2>
+<p class="section-desc">Użyj tej listy kontrolnej przed każdym ważnym mailem.</p>
+</div>
+<div class="checklist-box">
+<div class="checklist-items">
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy temat (Subject) jest konkretny?</h5><p>5-7 słów opisujących treść maila</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy powitanie jest odpowiednie?</h5><p>Dear Sir/Madam (nie znamy) vs Dear Mr Smith (znamy)</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy jasno określiłem cel maila?</h5><p>Pierwsze zdanie powinno wyjaśniać po co piszesz</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy treść jest zwięzła i czytelna?</h5><p>Krótkie akapity, jedna myśl = jeden akapit</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy pożegnanie pasuje do powitania?</h5><p>Yours faithfully (Dear Sir) vs Yours sincerely (Dear Mr X)</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy sprawdziłem pisownię i gramatykę?</h5><p>Użyj Grammarly, LanguageTool lub wbudowanego sprawdzania</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy załączniki są dodane?</h5><p>Jeśli wspomniałeś o załączniku - sprawdź czy jest!</p></div>
+</div>
+<div class="checklist-item" onclick="toggleCheck(this)">
+<div class="checklist-check">✓</div>
+<div class="checklist-txt"><h5>Czy ton jest odpowiedni?</h5><p>Formalny do firm, półformalny do współpracowników</p></div>
+</div>
+</div>
+<div class="checklist-progress">
+<div class="progress-bar"><div class="progress-fill" id="checkProgress"></div></div>
+<p class="progress-txt"><span id="checkCount">0</span>/8 punktów sprawdzonych</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" style="background:var(--card)">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">🎯 Sprawdź się</div>
+<h2 class="section-title">Quiz - pisanie maili</h2>
+<p class="section-desc">15 pytań sprawdzających Twoją wiedzę o pisaniu profesjonalnych maili.</p>
+</div>
+<div class="quiz-box" id="quizBox">
+<div class="quiz-progress" id="quizProgress"></div>
+<div id="quizContent">
+<div class="quiz-q" id="quizQ"></div>
+<div class="quiz-opts" id="quizOpts"></div>
+<div class="quiz-feedback" id="quizFb"></div>
+<div class="quiz-actions">
+<button class="btn btn-ghost" id="quizPrev" onclick="quizPrev()">← Poprzednie</button>
+<button class="btn btn-primary" id="quizNext" onclick="quizNext()">Następne →</button>
+</div>
+</div>
+<div class="quiz-score" id="quizScore" style="display:none">
+<div class="val" id="scoreVal">0%</div>
+<div class="lbl">Twój wynik</div>
+<button class="btn btn-primary" onclick="quizRestart()">🔄 Zacznij od nowa</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-logo">✉️ Email Writing PRO</div>
+<p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">dr inż. Kacper Stabrawa</a>) <span class="footer-brand">🧠 <b>ViralloLab</b></span></p>
+</footer>
+
+<script>
+// ==================== TOAST ====================
+function toast(title, msg='') {
+    const t = document.getElementById('toast');
+    t.querySelector('b').textContent = title;
+    t.querySelector('span').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ==================== KOPIOWANIE ====================
+function copyTag(el) {
+    const text = el.textContent;
+    navigator.clipboard.writeText(text);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1500);
+    toast('Skopiowano!', text.substring(0,30) + '...');
+}
+
+function copyPhrase(el) {
+    const text = el.querySelector('.phrase-en').textContent;
+    navigator.clipboard.writeText(text);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1500);
+    toast('Skopiowano!', text.substring(0,30) + '...');
+}
+
+function copyTpl(id) {
+    const tpl = document.querySelector(`#tab-${id} .email-tpl pre`).textContent;
+    navigator.clipboard.writeText(tpl);
+    toast('Szablon skopiowany!');
+}
+
+// ==================== TABS ====================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    });
+});
+
+document.querySelectorAll('.phrase-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.phrase-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.phrases-grid').forEach(g => g.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('cat-' + this.dataset.cat).classList.add('active');
+    });
+});
+
+// ==================== SCENARIUSZE ====================
+const scenarios = {
+    1: { title: "Scenariusz 1: Zapytanie o kurs językowy", situation: 'Chcesz zapisać się na kurs języka angielskiego w szkole "English Academy". Napisz email z pytaniem o:', points: ["Dostępne poziomy kursów", "Harmonogram zajęć", "Cennik i metody płatności", "Możliwość zajęć online"], type: "Formalny", recipient: "Dear Sir or Madam" },
+    2: { title: "Scenariusz 2: Reklamacja produktu", situation: 'Kupiłeś słuchawki przez internet, ale po tygodniu przestały działać. Napisz email do działu reklamacji:', points: ["Opis problemu", "Numer zamówienia: #78542", "Żądanie: wymiana lub zwrot", "Załączone zdjęcia uszkodzeń"], type: "Formalny", recipient: "Customer Service Department" },
+    3: { title: "Scenariusz 3: Podanie o pracę", situation: 'Znalazłeś ogłoszenie o pracę na stanowisko Junior Marketing Specialist w firmie ABC Ltd. Napisz email aplikacyjny:', points: ["Gdzie znalazłeś ogłoszenie", "Krótki opis kwalifikacji i doświadczenia", "Dlaczego chcesz tam pracować", "Informacja o załączonym CV"], type: "Formalny", recipient: "Dear Hiring Manager" },
+    4: { title: "Scenariusz 4: Przeprosiny za nieobecność", situation: 'Nie mogłeś przyjść na ważne spotkanie projektowe z zespołem. Napisz email do przełożonego:', points: ["Przeprosiny za nieobecność", "Wyjaśnienie powodu (choroba)", "Prośba o materiały ze spotkania", "Deklaracja nadrobienia zaległości"], type: "Półformalny", recipient: "Dear Mr. Thompson" },
+    5: { title: "Scenariusz 5: Zaproszenie na imprezę", situation: 'Organizujesz przyjęcie urodzinowe i chcesz zaprosić znajomego z UK:', points: ["Data: sobota 20 stycznia, godz. 19:00", "Miejsce: Twoje mieszkanie", "Co będzie: jedzenie, muzyka, gry", "Może przyjść z +1"], type: "Nieformalny", recipient: "Hey Tom!" }
+};
+
+document.querySelectorAll('.scenario-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const s = scenarios[this.dataset.s];
+        document.getElementById('scenarioBox').innerHTML = `
+            <h4>📋 ${s.title}</h4>
+            <p><strong>Sytuacja:</strong> ${s.situation}</p>
+            <ul>${s.points.map(p => `<li>${p}</li>`).join('')}</ul>
+            <p style="margin-top:12px"><strong>Typ:</strong> ${s.type} | <strong>Odbiorca:</strong> ${s.recipient}</p>
+        `;
+    });
+});
+
+// ==================== EDYTOR ====================
+const editor = document.getElementById('emailEditor');
+editor.addEventListener('input', function() {
+    const text = this.value;
+    document.getElementById('wordCount').textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
+    document.getElementById('charCount').textContent = text.length;
+});
+
+function insertCheat(el) {
+    const text = el.textContent.split('\n')[0];
+    const ed = document.getElementById('emailEditor');
+    const start = ed.selectionStart;
+    ed.value = ed.value.slice(0, start) + text + ' ' + ed.value.slice(start);
+    ed.focus();
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1000);
+    ed.dispatchEvent(new Event('input'));
+}
+
+function copyEmail() {
+    navigator.clipboard.writeText(document.getElementById('emailEditor').value);
+    toast('Skopiowano!');
+}
+
+function clearEmail() {
+    if(confirm('Na pewno wyczyścić?')) {
+        document.getElementById('emailEditor').value = '';
+        document.getElementById('wordCount').textContent = '0';
+        document.getElementById('charCount').textContent = '0';
+        document.getElementById('feedbackBox').className = 'feedback-box';
+    }
+}
+
+function downloadEmail() {
+    const content = document.getElementById('emailEditor').value;
+    if(!content.trim()) { alert('Najpierw napisz coś!'); return; }
+    const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'moj_email_' + new Date().toISOString().slice(0,10) + '.txt';
+    a.click();
+    toast('Pobrano!', 'moj_email.txt');
+}
+
+function checkEmail() {
+    const text = document.getElementById('emailEditor').value;
+    const fb = document.getElementById('feedbackBox');
+    let checks = [];
+    let score = 0;
+    
+    if(text.toLowerCase().includes('subject:')) { checks.push('✅ Temat (Subject)'); score++; } else { checks.push('❌ Brak tematu (Subject)'); }
+    if(/dear|hi|hello|hey/i.test(text)) { checks.push('✅ Powitanie (Greeting)'); score++; } else { checks.push('❌ Brak powitania'); }
+    if(/i am writing|i hope|thank you for your email|following|i would like/i.test(text)) { checks.push('✅ Zdanie otwierające'); score++; } else { checks.push('⚠️ Brak typowego otwarcia'); }
+    if(text.length > 200) { checks.push('✅ Odpowiednia długość treści'); score++; } else { checks.push('⚠️ Za krótka treść'); }
+    if(/look forward|thank you|please|let me know|i would appreciate/i.test(text)) { checks.push('✅ Zakończenie'); score++; } else { checks.push('⚠️ Brak zakończenia'); }
+    if(/yours|regards|best|cheers|take care|sincerely|faithfully/i.test(text)) { checks.push('✅ Pożegnanie'); score++; } else { checks.push('❌ Brak pożegnania'); }
+    
+    const pct = Math.round((score/6)*100);
+    const grade = pct >= 80 ? '🌟 Świetnie!' : pct >= 60 ? '👍 Dobrze!' : '📝 Wymaga poprawy';
+    
+    fb.innerHTML = `<h4>${grade} (${score}/6 punktów - ${pct}%)</h4><div>${checks.map(c => `<div class="feedback-item">${c}</div>`).join('')}</div>`;
+    fb.className = 'feedback-box success show';
+}
+
+// ==================== GENERATOR ====================
+function generateEmail() {
+    const type = document.getElementById('genType').value;
+    const purpose = document.getElementById('genPurpose').value;
+    const subject = document.getElementById('genSubject').value || '[Wpisz temat]';
+    const recipient = document.getElementById('genRecipient').value || 'Smith';
+    const title = document.getElementById('genTitle').value;
+    const content = document.getElementById('genContent').value || '[opisz treść maila]';
+    const sender = document.getElementById('genSender').value || '[Twoje imię]';
+    const extra = document.getElementById('genExtra').value;
+
+    let greeting, opening, closing, signOff;
+
+    // Powitanie
+    if(type === 'formal') {
+        if(title === 'none') greeting = 'Dear Sir or Madam,';
+        else greeting = `Dear ${title} ${recipient.split(' ').pop()},`;
+    } else if(type === 'semi') {
+        greeting = `Dear ${recipient.split(' ')[0]},`;
+    } else {
+        greeting = `Hi ${recipient.split(' ')[0]}!`;
+    }
+
+    // Otwarcie
+    const openings = {
+        inquiry: 'I am writing to inquire about',
+        application: 'I am writing to apply for the position of',
+        complaint: 'I am writing to express my dissatisfaction regarding',
+        apology: 'I am writing to sincerely apologize for',
+        thank: 'I am writing to thank you for',
+        request: 'I am writing to request',
+        invitation: 'I am writing to invite you to',
+        followup: 'I am following up on'
+    };
+    
+    if(type === 'informal') {
+        opening = `Hope you're doing great! I wanted to talk about`;
+    } else {
+        opening = openings[purpose] || 'I am writing regarding';
+    }
+
+    // Zakończenie
+    if(type === 'formal') {
+        closing = 'I look forward to hearing from you at your earliest convenience.\n\nThank you for your time and consideration.';
+        signOff = title === 'none' ? 'Yours faithfully,' : 'Yours sincerely,';
+    } else if(type === 'semi') {
+        closing = 'Please let me know if you have any questions.\n\nThank you for your help.';
+        signOff = 'Kind regards,';
+    } else {
+        closing = 'Let me know what you think!';
+        signOff = 'Cheers,';
+    }
+
+    // Budowanie maila
+    let email = `Subject: ${subject}\n\n${greeting}\n\n`;
+    
+    if(type === 'formal') {
+        email += `I hope this email finds you well.\n\n${opening} ${content.toLowerCase()}.\n\n${closing}\n\n`;
+    } else if(type === 'semi') {
+        email += `${opening} ${content.toLowerCase()}.\n\n${closing}\n\n`;
+    } else {
+        email += `${opening} ${content.toLowerCase()}.\n\n${closing}\n\n`;
+    }
+    
+    email += `${signOff}\n${sender}`;
+    if(extra) email += `\n${extra}`;
+
+    document.getElementById('genOutput').textContent = email;
+    
+    // Licznik słów
+    const words = email.trim().split(/\s+/).length;
+    document.getElementById('genWordCount').textContent = `Słowa: ${words}`;
+    
+    toast('Email wygenerowany!', `${words} słów`);
+}
+
+function downloadGen() {
+    const content = document.getElementById('genOutput').textContent;
+    if(content.includes('pojawi się tutaj')) { alert('Najpierw wygeneruj email!'); return; }
+    const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'wygenerowany_email_' + new Date().toISOString().slice(0,10) + '.txt';
+    a.click();
+    toast('Pobrano!');
+}
+
+function copyGen() {
+    const content = document.getElementById('genOutput').textContent;
+    navigator.clipboard.writeText(content);
+    toast('Skopiowano!');
+}
+
+function clearGen() {
+    document.getElementById('genOutput').textContent = 'Twój wygenerowany email pojawi się tutaj...\n\nWypełnij formularz i kliknij "Generuj email".';
+    document.getElementById('genWordCount').textContent = 'Słowa: 0';
+    document.getElementById('genSubject').value = '';
+    document.getElementById('genRecipient').value = '';
+    document.getElementById('genContent').value = '';
+    document.getElementById('genSender').value = '';
+    document.getElementById('genExtra').value = '';
+}
+
+// ==================== CHECKLIST ====================
+function toggleCheck(el) {
+    el.classList.toggle('checked');
+    updateProgress();
+}
+
+function updateProgress() {
+    const total = document.querySelectorAll('.checklist-item').length;
+    const checked = document.querySelectorAll('.checklist-item.checked').length;
+    document.getElementById('checkCount').textContent = checked;
+    document.getElementById('checkProgress').style.width = (checked/total*100) + '%';
+}
+
+// ==================== QUIZ ====================
+const quizData = [
+    { q: "Jakiego pożegnania użyjesz, gdy NIE znasz nazwiska odbiorcy?", opts: ["Yours sincerely,", "Yours faithfully,", "Best regards,", "Kind regards,"], correct: 1, explain: "Yours faithfully używamy gdy zaczynamy od 'Dear Sir or Madam' (nie znamy nazwiska)." },
+    { q: "Jakiego pożegnania użyjesz, gdy ZNASZ nazwisko odbiorcy?", opts: ["Yours faithfully,", "Yours sincerely,", "Hey,", "Cheers,"], correct: 1, explain: "Yours sincerely używamy gdy zaczynamy od 'Dear Mr/Mrs [nazwisko]' (znamy nazwisko)." },
+    { q: "Które otwarcie jest odpowiednie dla formalnego zapytania?", opts: ["Hey, what's up?", "I am writing to inquire about...", "Yo, I need info about...", "So basically I wanted to ask..."], correct: 1, explain: "'I am writing to inquire about...' to standardowe formalne otwarcie dla zapytań." },
+    { q: "Ile słów powinien mieć dobry Subject line?", opts: ["1-2 słowa", "5-7 słów", "15-20 słów", "Nie ma limitu"], correct: 1, explain: "Temat powinien być konkretny ale zwięzły - 5-7 słów to idealna długość." },
+    { q: "Które zdanie NIE pasuje do formalnego maila?", opts: ["I would be grateful if you could...", "Could you please...", "Gimme the info ASAP", "I am writing with reference to..."], correct: 2, explain: "'Gimme the info ASAP' to slang - niedopuszczalny w formalnej korespondencji." },
+    { q: "Jak powiedzieć 'W załączeniu przesyłam...' po angielsku?", opts: ["I send you attached...", "Please find attached...", "Here is the attach...", "Attachment is here..."], correct: 1, explain: "'Please find attached...' to standardowa formalna fraza dla załączników." },
+    { q: "Które powitanie jest NIEFORMALNE?", opts: ["Dear Sir or Madam,", "Dear Mr Johnson,", "Hi Tom!", "Dear Hiring Manager,"], correct: 2, explain: "'Hi Tom!' to nieformalne powitanie, odpowiednie dla znajomych." },
+    { q: "Co oznacza 'I look forward to hearing from you'?", opts: ["Nie chcę odpowiedzi", "Czekam na odpowiedź", "To mój ostatni mail", "Nie pisz do mnie"], correct: 1, explain: "To standardowa formuła = 'Czekam na odpowiedź od Ciebie'." },
+    { q: "Kiedy używamy 'Mrs'?", opts: ["Dla każdej kobiety", "Dla mężatki", "Dla panny", "Dla mężczyzny"], correct: 1, explain: "Mrs = mężatka, Ms = neutralne (nie wiemy/nie chcemy określać), Miss = panna." },
+    { q: "Które jest poprawne dla przeprosin?", opts: ["I apologize for any inconvenience caused.", "I apologize about any inconvenience caused.", "I apologize of any inconvenience caused.", "I apologize to any inconvenience caused."], correct: 0, explain: "Poprawna konstrukcja: 'apologize FOR something' (przepraszać za coś)." },
+    { q: "Jak formalnie poprosić o informacje?", opts: ["Tell me about...", "I need to know...", "I would be grateful if you could provide...", "Give me info on..."], correct: 2, explain: "'I would be grateful if you could...' to uprzejma, formalna prośba." },
+    { q: "Co jest błędem w formalnym mailu?", opts: ["Używanie pełnych form (do not zamiast don't)", "Pisanie WIELKIMI LITERAMI", "Używanie paragrafów", "Podpisywanie się imieniem i nazwiskiem"], correct: 1, explain: "WIELKIE LITERY = krzyczenie. Niedopuszczalne w profesjonalnej korespondencji." },
+    { q: "Jak powiedzieć 'W nawiązaniu do naszej rozmowy...'?", opts: ["About our talk...", "Following our conversation...", "From our speaking...", "After we talked..."], correct: 1, explain: "'Following our conversation...' to formalna fraza nawiązująca do wcześniejszej rozmowy." },
+    { q: "Które zakończenie jest najbardziej formalne?", opts: ["Cheers,", "Take care,", "I look forward to hearing from you at your earliest convenience.", "See ya!"], correct: 2, explain: "'at your earliest convenience' = 'tak szybko jak to możliwe' - bardzo formalne." },
+    { q: "Co zrobić PRZED wysłaniem ważnego maila?", opts: ["Wysłać od razu", "Sprawdzić pisownię, załączniki i ton", "Dodać więcej wykrzykników", "Pisać CAPS LOCKIEM"], correct: 1, explain: "Zawsze sprawdzaj: pisownię, gramatykę, załączniki i czy ton jest odpowiedni." }
+];
+
+let quizIdx = 0;
+let quizAnswers = [];
+let quizScore = 0;
+
+function quizRender() {
+    const total = quizData.length;
+    
+    // Progress dots
+    let dots = '';
+    for(let i = 0; i < total; i++) {
+        let cls = 'quiz-dot';
+        if(i < quizIdx) cls += ' done';
+        if(i === quizIdx) cls += ' current';
+        dots += `<div class="${cls}"></div>`;
+    }
+    document.getElementById('quizProgress').innerHTML = dots;
+    
+    if(quizIdx >= total) {
+        // Show score
+        document.getElementById('quizContent').style.display = 'none';
+        document.getElementById('quizScore').style.display = 'block';
+        const pct = Math.round((quizScore/total)*100);
+        document.getElementById('scoreVal').textContent = pct + '%';
+        return;
+    }
+    
+    const q = quizData[quizIdx];
+    document.getElementById('quizQ').textContent = `${quizIdx+1}. ${q.q}`;
+    
+    let opts = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    q.opts.forEach((opt, i) => {
+        let cls = 'quiz-opt';
+        if(quizAnswers[quizIdx] === i) {
+            cls += ' selected';
+            if(i === q.correct) cls += ' correct';
+            else cls += ' wrong';
+        }
+        opts += `<div class="${cls}" onclick="quizSelect(${i})"><span class="letter">${letters[i]}</span><span>${opt}</span></div>`;
+    });
+    document.getElementById('quizOpts').innerHTML = opts;
+    
+    // Feedback
+    const fb = document.getElementById('quizFb');
+    if(quizAnswers[quizIdx] !== undefined) {
+        fb.className = 'quiz-feedback show ' + (quizAnswers[quizIdx] === q.correct ? 'correct' : 'wrong');
+        fb.innerHTML = `<h4>${quizAnswers[quizIdx] === q.correct ? '✅ Dobrze!' : '❌ Źle!'}</h4><p>${q.explain}</p>`;
+    } else {
+        fb.className = 'quiz-feedback';
+    }
+    
+    document.getElementById('quizPrev').style.visibility = quizIdx > 0 ? 'visible' : 'hidden';
+    document.getElementById('quizNext').textContent = quizIdx === total - 1 ? 'Zobacz wynik →' : 'Następne →';
+}
+
+function quizSelect(i) {
+    if(quizAnswers[quizIdx] !== undefined) return; // Already answered
+    quizAnswers[quizIdx] = i;
+    if(i === quizData[quizIdx].correct) quizScore++;
+    quizRender();
+}
+
+function quizNext() {
+    if(quizAnswers[quizIdx] === undefined) {
+        toast('Wybierz odpowiedź!');
+        return;
+    }
+    quizIdx++;
+    quizRender();
+}
+
+function quizPrev() {
+    if(quizIdx > 0) {
+        quizIdx--;
+        quizRender();
+    }
+}
+
+function quizRestart() {
+    quizIdx = 0;
+    quizAnswers = [];
+    quizScore = 0;
+    document.getElementById('quizContent').style.display = 'block';
+    document.getElementById('quizScore').style.display = 'none';
+    quizRender();
+}
+
+// Init quiz
+quizRender();
+
+// ==================== SMOOTH SCROLL ====================
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if(target) {
+            target.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+    });
+});
+</script>
+</body>
+</html>
