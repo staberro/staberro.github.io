@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chłopi - Władysław Reymont | Lekcja interaktywna | ViralloLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0d0d12;--card:#14141c;--elevated:#1c1c28;
+--text:#f0f0f5;--text2:#a0a0b5;--muted:#606075;
+--border:rgba(255,255,255,0.06);
+--gold:#eab308;--orange:#f97316;--red:#dc2626;
+--green:#22c55e;--blue:#3b82f6;--purple:#a855f7;
+--grad:linear-gradient(135deg,#d97706 0%,#eab308 50%,#22c55e 100%)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+a{color:inherit;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:12px 20px;background:rgba(13,13,18,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700}
+.logo-icon{width:36px;height:36px;background:var(--grad);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap}
+.nav-links a{padding:6px 12px;border-radius:6px;font-size:0.85rem;color:var(--text2);transition:0.3s}
+.nav-links a:hover{background:var(--elevated);color:var(--text)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:3px}
+.nav-progress-bar{height:100%;width:0%;background:var(--grad);border-radius:0 6px 6px 0}
+@media(max-width:900px){.nav-links{display:none}}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 20px 60px;position:relative}
+.hero::before{content:'🌾';position:absolute;font-size:18rem;opacity:0.04;top:20%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--elevated);border:1px solid rgba(234,179,8,0.3);border-radius:50px;font-size:0.85rem;color:var(--gold);margin-bottom:20px}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.5rem,10vw,5rem);font-weight:700;margin-bottom:16px}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-author{font-size:1.3rem;color:var(--text2);margin-bottom:8px}
+.hero-desc{max-width:700px;color:var(--text2);margin-bottom:32px}
+.hero-cards{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:32px}
+.hero-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 20px;min-width:140px;transition:0.3s}
+.hero-card:hover{transform:translateY(-4px)}
+.hero-card h3{font-size:0.95rem;margin-bottom:2px}
+.hero-card p{font-size:0.8rem;color:var(--muted)}
+.hero-meta{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-bottom:32px}
+.meta-item{display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--elevated);border-radius:50px;font-size:0.9rem}
+.hero-btn{display:inline-flex;padding:14px 32px;background:var(--grad);color:#0d0d12;font-weight:700;border-radius:50px;transition:0.3s}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(234,179,8,0.3)}
+
+section{padding:80px 20px}
+.section-badge{display:inline-block;padding:6px 14px;background:var(--elevated);border-radius:50px;font-size:0.8rem;color:var(--gold);margin-bottom:16px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.75rem,5vw,2.5rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:600px;margin:0 auto 48px}
+.text-center{text-align:center}
+
+#autor{background:var(--card)}
+.autor-grid{display:grid;grid-template-columns:250px 1fr;gap:40px;align-items:start}
+.autor-img{width:250px;height:320px;background:var(--grad);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:7rem}
+.autor-info h3{font-family:'Cinzel',serif;font-size:2rem;margin-bottom:8px}
+.autor-dates{color:var(--gold);font-size:1.1rem;margin-bottom:16px}
+.autor-bio{color:var(--text2);margin-bottom:20px}
+.autor-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.fact{background:var(--bg);border-radius:12px;padding:16px;border:1px solid var(--border)}
+.fact-icon{font-size:1.5rem;margin-bottom:8px}
+.fact h5{font-size:0.9rem;margin-bottom:4px}
+.fact p{font-size:0.85rem;color:var(--text2)}
+@media(max-width:900px){.autor-grid{grid-template-columns:1fr}.autor-img{width:180px;height:220px;margin:0 auto}.autor-facts{grid-template-columns:1fr}}
+
+.tom-tabs{display:flex;justify-content:center;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.tom-tab{padding:14px 24px;background:var(--elevated);border:2px solid var(--border);border-radius:50px;color:var(--text2);cursor:pointer;transition:0.3s;font-family:inherit;font-size:0.95rem;font-weight:600}
+.tom-tab:hover{border-color:var(--gold)}
+.tom-tab.active{background:var(--grad);color:#0d0d12;border-color:transparent}
+.tom-content{display:none;max-width:900px;margin:0 auto}
+.tom-content.active{display:block}
+.tom-header{text-align:center;margin-bottom:32px}
+.tom-icon{font-size:4rem;margin-bottom:12px}
+.tom-title{font-family:'Cinzel',serif;font-size:2rem;margin-bottom:8px}
+.streszczenie-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px}
+.streszczenie-card h4{font-family:'Cinzel',serif;color:var(--gold);margin-bottom:16px;font-size:1.15rem}
+.streszczenie-card p{color:var(--text2);margin-bottom:12px;line-height:1.8}
+.streszczenie-card ul{color:var(--text2);margin-left:20px}
+.streszczenie-card li{margin-bottom:6px}
+.highlight-box{background:var(--elevated);border-left:4px solid var(--gold);padding:16px 20px;border-radius:0 12px 12px 0;margin:16px 0}
+.highlight-box p{color:var(--text);margin:0}
+
+.accordion{margin-top:20px}
+.acc-item{background:var(--elevated);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.acc-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;transition:0.3s}
+.acc-header:hover{background:rgba(234,179,8,0.05)}
+.acc-header.active{background:rgba(234,179,8,0.1);color:var(--gold)}
+.acc-icon{transition:0.3s}
+.acc-header.active .acc-icon{transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.acc-body.open{max-height:2000px}
+.acc-content{padding:0 20px 20px;color:var(--text2);line-height:1.8}
+.acc-content p{margin-bottom:10px}
+
+#postacie{background:var(--card)}
+.postacie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.postac-card{background:var(--elevated);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:0.3s}
+.postac-card:hover{transform:translateY(-5px);border-color:rgba(234,179,8,0.3)}
+.postac-header{padding:20px;position:relative}
+.postac-header.main{background:linear-gradient(135deg,var(--gold),var(--orange))}
+.postac-header.secondary{background:linear-gradient(135deg,var(--blue),var(--purple))}
+.postac-header.other{background:var(--card)}
+.postac-header h4{font-family:'Cinzel',serif;font-size:1.3rem}
+.postac-icon{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:2.5rem;opacity:0.5}
+.postac-body{padding:20px}
+.postac-body p{color:var(--text2);font-size:0.9rem;margin-bottom:12px}
+.postac-traits{display:flex;flex-wrap:wrap;gap:6px}
+.trait{padding:4px 12px;background:var(--bg);border-radius:50px;font-size:0.8rem;color:var(--gold);border:1px solid rgba(234,179,8,0.2)}
+
+#motywy{background:var(--bg)}
+.motywy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.motyw-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;transition:0.3s}
+.motyw-card:hover{transform:translateY(-5px);border-color:rgba(234,179,8,0.3)}
+.motyw-icon{font-size:3rem;margin-bottom:12px}
+.motyw-card h4{font-family:'Cinzel',serif;margin-bottom:8px;color:var(--gold)}
+.motyw-card p{color:var(--text2);font-size:0.9rem}
+
+#srodki{background:var(--card)}
+.srodki-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.srodek-tab{padding:10px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text2);cursor:pointer;transition:0.3s;font-family:inherit;font-size:0.9rem}
+.srodek-tab:hover{border-color:var(--gold)}
+.srodek-tab.active{background:var(--grad);color:#0d0d12;border-color:transparent}
+.srodek-content{display:none;max-width:800px;margin:0 auto;background:var(--elevated);border-radius:20px;padding:32px;border:1px solid var(--border)}
+.srodek-content.active{display:block}
+.srodek-content h3{font-family:'Cinzel',serif;color:var(--gold);margin-bottom:12px}
+.srodek-content>p{color:var(--text2);margin-bottom:24px}
+.przyklad-box{background:var(--card);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:20px;margin-bottom:16px}
+.przyklad-box blockquote{font-size:1.05rem;font-style:italic;margin-bottom:8px}
+.przyklad-box cite{color:var(--muted);font-size:0.85rem}
+.przyklad-box .analiza{color:var(--text2);font-size:0.9rem;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+
+#konteksty{background:var(--bg)}
+.kontekst-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.kontekst-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+.kontekst-card h4{color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.kontekst-card p{color:var(--text2);font-size:0.95rem;margin-bottom:12px}
+.kontekst-card ul{color:var(--text2);font-size:0.9rem;margin-left:20px}
+.kontekst-card li{margin-bottom:4px}
+
+#quiz{background:var(--card)}
+.quiz-box{max-width:750px;margin:0 auto;background:var(--elevated);border:1px solid var(--border);border-radius:24px;padding:32px}
+.quiz-progress{display:flex;gap:4px;margin-bottom:24px}
+.quiz-dot{flex:1;height:4px;background:var(--bg);border-radius:2px;transition:0.3s}
+.quiz-dot.done{background:var(--green)}
+.quiz-dot.current{background:var(--gold)}
+.quiz-num{font-size:0.85rem;color:var(--gold);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em}
+.quiz-question{font-family:'Cinzel',serif;font-size:1.35rem;margin-bottom:24px;line-height:1.4}
+.quiz-options{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.quiz-opt{display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg);border:2px solid var(--border);border-radius:14px;cursor:pointer;transition:0.3s}
+.quiz-opt:hover{border-color:var(--gold)}
+.quiz-opt.selected{border-color:var(--gold);background:rgba(234,179,8,0.08)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(34,197,94,0.08)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(220,38,38,0.08)}
+.opt-letter{width:36px;height:36px;background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.quiz-opt.selected .opt-letter{background:var(--gold);color:var(--bg)}
+.quiz-opt.correct .opt-letter{background:var(--green);color:#fff}
+.quiz-opt.wrong .opt-letter{background:var(--red);color:#fff}
+.quiz-feedback{padding:16px;border-radius:14px;margin-bottom:20px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(34,197,94,0.1);border:1px solid var(--green)}
+.quiz-feedback.bad{background:rgba(220,38,38,0.1);border:1px solid var(--red)}
+.quiz-feedback h5{margin-bottom:6px}
+.quiz-feedback.ok h5{color:var(--green)}
+.quiz-feedback.bad h5{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:0.9rem}
+.quiz-btns{display:flex;justify-content:space-between;gap:12px}
+.qbtn{padding:12px 28px;border-radius:50px;font-weight:600;cursor:pointer;border:none;font-family:inherit;font-size:0.95rem;transition:0.3s}
+.qbtn-prev{background:var(--bg);color:var(--text);border:1px solid var(--border)}
+.qbtn-next{background:var(--grad);color:#0d0d12}
+.qbtn:disabled{opacity:0.4;cursor:not-allowed}
+.qbtn:not(:disabled):hover{transform:translateY(-2px)}
+.quiz-result{text-align:center;padding:40px 20px}
+.result-score{font-family:'Cinzel',serif;font-size:5rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.result-text{color:var(--text2);margin-bottom:24px}
+
+#fiszki{background:var(--bg)}
+.flash-container{max-width:600px;margin:0 auto}
+.flashcard{height:300px;perspective:1000px;cursor:pointer;margin-bottom:24px}
+.flash-inner{position:relative;width:100%;height:100%;transition:transform 0.6s;transform-style:preserve-3d}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;text-align:center}
+.flash-front{background:var(--card);border:2px solid var(--gold)}
+.flash-back{background:var(--elevated);border:2px solid var(--green);transform:rotateY(180deg)}
+.flash-q{font-family:'Cinzel',serif;font-size:1.25rem;line-height:1.4;margin-bottom:16px}
+.flash-hint{color:var(--muted);font-size:0.85rem}
+.flash-a{font-size:1rem;color:var(--text2);line-height:1.6}
+.flash-nav{display:flex;justify-content:center;gap:16px;align-items:center}
+.flash-btn{padding:12px 28px;background:var(--card);border:1px solid var(--border);border-radius:50px;color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;transition:0.3s}
+.flash-btn:hover{background:var(--elevated);border-color:var(--gold)}
+.flash-count{color:var(--text2)}
+
+#notatnik{background:var(--card)}
+.notebook-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;align-items:start}
+@media(max-width:900px){.notebook-grid{grid-template-columns:1fr}}
+.nb-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px}
+.nb-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.nb-head h3{font-family:'Cinzel',serif;font-size:1.15rem}
+.nb-pill{font-size:0.8rem;color:var(--text2);background:var(--bg);border:1px solid var(--border);padding:6px 12px;border-radius:50px}
+.nb-items{display:flex;flex-direction:column;gap:10px}
+.nb-item{display:flex;gap:14px;align-items:flex-start;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:14px;transition:0.3s;cursor:pointer}
+.nb-item:hover{border-color:rgba(234,179,8,0.3)}
+.nb-item input[type="checkbox"]{width:20px;height:20px;margin-top:2px;accent-color:var(--gold);cursor:pointer}
+.nb-item .txt{flex:1;color:var(--text2);font-size:0.95rem}
+.nb-item .txt strong{color:var(--text);display:block;margin-bottom:2px}
+.nb-item.checked{opacity:0.5}
+.nb-item.checked .txt{text-decoration:line-through}
+.nb-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.nb-btn{padding:10px 16px;border-radius:50px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;transition:0.25s}
+.nb-btn:hover{transform:translateY(-1px);border-color:var(--gold)}
+.nb-btn.primary{border:none;background:var(--grad);color:#0d0d12}
+.nb-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.nb-stat{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.nb-stat .val{font-family:'Cinzel',serif;font-size:2rem;color:var(--gold)}
+.nb-stat .lbl{font-size:0.85rem;color:var(--muted)}
+
+footer{padding:48px 20px;text-align:center;border-top:1px solid var(--border)}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.25rem;margin-bottom:12px}
+.footer-copy{color:var(--muted);font-size:0.9rem}
+.footer-copy a{color:var(--text);border-bottom:1px solid rgba(255,255,255,0.16);padding-bottom:2px;transition:0.25s}
+.footer-copy a:hover{border-bottom-color:var(--gold);color:var(--gold)}
+.footer-brand{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:50px;background:var(--elevated);border:1px solid var(--border);color:var(--text2);margin-left:10px}
+.footer-brand b{color:var(--gold)}
+
+@media(max-width:600px){
+section{padding:60px 16px}
+.quiz-box,.srodek-content{padding:20px}
+.quiz-question{font-size:1.1rem}
+.postacie-grid,.kontekst-grid{grid-template-columns:1fr}
+.flashcard{height:260px}
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+<div class="nav-inner">
+<a class="logo" href="#"><div class="logo-icon">🌾</div>Chłopi</a>
+<div class="nav-links">
+<a href="#autor">Autor</a>
+<a href="#streszczenie">Streszczenie</a>
+<a href="#szczegolowe">Szczegółowe</a>
+<a href="#postacie">Postacie</a>
+<a href="#motywy">Motywy</a>
+<a href="#srodki">Środki</a>
+<a href="#konteksty">Konteksty</a>
+<a href="#quiz">Quiz</a>
+<a href="#fiszki">Fiszki</a>
+<a href="#notatnik">Notatnik</a>
+</div>
+</div>
+<div class="nav-progress"><div class="nav-progress-bar" id="scrollBar"></div></div>
+</nav>
+<section class="hero">
+<div class="hero-badge">🎓 Lektura obowiązkowa • Matura</div>
+<h1><span>Chłopi</span></h1>
+<p class="hero-author">Władysław Stanisław Reymont</p>
+<p class="hero-desc">Monumentalna epopeja chłopska nagrodzona literacką Nagrodą Nobla. Cztery pory roku w życiu wsi Lipce.</p>
+<div class="hero-cards">
+<div class="hero-card"><h3>🍂 Jesień</h3><p>Tom I</p></div>
+<div class="hero-card"><h3>❄️ Zima</h3><p>Tom II</p></div>
+<div class="hero-card"><h3>🌸 Wiosna</h3><p>Tom III</p></div>
+<div class="hero-card"><h3>☀️ Lato</h3><p>Tom IV</p></div>
+</div>
+<div class="hero-meta">
+<div class="meta-item">📅 1904-1909</div>
+<div class="meta-item">📖 Epopeja</div>
+<div class="meta-item">🏆 Nobel 1924</div>
+<div class="meta-item">🎭 Młoda Polska</div>
+</div>
+<a class="hero-btn" href="#autor">Rozpocznij naukę →</a>
+</section>
+<section id="autor">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">O autorze</div>
+<h2 class="section-title">Władysław Stanisław Reymont</h2>
+<p class="section-desc">Laureat Nagrody Nobla, twórca monumentalnej epopei chłopskiej</p>
+</div>
+<div class="autor-grid">
+<div class="autor-img">👨‍🌾</div>
+<div class="autor-info">
+<h3>Władysław Stanisław Reymont</h3>
+<p class="autor-dates">1867 – 1925</p>
+<p class="autor-bio">Polski pisarz i nowelista, przedstawiciel realizmu i naturalizmu. Urodził się w Kobielach Wielkich. Był krawcem, aktorem wędrownym, pracownikiem kolei. Doświadczenia z życia na wsi zaowocowały arcydziełem "Chłopi".</p>
+<div class="autor-facts">
+<div class="fact"><div class="fact-icon">🏆</div><h5>Nobel 1924</h5><p>Za "wybitną epikę narodową"</p></div>
+<div class="fact"><div class="fact-icon">📚</div><h5>Inne dzieła</h5><p>"Ziemia obiecana", "Komediantka"</p></div>
+<div class="fact"><div class="fact-icon">🎭</div><h5>Doświadczenie</h5><p>Aktor, krawiec, kolejarz</p></div>
+<div class="fact"><div class="fact-icon">🌾</div><h5>Inspiracja</h5><p>Lipce Reymontowskie</p></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="streszczenie" style="background:var(--bg)">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Streszczenie</div>
+<h2 class="section-title">Fabuła wg tomów</h2>
+<p class="section-desc">Kliknij na tom, aby zobaczyć streszczenie</p>
+</div>
+<div class="tom-tabs">
+<button class="tom-tab active" data-tom="jesien">🍂 Jesień</button>
+<button class="tom-tab" data-tom="zima">❄️ Zima</button>
+<button class="tom-tab" data-tom="wiosna">🌸 Wiosna</button>
+<button class="tom-tab" data-tom="lato">☀️ Lato</button>
+</div>
+<div class="tom-content active" id="tom-jesien">
+<div class="tom-header"><div class="tom-icon">🍂</div><h3 class="tom-title">Tom I: Jesień</h3></div>
+<div class="streszczenie-card"><h4>✍️ Streszczenie skrótowe (pod maturę)</h4><p>Akcja toczy się we wsi Lipce na Mazowszu. Trwa jesień – czas intensywnych prac polowych (wykopki, orka, zasiew). Poznajemy społeczność wsi: bogatego gospodarza Macieja Borynę, jego syna Antka z żoną Hanką, piękną Jagnę Paczesiównę oraz resztę mieszkańców Lipiec.</p><p>Maciej Boryna, wdowiec i najbogatszy gospodarz we wsi, decyduje się na małżeństwo z dużo młodszą Jagną. Jej matka Dominikowa twardo negocjuje warunki – ma być ziemia i dobre zabezpieczenie dla córki. Związek ma charakter głównie ekonomiczny, ale Borynę pociąga uroda Jagny.</p><p>Tymczasem Antek, syn Boryny, od dawna kocha Jagnę. Romans Antka i Jagny rozwija się mimo jej zamążpójścia, prowadząc do ostrego konfliktu pokoleń. Antek domaga się od ojca wydzielenia części gospodarstwa, lecz Boryna konsekwentnie odmawia. Awantury kończą się wyrzuceniem Antka, Hanki i dzieci z domu – młodzi przenoszą się do nędznej chałupy Bylicy.</p><h4>📌 Najważniejsze wydarzenia</h4><ul><li>Akcja toczy się we wsi Lipce na Mazowszu.</li><li>Trwa jesień – czas intensywnych prac polowych (wykopki, orka, zasiew).</li><li>Poznajemy społeczność wsi: bogatego gospodarza Macieja Borynę, jego syna Antka z żoną Hanką, piękną Jagnę Paczesiównę oraz resztę mieszkańców Lipiec.</li><li>Maciej Boryna, wdowiec i najbogatszy gospodarz we wsi, decyduje się na małżeństwo z dużo młodszą Jagną.</li><li>Jej matka Dominikowa twardo negocjuje warunki – ma być ziemia i dobre zabezpieczenie dla córki.</li><li>Związek ma charakter głównie ekonomiczny, ale Borynę pociąga uroda Jagny.</li><li>Tymczasem Antek, syn Boryny, od dawna kocha Jagnę.</li><li>Romans Antka i Jagny rozwija się mimo jej zamążpójścia, prowadząc do ostrego konfliktu pokoleń.</li></ul><div class="highlight-box"><p>Zapamiętaj: Zawiązanie konfliktu Boryna–Antek i decyzja o ślubie z Jagną.</p></div><h4>🎯 Wątki do zapamiętania</h4><ul><li>ziemia jako wartość i źródło władzy</li><li>konflikt ojciec–syn + namiętność (Jagna)</li><li>gromada: plotka, ocena, kontrola</li></ul></div>
+</div>
+<div class="tom-content" id="tom-zima">
+<div class="tom-header"><div class="tom-icon">❄️</div><h3 class="tom-title">Tom II: Zima</h3></div>
+<div class="streszczenie-card"><h4>✍️ Streszczenie skrótowe (pod maturę)</h4><p>Zima zmienia rytm życia wsi – mniej jest pracy w polu, więcej spotkań w chałupach i w karczmie. To czas plotek, opowieści, konfliktów rodzinnych i narastania napięć. Romans Antka i Jagny trwa nadal, choć Jagna jest żoną Macieja i mieszka w jego domu.</p><p>Bieda Antka i Hanki staje się coraz bardziej dotkliwa. Antek szuka zarobku w tartaku i innych dorywczych pracach, ale jego zazdrość o Jagnę i poczucie krzywdy wobec ojca prowadzą do kolejnych gwałtownych wybuchów. Hanka dźwiga ciężar utrzymania rodziny, coraz wyraźniej ujawniając swoją zaradność i siłę charakteru.</p><p>W domu Boryny Jagna pełni rolę gospodyni, lecz nie potrafi odnaleźć się w tej roli – jest obserwowana przez wieś i rodzinę, staje się obiektem zazdrości i podejrzeń. Maciej coraz bardziej przeczuwa zdradę, rośnie jego nieufność wobec Jagny i Antka.</p><h4>📌 Najważniejsze wydarzenia</h4><ul><li>Zima zmienia rytm życia wsi – mniej jest pracy w polu, więcej spotkań w chałupach i w karczmie.</li><li>To czas plotek, opowieści, konfliktów rodzinnych i narastania napięć.</li><li>Romans Antka i Jagny trwa nadal, choć Jagna jest żoną Macieja i mieszka w jego domu.</li><li>Bieda Antka i Hanki staje się coraz bardziej dotkliwa.</li><li>Antek szuka zarobku w tartaku i innych dorywczych pracach, ale jego zazdrość o Jagnę i poczucie krzywdy wobec ojca prowadzą do kolejnych gwałtownych wybuchów.</li><li>Hanka dźwiga ciężar utrzymania rodziny, coraz wyraźniej ujawniając swoją zaradność i siłę charakteru.</li><li>W domu Boryny Jagna pełni rolę gospodyni, lecz nie potrafi odnaleźć się w tej roli – jest obserwowana przez wieś i rodzinę, staje się obiektem zazdrości i podejrzeń.</li><li>Maciej coraz bardziej przeczuwa zdradę, rośnie jego nieufność wobec Jagny i Antka.</li></ul><div class="highlight-box"><p>Zapamiętaj: Kulminacja sporów: las (serwituty), rodzinne starcia i narastające napięcia we wsi.</p></div><h4>🎯 Wątki do zapamiętania</h4><ul><li>spór o serwituty i starcie z dworem</li><li>rozpad i walka o godność w rodzinie Borynów</li><li>obrzędy/święta jako rytm wspólnoty</li></ul></div>
+</div>
+<div class="tom-content" id="tom-wiosna">
+<div class="tom-header"><div class="tom-icon">🌸</div><h3 class="tom-title">Tom III: Wiosna</h3></div>
+<div class="streszczenie-card"><h4>✍️ Streszczenie skrótowe (pod maturę)</h4><p>Po bitwie o las Maciej Boryna leży ciężko ranny. Jego stan jest zmienny: raz przytomnieje, raz zapada w otępienie. Wiosna budzi przyrodę do życia, a w domu Borynów rozpoczyna się walka o przyszłość gospodarstwa.</p><p>Hanka przechodzi przemianę – z „cichej żony" staje się faktyczną gospodynią. Organizuje pracę, dogaduje się z ludźmi, pilnuje służby i dba o dzieci. To ona utrzymuje majątek w całości, gdy mężczyźni są nieobecni lub nieskuteczni (Antek w więzieniu, Boryna chory).</p><p>Jagna stopniowo traci pozycję w domu Boryny i we wsi. Jest obserwowana, oceniana, staje się bohaterką plotek. Coraz bardziej odczuwa wrogość gromady. W tle trwają przygotowania do świąt wielkanocnych, pojawiają się drobne konflikty i kradzieże, które Hanka potrafi rozwiązywać z coraz większą pewnością siebie.</p><h4>📌 Najważniejsze wydarzenia</h4><ul><li>Po bitwie o las Maciej Boryna leży ciężko ranny.</li><li>Jego stan jest zmienny: raz przytomnieje, raz zapada w otępienie.</li><li>Wiosna budzi przyrodę do życia, a w domu Borynów rozpoczyna się walka o przyszłość gospodarstwa.</li><li>Hanka przechodzi przemianę – z „cichej żony" staje się faktyczną gospodynią.</li><li>Organizuje pracę, dogaduje się z ludźmi, pilnuje służby i dba o dzieci.</li><li>To ona utrzymuje majątek w całości, gdy mężczyźni są nieobecni lub nieskuteczni (Antek w więzieniu, Boryna chory).</li><li>Jagna stopniowo traci pozycję w domu Boryny i we wsi.</li><li>Jest obserwowana, oceniana, staje się bohaterką plotek.</li></ul><div class="highlight-box"><p>Zapamiętaj: Zmiana układu sił po śmierci Boryny; Antek i Hanka walczą o byt i pozycję.</p></div><h4>🎯 Wątki do zapamiętania</h4><ul><li>śmierć Boryny i symbolika ziemi</li><li>przemiana Hanki – od krzywdzonej do gospodyni</li><li>próby Antka utrzymania pozycji w gromadzie</li></ul></div>
+</div>
+<div class="tom-content" id="tom-lato">
+<div class="tom-header"><div class="tom-icon">☀️</div><h3 class="tom-title">Tom IV: Lato</h3></div>
+<div class="streszczenie-card"><h4>✍️ Streszczenie skrótowe (pod maturę)</h4><p>Po śmierci Boryny gospodarstwo musi funkcjonować dalej. Lato to czas intensywnej pracy na polu – żniw i przygotowań do dożynek. Hanka jako doświadczona gospodyni twardo broni majątku i pozycji rodziny. Nie pozwala, by ktokolwiek odebrał jej dzieciom ziemię.</p><p>Antek wraca z więzienia. Poznaje najmłodsze dziecko, urodzone podczas jego nieobecności, i widzi, jak Hanka poradziła sobie z prowadzeniem gospodarstwa. Stopniowo dojrzewa do roli męża i ojca, zaczyna rozumieć, że ziemia i rodzina są ważniejsze niż namiętność do Jagny. Próbuje „naprawić" swoje życie i ułożyć relacje z Hanką.</p><p>Jagna po śmierci Macieja traci ochronę jego nazwiska. Staje się celem plotek, zazdrości i wrogości. Wieś potrzebuje kozła ofiarnego – osobą tą staje się właśnie Jagna. Kulminacją tomu jest brutalny samosąd: kobiety ze wsi biją Jagnę i wywożą ją na wozie poza Lipce. To rytuał oczyszczenia wspólnoty i demonstracja jej przewagi nad jednostką.</p><h4>📌 Najważniejsze wydarzenia</h4><ul><li>Po śmierci Boryny gospodarstwo musi funkcjonować dalej.</li><li>Lato to czas intensywnej pracy na polu – żniw i przygotowań do dożynek.</li><li>Hanka jako doświadczona gospodyni twardo broni majątku i pozycji rodziny.</li><li>Nie pozwala, by ktokolwiek odebrał jej dzieciom ziemię.</li><li>Antek wraca z więzienia.</li><li>Poznaje najmłodsze dziecko, urodzone podczas jego nieobecności, i widzi, jak Hanka poradziła sobie z prowadzeniem gospodarstwa.</li><li>Stopniowo dojrzewa do roli męża i ojca, zaczyna rozumieć, że ziemia i rodzina są ważniejsze niż namiętność do Jagny.</li><li>Próbuje „naprawić" swoje życie i ułożyć relacje z Hanką.</li></ul><div class="highlight-box"><p>Zapamiętaj: Żniwa i ostateczny osąd gromady – Jagna zostaje wypchnięta poza wspólnotę.</p></div><h4>🎯 Wątki do zapamiętania</h4><ul><li>praca i żniwa jako centrum życia</li><li>mechanizm wykluczenia – Jagna jako kozioł ofiarny</li><li>zbiorowy wymiar winy i kary</li></ul></div>
+</div>
+</div>
+</section>
+<section id="szczegolowe" style="background:var(--card)">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">📚 Pełne streszczenie</div>
+<h2 class="section-title">Streszczenie szczegółowe</h2>
+<p class="section-desc">Rozwiń każdy rozdział, aby przeczytać dokładne streszczenie</p>
+</div>
+<div class="accordion">
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span>🍂 <strong>TOM I: JESIEŃ</strong> – Pełne streszczenie</span>
+<span class="acc-icon">▼</span>
+</div>
+<div class="acc-body">
+<div class="acc-content"><p>Powieść rozpoczyna się jesienią we wsi Lipce. Reymont przedstawia rytm życia chłopów – pracę przy wykopkach, orce i siewie, przygotowania do zimy, relacje między gospodarzami, parobkami, kobietami oraz lokalnymi autorytetami (ksiądz, wójt, sołtys). Już na początku podkreślone zostaje ogromne znaczenie ziemi jako podstawy bytu i prestiżu społecznego.</p><p>Najważniejszą postacią we wsi jest Maciej Boryna – bogaty, szanowany, uparty gospodarz, wdowiec około sześćdziesiątki. Jest właścicielem dużego gospodarstwa, ojcem Antka oraz ojczymem Józki i Władka. Boryna kieruje się logiką zysku i tradycyjnym chłopskim przywiązaniem do ziemi. Nie chce dzielić majątku „za życia", ponieważ obawia się utraty kontroli i spadku znaczenia.</p><p>Boryna postanawia ożenić się z młodą i piękną Jagną Paczesiówną. Jej matka, chciwa Dominikowa, prowadzi twarde negocjacje – żąda zapisu ziemi i dobrego zabezpieczenia dla córki. Małżeństwo ma głównie charakter ekonomiczny: Boryna zyskuje młodą gospodynię i dodatkową ziemię, a Dominikowa i Jagna – awans materialny.</p><p>Równocześnie ujawnia się konflikt między Boryną a jego synem Antkiem. Antek, silny i porywczy, jest żonaty z Hanką i ma z nią dzieci. Młodzi mieszkają „na kącie" u ojca, zależni od jego woli. Antek domaga się wydzielenia części gospodarstwa, by prowadzić je samodzielnie, Boryna jednak odmawia, uważając, że syn jest jeszcze niedojrzały i zbyt rozrzutny.</p><p>Sytuację komplikuje fakt, że Antek od dawna kocha Jagnę. Związek Macieja z Jagną jest dla niego ciosem w dumę i uczucia. Mimo ślubu Jagny z Boryną, między Antkiem a Jagną rozwija się romans – pełen namiętności, ale prowadzony w ukryciu. Wzajemne przyciąganie bohaterów wchodzi w konflikt z normami moralnymi i obyczajowymi wsi.</p><p>Ważnym elementem tomu jest opis wesela Macieja i Jagny. Reymont szczegółowo przedstawia wszystkie etapy obrzędu: swaty, przygotowania, błogosławieństwo, procesję, ucztę, tańce, śpiewy, zabawy weselne. Wesele ma charakter zbiorowy – uczestniczy w nim cała wieś, komentując, oceniając i plotkując. W trakcie wesela dochodzi do pierwszych wyraźnych sygnałów romansu Jagny i Antka – ich spojrzenia i zachowanie wzbudzają czujność gromady.</p><p>Kontrapunktem dla radosnych scen weselnych jest tragiczny wątek Kuby, starego parobka Boryny, uwikłanego w kłusownictwo. Kuba zostaje postrzelony w nogę przez borowego. Cierpi samotnie w oborze, podczas gdy w domu toczy się zabawa weselna. W desperacji sam sobie amputuje postrzeloną nogę i umiera, prawie niezauważony przez resztę społeczności. Scena ta jest przykładem naturalistycznego opisu cierpienia i kontrastu między zbiorową radością a jednostkową tragedią.</p><p>W tle akcji narasta konflikt chłopów z dworem o serwituty leśne, czyli tradycyjne prawo do korzystania z lasu (zbieranie chrustu, wypas, wycinka). Dziedzic sprzedaje las żydowskim kupcom, a chłopi czują się oszukani i okradzeni. Jesień „zawiązuje" zatem zarówno konflikt rodzinny (Boryna–Antek–Jagna), jak i społeczny (wieś–dwór).</p><p>Tom kończy się w atmosferze narastających napięć – zarówno osobistych, jak i zbiorowych. Zewnętrznie wieś funkcjonuje według ustalonego rytmu prac i obrzędów, jednak pod powierzchnią narastają emocje, zazdrość, poczucie krzywdy i gniew.</p><div class="highlight-box"><p>W tym tomie szczególnie: ziemia jako wartość i źródło władzy; konflikt ojciec–syn + namiętność (Jagna); gromada: plotka, ocena, kontrola.</p></div></div>
+</div>
+</div>
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span>❄️ <strong>TOM II: ZIMA</strong> – Pełne streszczenie</span>
+<span class="acc-icon">▼</span>
+</div>
+<div class="acc-body">
+<div class="acc-content"><p>Zima zmienia codzienność Lipiec. Brak intensywnych prac polowych powoduje, że życie przenosi się do wnętrz chałup i karczmy. Chłopi spotykają się przy darciu pierza, prządkach i innych pracach domowych. W takiej scenerii rozwijają się plotki, konflikty, drobne spory i większe skandale.</p><p>Romans Antka i Jagny trwa i staje się coraz bardziej niebezpieczny. Bohaterowie spotykają się potajemnie, co pogłębia poczucie winy i napięcie. Jagna, choć formalnie jest żoną Macieja, emocjonalnie i fizycznie wiąże się z Antkiem. Maciej stopniowo nabiera podejrzeń – zmiany w zachowaniu żony i syna nie umykają jego uwadze.</p><p>Po wyrzuceniu z domu Antka i Hanki, młode małżeństwo wraz z dziećmi mieszka w bardzo trudnych warunkach w chałupie Bylicy. Bieda narasta, Antek ma problemy ze znalezieniem stałej pracy, popada w złość i frustrację. Hanka dźwiga na barkach większość obowiązków – pracuje, troszczy się o dzieci, próbuje utrzymać godność rodziny mimo upokorzeń.</p><p>Reymont pokazuje liczne drobne sceny z życia wsi zimą – odwiedziny, bójki w karczmie, sprzeczki, świętowanie Bożego Narodzenia. Szczegółowo opisuje obrzędy wigilijne i bożonarodzeniowe: przygotowanie potraw, dzielenie się opłatkiem, pasterkę, kolędowanie. Z jednej strony ukazuje to religijność i spójność wspólnoty, z drugiej – nie eliminuje zazdrości, zawiści i osądów.</p><p>W tym tomie pojawia się także wątek Jacka, brata dziedzica, który wypytuje o Kubę – człowieka, który kiedyś uratował mu życie. Wzruszający epizod z Jackiem uświadamia, że los parobka był „wielki" dla kogoś z zewnątrz, podczas gdy dla wsi jego śmierć szybko stała się nieistotna. To krytyczny komentarz do stosunku gromady do jednostki.</p><p>Konflikt o las narasta – dwór ogranicza dostęp do lasu, wprowadza zakazy i wycinkę, co budzi oburzenie chłopów. Pod wpływem agitacji i własnego poczucia krzywdy Lipczanie decydują się na zorganizowaną akcję. Boryna, mimo wieku, staje na czele gromady jako naturalny przywódca.</p><p>Kulminacją tomu jest bitwa o las. Chłopi wchodzą do lasu, by wycinać drzewa, co doprowadza do gwałtownego starcia z ludźmi dworu i borowym. W trakcie walki Maciej zostaje ciężko ranny – uderzony w głowę przez borowego. Antek, mimo konfliktu z ojcem, ratuje go z pola starcia. W zamieszaniu ginie borowy, a odpowiedzialnością obarczony zostaje Antek, który trafia do więzienia. W ten sposób dramat rodzinny splata się z dramatem społecznym.</p><p>Tom kończy się w momencie, gdy Boryna leży nieprzytomny, a wieś czuje ciężar skutków buntu. Zima staje się czasem próby dla rodziny Borynów i całej społeczności Lipiec.</p><div class="highlight-box"><p>W tym tomie szczególnie: spór o serwituty i starcie z dworem; rozpad i walka o godność w rodzinie Borynów; obrzędy/święta jako rytm wspólnoty.</p></div></div>
+</div>
+</div>
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span>🌸 <strong>TOM III: WIOSNA</strong> – Pełne streszczenie</span>
+<span class="acc-icon">▼</span>
+</div>
+<div class="acc-body">
+<div class="acc-content"><p>Wiosna przynosi odrodzenie przyrody – topnieją śniegi, rozpoczynają się prace polowe, wieś wraca do intensywnego rytmu pracy. Na tym tle rozgrywa się dramatyczny okres w życiu rodziny Borynów.</p><p>Maciej Boryna, ciężko ranny w bitwie o las, leży w domu w stanie półprzytomności. Miewa momenty jasności, po których znów popada w odrętwienie. Domownicy oraz kobiety z sąsiedztwa (m.in. Agata) opiekują się nim, modlą się o jego wyzdrowienie. Jego choroba symbolizuje osłabienie starego porządku we wsi.</p><p>W tym czasie Hanka przechodzi radykalną przemianę. Z kobiety dotąd podporządkowanej mężowi i teściowi staje się faktyczną gospodynią. Organizuje prace w polu i w obejściu, zarządza służbą, dba o interesy rodziny. Zyskuje autorytet wśród ludzi, uczy się twardo negocjować i bronić praw swoich dzieci. Jej postawa kontrastuje z bezradnością i nieobecnością mężczyzn.</p><p>Jagna, choć formalnie pozostaje „Borynową", coraz wyraźniej przegrywa z Hanką i z gromadą. Wieś obserwuje jej zachowanie, komentuje każdy gest, przypomina dawne i obecne romanse. Jagna staje się bohaterką plotek, co powoli przygotowuje grunt pod jej późniejsze wykluczenie.</p><p>Wiosną powracają także obrzędy religijne – święcenie pokarmów, rezurekcja, lany poniedziałek. Reymont pokazuje, jak tradycja i religijność porządkują życie społeczności, ale jednocześnie nie usuwają konfliktów czy złych emocji. W tle pojawiają się drobne kradzieże i oszustwa (np. podejrzenia wobec kowala), które Hanka potrafi rozwiązywać z rosnącą skutecznością.</p><p>W jednym z momentów przebłysku świadomości Boryna zdradza Hance, gdzie ukrył swoje pieniądze. Ten gest ma ogromne znaczenie symboliczne – oznacza przekazanie jej realnej władzy nad majątkiem i potwierdzenie jej pozycji jako prawdziwej gospodyni.</p><p>Najbardziej znaną sceną tomu jest śmierć Macieja Boryny podczas siewu. Pewnej nocy, pod wpływem wiosennego ożywienia przyrody i własnej obsesji na punkcie ziemi, Maciej wstaje z łóżka, wychodzi w koszuli na podwórze, a następnie na pole. Kierowany instynktem gospodarza, zaczyna „siać" – wykonuje ruchy siewcy, jakby pracował na roli. W tym akcie pełnego zjednoczenia z ziemią umiera.</p><p>Śmierć Boryny ma charakter symboliczny – chłop-siewca odchodzi w momencie, gdy daje ziemi ziarno nowego życia. Ziemia, którą kochał ponad wszystko, staje się jego ostatecznym miejscem spoczynku. Biologiczny realizm sceny miesza się z głęboką symboliką związaną z cyklem natury i ludzkiego życia.</p><p>Tom kończy się w atmosferze przejścia – stary gospodarz odchodzi, Hanka umacnia swoją pozycję, a przyszłość gospodarstwa zależy od kolejnych decyzji Antka po jego uwolnieniu.</p><div class="highlight-box"><p>W tym tomie szczególnie: śmierć Boryny i symbolika ziemi; przemiana Hanki – od krzywdzonej do gospodyni; próby Antka utrzymania pozycji w gromadzie.</p></div></div>
+</div>
+</div>
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+<span>☀️ <strong>TOM IV: LATO</strong> – Pełne streszczenie</span>
+<span class="acc-icon">▼</span>
+</div>
+<div class="acc-body">
+<div class="acc-content"><p>Lato to czas żniw, dojrzałości i zbierania plonów – zarówno w sensie dosłownym (plony z pola), jak i metaforycznym (skutki wcześniejszych wyborów bohaterów). Po śmierci Boryny gospodarstwo funkcjonuje dalej, ale w nowym układzie sił.</p><p>Tom rozpoczyna się od pogrzebu Macieja Boryny. Wieś żegna go jako jednego z najważniejszych gospodarzy, symbol starego porządku i chłopskiej godności. Obrzęd pogrzebowy ukazuje zarówno religijność wspólnoty, jak i jej przywiązanie do tradycji.</p><p>Po pogrzebie władzę nad gospodarstwem przejmuje Antek. Nie jest to jednak triumf, ale początek nowej odpowiedzialności. Antek musi zapomnieć o dotychczasowych buntach i namiętnościach, by skupić się na roli męża, ojca i gospodarza. Wraca z więzienia, poznaje najmłodsze dziecko, widzi, jak Hanka samodzielnie prowadziła gospodarstwo w jego nieobecności. Stopniowo dojrzewa do roli, jaką kiedyś pełnił jego ojciec.</p><p>Hanka staje się faktyczną panią na gospodarstwie. Jest twarda, zaradna, umie bronić interesów rodziny. Nie pozwala nikomu naruszyć pozycji jej dzieci ani naruszyć majątku Borynów. Jednocześnie umie ustawić Antka – wyznacza mu granice, egzekwuje jego zaangażowanie w pracę i rodzinę. Jej postać urasta do rangi jednej z najsilniejszych kobiet w powieści.</p><p>Jagna po śmierci Boryny traci ochronę, jaką dawało jej nazwisko bogatego męża. Zostaje sama – otoczona niechęcią i zazdrością innych kobiet. Jej dawne romanse (z Antkiem, z innymi mężczyznami) stają się głównym tematem plotek. Wieś szuka kozła ofiarnego dla wszystkich napięć moralnych i obyczajowych – idealną kandydatką jest właśnie Jagna.</p><p>Kulminacyjną sceną tomu jest samosąd na Jagnie – tzw. wywózka. Kobiety ze wsi, podsycane emocjami i poczuciem moralnej wyższości, napadają na Jagnę, wyciągają ją z domu, biją, poniżają, obrzucają oskarżeniami o rozwiązłość i zgorszenie. Następnie wsadzają ją na wóz i wywożą poza Lipce, skazując na wygnanie. Scena ta ukazuje brutalną siłę wspólnoty, która w imię „moralności" niszczy jednostkę odstającą od norm.</p><p>Równolegle w tle pojawiają się wątki związane z przemianami społecznymi – Roch i inni ludzie „z zewnątrz" wprowadzają do wsi nowe idee (spółdzielczość, edukacja, organizacja chłopów). Lipce stoją więc na granicy między tradycyjnym światem a nowoczesnością.</p><p>Tom kończy się obrazem pracy w polu i dożynek – święta plonów. Mimo tragedii Jagny i śmierci Boryny, wieś trwa, a rytm natury i obrzędów okazuje się silniejszy niż los pojedynczych ludzi. Konstrukcja czterech pór roku domyka kompozycję powieści – cykl życia i pracy na roli zatacza pełne koło.</p><p>***</p><p>UWAGI TECHNICZNE DLA CIEBIE</p><p>– „SEKCJA 1 – STRESZCZENIE SKRÓTOWE” możesz wpiąć jako krótkie streszczenia każdego tomu.
+– „SEKCJA 2 – STRESZCZENIE SZCZEGÓŁOWE” możesz wkleić jako rozwinięte opisy pod przyciskami / rozwijanymi blokami w swoim pliku HTML.
+– Każdy tom masz osobno i w wersji skrótowej, i w wersji rozwiniętej – możesz to dowolnie pociąć, oznaczyć i wystylować.
+– To jest czysty tekst – możesz go wrzucić do .txt, .md albo przerobić w kodzie na HTML tak jak lubisz.</p><div class="highlight-box"><p>W tym tomie szczególnie: praca i żniwa jako centrum życia; mechanizm wykluczenia – Jagna jako kozioł ofiarny; zbiorowy wymiar winy i kary.</p></div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="postacie">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Bohaterowie</div>
+<h2 class="section-title">Postacie</h2>
+</div>
+<div class="postacie-grid">
+<div class="postac-card">
+<div class="postac-header main"><h4>Maciej Boryna</h4><span class="postac-icon">👨‍🌾</span></div>
+<div class="postac-body">
+<p>Najzamożniejszy gospodarz w Lipcach. Twardy, uparty, przywiązany do ziemi. Poślubia młodą Jagnę. Umiera symbolicznie – siejąc ziarno.</p>
+<div class="postac-traits"><span class="trait">władczy</span><span class="trait">dumny</span><span class="trait">pracowity</span><span class="trait">tradycjonalista</span></div>
+</div>
+</div>
+<div class="postac-card">
+<div class="postac-header main"><h4>Jagna Paczesiówna</h4><span class="postac-icon">🌹</span></div>
+<div class="postac-body">
+<p>Najpiękniejsza dziewczyna we wsi. Żona Macieja, kochanka Antka. Tragiczna postać – kozioł ofiarny społeczności.</p>
+<div class="postac-traits"><span class="trait">piękna</span><span class="trait">bierna</span><span class="trait">tragiczna</span><span class="trait">ofiara</span></div>
+</div>
+</div>
+<div class="postac-card">
+<div class="postac-header main"><h4>Antek Boryna</h4><span class="postac-icon">💪</span></div>
+<div class="postac-body">
+<p>Syn Macieja, mąż Hanki. Silny, porywczy. Kocha Jagnę. Przywódca buntu o las. Po śmierci ojca przejmuje gospodarstwo.</p>
+<div class="postac-traits"><span class="trait">silny</span><span class="trait">namiętny</span><span class="trait">buntowniczy</span><span class="trait">przywódca</span></div>
+</div>
+</div>
+<div class="postac-card">
+<div class="postac-header secondary"><h4>Hanka</h4><span class="postac-icon">👩</span></div>
+<div class="postac-body">
+<p>Żona Antka. Z początku cicha, z czasem okazuje się najsilniejszą kobietą. Mści się na Jagnie, przejmuje rządy.</p>
+<div class="postac-traits"><span class="trait">silna</span><span class="trait">mściwa</span><span class="trait">pracowita</span><span class="trait">zwycięska</span></div>
+</div>
+</div>
+<div class="postac-card">
+<div class="postac-header other"><h4>Dominikowa</h4><span class="postac-icon">👵</span></div>
+<div class="postac-body">
+<p>Matka Jagny. Chciwa i wyrachowana. Wydaje córkę za Borynę dla pieniędzy.</p>
+<div class="postac-traits"><span class="trait">chciwa</span><span class="trait">wyrachowana</span><span class="trait">pragmatyczna</span></div>
+</div>
+</div>
+<div class="postac-card">
+<div class="postac-header other"><h4>Jagustynka</h4><span class="postac-icon">🦉</span></div>
+<div class="postac-body">
+<p>Stara, mądra kobieta. Głos tradycji i moralności. Komentuje wydarzenia, ostrzega przed złem.</p>
+<div class="postac-traits"><span class="trait">mądra</span><span class="trait">tradycyjna</span><span class="trait">sprawiedliwa</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="motywy">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Motywy i symbole</div>
+<h2 class="section-title">Kluczowe motywy</h2>
+</div>
+<div class="motywy-grid">
+<div class="motyw-card"><div class="motyw-icon">🌾</div><h4>Ziemia</h4><p>Najważniejsza wartość. Źródło życia, bogactwa, konfliktu.</p></div>
+<div class="motyw-card"><div class="motyw-icon">🔄</div><h4>Cykl natury</h4><p>Czas zamknięty, powtarzalny. 4 pory roku = etapy życia.</p></div>
+<div class="motyw-card"><div class="motyw-icon">⛪</div><h4>Religia</h4><p>Katolicyzm spleciony z pogaństwem. Obrzędy jako spoiwo.</p></div>
+<div class="motyw-card"><div class="motyw-icon">👥</div><h4>Społeczność</h4><p>Gromada ważniejsza niż jednostka. Normy bezwzględne.</p></div>
+<div class="motyw-card"><div class="motyw-icon">❤️</div><h4>Namiętność</h4><p>Siła destrukcyjna, gdy sprzeczna z normami społecznymi.</p></div>
+<div class="motyw-card"><div class="motyw-icon">⚔️</div><h4>Konflikt pokoleń</h4><p>Ojciec vs syn – walka o władzę, majątek, kobietę.</p></div>
+<div class="motyw-card"><div class="motyw-icon">🏠</div><h4>Dom i rodzina</h4><p>Podstawowa komórka społeczna. Hierarchia, role.</p></div>
+<div class="motyw-card"><div class="motyw-icon">🐐</div><h4>Kozioł ofiarny</h4><p>Jagna – na nią zrzucono winy wszystkich. Rytualne wygnanie.</p></div>
+</div>
+</div>
+</section>
+<section id="srodki">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Warstwa językowa</div>
+<h2 class="section-title">Środki stylistyczne</h2>
+</div>
+<div class="srodki-tabs">
+<button class="srodek-tab active" data-srodek="gwara">🗣️ Gwara</button>
+<button class="srodek-tab" data-srodek="narracja">📖 Narracja</button>
+<button class="srodek-tab" data-srodek="impresjonizm">🎨 Impresjonizm</button>
+<button class="srodek-tab" data-srodek="naturalizm">🔬 Naturalizm</button>
+<button class="srodek-tab" data-srodek="symbolizm">✨ Symbolizm</button>
+</div>
+<div class="srodek-content active" id="srodek-gwara">
+<h3>🗣️ Stylizacja gwarowa</h3>
+<p>Reymont wykorzystuje autentyczną gwarę mazowiecką w dialogach i mowie pozornie zależnej.</p>
+<div class="przyklad-box">
+<blockquote>"A dyć przecie nie gardzę, jeno że tak mi się jakoś zrobiło..."</blockquote>
+<cite>Dialog chłopski</cite>
+<p class="analiza"><strong>Cechy gwary:</strong> "dyć" (przecież), "jeno" (tylko), ściągnięte formy.</p>
+</div>
+</div>
+<div class="srodek-content" id="srodek-narracja">
+<h3>📖 Narracja</h3>
+<p>Innowacyjna technika – narrator trzecioosobowy często przyjmuje punkt widzenia bohaterów.</p>
+<div class="przyklad-box">
+<blockquote>Mowa pozornie zależna – narrator relacjonuje myśli postaci w 3. osobie, zachowując ich styl.</blockquote>
+<cite>Technika narracyjna</cite>
+<p class="analiza">Czytelnik "wchodzi" w umysł bohatera bez bezpośredniego cytatu.</p>
+</div>
+</div>
+<div class="srodek-content" id="srodek-impresjonizm">
+<h3>🎨 Impresjonizm</h3>
+<p>Opisy przyrody nasycone kolorami, światłem, zmiennością. Reymont maluje słowem.</p>
+<div class="przyklad-box">
+<blockquote>"Słońce zachodziło krwawo za lasy, cały zachód płonął jak wielki pożar..."</blockquote>
+<cite>Opis zachodu słońca</cite>
+<p class="analiza"><strong>Cechy:</strong> gra światła i koloru, ulotny moment, synestezja.</p>
+</div>
+</div>
+<div class="srodek-content" id="srodek-naturalizm">
+<h3>🔬 Naturalizm</h3>
+<p>Biologizm, determinizm, drobiazgowy opis życia codziennego bez upiększeń.</p>
+<div class="przyklad-box">
+<blockquote>Szczegółowe opisy pracy, jedzenia, cierpienia, śmierci – nic nie jest upiększone.</blockquote>
+<cite>Realizm opisu</cite>
+<p class="analiza"><strong>Cechy:</strong> obiektywizm, drobiazgowość, człowiek jako istota biologiczna.</p>
+</div>
+</div>
+<div class="srodek-content" id="srodek-symbolizm">
+<h3>✨ Symbolizm</h3>
+<p>Pod warstwą realistyczną kryje się bogata symbolika – pory roku, obrzędy, śmierć Macieja.</p>
+<div class="przyklad-box">
+<blockquote>Śmierć Macieja podczas siewu – ziarno = życie, śmierć = odrodzenie.</blockquote>
+<cite>Symbol siewu</cite>
+<p class="analiza">Maciej umiera, ale jego ziarno da nowe życie – cykl trwa.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="konteksty">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Konteksty</div>
+<h2 class="section-title">Konteksty interpretacyjne</h2>
+</div>
+<div class="kontekst-grid">
+<div class="kontekst-card">
+<h4>📜 Kontekst historyczny</h4>
+<p>Wieś polska pod zaborami. Po uwłaszczeniu 1864 chłopi walczyli o swoje prawa.</p>
+<ul><li>Serwitut – echo realnych konfliktów</li><li>Gromada zastępuje państwo</li></ul>
+</div>
+<div class="kontekst-card">
+<h4>🎭 Kontekst literacki</h4>
+<p>Młoda Polska, ale łączy realizm, naturalizm, impresjonizm, symbolizm.</p>
+<ul><li>Epopeja – nawiązanie do "Pana Tadeusza"</li><li>Tradycja powieści chłopskiej</li></ul>
+</div>
+<div class="kontekst-card">
+<h4>🧠 Kontekst filozoficzny</h4>
+<p>Człowiek wobec natury, społeczności, losu.</p>
+<ul><li>Determinizm środowiskowy</li><li>Witalizm – siły życiowe</li></ul>
+</div>
+<div class="kontekst-card">
+<h4>🌍 Kontekst antropologiczny</h4>
+<p>Obrzędy, rytuały, struktura społeczna – studium kultury ludowej.</p>
+<ul><li>Rok obrzędowy</li><li>Kozioł ofiarny (René Girard)</li></ul>
+</div>
+</div>
+</div>
+</section>
+<section id="quiz">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Sprawdź się</div>
+<h2 class="section-title">Quiz</h2>
+</div>
+<div class="quiz-box">
+<div class="quiz-progress" id="quizProgress"></div>
+<div id="quizContent">
+<div class="quiz-num" id="quizNum"></div>
+<div class="quiz-question" id="quizQ"></div>
+<div class="quiz-options" id="quizOpts"></div>
+<div class="quiz-feedback" id="quizFb"></div>
+<div class="quiz-btns">
+<button class="qbtn qbtn-prev" id="quizPrev">← Poprzednie</button>
+<button class="qbtn qbtn-next" id="quizNext">Następne →</button>
+</div>
+</div>
+<div class="quiz-result" id="quizResult" style="display:none">
+<div class="result-score" id="scoreVal"></div>
+<p class="result-text">Twój wynik</p>
+<button class="qbtn qbtn-next" id="quizRestart">🔄 Zacznij od nowa</button>
+</div>
+</div>
+</div>
+</section>
+<section id="fiszki">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Nauka</div>
+<h2 class="section-title">Fiszki</h2>
+<p class="section-desc">Kliknij fiszkę, aby zobaczyć odpowiedź</p>
+</div>
+<div class="flash-container">
+<div class="flashcard" id="flashcard">
+<div class="flash-inner">
+<div class="flash-front">
+<p class="flash-q" id="flashQ"></p>
+<p class="flash-hint">Kliknij, aby obrócić</p>
+</div>
+<div class="flash-back">
+<p class="flash-a" id="flashA"></p>
+</div>
+</div>
+</div>
+<div class="flash-nav">
+<button class="flash-btn" id="flashPrev">← Poprzednia</button>
+<span class="flash-count"><span id="flashNum">1</span> / <span id="flashTotal"></span></span>
+<button class="flash-btn" id="flashNext">Następna →</button>
+</div>
+</div>
+</div>
+</section>
+<section id="notatnik">
+<div class="container">
+<div class="text-center">
+<div class="section-badge">Organizacja nauki</div>
+<h2 class="section-title">Notatnik</h2>
+</div>
+<div class="notebook-grid">
+<div class="nb-panel">
+<div class="nb-head">
+<h3>📝 Lista tematów</h3>
+<span class="nb-pill" id="nbPill">0 / 12</span>
+</div>
+<div class="nb-items" id="nbItems"></div>
+<div class="nb-actions">
+<button class="nb-btn" id="nbClear">🗑️ Wyczyść</button>
+<button class="nb-btn primary" id="nbSave">💾 Zapisz</button>
+</div>
+</div>
+<div class="nb-panel">
+<h3 style="font-family:'Cinzel',serif;margin-bottom:16px">📊 Statystyki</h3>
+<div class="nb-stats">
+<div class="nb-stat"><div class="val" id="nbDone">0</div><div class="lbl">Opanowane</div></div>
+<div class="nb-stat"><div class="val" id="nbLeft">12</div><div class="lbl">Pozostało</div></div>
+<div class="nb-stat"><div class="val" id="nbPct">0%</div><div class="lbl">Postęp</div></div>
+<div class="nb-stat"><div class="val">🏆</div><div class="lbl">Cel: 100%</div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<div class="footer-logo">🌾 Chłopi – Lekcja interaktywna</div>
+<p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">dr inż. Kacper Stabrawa</a>) <span class="footer-brand">🧠 <b>ViralloLab</b></span></p>
+</footer>
+<script>
+// ========== SCROLL PROGRESS ==========
+window.addEventListener('scroll', function() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var s = window.scrollY;
+    document.getElementById('scrollBar').style.width = (s/h*100) + '%';
+});
+
+// ========== TABS: TOMY ==========
+document.querySelectorAll('.tom-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.tom-tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.tom-content').forEach(function(c) { c.classList.remove('active'); });
+        this.classList.add('active');
+        document.getElementById('tom-' + this.getAttribute('data-tom')).classList.add('active');
+    });
+});
+
+// ========== TABS: ŚRODKI ==========
+document.querySelectorAll('.srodek-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.srodek-tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.srodek-content').forEach(function(c) { c.classList.remove('active'); });
+        this.classList.add('active');
+        document.getElementById('srodek-' + this.getAttribute('data-srodek')).classList.add('active');
+    });
+});
+
+// ========== ACCORDION ==========
+function toggleAcc(header) {
+    var body = header.nextElementSibling;
+    var isOpen = body.classList.contains('open');
+    
+    // Zamknij wszystkie
+    document.querySelectorAll('.acc-body').forEach(function(b) { b.classList.remove('open'); });
+    document.querySelectorAll('.acc-header').forEach(function(h) { h.classList.remove('active'); });
+    
+    // Otwórz kliknięty jeśli był zamknięty
+    if (!isOpen) {
+        body.classList.add('open');
+        header.classList.add('active');
+    }
+}
+
+// ========== QUIZ ==========
+var quizData = [
+    {q: "Za co Reymont otrzymał Nagrodę Nobla?", opts: ["Za całokształt twórczości", "Za 'wybitną epikę narodową'", "Za 'Ziemię obiecaną'", "Za działalność patriotyczną"], correct: 1, explain: "Akademia Szwedzka nagrodziła Reymonta w 1924 roku za 'wybitną epikę narodową'."},
+    {q: "Ile tomów liczy powieść 'Chłopi'?", opts: ["3 tomy", "4 tomy", "5 tomów", "6 tomów"], correct: 1, explain: "'Chłopi' składają się z 4 tomów odpowiadających porom roku."},
+    {q: "Kim jest Maciej Boryna?", opts: ["Biednym parobkiem", "Najzamożniejszym gospodarzem", "Księdzem", "Nauczycielem"], correct: 1, explain: "Maciej Boryna to najzamożniejszy gospodarz we wsi Lipce."},
+    {q: "Za kogo wychodzi Jagna?", opts: ["Za Antka", "Za Macieja Borynę", "Za wójta", "Za organistę"], correct: 1, explain: "Jagna zostaje wydana za starego Macieja Borynę."},
+    {q: "Kto jest kochankiem Jagny?", opts: ["Wójt", "Ksiądz", "Antek Boryna", "Kuba"], correct: 2, explain: "Antek Boryna, syn Macieja, jest kochankiem Jagny."},
+    {q: "O co toczy się spór między chłopami a dworem?", opts: ["O podatki", "O las (serwitut)", "O kościół", "O szkołę"], correct: 1, explain: "Chłopi walczą z dworem o prawo do lasu – serwitut."},
+    {q: "Jak umiera Maciej Boryna?", opts: ["W pożarze", "Utopił się", "Na polu podczas siewu", "W bójce"], correct: 2, explain: "Maciej umiera na polu podczas siewu – symboliczna scena."},
+    {q: "Co spotyka Jagnę na końcu?", opts: ["Wychodzi za Antka", "Zostaje wygnana ze wsi", "Umiera", "Wyjeżdża do miasta"], correct: 1, explain: "Jagna zostaje rytualnie wygnana przez kobiety."},
+    {q: "Kto przejmuje rządy po śmierci Macieja?", opts: ["Antek", "Hanka", "Jagustynka", "Dominikowa"], correct: 1, explain: "Hanka faktycznie przejmuje władzę w domu Borynów."},
+    {q: "Jaka gwara występuje w 'Chłopach'?", opts: ["Śląska", "Kaszubska", "Mazowiecka", "Góralska"], correct: 2, explain: "Reymont wykorzystuje gwarę mazowiecką."},
+    {q: "Co symbolizuje kompozycja cykliczna?", opts: ["Linearność czasu", "Zamknięty czas natury", "Postęp", "Rewolucję"], correct: 1, explain: "4 tomy = 4 pory roku = zamknięty cykl natury."},
+    {q: "Kim jest Jagustynka?", opts: ["Matką Jagny", "Starą mądrą kobietą", "Żoną wójta", "Córką Macieja"], correct: 1, explain: "Jagustynka to stara kobieta, głos tradycji i moralności."},
+    {q: "Jaki prąd dominuje w opisach przyrody?", opts: ["Klasycyzm", "Impresjonizm", "Barok", "Dadaizm"], correct: 1, explain: "Opisy przyrody są impresjonistyczne."},
+    {q: "Do jakiej epoki należą 'Chłopi'?", opts: ["Pozytywizm", "Romantyzm", "Młoda Polska", "Dwudziestolecie"], correct: 2, explain: "'Chłopi' powstali w epoce Młodej Polski."},
+    {q: "Co oznacza 'kozioł ofiarny'?", opts: ["Zwierzę ofiarne", "Osobę obwinioną za wszystkich", "Przezwisko", "Przedmiot kultu"], correct: 1, explain: "Jagna jest 'kozłem ofiarnym' – na nią zrzucono winy społeczności."},
+{q: "Kim jest Dominikowa?", opts: ["Matką Jagny", "Żoną Antka", "Siostrą Hanki", "Wójciną"], correct: 0, explain: "Dominikowa to matka Jagny – gospodyni, która dba o interes córki."},
+    {q: "Co najlepiej pokazuje przemianę Hanki?", opts: ["Ucieczka do miasta", "Przejęcie gospodarstwa i walka o byt", "Rezygnacja z pracy", "Zostanie nauczycielką"], correct: 1, explain: "Hanka z czasem staje się twardą gospodynią i filarem domu."},
+    {q: "Jaką funkcję ma karczma w życiu Lipiec?", opts: ["Tylko modlitwy", "Miejsce plotek, układów i konfliktów", "Wyłącznie targ", "Szkoła dla dzieci"], correct: 1, explain: "Karczma skupia rozmowy, oceny, zabawę i napięcia społeczne."},
+    {q: "Co w powieści porządkuje czas najsilniej?", opts: ["Kalendarz szkolny", "Cykle natury i prace polowe", "Decyzje urzędników", "Wydarzenia w mieście"], correct: 1, explain: "Rytm pór roku oraz robót i obrzędów wyznacza bieg fabuły."},
+    {q: "Dlaczego gromada jest tak ważna?", opts: ["Bo zastępuje wszystkie postacie", "Bo działa jak bohater zbiorowy i 'sąd' nad jednostką", "Bo znika po pierwszym tomie", "Bo nie ma wpływu na akcję"], correct: 1, explain: "Wspólnota potrafi wspierać, ale też oceniać i karać."},
+    {q: "Co w świecie Lipiec symbolizuje ziemia?", opts: ["Tylko krajobraz", "Najwyższą wartość i źródło tożsamości", "Przeszkodę w rozwoju", "Coś zupełnie obojętnego"], correct: 1, explain: "Ziemia daje byt, pozycję i jest przyczyną sporów."},
+    {q: "Jaki jest obraz wsi u Reymonta?", opts: ["Sielanka bez problemów", "Realistyczny – piękno i brutalność obok siebie", "Wyłącznie komedia", "Tylko propaganda"], correct: 1, explain: "Reymont pokazuje wieś bez idealizacji: praca, konflikt, obrzędy, natura."},
+    {q: "Kto najczęściej staje się obiektem surowego osądu wspólnoty?", opts: ["Ksiądz", "Jagna", "Wójt", "Organista"], correct: 1, explain: "Jagna zostaje uznana za 'kozła ofiarnego' i wykluczona."}
+];
+
+var qIdx = 0;
+var qAnswers = [];
+var qScore = 0;
+
+function renderQuiz() {
+    var total = quizData.length;
+    document.getElementById('quizNum').textContent = 'Pytanie ' + (qIdx+1) + ' z ' + total;
+    
+    var dots = '';
+    for(var i = 0; i < total; i++) {
+        var cls = 'quiz-dot';
+        if(qAnswers[i] !== undefined && qAnswers[i] === quizData[i].correct) cls += ' done';
+        if(i === qIdx) cls += ' current';
+        dots += '<div class="' + cls + '"></div>';
+    }
+    document.getElementById('quizProgress').innerHTML = dots;
+    
+    if(qIdx >= total) {
+        document.getElementById('quizContent').style.display = 'none';
+        document.getElementById('quizResult').style.display = 'block';
+        document.getElementById('scoreVal').textContent = Math.round(qScore/total*100) + '%';
+        return;
+    }
+    
+    var q = quizData[qIdx];
+    document.getElementById('quizQ').textContent = q.q;
+    
+    var letters = ['A','B','C','D'];
+    var opts = '';
+    for(var i = 0; i < q.opts.length; i++) {
+        var cls = 'quiz-opt';
+        if(qAnswers[qIdx] === i) {
+            cls += ' selected';
+            cls += (i === q.correct) ? ' correct' : ' wrong';
+        }
+        opts += '<div class="' + cls + '" data-idx="' + i + '"><span class="opt-letter">' + letters[i] + '</span><span>' + q.opts[i] + '</span></div>';
+    }
+    document.getElementById('quizOpts').innerHTML = opts;
+    
+    // Dodaj event listenery do opcji
+    document.querySelectorAll('.quiz-opt').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+            selectOpt(parseInt(this.getAttribute('data-idx')));
+        });
+    });
+    
+    var fb = document.getElementById('quizFb');
+    if(qAnswers[qIdx] !== undefined) {
+        var isCorrect = qAnswers[qIdx] === q.correct;
+        fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'bad');
+        fb.innerHTML = '<h5>' + (isCorrect ? '✅ Dobrze!' : '❌ Źle!') + '</h5><p>' + q.explain + '</p>';
+    } else {
+        fb.className = 'quiz-feedback';
+        fb.innerHTML = '';
+    }
+    
+    document.getElementById('quizPrev').disabled = qIdx === 0;
+    document.getElementById('quizNext').textContent = (qIdx === total - 1) ? 'Zobacz wynik →' : 'Następne →';
+}
+
+function selectOpt(i) {
+    if(qAnswers[qIdx] !== undefined) return;
+    qAnswers[qIdx] = i;
+    if(i === quizData[qIdx].correct) qScore++;
+    renderQuiz();
+}
+
+document.getElementById('quizNext').addEventListener('click', function() {
+    if(qAnswers[qIdx] === undefined) return;
+    qIdx++;
+    renderQuiz();
+});
+
+document.getElementById('quizPrev').addEventListener('click', function() {
+    if(qIdx > 0) { qIdx--; renderQuiz(); }
+});
+
+document.getElementById('quizRestart').addEventListener('click', function() {
+    qIdx = 0;
+    qAnswers = [];
+    qScore = 0;
+    document.getElementById('quizContent').style.display = 'block';
+    document.getElementById('quizResult').style.display = 'none';
+    renderQuiz();
+});
+
+renderQuiz();
+
+// ========== FISZKI ==========
+var flashData = [
+    {q: "Co to jest epopeja?", a: "Rozległy utwór epicki przedstawiający dzieje ważne dla narodu, z bohaterem zbiorowym."},
+    {q: "Co oznacza 'serwitut'?", a: "Prawo chłopów do korzystania z lasu dworskiego (drewno, wypas)."},
+    {q: "Na czym polega kompozycja cykliczna?", a: "Struktura oparta na powtarzającym się cyklu (4 pory roku). Czas zamknięty."},
+    {q: "Co to jest mowa pozornie zależna?", a: "Narrator relacjonuje myśli postaci w 3. osobie, zachowując jej styl."},
+    {q: "Kim jest 'kozioł ofiarny'?", a: "Osoba, na którą społeczność zrzuca winy i którą wygania (Jagna)."},
+    {q: "Co symbolizuje scena siewu?", a: "Połączenie człowieka z ziemią. Maciej umiera siejąc – życie ze śmiercią."},
+    {q: "Jakie funkcje pełni gwara?", a: "Nadaje autentyzm, buduje koloryt lokalny, charakteryzuje bohaterów."},
+    {q: "Co to jest impresjonizm w literaturze?", a: "Technika opisu skupiona na grze światła i koloru, ulotnych wrażeniach."},
+    {q: "Czym jest naturalizm?", a: "Prąd kładący nacisk na biologizm, determinizm, obiektywizm opisu."},
+    {q: "Jaka jest rola przyrody w 'Chłopach'?", a: "Przyroda jest bohaterem, wyznacza rytm życia, odbija emocje postaci."},
+    {q: "Na czym polega konflikt ojca z synem?", a: "Maciej i Antek walczą o władzę, majątek i Jagnę."},
+    {q: "Kim jest Hanka?", a: "Żona Antka, z początku cicha, potem najsilniejsza – przejmuje rządy."},
+    {q: "Co symbolizują pory roku?", a: "Etapy życia: jesień=dojrzałość, zima=zastój, wiosna=odrodzenie, lato=żniwa."},
+    {q: "Dlaczego Jagna jest tragiczna?", a: "Jest piękna, ale nie może przeciwstawić się namiętności ani normom. Zostaje ukarana."},
+    {q: "Jakie jest znaczenie ziemi?", a: "Najwyższa wartość – źródło życia, bogactwa, tożsamości chłopa."},
+    {q: "Co to jest samosąd?", a: "Wymierzenie kary przez społeczność bez udziału władz. Wywózka Jagny."},
+    {q: "Czym są Lipce?", a: "Fikcyjna wieś mazowiecka, wzorowana na Lipcach Reymontowskich."},
+    {q: "Co to fokalizacja wewnętrzna?", a: "Narracja z perspektywy postaci – świat widziany jej oczami."},
+    {q: "Co oznacza rok liturgiczny?", a: "Cykl świąt kościelnych strukturyzujący życie wsi."},
+    {q: "Co to patriarchat?", a: "System, gdzie władza należy do mężczyzn. W Lipcach decydują gospodarze."},
+{q: "Co to jest gromada?", a: "Wspólnota mieszkańców wsi – działa jak zbiorowy bohater i 'sąd' nad jednostką."},
+  {q: "Dlaczego małżeństwo Boryny z Jagną jest tak ważne?", a: "Uruchamia konflikt rodzinny i obyczajowy: ziemia, pożądanie, plotka i władza w domu."},
+  {q: "Na czym polega konflikt Boryna–Antek?", a: "Spór o ziemię i pierwszeństwo w gospodarstwie + rywalizacja o Jagnę."},
+  {q: "Co pokazuje przemiana Hanki?", a: "Że w świecie Lipiec siła i zaradność mogą dać kobietom realną sprawczość."},
+  {q: "Czym jest wywózka (wygnanie) Jagny?", a: "Rytualna kara gromady – społeczność usuwa 'winnego' poza swoje granice."},
+  {q: "Dlaczego opisy przyrody są tak rozbudowane?", a: "Przyroda współtworzy nastrój i wyznacza rytm życia – jest jak 'drugi bohater'."},
+  {q: "Jaką rolę pełnią obrzędy i święta?", a: "Porządkują czas, wzmacniają wspólnotę i ujawniają hierarchie oraz konflikty."},
+  {q: "Jak rozumieć scenę śmierci Boryny przy pracy?", a: "Symbol zrośnięcia człowieka z ziemią – życie i śmierć w jednym cyklu natury."},
+  {q: "Naturalizm – przykład w 'Chłopach' (ogólnie)?", a: "Pokazywanie pracy, biedy, choroby i cierpienia bez upiększeń."},
+  {q: "Impresjonizm – jak go rozpoznasz w opisach?", a: "Ulotne wrażenia: światło, kolor, ruch, zmienność pór dnia i pogody."},
+  {q: "Co to jest konflikt obyczajowy?", a: "Starcie jednostki z normami wspólnoty (np. ocenianie relacji, plotka, kara)."},
+  {q: "Dlaczego tytuł 'Chłopi' jest trafny?", a: "Bo centrum opowieści stanowi cała warstwa społeczna i jej kultura, nie jedna postać."}
+];
+
+var fIdx = 0;
+
+function renderFlash() {
+    document.getElementById('flashQ').textContent = flashData[fIdx].q;
+    document.getElementById('flashA').textContent = flashData[fIdx].a;
+    document.getElementById('flashNum').textContent = fIdx + 1;
+    document.getElementById('flashTotal').textContent = flashData.length;
+    document.getElementById('flashcard').classList.remove('flipped');
+}
+
+document.getElementById('flashcard').addEventListener('click', function() {
+    this.classList.toggle('flipped');
+});
+
+document.getElementById('flashNext').addEventListener('click', function() {
+    fIdx = (fIdx + 1) % flashData.length;
+    renderFlash();
+});
+
+document.getElementById('flashPrev').addEventListener('click', function() {
+    fIdx = (fIdx - 1 + flashData.length) % flashData.length;
+    renderFlash();
+});
+
+renderFlash();
+
+// ========== NOTATNIK ==========
+var nbTopics = [
+    {id: 'autor', text: 'Władysław Reymont – biografia, Nobel'},
+    {id: 'geneza', text: 'Geneza i kompozycja cykliczna'},
+    {id: 'jesien', text: 'Tom I: Jesień – streszczenie'},
+    {id: 'zima', text: 'Tom II: Zima – streszczenie'},
+    {id: 'wiosna', text: 'Tom III: Wiosna – streszczenie'},
+    {id: 'lato', text: 'Tom IV: Lato – streszczenie'},
+    {id: 'postacie', text: 'Postacie główne i drugoplanowe'},
+    {id: 'motywy', text: 'Motywy i symbole'},
+    {id: 'srodki', text: 'Środki stylistyczne i język'},
+    {id: 'konteksty', text: 'Konteksty interpretacyjne'},
+    {id: 'cytaty', text: 'Najważniejsze cytaty'},
+    {id: 'matura', text: 'Tematy maturalne'}
+];
+
+var nbChecked = [];
+try {
+    nbChecked = JSON.parse(localStorage.getItem('chlopi_nb')) || [];
+} catch(e) {
+    nbChecked = [];
+}
+
+function renderNb() {
+    var html = '';
+    for(var i = 0; i < nbTopics.length; i++) {
+        var t = nbTopics[i];
+        var isChecked = nbChecked.indexOf(t.id) !== -1;
+        html += '<div class="nb-item' + (isChecked ? ' checked' : '') + '" data-id="' + t.id + '">';
+        html += '<input type="checkbox"' + (isChecked ? ' checked' : '') + '>';
+        html += '<div class="txt"><strong>' + (i+1) + '.</strong> ' + t.text + '</div>';
+        html += '</div>';
+    }
+    document.getElementById('nbItems').innerHTML = html;
+    
+    // Event listenery
+    document.querySelectorAll('.nb-item').forEach(function(item) {
+        item.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var idx = nbChecked.indexOf(id);
+            if(idx === -1) {
+                nbChecked.push(id);
+            } else {
+                nbChecked.splice(idx, 1);
+            }
+            renderNb();
+        });
+    });
+    
+    var done = nbChecked.length;
+    var total = nbTopics.length;
+    document.getElementById('nbPill').textContent = done + ' / ' + total;
+    document.getElementById('nbDone').textContent = done;
+    document.getElementById('nbLeft').textContent = total - done;
+    document.getElementById('nbPct').textContent = Math.round(done/total*100) + '%';
+}
+
+document.getElementById('nbClear').addEventListener('click', function() {
+    if(confirm('Na pewno wyczyścić postęp?')) {
+        nbChecked = [];
+        localStorage.removeItem('chlopi_nb');
+        renderNb();
+    }
+});
+
+document.getElementById('nbSave').addEventListener('click', function() {
+    localStorage.setItem('chlopi_nb', JSON.stringify(nbChecked));
+    alert('Postęp zapisany!');
+});
+
+renderNb();
+
+// ========== SMOOTH SCROLL ==========
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if(target) target.scrollIntoView({behavior: 'smooth'});
+    });
+});
+</script>
+</body>
+</html>
