@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciągi – Określenie i Monotoniczność | Lekcja maturalna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --bg-card: #181b25;
+            --bg-card-alt: #1e2233;
+            --accent: #c084fc;
+            --accent-dim: #7c3aed;
+            --accent-glow: rgba(192, 132, 252, 0.15);
+            --green: #34d399;
+            --green-dim: rgba(52, 211, 153, 0.12);
+            --orange: #fb923c;
+            --orange-dim: rgba(251, 146, 60, 0.12);
+            --red: #f87171;
+            --red-dim: rgba(248, 113, 113, 0.12);
+            --blue: #60a5fa;
+            --blue-dim: rgba(96, 165, 250, 0.12);
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --text-bright: #f8fafc;
+            --border: rgba(148, 163, 184, 0.1);
+        }
+
+```
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Source Sans 3', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.75;
+        font-size: 17px;
+    }
+
+    /* HERO */
+    .hero {
+        position: relative;
+        padding: 80px 20px 60px;
+        text-align: center;
+        overflow: hidden;
+        background: linear-gradient(180deg, #1a1030 0%, var(--bg) 100%);
+    }
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(ellipse at 30% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 60%),
+                    radial-gradient(ellipse at 70% 30%, rgba(192, 132, 252, 0.06) 0%, transparent 50%);
+        animation: drift 20s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(-30px, 20px) rotate(2deg); }
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+    .hero-badge {
+        display: inline-block;
+        padding: 6px 18px;
+        background: var(--accent-glow);
+        border: 1px solid rgba(192, 132, 252, 0.3);
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 24px;
+    }
+    .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.2rem, 5vw, 3.8rem);
+        font-weight: 900;
+        color: var(--text-bright);
+        line-height: 1.15;
+        margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+        font-size: 1.15rem;
+        color: var(--text-dim);
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    /* NAV */
+    .toc {
+        max-width: 900px;
+        margin: -20px auto 40px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+    }
+    .toc-inner {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 32px;
+    }
+    .toc h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        color: var(--accent);
+        margin-bottom: 16px;
+    }
+    .toc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 8px;
+    }
+    .toc a {
+        color: var(--text-dim);
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .toc a:hover {
+        background: var(--accent-glow);
+        color: var(--accent);
+    }
+    .toc a .num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        color: var(--accent-dim);
+        min-width: 24px;
+    }
+
+    /* MAIN */
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px 80px;
+    }
+
+    /* SECTIONS */
+    .section {
+        margin-bottom: 56px;
+        animation: fadeUp 0.6s ease both;
+    }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .section-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 8px;
+    }
+    .section h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--text-bright);
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--accent-dim);
+    }
+    .section h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.35rem;
+        color: var(--text-bright);
+        margin: 32px 0 14px;
+    }
+    .section p { margin-bottom: 14px; }
+
+    /* DEFINITION BOX */
+    .def-box {
+        background: var(--bg-card);
+        border-left: 4px solid var(--accent);
+        border-radius: 0 12px 12px 0;
+        padding: 24px 28px;
+        margin: 24px 0;
+        position: relative;
+    }
+    .def-box::before {
+        content: 'DEFINICJA';
+        position: absolute;
+        top: -10px;
+        left: 16px;
+        background: var(--accent-dim);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        padding: 2px 12px;
+        border-radius: 4px;
+    }
+    .def-box.theorem::before { content: 'TWIERDZENIE'; background: #2563eb; }
+    .def-box.warning::before { content: 'UWAGA'; background: var(--orange); color: #000; }
+    .def-box.method::before { content: 'METODA'; background: var(--green); color: #000; }
+    .def-box.warning { border-left-color: var(--orange); }
+    .def-box.theorem { border-left-color: var(--blue); }
+    .def-box.method { border-left-color: var(--green); }
+
+    /* FORMULA */
+    .formula {
+        background: linear-gradient(135deg, var(--bg-card-alt) 0%, var(--bg-card) 100%);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 28px;
+        margin: 20px 0;
+        text-align: center;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.15rem;
+        color: var(--accent);
+        position: relative;
+        overflow: hidden;
+    }
+    .formula::after {
+        content: '';
+        position: absolute;
+        top: 0; right: 0;
+        width: 80px; height: 80px;
+        background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+    }
+    .formula .big {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .formula .explain {
+        font-family: 'Source Sans 3', sans-serif;
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        margin-top: 8px;
+    }
+
+    /* EXAMPLE */
+    .example {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 24px 28px;
+        margin: 24px 0;
+    }
+    .example-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-weight: 700;
+        color: var(--green);
+        font-size: 0.95rem;
+    }
+    .example-header .icon {
+        width: 28px; height: 28px;
+        background: var(--green-dim);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+    .example .step {
+        padding: 10px 0 10px 20px;
+        border-left: 2px solid rgba(52, 211, 153, 0.2);
+        margin: 10px 0;
+        color: var(--text);
+    }
+    .example .step strong { color: var(--green); }
+    .example .result {
+        background: var(--green-dim);
+        border-radius: 8px;
+        padding: 12px 18px;
+        margin-top: 12px;
+        font-weight: 600;
+        color: var(--green);
+    }
+
+    /* TASKS */
+    .task {
+        background: var(--bg-card-alt);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 22px 26px;
+        margin: 16px 0;
+        position: relative;
+        transition: border-color 0.3s;
+    }
+    .task:hover { border-color: rgba(192, 132, 252, 0.3); }
+    .task-num {
+        position: absolute;
+        top: -12px;
+        left: 20px;
+        background: var(--accent-dim);
+        color: #fff;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 2px 14px;
+        border-radius: 6px;
+    }
+    .task-difficulty {
+        position: absolute;
+        top: -12px;
+        right: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 2px 10px;
+        border-radius: 6px;
+        letter-spacing: 1px;
+    }
+    .task-difficulty.easy { background: var(--green-dim); color: var(--green); }
+    .task-difficulty.medium { background: var(--orange-dim); color: var(--orange); }
+    .task-difficulty.hard { background: var(--red-dim); color: var(--red); }
+    .task p { margin-top: 6px; }
+
+    /* SVG CANVAS for drawings */
+    .graph-container {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        margin: 24px 0;
+        text-align: center;
+        overflow-x: auto;
+    }
+    .graph-container svg {
+        max-width: 100%;
+        height: auto;
+    }
+    .graph-container .caption {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        margin-top: 10px;
+    }
+
+    /* TABLE */
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.95rem;
+    }
+    .data-table th {
+        background: var(--accent-dim);
+        color: #fff;
+        padding: 10px 16px;
+        text-align: center;
+        font-weight: 600;
+    }
+    .data-table td {
+        padding: 10px 16px;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+    }
+    .data-table tr:nth-child(even) td { background: var(--bg-card); }
+
+    /* INTERACTIVE TOGGLE */
+    .hint-toggle {
+        display: inline-block;
+        background: var(--accent-glow);
+        border: 1px solid rgba(192, 132, 252, 0.3);
+        color: var(--accent);
+        padding: 8px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.2s;
+        margin-top: 10px;
+    }
+    .hint-toggle:hover {
+        background: rgba(192, 132, 252, 0.25);
+    }
+    .hint-content {
+        display: none;
+        background: var(--bg-card);
+        border: 1px dashed rgba(192, 132, 252, 0.3);
+        border-radius: 10px;
+        padding: 18px 22px;
+        margin-top: 12px;
+        color: var(--text-dim);
+    }
+    .hint-content.show { display: block; }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+        z-index: 1000;
+        transition: width 0.1s;
+    }
+
+
+    /* FRACTIONS */
+    .frac {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: middle;
+        line-height: 1.15;
+        margin: 0 3px;
+        position: relative;
+        top: -2px;
+    }
+    .frac .frac-num, .frac .frac-den {
+        display: block;
+        padding: 1px 4px;
+        text-align: center;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.88em;
+    }
+    .frac .frac-num {
+        border-bottom: 1.5px solid currentColor;
+        padding-bottom: 3px;
+    }
+    .frac .frac-den {
+        padding-top: 3px;
+    }
+    /* SUB/SUP */
+    sub, sup {
+        font-size: 0.75em;
+    }
+
+    /* FOOTER */
+    .footer {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        border-top: 1px solid var(--border);
+    }
+    .footer a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+        .hero { padding: 50px 16px 40px; }
+        .hero h1 { font-size: 1.8rem; }
+        .section h2 { font-size: 1.5rem; }
+        .formula { font-size: 1rem; padding: 16px; }
+        .def-box, .example, .task { padding: 18px; }
+    }
+
+    .inline-math {
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--accent);
+        font-size: 0.95em;
+    }
+    .im { /* inline-math shorthand */
+        font-family: 'JetBrains Mono', monospace;
+        color: var(--accent);
+    }
+
+    .list-styled {
+        padding-left: 24px;
+        margin: 12px 0;
+    }
+    .list-styled li {
+        margin-bottom: 8px;
+        padding-left: 8px;
+    }
+    .list-styled li::marker {
+        color: var(--accent);
+    }
+
+    .cols-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    @media (max-width: 600px) {
+        .cols-2 { grid-template-columns: 1fr; }
+    }
+
+    .separator {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+        margin: 48px 0;
+    }
+</style>
+```
+
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- HERO -->
+
+<header class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Matematyka — Przygotowanie do matury</div>
+        <h1>Określenie ciągu.<br><span>Monotoniczność ciągów.</span></h1>
+        <p>Kompletna lekcja z teorią, przykładami i zadaniami. Czas trwania: ~3 godziny.</p>
+    </div>
+</header>
+
+<!-- SPIS TREŚCI -->
+
+<nav class="toc">
+    <div class="toc-inner">
+        <h3>Spis treści</h3>
+        <div class="toc-grid">
+            <a href="#s1"><span class="num">01</span> Czym jest ciąg?</a>
+            <a href="#s2"><span class="num">02</span> Sposoby określania ciągów</a>
+            <a href="#s3"><span class="num">03</span> Wykres ciągu</a>
+            <a href="#s4"><span class="num">04</span> Monotoniczność — teoria</a>
+            <a href="#s5"><span class="num">05</span> Badanie monotoniczności</a>
+            <a href="#s6"><span class="num">06</span> Przykłady rozwiązane</a>
+            <a href="#s7"><span class="num">07</span> Zadania do rozwiązania</a>
+        </div>
+    </div>
+</nav>
+
+<!-- CONTENT -->
+
+<main class="container">
+
+```
+<!-- ============================================ -->
+<!-- CZĘŚĆ 1: CZYM JEST CIĄG -->
+<!-- ============================================ -->
+<section class="section" id="s1">
+    <div class="section-label">Część 01</div>
+    <h2>Czym jest ciąg?</h2>
+
+    <p>W codziennym życiu spotykamy się z uporządkowanymi zbiorami wartości: temperatura mierzona co godzinę, numery stron w książce, kolejne wpłaty na konto. W matematyce takie uporządkowane zbiory wartości nazywamy <strong>ciągami</strong>.</p>
+
+    <div class="def-box">
+        <p><strong>Ciąg liczbowy</strong> to funkcja, której dziedziną jest zbiór liczb naturalnych dodatnich (lub ich podzbiór postaci {1, 2, 3, …, k}), a wartościami są liczby rzeczywiste.</p>
+        <p style="margin-top: 10px; color: var(--text-dim);">Innymi słowy: ciąg przyporządkowuje każdej liczbie naturalnej <span class="im">n</span> dokładnie jedną liczbę rzeczywistą <span class="im">a<sub>n</sub></span>.</p>
+    </div>
+
+    <h3>Pojęcia podstawowe</h3>
+
+    <p>Kolejne wartości ciągu nazywamy <strong>wyrazami ciągu</strong> i oznaczamy:</p>
+
+    <div class="formula">
+        a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>, …, a<sub>n</sub>, …
+        <div class="explain">a<sub>1</sub> — wyraz pierwszy, a<sub>2</sub> — wyraz drugi, …, a<sub>n</sub> — wyraz n-ty (wyraz ogólny)</div>
+    </div>
+
+    <p>Liczbę <span class="im">n</span> nazywamy <strong>numerem wyrazu</strong> (indeksem), a <span class="im">a<sub>n</sub></span> to <strong>wartość wyrazu</strong> o numerze <span class="im">n</span>. Cały ciąg oznaczamy symbolem <span class="im">(a<sub>n</sub>)</span>.</p>
+
+    <div class="def-box warning">
+        <p><strong>Ciąg to NIE to samo co zbiór!</strong> W ciągu ważna jest kolejność wyrazów i wyrazy mogą się powtarzać. Np. ciąg (1, 2, 1, 2, 1, 2, …) jest poprawnym ciągiem, mimo że ma tylko dwie różne wartości.</p>
+    </div>
+
+    <p>Ciąg może być <strong>skończony</strong> (ma określoną liczbę wyrazów) lub <strong>nieskończony</strong> (ma nieskończenie wiele wyrazów). Na maturze najczęściej pracujemy z ciągami nieskończonymi.</p>
+</section>
+
+<div class="separator"></div>
+
+<!-- ============================================ -->
+<!-- CZĘŚĆ 2: SPOSOBY OKREŚLANIA -->
+<!-- ============================================ -->
+<section class="section" id="s2">
+    <div class="section-label">Część 02</div>
+    <h2>Sposoby określania ciągów</h2>
+
+    <p>Istnieją trzy główne sposoby, w jakie możemy podać (zdefiniować) ciąg:</p>
+
+    <h3>1. Wzór ogólny (wzór na n-ty wyraz)</h3>
+
+    <p>Podajemy wzór, który pozwala obliczyć wartość dowolnego wyrazu ciągu, gdy znamy jego numer <span class="im">n</span>. Jest to najbardziej „wygodny" sposób — możemy od razu obliczyć np. setny wyraz, nie znając wcześniejszych.</p>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">📌</div>
+            Przykład 1 — Wzór ogólny
+        </div>
+        <p>Dany jest ciąg o wzorze ogólnym: <span class="im">a<sub>n</sub> = 2n + 1</span></p>
+        <div class="step">
+            <strong>a<sub>1</sub></strong> = 2·1 + 1 = <strong>3</strong><br>
+            <strong>a<sub>2</sub></strong> = 2·2 + 1 = <strong>5</strong><br>
+            <strong>a<sub>3</sub></strong> = 2·3 + 1 = <strong>7</strong><br>
+            <strong>a<sub>10</sub></strong> = 2·10 + 1 = <strong>21</strong><br>
+            <strong>a<sub>100</sub></strong> = 2·100 + 1 = <strong>201</strong>
+        </div>
+        <div class="result">Ciąg: 3, 5, 7, 9, 11, … — to ciąg kolejnych liczb nieparzystych (od 3).</div>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">📌</div>
+            Przykład 2 — Wzór ogólny z ułamkiem
+        </div>
+        <p>Dany jest ciąg: <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">n</span><span class="frac-den">n + 1</span></span></span></p>
+        <div class="step">
+            <strong>a<sub>1</sub></strong> = <span class="frac im"><span class="frac-num">1</span><span class="frac-den">2</span></span><br>
+            <strong>a<sub>2</sub></strong> = <span class="frac im"><span class="frac-num">2</span><span class="frac-den">3</span></span><br>
+            <strong>a<sub>3</sub></strong> = <span class="frac im"><span class="frac-num">3</span><span class="frac-den">4</span></span><br>
+            <strong>a<sub>4</sub></strong> = <span class="frac im"><span class="frac-num">4</span><span class="frac-den">5</span></span>
+        </div>
+        <div class="result">Wyrazy zbliżają się do 1, ale nigdy jej nie osiągają.</div>
+    </div>
+
+    <h3>2. Wzór rekurencyjny</h3>
+
+    <p>Podajemy wartość pierwszego wyrazu (lub kilku pierwszych) oraz regułę, która pozwala obliczyć kolejny wyraz na podstawie wyrazów poprzednich.</p>
+
+    <div class="def-box">
+        <p>Wzór rekurencyjny składa się z dwóch elementów:</p>
+        <p>1) wartości początkowej, np. <span class="im">a<sub>1</sub> = 3</span></p>
+        <p>2) reguły przejścia, np. <span class="im">a<sub>n+1</sub> = a<sub>n</sub> + 4</span></p>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">📌</div>
+            Przykład 3 — Wzór rekurencyjny
+        </div>
+        <p>Ciąg dany rekurencyjnie: <span class="im">a<sub>1</sub> = 2</span>, <span class="im">a<sub>n+1</sub> = 3·a<sub>n</sub> − 1</span></p>
+        <div class="step">
+            <strong>a<sub>1</sub></strong> = 2<br>
+            <strong>a<sub>2</sub></strong> = 3·2 − 1 = <strong>5</strong><br>
+            <strong>a<sub>3</sub></strong> = 3·5 − 1 = <strong>14</strong><br>
+            <strong>a<sub>4</sub></strong> = 3·14 − 1 = <strong>41</strong>
+        </div>
+        <div class="result">Ciąg: 2, 5, 14, 41, … — wartości rosną bardzo szybko.</div>
+    </div>
+
+    <div class="def-box warning">
+        <p><strong>Wada wzoru rekurencyjnego:</strong> żeby obliczyć np. <span class="im">a<sub>100</sub></span>, musisz najpierw obliczyć wszystkie 99 poprzednich wyrazów! Ze wzoru ogólnego wystarczy podstawić n = 100.</p>
+    </div>
+
+    <h3>3. Opisowo lub przez wyliczenie wyrazów</h3>
+
+    <p>Czasami ciąg jest podany słownie (np. „ciąg kolejnych liczb pierwszych") albo przez wypisanie kilku wyrazów z sugestią wzorca: 1, 4, 9, 16, 25, … (tu domyślamy się, że <span class="im">a<sub>n</sub> = n²</span>).</p>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">📌</div>
+            Przykład 4 — Odgadywanie wzoru
+        </div>
+        <p>Wyznacz wzór ogólny ciągu: <span class="im">2, 6, 12, 20, 30, …</span></p>
+        <div class="step">
+            Szukamy wzorca. Zapiszmy wyrazy i ich numery:<br>
+            n=1: 2 = 1·2<br>
+            n=2: 6 = 2·3<br>
+            n=3: 12 = 3·4<br>
+            n=4: 20 = 4·5<br>
+            n=5: 30 = 5·6
+        </div>
+        <div class="result">Wzór ogólny: a<sub>n</sub> = n(n + 1) = n² + n</div>
+    </div>
+</section>
+
+<div class="separator"></div>
+
+<!-- ============================================ -->
+<!-- CZĘŚĆ 3: WYKRES CIĄGU -->
+<!-- ============================================ -->
+<section class="section" id="s3">
+    <div class="section-label">Część 03</div>
+    <h2>Wykres ciągu</h2>
+
+    <p>Ponieważ ciąg jest funkcją określoną na liczbach naturalnych, jego wykres składa się z <strong>izolowanych punktów</strong> (nie z linii ciągłej!). Na osi poziomej odkładamy numery wyrazów <span class="im">n</span>, a na osi pionowej — wartości <span class="im">a<sub>n</sub></span>.</p>
+
+    <div class="graph-container">
+        <svg width="520" height="300" viewBox="0 0 520 300">
+            <!-- Osie -->
+            <line x1="60" y1="260" x2="500" y2="260" stroke="#475569" stroke-width="1.5"/>
+            <line x1="60" y1="260" x2="60" y2="20" stroke="#475569" stroke-width="1.5"/>
+            <!-- Strzałki -->
+            <polygon points="500,260 492,255 492,265" fill="#475569"/>
+            <polygon points="60,20 55,28 65,28" fill="#475569"/>
+            <!-- Etykiety osi -->
+            <text x="505" y="265" fill="#94a3b8" font-size="14" font-family="Source Sans 3">n</text>
+            <text x="45" y="18" fill="#94a3b8" font-size="14" font-family="Source Sans 3">a<tspan baseline-shift="sub" font-size="10">n</tspan></text>
+
+            <!-- Linie siatki i etykiety n -->
+            <line x1="120" y1="260" x2="120" y2="255" stroke="#475569" stroke-width="1"/>
+            <text x="120" y="278" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Source Sans 3">1</text>
+            <line x1="180" y1="260" x2="180" y2="255" stroke="#475569" stroke-width="1"/>
+            <text x="180" y="278" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Source Sans 3">2</text>
+            <line x1="240" y1="260" x2="240" y2="255" stroke="#475569" stroke-width="1"/>
+            <text x="240" y="278" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Source Sans 3">3</text>
+            <line x1="300" y1="260" x2="300" y2="255" stroke="#475569" stroke-width="1"/>
+            <text x="300" y="278" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Source Sans 3">4</text>
+            <line x1="360" y1="260" x2="360" y2="255" stroke="#475569" stroke-width="1"/>
+            <text x="360" y="278" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Source Sans 3">5</text>
+            <line x1="420" y1="260" x2="420" y2="255" stroke="#475569" stroke-width="1"/>
+            <text x="420" y="278" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Source Sans 3">6</text>
+
+            <!-- Linie siatki poziome -->
+            <line x1="60" y1="220" x2="490" y2="220" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4"/>
+            <text x="50" y="224" fill="#94a3b8" font-size="11" text-anchor="end" font-family="Source Sans 3">1</text>
+            <line x1="60" y1="180" x2="490" y2="180" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4"/>
+            <text x="50" y="184" fill="#94a3b8" font-size="11" text-anchor="end" font-family="Source Sans 3">2</text>
+            <line x1="60" y1="140" x2="490" y2="140" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4"/>
+            <text x="50" y="144" fill="#94a3b8" font-size="11" text-anchor="end" font-family="Source Sans 3">3</text>
+            <line x1="60" y1="100" x2="490" y2="100" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4"/>
+            <text x="50" y="104" fill="#94a3b8" font-size="11" text-anchor="end" font-family="Source Sans 3">4</text>
+            <line x1="60" y1="60" x2="490" y2="60" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="4"/>
+            <text x="50" y="64" fill="#94a3b8" font-size="11" text-anchor="end" font-family="Source Sans 3">5</text>
+
+            <!-- Punkty ciągu a_n = n (zielony) -->
+            <circle cx="120" cy="220" r="6" fill="#34d399"/>
+            <circle cx="180" cy="180" r="6" fill="#34d399"/>
+            <circle cx="240" cy="140" r="6" fill="#34d399"/>
+            <circle cx="300" cy="100" r="6" fill="#34d399"/>
+            <circle cx="360" cy="60" r="6" fill="#34d399"/>
+            <circle cx="420" cy="20" r="6" fill="#34d399"/>
+
+            <!-- Legenda -->
+            <circle cx="140" cy="40" r="5" fill="#34d399"/>
+            <text x="152" y="45" fill="#34d399" font-size="13" font-family="Source Sans 3">a<tspan baseline-shift="sub" font-size="9">n</tspan> = n</text>
+        </svg>
+        <div class="caption">Wykres ciągu <span class="im">a<sub>n</sub> = n</span> — rosnący zbiór izolowanych punktów</div>
+    </div>
+
+    <div class="def-box warning">
+        <p><strong>Częsty błąd na maturze:</strong> Wykres ciągu to <em>punkty</em>, NIE linia ciągła! Nie łączymy punktów kreską. Dziedzina ciągu to liczby naturalne, więc między punktami nie ma żadnych wartości.</p>
+    </div>
+</section>
+
+<div class="separator"></div>
+
+<!-- ============================================ -->
+<!-- CZĘŚĆ 4: MONOTONICZNOŚĆ — TEORIA -->
+<!-- ============================================ -->
+<section class="section" id="s4">
+    <div class="section-label">Część 04</div>
+    <h2>Monotoniczność ciągów — teoria</h2>
+
+    <p>Monotoniczność opisuje, czy wartości wyrazów ciągu „rosną", „maleją", czy zachowują się nieregularnie. To jedno z najważniejszych zagadnień maturalnych dotyczących ciągów.</p>
+
+    <div class="def-box">
+        <p>Ciąg <span class="im">(a<sub>n</sub>)</span> jest:</p>
+        <p style="margin: 6px 0;">• <strong style="color: var(--green)">rosnący</strong> — gdy dla każdego <span class="im">n ∈ ℕ⁺</span>: &nbsp; <span class="im">a<sub>n+1</sub> &gt; a<sub>n</sub></span></p>
+        <p style="margin: 6px 0;">• <strong style="color: var(--red)">malejący</strong> — gdy dla każdego <span class="im">n ∈ ℕ⁺</span>: &nbsp; <span class="im">a<sub>n+1</sub> &lt; a<sub>n</sub></span></p>
+        <p style="margin: 6px 0;">• <strong style="color: var(--blue)">nierosnący</strong> — gdy dla każdego <span class="im">n ∈ ℕ⁺</span>: &nbsp; <span class="im">a<sub>n+1</sub> ≤ a<sub>n</sub></span></p>
+        <p style="margin: 6px 0;">• <strong style="color: var(--orange)">niemalejący</strong> — gdy dla każdego <span class="im">n ∈ ℕ⁺</span>: &nbsp; <span class="im">a<sub>n+1</sub> ≥ a<sub>n</sub></span></p>
+        <p style="margin: 6px 0;">• <strong>stały</strong> — gdy dla każdego <span class="im">n ∈ ℕ⁺</span>: &nbsp; <span class="im">a<sub>n+1</sub> = a<sub>n</sub></span></p>
+    </div>
+
+    <p>Ciąg, który jest rosnący lub malejący, nazywamy <strong>ciągiem ściśle monotonicznym</strong>. Ciąg, który jest nierosnący lub niemalejący, jest <strong>monotonicznym</strong> (w szerokim sensie). Jeśli ciąg nie spełnia żadnego z tych warunków, jest <strong>niemonotoniczny</strong>.</p>
+
+    <div class="graph-container">
+        <svg width="520" height="280" viewBox="0 0 520 280">
+            <!-- Osie -->
+            <line x1="40" y1="240" x2="500" y2="240" stroke="#475569" stroke-width="1"/>
+            <line x1="40" y1="240" x2="40" y2="20" stroke="#475569" stroke-width="1"/>
+
+            <!-- Ciąg rosnący (zielony) -->
+            <circle cx="100" cy="210" r="5" fill="#34d399"/>
+            <circle cx="160" cy="180" r="5" fill="#34d399"/>
+            <circle cx="220" cy="140" r="5" fill="#34d399"/>
+            <circle cx="280" cy="90" r="5" fill="#34d399"/>
+            <circle cx="340" cy="60" r="5" fill="#34d399"/>
+            <text x="350" y="55" fill="#34d399" font-size="12" font-family="Source Sans 3">rosnący ↗</text>
+
+            <!-- Ciąg malejący (czerwony) -->
+            <circle cx="100" cy="50" r="5" fill="#f87171"/>
+            <circle cx="160" cy="85" r="5" fill="#f87171"/>
+            <circle cx="220" cy="130" r="5" fill="#f87171"/>
+            <circle cx="280" cy="170" r="5" fill="#f87171"/>
+            <circle cx="340" cy="200" r="5" fill="#f87171"/>
+            <text x="350" y="205" fill="#f87171" font-size="12" font-family="Source Sans 3">malejący ↘</text>
+
+            <!-- Etykiety n -->
+            <text x="100" y="258" fill="#94a3b8" font-size="11" text-anchor="middle">1</text>
+            <text x="160" y="258" fill="#94a3b8" font-size="11" text-anchor="middle">2</text>
+            <text x="220" y="258" fill="#94a3b8" font-size="11" text-anchor="middle">3</text>
+            <text x="280" y="258" fill="#94a3b8" font-size="11" text-anchor="middle">4</text>
+            <text x="340" y="258" fill="#94a3b8" font-size="11" text-anchor="middle">5</text>
+        </svg>
+        <div class="caption">Porównanie ciągu rosnącego i malejącego</div>
+    </div>
+</section>
+
+<div class="separator"></div>
+
+<!-- ============================================ -->
+<!-- CZĘŚĆ 5: BADANIE MONOTONICZNOŚCI -->
+<!-- ============================================ -->
+<section class="section" id="s5">
+    <div class="section-label">Część 05</div>
+    <h2>Metody badania monotoniczności</h2>
+
+    <p>Na maturze spotkasz dwie główne metody badania monotoniczności ciągu. Wybór metody zależy od postaci wzoru ogólnego.</p>
+
+    <h3>Metoda 1: Badanie znaku różnicy</h3>
+
+    <div class="def-box method">
+        <p>Obliczamy różnicę <span class="im">a<sub>n+1</sub> − a<sub>n</sub></span> i badamy jej znak dla wszystkich <span class="im">n ∈ ℕ⁺</span>:</p>
+        <p style="margin: 8px 0;">• Jeśli <span class="im">a<sub>n+1</sub> − a<sub>n</sub> &gt; 0</span> → ciąg jest <strong style="color: var(--green)">rosnący</strong></p>
+        <p style="margin: 8px 0;">• Jeśli <span class="im">a<sub>n+1</sub> − a<sub>n</sub> &lt; 0</span> → ciąg jest <strong style="color: var(--red)">malejący</strong></p>
+        <p style="margin: 8px 0;">• Jeśli <span class="im">a<sub>n+1</sub> − a<sub>n</sub> = 0</span> → ciąg jest <strong>stały</strong></p>
+    </div>
+
+    <p>Ta metoda jest <strong>uniwersalna</strong> — działa dla każdego ciągu. Jest to metoda domyślna, którą powinieneś stosować.</p>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">✏️</div>
+            Przykład 5 — Metoda różnicy
+        </div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = n² − 5n</span></p>
+        <div class="step">
+            <strong>Krok 1:</strong> Obliczamy a<sub>n+1</sub><br>
+            a<sub>n+1</sub> = (n+1)² − 5(n+1) = n² + 2n + 1 − 5n − 5 = n² − 3n − 4
+        </div>
+        <div class="step">
+            <strong>Krok 2:</strong> Obliczamy różnicę a<sub>n+1</sub> − a<sub>n</sub><br>
+            a<sub>n+1</sub> − a<sub>n</sub> = (n² − 3n − 4) − (n² − 5n) = n² − 3n − 4 − n² + 5n = <strong>2n − 4</strong>
+        </div>
+        <div class="step">
+            <strong>Krok 3:</strong> Badamy znak<br>
+            2n − 4 &gt; 0 ⟺ n &gt; 2<br>
+            Dla n = 1: 2·1 − 4 = −2 &lt; 0<br>
+            Dla n = 2: 2·2 − 4 = 0<br>
+            Dla n ≥ 3: 2n − 4 &gt; 0
+        </div>
+        <div class="result">Ciąg nie jest monotoniczny! Maleje dla n ∈ {1, 2}, a rośnie od n = 3.</div>
+    </div>
+
+    <h3>Metoda 2: Badanie znaku ilorazu</h3>
+
+    <div class="def-box method">
+        <p>Gdy <strong>wszystkie wyrazy ciągu są dodatnie</strong> (<span class="im">a<sub>n</sub> &gt; 0</span>), możemy zbadać iloraz <span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span></span>:</p>
+        <p style="margin: 8px 0;">• Jeśli <span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span> &gt; 1</span> → ciąg jest <strong style="color: var(--green)">rosnący</strong></p>
+        <p style="margin: 8px 0;">• Jeśli <span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span> &lt; 1</span> → ciąg jest <strong style="color: var(--red)">malejący</strong></p>
+        <p style="margin: 8px 0;">• Jeśli <span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span> = 1</span> → ciąg jest <strong>stały</strong></p>
+    </div>
+
+    <div class="def-box warning">
+        <p><strong>Metoda ilorazowa działa TYLKO gdy a<sub>n</sub> &gt; 0 dla każdego n!</strong> Jeśli ciąg ma wyrazy ujemne lub zerowe, musisz użyć metody różnicowej.</p>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">✏️</div>
+            Przykład 6 — Metoda ilorazu
+        </div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">3<sup>n</sup></span><span class="frac-den">n!</span></span></span></p>
+        <div class="step">
+            <strong>Krok 1:</strong> Sprawdzamy czy a<sub>n</sub> &gt; 0 — TAK (potęga 3 i silnia są zawsze dodatnie)
+        </div>
+        <div class="step">
+            <strong>Krok 2:</strong> Obliczamy iloraz<br>
+            a<sub>n+1</sub>/a<sub>n</sub> = <span class="frac im"><span class="frac-num">3<sup>n+1</sup></span><span class="frac-den">(n+1)!</span></span> : <span class="frac im"><span class="frac-num">3<sup>n</sup></span><span class="frac-den">n!</span></span> = <span class="frac im"><span class="frac-num">3<sup>n+1</sup> · n!</span><span class="frac-den">3<sup>n</sup> · (n+1)!</span></span> = <strong><span class="frac im"><span class="frac-num">3</span><span class="frac-den">n+1</span></span></strong>
+        </div>
+        <div class="step">
+            <strong>Krok 3:</strong> Badamy kiedy iloraz jest &gt; 1, = 1, &lt; 1<br>
+            <span class="frac im"><span class="frac-num">3</span><span class="frac-den">n+1</span></span> &gt; 1 ⟺ n+1 &lt; 3 ⟺ n &lt; 2 → n = 1<br>
+            <span class="frac im"><span class="frac-num">3</span><span class="frac-den">n+1</span></span> = 1 ⟺ n = 2<br>
+            <span class="frac im"><span class="frac-num">3</span><span class="frac-den">n+1</span></span> &lt; 1 ⟺ n &gt; 2
+        </div>
+        <div class="result">Ciąg rośnie dla n=1, a od n=2 maleje. Nie jest monotoniczny.</div>
+    </div>
+
+    <h3>Metoda 3: Interpretacja funkcyjna</h3>
+
+    <p>Jeśli <span class="im">a<sub>n</sub> = f(n)</span>, gdzie <span class="im">f</span> jest funkcją ciągłą, to monotoniczność ciągu wynika z monotoniczności funkcji <span class="im">f</span> na przedziale <span class="im">[1, +∞)</span>. Możemy więc zbadać pochodną <span class="im">f'(x)</span> — ale ta metoda wykracza poza podstawowy zakres matury.</p>
+
+    <div class="def-box warning">
+        <p><strong>Wskazówka maturalna:</strong> Na maturze z reguły wystarczy metoda różnicowa. Jeśli wzór zawiera silnię lub potęgę z n w wykładniku (np. 2<sup>n</sup>), wygodniejsza jest metoda ilorazowa.</p>
+    </div>
+
+    <h3>Podsumowanie — tabela wzorów</h3>
+
+    <table class="data-table">
+        <tr>
+            <th>Warunek</th>
+            <th>Metoda różnicy</th>
+            <th>Metoda ilorazu (a<sub>n</sub> &gt; 0)</th>
+        </tr>
+        <tr>
+            <td style="color: var(--green); font-weight: 600;">Rosnący</td>
+            <td><span class="im">a<sub>n+1</sub> − a<sub>n</sub> &gt; 0</span></td>
+            <td><span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span> &gt; 1</span></td>
+        </tr>
+        <tr>
+            <td style="color: var(--red); font-weight: 600;">Malejący</td>
+            <td><span class="im">a<sub>n+1</sub> − a<sub>n</sub> &lt; 0</span></td>
+            <td><span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span> &lt; 1</span></td>
+        </tr>
+        <tr>
+            <td style="font-weight: 600;">Stały</td>
+            <td><span class="im">a<sub>n+1</sub> − a<sub>n</sub> = 0</span></td>
+            <td><span class="im"><span class="frac im"><span class="frac-num">a<sub>n+1</sub></span><span class="frac-den">a<sub>n</sub></span></span> = 1</span></td>
+        </tr>
+    </table>
+</section>
+
+<div class="separator"></div>
+
+<!-- ============================================ -->
+<!-- CZĘŚĆ 6: PRZYKŁADY ROZWIĄZANE -->
+<!-- ============================================ -->
+<section class="section" id="s6">
+    <div class="section-label">Część 06</div>
+    <h2>Przykłady rozwiązane krok po kroku</h2>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">🔍</div>
+            Przykład 7 — Wyznaczanie wyrazów ciągu
+        </div>
+        <p>Dany jest ciąg <span class="im">a<sub>n</sub> = (−1)<sup>n</sup> · n</span>. Wyznacz pierwsze 6 wyrazów.</p>
+        <div class="step">
+            a<sub>1</sub> = (−1)¹ · 1 = <strong>−1</strong><br>
+            a<sub>2</sub> = (−1)² · 2 = <strong>2</strong><br>
+            a<sub>3</sub> = (−1)³ · 3 = <strong>−3</strong><br>
+            a<sub>4</sub> = (−1)⁴ · 4 = <strong>4</strong><br>
+            a<sub>5</sub> = (−1)⁵ · 5 = <strong>−5</strong><br>
+            a<sub>6</sub> = (−1)⁶ · 6 = <strong>6</strong>
+        </div>
+        <div class="result">Ciąg: −1, 2, −3, 4, −5, 6, … — ciąg naprzemienny (zmienia znaki). Jest niemonotoniczny!</div>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">🔍</div>
+            Przykład 8 — Monotoniczność ciągu z ułamkiem
+        </div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">2n + 1</span><span class="frac-den">n + 3</span></span></span></p>
+        <div class="step">
+            <strong>Krok 1:</strong> Obliczamy a<sub>n+1</sub><br>
+            a<sub>n+1</sub> = (2(n+1) + 1) / ((n+1) + 3) = (2n + 3) / (n + 4)
+        </div>
+        <div class="step">
+            <strong>Krok 2:</strong> Obliczamy różnicę a<sub>n+1</sub> − a<sub>n</sub><br>
+            = <span class="frac im"><span class="frac-num">2n+3</span><span class="frac-den">n+4</span></span> − <span class="frac im"><span class="frac-num">2n+1</span><span class="frac-den">n+3</span></span><br>
+            Sprowadzamy do wspólnego mianownika:<br>
+            = <span class="frac im"><span class="frac-num">(2n+3)(n+3) − (2n+1)(n+4)</span><span class="frac-den">(n+4)(n+3)</span></span><br>
+            <br>
+            Licznik:<br>
+            (2n+3)(n+3) = 2n² + 6n + 3n + 9 = 2n² + 9n + 9<br>
+            (2n+1)(n+4) = 2n² + 8n + n + 4 = 2n² + 9n + 4<br>
+            <br>
+            Różnica liczników: (2n² + 9n + 9) − (2n² + 9n + 4) = <strong>5</strong>
+        </div>
+        <div class="step">
+            <strong>Krok 3:</strong> Zatem<br>
+            a<sub>n+1</sub> − a<sub>n</sub> = <span class="frac im"><span class="frac-num">5</span><span class="frac-den">(n+4)(n+3)</span></span><br>
+            <br>
+            Mianownik (n+4)(n+3) &gt; 0 dla każdego n ∈ ℕ⁺<br>
+            Licznik = 5 &gt; 0<br>
+            Więc cała różnica jest <strong>zawsze dodatnia</strong>.
+        </div>
+        <div class="result">Ciąg (a<sub>n</sub>) jest rosnący.</div>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">🔍</div>
+            Przykład 9 — Monotoniczność ciągu z potęgą
+        </div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">n</span><span class="frac-den">2<sup>n</sup></span></span></span></p>
+        <div class="step">
+            <strong>Krok 1:</strong> Wyrazy są dodatnie (n &gt; 0, 2<sup>n</sup> &gt; 0), więc stosujemy metodę ilorazową.
+        </div>
+        <div class="step">
+            <strong>Krok 2:</strong> Obliczamy iloraz<br>
+            a<sub>n+1</sub>/a<sub>n</sub> = <span class="frac im"><span class="frac-num">(n+1)</span><span class="frac-den">2<sup>n+1</sup></span></span> : <span class="frac im"><span class="frac-num">n</span><span class="frac-den">2<sup>n</sup></span></span> = <span class="frac im"><span class="frac-num">(n+1)</span><span class="frac-den">2<sup>n+1</sup></span></span> · <span class="frac im"><span class="frac-num">2<sup>n</sup></span><span class="frac-den">n</span></span> = <strong><span class="frac im"><span class="frac-num">n+1</span><span class="frac-den">2n</span></span></strong>
+        </div>
+        <div class="step">
+            <strong>Krok 3:</strong> Badamy kiedy <span class="frac im"><span class="frac-num">n+1</span><span class="frac-den">2n</span></span> &lt; 1<br>
+            <span class="frac im"><span class="frac-num">n+1</span><span class="frac-den">2n</span></span> &lt; 1<br>
+            n + 1 &lt; 2n<br>
+            1 &lt; n<br>
+            Czyli dla n ≥ 2 iloraz &lt; 1.<br>
+            <br>
+            Dla n = 1: <span class="frac im"><span class="frac-num">1+1</span><span class="frac-den">2·1</span></span> = <span class="frac im"><span class="frac-num">2</span><span class="frac-den">2</span></span> = 1 → a<sub>1</sub> = a<sub>2</sub> (nie rośnie, nie maleje)
+        </div>
+        <div class="result">Ciąg nie jest monotoniczny w ścisłym sensie: a<sub>1</sub> = a<sub>2</sub> = <span class="frac im"><span class="frac-num">1</span><span class="frac-den">2</span></span>, a od n = 2 maleje.</div>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">🔍</div>
+            Przykład 10 — Wyznaczanie wzoru z opisu
+        </div>
+        <p>Ciąg składa się z kolejnych wielokrotności liczby 7, począwszy od 7. Podaj wzór ogólny i zbadaj monotoniczność.</p>
+        <div class="step">
+            <strong>Wyrazy:</strong> 7, 14, 21, 28, 35, …<br>
+            <strong>Wzór:</strong> a<sub>n</sub> = 7n
+        </div>
+        <div class="step">
+            <strong>Monotoniczność:</strong><br>
+            a<sub>n+1</sub> − a<sub>n</sub> = 7(n+1) − 7n = 7n + 7 − 7n = 7 &gt; 0
+        </div>
+        <div class="result">Ciąg (a<sub>n</sub>) = (7n) jest rosnący.</div>
+    </div>
+
+    <div class="example">
+        <div class="example-header">
+            <div class="icon">🔍</div>
+            Przykład 11 — Ciąg rekurencyjny i monotoniczność
+        </div>
+        <p>Dany jest ciąg: <span class="im">a<sub>1</sub> = 10</span>, <span class="im">a<sub>n+1</sub> = a<sub>n</sub> / 2 + 1</span>. Wyznacz kilka wyrazów i określ monotoniczność.</p>
+        <div class="step">
+            a<sub>1</sub> = 10<br>
+            a<sub>2</sub> = <span class="frac im"><span class="frac-num">10</span><span class="frac-den">2</span></span> + 1 = 6<br>
+            a<sub>3</sub> = <span class="frac im"><span class="frac-num">6</span><span class="frac-den">2</span></span> + 1 = 4<br>
+            a<sub>4</sub> = <span class="frac im"><span class="frac-num">4</span><span class="frac-den">2</span></span> + 1 = 3<br>
+            a<sub>5</sub> = <span class="frac im"><span class="frac-num">3</span><span class="frac-den">2</span></span> + 1 = 2,5<br>
+            a<sub>6</sub> = <span class="frac im"><span class="frac-num">2,5</span><span class="frac-den">2</span></span> + 1 = 2,25
+        </div>
+        <div class="step">
+            Zbadajmy formalnie: <br>
+            a<sub>n+1</sub> − a<sub>n</sub> = (<span class="frac im"><span class="frac-num">a<sub>n</sub></span><span class="frac-den">2</span></span> + 1) − a<sub>n</sub> = −<span class="frac im"><span class="frac-num">a<sub>n</sub></span><span class="frac-den">2</span></span> + 1 = 1 − a<sub>n</sub>/2<br>
+            <br>
+            Różnica &lt; 0 gdy a<sub>n</sub> &gt; 2. Z obliczeń widać, że wszystkie wyrazy &gt; 2, więc różnica jest ujemna.
+        </div>
+        <div class="result">Ciąg jest malejący (wyrazy zbliżają się do 2).</div>
+    </div>
+</section>
+
+<div class="separator"></div>
+
+<!-- ============================================ -->
+<!-- CZĘŚĆ 7: ZADANIA -->
+<!-- ============================================ -->
+<section class="section" id="s7">
+    <div class="section-label">Część 07</div>
+    <h2>Zadania do samodzielnego rozwiązania</h2>
+
+    <p>Poniżej znajdziesz 20 zadań o rosnącym poziomie trudności. Rozwiązania znajdziesz w osobnym pliku. Spróbuj rozwiązać każde zadanie samodzielnie zanim sprawdzisz odpowiedź!</p>
+
+    <h3 style="color: var(--green);">🟢 Poziom podstawowy (zadania 1–7)</h3>
+
+    <div class="task">
+        <div class="task-num">Zad. 1</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Wyznacz pięć pierwszych wyrazów ciągu o wzorze ogólnym <span class="im">a<sub>n</sub> = 3n − 2</span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 2</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Wyznacz pięć pierwszych wyrazów ciągu <span class="im">a<sub>n</sub> = n² + 1</span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 3</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Dany jest ciąg rekurencyjny: <span class="im">a<sub>1</sub> = 1</span>, <span class="im">a<sub>n+1</sub> = a<sub>n</sub> + 2n</span>. Wyznacz wyrazy a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>, a<sub>4</sub>, a<sub>5</sub>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 4</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = 5n + 3</span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 5</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = −2n + 10</span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 6</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = 7</span> (ciąg stały).</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 7</div>
+        <div class="task-difficulty easy">ŁATWE</div>
+        <p>Odgadnij wzór ogólny ciągu: <span class="im">4, 7, 10, 13, 16, …</span> i zbadaj jego monotoniczność.</p>
+    </div>
+
+    <h3 style="color: var(--orange);">🟠 Poziom średni (zadania 8–14)</h3>
+
+    <div class="task">
+        <div class="task-num">Zad. 8</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">n</span><span class="frac-den">n + 2</span></span></span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 9</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = n² − 8n</span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 10</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">3n − 1</span><span class="frac-den">n + 5</span></span></span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 11</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Ciąg jest dany rekurencyjnie: <span class="im">a<sub>1</sub> = 100</span>, <span class="im">a<sub>n+1</sub> = a<sub>n</sub> − 3</span>. Wyznacz wzór ogólny i zbadaj monotoniczność.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 12</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Wyznacz wzór ogólny ciągu: <span class="im"><span class="frac im"><span class="frac-num">1</span><span class="frac-den">2</span></span>, <span class="frac im"><span class="frac-num">2</span><span class="frac-den">3</span></span>, <span class="frac im"><span class="frac-num">3</span><span class="frac-den">4</span></span>, <span class="frac im"><span class="frac-num">4</span><span class="frac-den">5</span></span>, …</span> i zbadaj jego monotoniczność.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 13</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = (−1)<sup>n</sup> + n</span>. Czy ten ciąg jest monotoniczny?</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 14</div>
+        <div class="task-difficulty medium">ŚREDNIE</div>
+        <p>Dla jakiej wartości parametru <span class="im">k</span> ciąg o wzorze <span class="im">a<sub>n</sub> = (2k − 1)n + 3</span> jest malejący?</p>
+    </div>
+
+    <h3 style="color: var(--red);">🔴 Poziom zaawansowany (zadania 15–20)</h3>
+
+    <div class="task">
+        <div class="task-num">Zad. 15</div>
+        <div class="task-difficulty hard">TRUDNE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">2<sup>n</sup></span><span class="frac-den">n²</span></span></span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 16</div>
+        <div class="task-difficulty hard">TRUDNE</div>
+        <p>Zbadaj monotoniczność ciągu <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">n²</span><span class="frac-den">3<sup>n</sup></span></span></span>.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 17</div>
+        <div class="task-difficulty hard">TRUDNE</div>
+        <p>Dany jest ciąg <span class="im">a<sub>n</sub> = <span class="frac im"><span class="frac-num">n² + 3n</span><span class="frac-den">2n² − 1</span></span></span>. Zbadaj monotoniczność tego ciągu.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 18</div>
+        <div class="task-difficulty hard">TRUDNE</div>
+        <p>Dany jest ciąg rekurencyjny: <span class="im">a<sub>1</sub> = 2</span>, <span class="im">a<sub>n+1</sub> = <span class="frac im"><span class="frac-num">a<sub>n</sub>² + 1</span><span class="frac-den">2a<sub>n</sub></span></span></span>. Wyznacz kilka wyrazów i określ monotoniczność.</p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 19</div>
+        <div class="task-difficulty hard">TRUDNE</div>
+        <p>Wykaż, że ciąg <span class="im">a<sub>n</sub> = 1 + <span class="frac im"><span class="frac-num">1</span><span class="frac-den">1!</span></span> + <span class="frac im"><span class="frac-num">1</span><span class="frac-den">2!</span></span> + <span class="frac im"><span class="frac-num">1</span><span class="frac-den">3!</span></span> + … + <span class="frac im"><span class="frac-num">1</span><span class="frac-den">n!</span></span></span> jest rosnący i ograniczony z góry przez 3. <em>(Wskazówka: porównaj <span class="frac im"><span class="frac-num">1</span><span class="frac-den">n!</span></span> z <span class="frac im"><span class="frac-num">1</span><span class="frac-den">2<sup>n-1</sup></span></span>)</em></p>
+    </div>
+
+    <div class="task">
+        <div class="task-num">Zad. 20</div>
+        <div class="task-difficulty hard">TRUDNE</div>
+        <p>Dany jest ciąg <span class="im">a<sub>n</sub> = √(n+1) − √n</span>. Zbadaj monotoniczność tego ciągu. <em>(Wskazówka: pomnóż przez sprzężenie)</em></p>
+    </div>
+</section>
+
+<div class="separator"></div>
+
+<!-- PODSUMOWANIE -->
+<section class="section">
+    <div class="section-label">Podsumowanie</div>
+    <h2>Co zapamiętać na maturę?</h2>
+
+    <div class="cols-2">
+        <div class="def-box" style="margin: 0;">
+            <p><strong>✓ Ciąg</strong> — funkcja z ℕ⁺ w ℝ</p>
+            <p><strong>✓ Wzór ogólny</strong> — bezpośredni wzór na a<sub>n</sub></p>
+            <p><strong>✓ Wzór rekurencyjny</strong> — reguła z wartością początkową</p>
+            <p><strong>✓ Wykres</strong> — izolowane punkty, NIE linia!</p>
+        </div>
+        <div class="def-box" style="margin: 0;">
+            <p><strong>✓ Rosnący:</strong> a<sub>n+1</sub> − a<sub>n</sub> &gt; 0</p>
+            <p><strong>✓ Malejący:</strong> a<sub>n+1</sub> − a<sub>n</sub> &lt; 0</p>
+            <p><strong>✓ Metoda różnicy</strong> — uniwersalna</p>
+            <p><strong>✓ Metoda ilorazu</strong> — tylko dla a<sub>n</sub> &gt; 0</p>
+        </div>
+    </div>
+</section>
+```
+
+</main>
+
+<footer class="footer">
+    <p>Lekcja przygotowana pod maturę z matematyki &nbsp;|&nbsp; Temat: Określenie ciągu. Monotoniczność ciągów.</p>
+    <p style="margin-top: 6px;">Rozwiązania zadań → <a href="rozwiazania-ciagi.html">rozwiazania-ciagi.html</a></p>
+</footer>
+
+<script>
+    // Pasek postępu
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = (scrollTop / scrollHeight) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+    });
+
+    // Podpowiedzi toggle
+    document.querySelectorAll('.hint-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const content = btn.nextElementSibling;
+            content.classList.toggle('show');
+            btn.textContent = content.classList.contains('show') ? '🔽 Ukryj podpowiedź' : '💡 Pokaż podpowiedź';
+        });
+    });
+</script>
+
+</body>
+</html>
