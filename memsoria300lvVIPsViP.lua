@@ -3,46 +3,67 @@
   Taski 300lv vip+svip
   vBot / OTClientV8 - MemsoriaOTS 8.6
   ================================================================
-  
-  LOGIKA:
-  1. Levelowanie: roty(8-75) > dragony(75-150) > demony(150-300)
-  2. Przy NPC: bierze WSZYSTKIE 13 taskow 300 NARAZ
-  3. Hunt po kolei: fury > hellhound > bog raider > ... > piece of earth
-  4. Po fury: grinduje dalej az do lv 700
-  5. Po zakonczeniu 13 taskow: wraca do NPC > report > yes
-  6. Bierze WSZYSTKIE 10 taskow 750 NARAZ
-  7. Hunt po kolei: arciere > imbecile > ... > the hunter
-  8. Report > done
-  ================================================================
 ]]
 
 
-local SCRIPT_VERSION = "2.1.1"
+local SCRIPT_VERSION = "2.1.0"
 
-
--- GitHub auto-update (ustaw swoj URL lub zostaw pusty)
+-- GitHub auto-update LUA
 local GITHUB_RAW_URL = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
-
--- Lokalna sciezka do tego skryptu (profil "Amcia")
 local LOCAL_SCRIPT_PATH = "/bot/Amcia/memsoria300lvVIPsViP.lua"
+
+--[[
+  ================================================================
+  AUTO-UPDATE WPT (WAYPOINTY) - INSTRUKCJA
+  ================================================================
+  1) Pliki WPT wrzucasz do repozytorium GitHub do folderu:
+       /WPT/nazwa.cfg
+     i uzywasz adresu RAW, np.:
+       https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/fury.cfg
+
+  2) Lokalnie w kliencie:
+       C:\Users\panwo\AppData\Roaming\OTClientV8\otclientv8\bot\Amcia\cavebot_configs\nazwa.cfg
+     co w skrypcie odpowiada sciezce:
+       /bot/Amcia/cavebot_configs/nazwa.cfg
+
+  3) Zeby dany WPT byl automatycznie pobierany/aktualizowany:
+     - dodajesz wpis do tabeli WPT_FILES ponizej.
+
+  4) Przyklad: taskiVIPsVIP (JUZ DODANY nizej):
+     - WPT na GitHub:  WPT/taskiVIPsVIP.cfg
+     - Lokalnie:       cavebot_configs/taskiVIPsVIP.cfg
+  ================================================================
+]]
+
+local WPT_FILES = {
+    -- gotowy wpis dla taskiVIPsVIP
+    taskiVIPsVIP = {
+        url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/taskiVIPsVIP.cfg",
+        path = "/bot/Amcia/cavebot_configs/taskiVIPsVIP.cfg"
+    },
+
+    -- przyklad przyszlego wpisu:
+    -- fury = {
+    --     url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/fury.cfg",
+    --     path = "/bot/Amcia/cavebot_configs/fury.cfg"
+    -- },
+}
 
 
 -- ============================================================
 -- KONFIGURACJA
 -- ============================================================
 
-
-local KILL_TARGET_300  = 320   -- 300 + zapas
-local KILL_TARGET_750  = 770   -- 750 + zapas
+local KILL_TARGET_300  = 320
+local KILL_TARGET_750  = 770
 local NPC_DELAY        = 1500
-local SPELL_CD         = 1000  -- cooldown spelli (ms)
-local FURY_MIN_LEVEL   = 700   -- min lvl po fury zeby isc dalej
+local SPELL_CD         = 1000
+local FURY_MIN_LEVEL   = 700
 
 
 -- ============================================================
 -- TASKI
 -- ============================================================
-
 
 local TASKS_300 = {
     [1]  = { monster = "super fury",          taskName = "Super Fury",          reqLevel = nil },
@@ -60,7 +81,6 @@ local TASKS_300 = {
     [13] = { monster = "piece of earth",      taskName = "Piece of Earth" },
 }
 
-
 local TASKS_750 = {
     [1]  = { monster = "arciere",             taskName = "Arciere" },
     [2]  = { monster = "imbecile",            taskName = "Imbecile" },
@@ -76,9 +96,8 @@ local TASKS_750 = {
 
 
 -- ============================================================
--- CZARY (4 vocation)
+-- SPELLS
 -- ============================================================
-
 
 local SPELLS = {
     knight = {
@@ -107,7 +126,6 @@ local SPELLS = {
 -- STORAGE
 -- ============================================================
 
-
 if type(storage.mt) ~= "table" then
     storage.mt = {
         kills300  = {},
@@ -119,9 +137,7 @@ if type(storage.mt) ~= "table" then
     }
 end
 
-
 local S = storage.mt
-
 
 for i = 1, #TASKS_300 do
     if S.kills300[i] == nil then S.kills300[i] = 0 end
@@ -132,9 +148,8 @@ end
 
 
 -- ============================================================
--- KOMENDY STARTOWE
+-- START COMMANDS
 -- ============================================================
-
 
 macro(3000, "Auto Start Cmds", function()
     if S.startSent then return end
@@ -153,16 +168,13 @@ end)
 -- UI
 -- ============================================================
 
-
 UI.Separator()
 UI.Label("=== MEGA TASK v" .. SCRIPT_VERSION .. " ===")
 UI.Separator()
 
-
 UI.Label("Profesja:")
 local vocLabel = UI.Label(">> " .. (S.vocation or "paladin"):upper())
 vocLabel:setColor("#00FF00")
-
 
 UI.Button("Knight", function()
     S.vocation = "knight"; vocLabel:setText(">> KNIGHT")
@@ -177,37 +189,14 @@ UI.Button("Druid", function()
     S.vocation = "druid"; vocLabel:setText(">> DRUID")
 end)
 
-
 UI.Separator()
-
 
 local phaseLabel = UI.Label("Faza: " .. (S.phase or "init"))
 local taskLabel  = UI.Label("Task: -")
 local killsLabel = UI.Label("Kille: -")
 local lvlLabel   = UI.Label("Level: " .. level())
 
-
 UI.Separator()
-
-
-UI.Button("Reset WSZYSTKO", function()
-    for i = 1, #TASKS_300 do S.kills300[i] = 0 end
-    for i = 1, #TASKS_750 do S.kills750[i] = 0 end
-    S.phase = "init"; S.taskIdx = 1; S.startSent = false
-    print("[MT] PELNY RESET!")
-end)
-
-
-UI.Button("Reset aktywny task", function()
-    if S.phase == "tasks300" and TASKS_300[S.taskIdx] then
-        S.kills300[S.taskIdx] = 0
-        print("[MT] Reset: " .. TASKS_300[S.taskIdx].taskName)
-    elseif S.phase == "tasks750" and TASKS_750[S.taskIdx] then
-        S.kills750[S.taskIdx] = 0
-        print("[MT] Reset: " .. TASKS_750[S.taskIdx].taskName)
-    end
-end)
-
 
 UI.Button("Pokaz postep", function()
     print("========= TASKI 300 =========")
@@ -224,22 +213,18 @@ UI.Button("Pokaz postep", function()
     end
 end)
 
-
 UI.Button("Wyslij !bless", function()
     S.startSent = false
 end)
-
 
 UI.Separator()
 
 
 -- ============================================================
--- AUTO SPELE
+-- AUTO SPELLS
 -- ============================================================
 
-
 local lastCast = 0
-
 
 macro(200, "Auto Spells", function()
     local target = g_game.getAttackingCreature()
@@ -264,9 +249,8 @@ end)
 
 
 -- ============================================================
--- POMOCNICZE
+-- HELPERS
 -- ============================================================
-
 
 local function extractMonster(text)
     local t = text:lower()
@@ -280,9 +264,8 @@ end
 
 
 -- ============================================================
--- GLOWNE MACRO - TASK SYSTEM
+-- TASK SYSTEM (macro always-on)
 -- ============================================================
-
 
 macro(1000, "Task System", function()
     -- logika w onTextMessage
@@ -290,9 +273,8 @@ end)
 
 
 -- ============================================================
--- DETEKCJA KILLI
+-- KILL DETECTION
 -- ============================================================
-
 
 onTextMessage(function(mode, text)
     local monsterName = extractMonster(text)
@@ -364,9 +346,8 @@ end)
 
 
 -- ============================================================
--- PHASE CHECK
+-- PHASE CHECK (macro always-on)
 -- ============================================================
-
 
 macro(5000, "Phase Check", function()
     local lvl = level()
@@ -442,16 +423,15 @@ macro(5000, "Phase Check", function()
 
     if S.phase == "report750" then
         S.phase = "done"
-        print("[MT] *** WSZYSTKO ZROBIONE! GG! ***")
+        print("[MT] *** WSZYSTKIE TASKI 750 DONE! GG! ***")
         return
     end
 end)
 
 
 -- ============================================================
--- LEVEL-UP SWITCH
+-- LEVEL-UP SWITCH + BACKUP
 -- ============================================================
-
 
 onTextMessage(function(mode, text)
     if S.phase ~= "leveling" then return end
@@ -471,7 +451,6 @@ onTextMessage(function(mode, text)
     end
 end)
 
-
 macro(15000, "Level Backup Check", function()
     if S.phase ~= "leveling" then return end
     local lvl = level()
@@ -484,9 +463,8 @@ end)
 
 
 -- ============================================================
--- KOMUNIKAT O RESTART
+-- RESTART MESSAGE
 -- ============================================================
-
 
 local function showRestartInfo()
     modules.game_textmessage.displayGameMessage(
@@ -496,12 +474,40 @@ end
 
 
 -- ============================================================
--- GITHUB AUTO-UPDATE (HTTP + zapis pliku klientem)
+-- AUTO-UPDATE LUA + WPT
 -- ============================================================
 
+local function updateAllWpt()
+    if not (HTTP and HTTP.get) then
+        print("[MT] Brak HTTP.get - WPT update wylaczony.")
+        return
+    end
+
+    for name, info in pairs(WPT_FILES) do
+        if info.url ~= "" and info.path ~= "" then
+            HTTP.get(info.url, function(data, err)
+                if err or not data or data == "" then
+                    print("[MT] WPT '" .. name .. "' blad pobierania: " .. tostring(err))
+                    return
+                end
+                local ok, errMsg = pcall(function()
+                    g_resources.writeFileContents(info.path, data)
+                end)
+                if not ok then
+                    print("[MT] WPT '" .. name .. "' blad zapisu: " .. tostring(errMsg))
+                    return
+                end
+                print("[MT] WPT '" .. name .. "' zaktualizowany.")
+            end)
+        end
+    end
+end
 
 local function checkUpdate()
-    if GITHUB_RAW_URL == "" then return end
+    if GITHUB_RAW_URL == "" then
+        updateAllWpt()
+        return
+    end
     if not (HTTP and HTTP.get) then
         print("[MT] Brak HTTP.get - auto-update wylaczony.")
         return
@@ -521,6 +527,7 @@ local function checkUpdate()
 
         if rv == SCRIPT_VERSION then
             print("[MT] Wersja aktualna: " .. SCRIPT_VERSION)
+            updateAllWpt()
             return
         end
 
@@ -536,8 +543,9 @@ local function checkUpdate()
             return
         end
 
-        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby zaladowac nowy plik.")
+        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby wczytac nowy plik.")
         showRestartInfo()
+        updateAllWpt()
     end)
 end
 
@@ -546,13 +554,11 @@ end
 -- INIT
 -- ============================================================
 
-
 print("================================================================")
 print("  MEGA TASK SYSTEM v" .. SCRIPT_VERSION)
 print("  Voc: " .. (S.vocation or "paladin"):upper())
 print("  Faza: " .. S.phase .. " | Task idx: " .. S.taskIdx)
 print("  Spell CD: " .. SPELL_CD .. "ms (zmien na gorze)")
 print("================================================================")
-
 
 checkUpdate()
