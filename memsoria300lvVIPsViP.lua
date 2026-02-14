@@ -10,7 +10,7 @@ local SCRIPT_VERSION = "2.1.0"
 
 -- GitHub auto-update LUA
 local GITHUB_RAW_URL = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
-local LOCAL_SCRIPT_PATH = "/bot/Amcia/memsoria300lvVIPsViP.lua"
+local LOCAL_SCRIPT_PATH = "/bot/memsoria/memsoria300lvVIPsViP.lua"
 
 --[[
   ================================================================
@@ -39,7 +39,7 @@ local WPT_FILES = {
     -- gotowy wpis dla taskiVIPsVIP
     taskiVIPsVIP = {
         url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/taskiVIPsVIP.cfg",
-        path = "/bot/Amcia/cavebot_configs/taskiVIPsVIP.cfg"
+        path = "/bot/memsoria/cavebot_configs/taskiVIPsVIP.cfg"
     },
 
     -- przyklad przyszlego wpisu:
