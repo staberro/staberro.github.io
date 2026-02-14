@@ -6,7 +6,7 @@
 ]]
 
 
-local SCRIPT_VERSION = "2.1.2"
+local SCRIPT_VERSION = "2.1.3"
 
 -- GitHub auto-update LUA
 local GITHUB_RAW_URL  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
@@ -452,7 +452,7 @@ end)
 
 
 -- ============================================================
--- LEVEL-UP SWITCH (75 -> hunt_dragon, 150 -> hunt_demon)
+-- LEVEL-UP SWITCH (>= zakresy, wymusza config taskiVIPsVIP)
 -- ============================================================
 
 onTextMessage(function(mode, text)
@@ -460,16 +460,25 @@ onTextMessage(function(mode, text)
     if not (text:find("You advanced") or text:find("advanced to")) then return end
 
     local lvl = level()
-    if lvl == 75 then
-        print("[MT] Lv 75! Przechodze na Dragony!")
+
+    if lvl >= 75 and lvl < 150 then
+        print("[MT] Lv " .. lvl .. "! Przechodze na Dragony!")
+        CaveBot.setOn(true)
+        CaveBot.setConfig("taskiVIPsVIP")
         CaveBot.gotoLabel("hunt_dragon")
-    elseif lvl == 150 then
-        print("[MT] Lv 150! Przechodze na Demony!")
+
+    elseif lvl >= 150 and lvl < 300 then
+        print("[MT] Lv " .. lvl .. "! Przechodze na Demony!")
+        CaveBot.setOn(true)
+        CaveBot.setConfig("taskiVIPsVIP")
         CaveBot.gotoLabel("hunt_demon")
+
     elseif lvl >= 300 then
         S.phase = "tasks300"
         S.taskIdx = 1
-        print("[MT] Lv 300! Ide po taski!")
+        print("[MT] Lv " .. lvl .. "! Ide po taski!")
+        CaveBot.setOn(true)
+        CaveBot.setConfig("taskiVIPsVIP")
         CaveBot.gotoLabel("NpcTaski")
     end
 end)
