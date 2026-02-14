@@ -6,10 +6,10 @@
 ]]
 
 
-local SCRIPT_VERSION = "2.1.0"
+local SCRIPT_VERSION = "2.1.1"
 
 -- GitHub auto-update LUA
-local GITHUB_RAW_URL = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
+local GITHUB_RAW_URL  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
 local LOCAL_SCRIPT_PATH = "/bot/memsoria/memsoria300lvVIPsViP.lua"
 
 --[[
@@ -18,25 +18,24 @@ local LOCAL_SCRIPT_PATH = "/bot/memsoria/memsoria300lvVIPsViP.lua"
   ================================================================
   1) Pliki WPT wrzucasz do repozytorium GitHub do folderu:
        /WPT/nazwa.cfg
-     i uzywasz adresu RAW, np.:
+     RAW np.:
        https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/fury.cfg
 
-  2) Lokalnie w kliencie:
+  2) Lokalnie:
        C:\Users\panwo\AppData\Roaming\OTClientV8\otclientv8\bot\Amcia\cavebot_configs\nazwa.cfg
-     co w skrypcie odpowiada sciezce:
-       /bot/Amcia/cavebot_configs/nazwa.cfg
+     w skrypcie:
+       /bot/memsoria/cavebot_configs/nazwa.cfg  (u Ciebie dla tego profilu)
 
-  3) Zeby dany WPT byl automatycznie pobierany/aktualizowany:
-     - dodajesz wpis do tabeli WPT_FILES ponizej.
+  3) Zeby WPT byl pobierany/aktualizowany:
+     - dodajesz wpis do WPT_FILES.
 
-  4) Przyklad: taskiVIPsVIP (JUZ DODANY nizej):
-     - WPT na GitHub:  WPT/taskiVIPsVIP.cfg
-     - Lokalnie:       cavebot_configs/taskiVIPsVIP.cfg
+  4) Przyklad: taskiVIPsVIP (JUZ DODANY):
+     - GitHub:  WPT/taskiVIPsVIP.cfg
+     - Lokalnie: cavebot_configs/taskiVIPsVIP.cfg
   ================================================================
 ]]
 
 local WPT_FILES = {
-    -- gotowy wpis dla taskiVIPsVIP
     taskiVIPsVIP = {
         url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/taskiVIPsVIP.cfg",
         path = "/bot/memsoria/cavebot_configs/taskiVIPsVIP.cfg"
@@ -45,7 +44,7 @@ local WPT_FILES = {
     -- przyklad przyszlego wpisu:
     -- fury = {
     --     url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/fury.cfg",
-    --     path = "/bot/Amcia/cavebot_configs/fury.cfg"
+    --     path = "/bot/memsoria/cavebot_configs/fury.cfg"
     -- },
 }
 
@@ -198,6 +197,25 @@ local lvlLabel   = UI.Label("Level: " .. level())
 
 UI.Separator()
 
+UI.Button("Reset WSZYSTKO", function()
+    for i = 1, #TASKS_300 do S.kills300[i] = 0 end
+    for i = 1, #TASKS_750 do S.kills750[i] = 0 end
+    S.phase = "init"
+    S.taskIdx = 1
+    S.startSent = false
+    print("[MT] PELNY RESET!")
+end)
+
+UI.Button("Reset aktywny task", function()
+    if S.phase == "tasks300" and TASKS_300[S.taskIdx] then
+        S.kills300[S.taskIdx] = 0
+        print("[MT] Reset: " .. TASKS_300[S.taskIdx].taskName)
+    elseif S.phase == "tasks750" and TASKS_750[S.taskIdx] then
+        S.kills750[S.taskIdx] = 0
+        print("[MT] Reset: " .. TASKS_750[S.taskIdx].taskName)
+    end
+end)
+
 UI.Button("Pokaz postep", function()
     print("========= TASKI 300 =========")
     for i, t in ipairs(TASKS_300) do
@@ -220,16 +238,10 @@ end)
 UI.Separator()
 
 
--- ============================================================
--- AUTO SPELLS
--- ============================================================
-
-local lastCast = 0
-
-macro(200, "Auto Spells", function()
+-- checkboxy / przyciski do wlaczania makr
+local autoSpellsMacro = macro(200, "Auto Spells", function()
     local target = g_game.getAttackingCreature()
-    if not target then return end
-    if not target:isMonster() then return end
+    if not target or not target:isMonster() then return end
 
     local now = os.clock() * 1000
     if now - lastCast < SPELL_CD then return end
@@ -247,109 +259,11 @@ macro(200, "Auto Spells", function()
     end
 end)
 
-
--- ============================================================
--- HELPERS
--- ============================================================
-
-local function extractMonster(text)
-    local t = text:lower()
-    local name = t:match("loot of an? (.-):")
-              or t:match("loot of (.-)%s*:")
-              or t:match("you killed an? (.-)%.")
-              or t:match("you killed (.-)%.")
-    if name then return name:match("^%s*(.-)%s*$") end
-    return nil
-end
-
-
--- ============================================================
--- TASK SYSTEM (macro always-on)
--- ============================================================
-
-macro(1000, "Task System", function()
+local taskSystemMacro = macro(1000, "Task System", function()
     -- logika w onTextMessage
 end)
 
-
--- ============================================================
--- KILL DETECTION
--- ============================================================
-
-onTextMessage(function(mode, text)
-    local monsterName = extractMonster(text)
-    if not monsterName then return end
-
-    if S.phase == "tasks300" then
-        local task = TASKS_300[S.taskIdx]
-        if not task or monsterName ~= task.monster then return end
-
-        S.kills300[S.taskIdx] = S.kills300[S.taskIdx] + 1
-        local k = S.kills300[S.taskIdx]
-
-        print(string.format("[MT] %s: %d/%d", task.taskName, k, KILL_TARGET_300))
-
-        if k >= KILL_TARGET_300 then
-            print("[MT] >>> DONE: " .. task.taskName .. " <<<")
-
-            local nextIdx = S.taskIdx + 1
-            if nextIdx <= #TASKS_300 then
-                local nextTask = TASKS_300[nextIdx]
-                if nextTask.reqLevel and level() < nextTask.reqLevel then
-                    S.phase = "lvlgrind"
-                    print(string.format("[MT] Potrzebujesz lv %d (masz %d). Grinduje na aktualnym respie!",
-                        nextTask.reqLevel, level()))
-                    return
-                end
-                S.taskIdx = nextIdx
-                print("[MT] Nastepny: " .. TASKS_300[nextIdx].taskName)
-                CaveBot.gotoLabel("back_to_npc_" .. (nextIdx - 1))
-            else
-                S.phase = "report300"
-                print("[MT] === WSZYSTKIE TASKI 300 DONE! Ide raportowac! ===")
-                CaveBot.gotoLabel("go_report_300")
-            end
-        end
-        return
-    end
-
-    if S.phase == "lvlgrind" then
-        return
-    end
-
-    if S.phase == "tasks750" then
-        local task = TASKS_750[S.taskIdx]
-        if not task or monsterName ~= task.monster then return end
-
-        S.kills750[S.taskIdx] = S.kills750[S.taskIdx] + 1
-        local k = S.kills750[S.taskIdx]
-
-        print(string.format("[MT] %s: %d/%d", task.taskName, k, KILL_TARGET_750))
-
-        if k >= KILL_TARGET_750 then
-            print("[MT] >>> DONE: " .. task.taskName .. " <<<")
-
-            local nextIdx = S.taskIdx + 1
-            if nextIdx <= #TASKS_750 then
-                S.taskIdx = nextIdx
-                print("[MT] Nastepny 750: " .. TASKS_750[nextIdx].taskName)
-                CaveBot.gotoLabel("back_750_" .. (nextIdx - 1))
-            else
-                S.phase = "report750"
-                print("[MT] === WSZYSTKIE TASKI 750 DONE! Ide raportowac! ===")
-                CaveBot.gotoLabel("go_report_750")
-            end
-        end
-        return
-    end
-end)
-
-
--- ============================================================
--- PHASE CHECK (macro always-on)
--- ============================================================
-
-macro(5000, "Phase Check", function()
+local phaseCheckMacro = macro(5000, "Phase Check", function()
     local lvl = level()
 
     lvlLabel:setText("Level: " .. lvl)
@@ -428,9 +342,114 @@ macro(5000, "Phase Check", function()
     end
 end)
 
+local lvlBackupMacro = macro(15000, "Level Backup Check", function()
+    if S.phase ~= "leveling" then return end
+    local lvl = level()
+    if lvl >= 300 then
+        S.phase = "tasks300"
+        S.taskIdx = 1
+        CaveBot.gotoLabel("NpcTaski")
+    end
+end)
+
 
 -- ============================================================
--- LEVEL-UP SWITCH + BACKUP
+-- AUTO SPELLS (zmienne)
+-- ============================================================
+
+local lastCast = 0
+
+
+-- ============================================================
+-- HELPERS
+-- ============================================================
+
+local function extractMonster(text)
+    local t = text:lower()
+    local name = t:match("loot of an? (.-):")
+              or t:match("loot of (.-)%s*:")  -- poprawka na brak spacji w regexie
+              or t:match("you killed an? (.-)%.")
+              or t:match("you killed (.-)%.")
+    if name then return name:match("^%s*(.-)%s*$") end
+    return nil
+end
+
+
+-- ============================================================
+-- KILL DETECTION
+-- ============================================================
+
+onTextMessage(function(mode, text)
+    local monsterName = extractMonster(text)
+    if not monsterName then return end
+
+    if S.phase == "tasks300" then
+        local task = TASKS_300[S.taskIdx]
+        if not task or monsterName ~= task.monster then return end
+
+        S.kills300[S.taskIdx] = S.kills300[S.taskIdx] + 1
+        local k = S.kills300[S.taskIdx]
+
+        print(string.format("[MT] %s: %d/%d", task.taskName, k, KILL_TARGET_300))
+
+        if k >= KILL_TARGET_300 then
+            print("[MT] >>> DONE: " .. task.taskName .. " <<<")
+
+            local nextIdx = S.taskIdx + 1
+            if nextIdx <= #TASKS_300 then
+                local nextTask = TASKS_300[nextIdx]
+                if nextTask.reqLevel and level() < nextTask.reqLevel then
+                    S.phase = "lvlgrind"
+                    print(string.format("[MT] Potrzebujesz lv %d (masz %d). Grinduje na aktualnym respie!",
+                        nextTask.reqLevel, level()))
+                    return
+                end
+                S.taskIdx = nextIdx
+                print("[MT] Nastepny: " .. TASKS_300[nextIdx].taskName)
+                CaveBot.gotoLabel("back_to_npc_" .. (nextIdx - 1))
+            else
+                S.phase = "report300"
+                print("[MT] === WSZYSTKIE TASKI 300 DONE! Ide raportowac! ===")
+                CaveBot.gotoLabel("go_report_300")
+            end
+        end
+        return
+    end
+
+    if S.phase == "lvlgrind" then
+        return
+    end
+
+    if S.phase == "tasks750" then
+        local task = TASKS_750[S.taskIdx]
+        if not task or monsterName ~= task.monster then return end
+
+        S.kills750[S.taskIdx] = S.kills750[S.taskIdx] + 1
+        local k = S.kills750[S.taskIdx]
+
+        print(string.format("[MT] %s: %d/%d", task.taskName, k, KILL_TARGET_750))
+
+        if k >= KILL_TARGET_750 then
+            print("[MT] >>> DONE: " .. task.taskName .. " <<<")
+
+            local nextIdx = S.taskIdx + 1
+            if nextIdx <= #TASKS_750 then
+                S.taskIdx = nextIdx
+                print("[MT] Nastepny 750: " .. TASKS_750[nextIdx].taskName)
+                CaveBot.gotoLabel("back_750_" .. (nextIdx - 1))
+            else
+                S.phase = "report750"
+                print("[MT] === WSZYSTKIE TASKI 750 DONE! Ide raportowac! ===")
+                CaveBot.gotoLabel("go_report_750")
+            end
+        end
+        return
+    end
+end)
+
+
+-- ============================================================
+-- LEVEL-UP SWITCH (POPRAWKA: 75 -> hunt_dragon, 150 -> hunt_demon)
 -- ============================================================
 
 onTextMessage(function(mode, text)
@@ -440,23 +459,14 @@ onTextMessage(function(mode, text)
     local lvl = level()
     if lvl == 75 then
         print("[MT] Lv 75! Przechodze na Dragony!")
-        CaveBot.gotoLabel("RotEND")
+        CaveBot.gotoLabel("hunt_dragon")   -- zamiast RotEND
     elseif lvl == 150 then
         print("[MT] Lv 150! Przechodze na Demony!")
+        CaveBot.gotoLabel("hunt_demon")    -- bezposrednio na label demonow
     elseif lvl >= 300 then
         S.phase = "tasks300"
         S.taskIdx = 1
         print("[MT] Lv 300! Ide po taski!")
-        CaveBot.gotoLabel("NpcTaski")
-    end
-end)
-
-macro(15000, "Level Backup Check", function()
-    if S.phase ~= "leveling" then return end
-    local lvl = level()
-    if lvl >= 300 then
-        S.phase = "tasks300"
-        S.taskIdx = 1
         CaveBot.gotoLabel("NpcTaski")
     end
 end)
