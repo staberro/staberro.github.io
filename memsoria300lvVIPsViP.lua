@@ -6,7 +6,7 @@
 ]]
 
 
-local SCRIPT_VERSION = "2.1.4"
+local SCRIPT_VERSION = "2.1.5"
 
 -- GitHub auto-update LUA
 local GITHUB_RAW_URL  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
@@ -40,12 +40,6 @@ local WPT_FILES = {
         url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/taskiVIPsVIP.cfg",
         path = "/bot/memsoria/cavebot_configs/taskiVIPsVIP.cfg"
     },
-
-    -- przyklad przyszlego wpisu:
-    -- fury = {
-    --     url  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/WPT/fury.cfg",
-    --     path = "/bot/memsoria/cavebot_configs/fury.cfg"
-    -- },
 }
 
 
@@ -301,25 +295,36 @@ local phaseCheckMacro = macro(5000, "Phase Check", function()
     if S.phase == "init" then
         S.phase = "leveling"
         if lvl < 75 then
+            print("[MT] Init: Lv < 75 -> hunt_rotworm")
             CaveBot.gotoLabel("hunt_rotworm")
-        elseif lvl < 150 then
+        elseif lvl >= 75 and lvl < 150 then
+            print("[MT] Init: Lv 75-149 -> hunt_dragon")
             CaveBot.gotoLabel("hunt_dragon")
-        elseif lvl < 300 then
+        elseif lvl >= 150 and lvl < 300 then
+            print("[MT] Init: Lv 150-299 -> hunt_demon")
             CaveBot.gotoLabel("hunt_demon")
         else
             S.phase = "tasks300"
             S.taskIdx = 1
+            print("[MT] Init: Lv 300+ -> NpcTaski")
             CaveBot.gotoLabel("NpcTaski")
         end
         return
     end
 
     if S.phase == "leveling" then
+        -- backup dla levelow 75+ (wymusza przelaczenie labela)
         if lvl >= 300 then
             S.phase = "tasks300"
             S.taskIdx = 1
-            print("[MT] Level 300! Ide po taski!")
+            print("[MT] Backup: Lv 300! Ide po taski!")
             CaveBot.gotoLabel("NpcTaski")
+        elseif lvl >= 150 then
+            print("[MT] Backup: Lv " .. lvl .. " - zmieniam na hunt_demon!")
+            CaveBot.gotoLabel("hunt_demon")
+        elseif lvl >= 75 then
+            print("[MT] Backup: Lv " .. lvl .. " - zmieniam na hunt_dragon!")
+            CaveBot.gotoLabel("hunt_dragon")
         end
         return
     end
@@ -333,7 +338,7 @@ local phaseCheckMacro = macro(5000, "Phase Check", function()
             S.phase = "tasks300"
             S.taskIdx = nextIdx
             print("[MT] Level " .. lvl .. " osiagniety! Ide na: " .. TASKS_300[nextIdx].taskName)
-            CaveBot.gotoLabel("back_to_npc_" .. S.taskIdx - 1)
+            CaveBot.gotoLabel("back_to_npc_" .. (S.taskIdx - 1))
         end
         return
     end
@@ -370,7 +375,7 @@ end)
 local function extractMonster(text)
     local t = text:lower()
     local name = t:match("loot of an? (.-):")
-              or t:match("loot of (.-)%s*:")  -- poprawka na brak spacji
+              or t:match("loot of (.-)%s*:")
               or t:match("you killed an? (.-)%.")
               or t:match("you killed (.-)%.")
     if name then return name:match("^%s*(.-)%s*$") end
@@ -452,7 +457,7 @@ end)
 
 
 -- ============================================================
--- LEVEL-UP SWITCH (>= zakresy, bez setConfig)
+-- LEVEL-UP SWITCH (tylko dla realtime lvlupow)
 -- ============================================================
 
 onTextMessage(function(mode, text)
@@ -461,22 +466,17 @@ onTextMessage(function(mode, text)
 
     local lvl = level()
 
-    if lvl >= 75 and lvl < 150 then
-        print("[MT] Lv " .. lvl .. "! Przechodze na Dragony!")
-        CaveBot.setOn(true)
-        CaveBot.gotoLabel("hunt_dragon")
-
-    elseif lvl >= 150 and lvl < 300 then
-        print("[MT] Lv " .. lvl .. "! Przechodze na Demony!")
-        CaveBot.setOn(true)
-        CaveBot.gotoLabel("hunt_demon")
-
-    elseif lvl >= 300 then
+    if lvl >= 300 then
         S.phase = "tasks300"
         S.taskIdx = 1
-        print("[MT] Lv " .. lvl .. "! Ide po taski!")
-        CaveBot.setOn(true)
+        print("[MT] LvlUp: Lv " .. lvl .. "! Ide po taski!")
         CaveBot.gotoLabel("NpcTaski")
+    elseif lvl >= 150 then
+        print("[MT] LvlUp: Lv " .. lvl .. "! Przechodze na hunt_demon!")
+        CaveBot.gotoLabel("hunt_demon")
+    elseif lvl >= 75 then
+        print("[MT] LvlUp: Lv " .. lvl .. "! Przechodze na hunt_dragon!")
+        CaveBot.gotoLabel("hunt_dragon")
     end
 end)
 
@@ -562,7 +562,7 @@ local function checkUpdate()
             return
         end
 
-        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby wczytac nowa wersje.")
+        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby wczytac nowy plik.")
         showRestartInfo()
         updateAllWpt()
     end)
