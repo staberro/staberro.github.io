@@ -6,7 +6,7 @@
 ]]
 
 
-local SCRIPT_VERSION = "2.1.3"
+local SCRIPT_VERSION = "2.1.4"
 
 -- GitHub auto-update LUA
 local GITHUB_RAW_URL  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
@@ -239,7 +239,7 @@ UI.Separator()
 
 
 -- ============================================================
--- AUTO SPELLS (lastCast PRZED makrem)
+-- AUTO SPELLS
 -- ============================================================
 
 local lastCast = 0
@@ -266,7 +266,7 @@ end)
 
 
 -- ============================================================
--- TASK SYSTEM / PHASE / BACKUP MACROS (z przyciskami)
+-- TASK SYSTEM / PHASE / BACKUP MACROS
 -- ============================================================
 
 local taskSystemMacro = macro(1000, "Task System", function()
@@ -452,7 +452,7 @@ end)
 
 
 -- ============================================================
--- LEVEL-UP SWITCH (>= zakresy, wymusza config taskiVIPsVIP)
+-- LEVEL-UP SWITCH (>= zakresy, bez setConfig)
 -- ============================================================
 
 onTextMessage(function(mode, text)
@@ -464,13 +464,11 @@ onTextMessage(function(mode, text)
     if lvl >= 75 and lvl < 150 then
         print("[MT] Lv " .. lvl .. "! Przechodze na Dragony!")
         CaveBot.setOn(true)
-        CaveBot.setConfig("taskiVIPsVIP")
         CaveBot.gotoLabel("hunt_dragon")
 
     elseif lvl >= 150 and lvl < 300 then
         print("[MT] Lv " .. lvl .. "! Przechodze na Demony!")
         CaveBot.setOn(true)
-        CaveBot.setConfig("taskiVIPsVIP")
         CaveBot.gotoLabel("hunt_demon")
 
     elseif lvl >= 300 then
@@ -478,7 +476,6 @@ onTextMessage(function(mode, text)
         S.taskIdx = 1
         print("[MT] Lv " .. lvl .. "! Ide po taski!")
         CaveBot.setOn(true)
-        CaveBot.setConfig("taskiVIPsVIP")
         CaveBot.gotoLabel("NpcTaski")
     end
 end)
