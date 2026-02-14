@@ -16,13 +16,21 @@
   ================================================================
 ]]
 
-local SCRIPT_VERSION = "2.2"
+
+local SCRIPT_VERSION = "2.1.1"
+
 
 -- GitHub auto-update (ustaw swoj URL lub zostaw pusty)
 local GITHUB_RAW_URL = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
+
+-- Lokalna sciezka do tego skryptu (profil "Amcia")
+local LOCAL_SCRIPT_PATH = "/bot/Amcia/memsoria300lvVIPsViP.lua"
+
+
 -- ============================================================
 -- KONFIGURACJA
 -- ============================================================
+
 
 local KILL_TARGET_300  = 320   -- 300 + zapas
 local KILL_TARGET_750  = 770   -- 750 + zapas
@@ -30,9 +38,11 @@ local NPC_DELAY        = 1500
 local SPELL_CD         = 1000  -- cooldown spelli (ms)
 local FURY_MIN_LEVEL   = 700   -- min lvl po fury zeby isc dalej
 
+
 -- ============================================================
 -- TASKI
 -- ============================================================
+
 
 local TASKS_300 = {
     [1]  = { monster = "super fury",          taskName = "Super Fury",          reqLevel = nil },
@@ -50,6 +60,7 @@ local TASKS_300 = {
     [13] = { monster = "piece of earth",      taskName = "Piece of Earth" },
 }
 
+
 local TASKS_750 = {
     [1]  = { monster = "arciere",             taskName = "Arciere" },
     [2]  = { monster = "imbecile",            taskName = "Imbecile" },
@@ -63,9 +74,11 @@ local TASKS_750 = {
     [10] = { monster = "the hunter",          taskName = "The Hunter" },
 }
 
+
 -- ============================================================
--- CZARY (4 vocacje)
+-- CZARY (4 vocation)
 -- ============================================================
+
 
 local SPELLS = {
     knight = {
@@ -89,9 +102,11 @@ local SPELLS = {
     },
 }
 
+
 -- ============================================================
 -- STORAGE
 -- ============================================================
+
 
 if type(storage.mt) ~= "table" then
     storage.mt = {
@@ -104,7 +119,9 @@ if type(storage.mt) ~= "table" then
     }
 end
 
+
 local S = storage.mt
+
 
 for i = 1, #TASKS_300 do
     if S.kills300[i] == nil then S.kills300[i] = 0 end
@@ -113,9 +130,11 @@ for i = 1, #TASKS_750 do
     if S.kills750[i] == nil then S.kills750[i] = 0 end
 end
 
+
 -- ============================================================
 -- KOMENDY STARTOWE
 -- ============================================================
+
 
 macro(3000, "Auto Start Cmds", function()
     if S.startSent then return end
@@ -129,18 +148,21 @@ macro(3000, "Auto Start Cmds", function()
     end)
 end)
 
+
 -- ============================================================
 -- UI
 -- ============================================================
+
 
 UI.Separator()
 UI.Label("=== MEGA TASK v" .. SCRIPT_VERSION .. " ===")
 UI.Separator()
 
--- Proiesja
+
 UI.Label("Profesja:")
 local vocLabel = UI.Label(">> " .. (S.vocation or "paladin"):upper())
 vocLabel:setColor("#00FF00")
+
 
 UI.Button("Knight", function()
     S.vocation = "knight"; vocLabel:setText(">> KNIGHT")
@@ -155,14 +177,18 @@ UI.Button("Druid", function()
     S.vocation = "druid"; vocLabel:setText(">> DRUID")
 end)
 
+
 UI.Separator()
+
 
 local phaseLabel = UI.Label("Faza: " .. (S.phase or "init"))
 local taskLabel  = UI.Label("Task: -")
 local killsLabel = UI.Label("Kille: -")
 local lvlLabel   = UI.Label("Level: " .. level())
 
+
 UI.Separator()
+
 
 UI.Button("Reset WSZYSTKO", function()
     for i = 1, #TASKS_300 do S.kills300[i] = 0 end
@@ -170,6 +196,7 @@ UI.Button("Reset WSZYSTKO", function()
     S.phase = "init"; S.taskIdx = 1; S.startSent = false
     print("[MT] PELNY RESET!")
 end)
+
 
 UI.Button("Reset aktywny task", function()
     if S.phase == "tasks300" and TASKS_300[S.taskIdx] then
@@ -180,6 +207,7 @@ UI.Button("Reset aktywny task", function()
         print("[MT] Reset: " .. TASKS_750[S.taskIdx].taskName)
     end
 end)
+
 
 UI.Button("Pokaz postep", function()
     print("========= TASKI 300 =========")
@@ -196,17 +224,22 @@ UI.Button("Pokaz postep", function()
     end
 end)
 
+
 UI.Button("Wyslij !bless", function()
     S.startSent = false
 end)
 
+
 UI.Separator()
+
 
 -- ============================================================
 -- AUTO SPELE
 -- ============================================================
 
+
 local lastCast = 0
+
 
 macro(200, "Auto Spells", function()
     local target = g_game.getAttackingCreature()
@@ -229,9 +262,11 @@ macro(200, "Auto Spells", function()
     end
 end)
 
+
 -- ============================================================
--- POMOCNICZE GOWNO
+-- POMOCNICZE
 -- ============================================================
+
 
 local function extractMonster(text)
     local t = text:lower()
@@ -243,28 +278,29 @@ local function extractMonster(text)
     return nil
 end
 
+
 -- ============================================================
--- GLOWNE MACRO - TASK SYSTEM CHUJ WIE
+-- GLOWNE MACRO - TASK SYSTEM
 -- ============================================================
+
 
 macro(1000, "Task System", function()
-    -- puste - logika w onTextMessage czy cos
+    -- logika w onTextMessage
 end)
 
+
 -- ============================================================
--- DETEKCJA KILLI CHYBa XD
+-- DETEKCJA KILLI
 -- ============================================================
+
 
 onTextMessage(function(mode, text)
     local monsterName = extractMonster(text)
     if not monsterName then return end
 
-    -- === FAZA TASKi 300vOL ===
     if S.phase == "tasks300" then
         local task = TASKS_300[S.taskIdx]
-        if not task then return end
-
-        if monsterName ~= task.monster then return end
+        if not task or monsterName ~= task.monster then return end
 
         S.kills300[S.taskIdx] = S.kills300[S.taskIdx] + 1
         local k = S.kills300[S.taskIdx]
@@ -274,25 +310,19 @@ onTextMessage(function(mode, text)
         if k >= KILL_TARGET_300 then
             print("[MT] >>> DONE: " .. task.taskName .. " <<<")
 
-            -- Sprawdz wymog levelu NASTEPNEGO taska cwelu
             local nextIdx = S.taskIdx + 1
             if nextIdx <= #TASKS_300 then
                 local nextTask = TASKS_300[nextIdx]
                 if nextTask.reqLevel and level() < nextTask.reqLevel then
-                    -- Trzeba grindowac lvl cipo (np. po fury -> lvl 700)
                     S.phase = "lvlgrind"
                     print(string.format("[MT] Potrzebujesz lv %d (masz %d). Grinduje na aktualnym respie!",
                         nextTask.reqLevel, level()))
-                    -- Zostaje na obecnym hunt - NIE przechodzi dalej
-                    -- gotolabel w CaveBot dalej krecikolko na hunt_X
                     return
                 end
-                -- Nastepny task
                 S.taskIdx = nextIdx
                 print("[MT] Nastepny: " .. TASKS_300[nextIdx].taskName)
                 CaveBot.gotoLabel("back_to_npc_" .. (nextIdx - 1))
             else
-                -- Wszystkie 300-ki done! Idz raportowac
                 S.phase = "report300"
                 print("[MT] === WSZYSTKIE TASKI 300 DONE! Ide raportowac! ===")
                 CaveBot.gotoLabel("go_report_300")
@@ -301,19 +331,13 @@ onTextMessage(function(mode, text)
         return
     end
 
-    -- === FAZA LVL GRINDa jak kas z memsori przez crisa (po fury, czeka na lv 700) ===
     if S.phase == "lvlgrind" then
-        -- Nie liczymy killi, tylko grindujemy
-        -- Phase check macro sprawdza lvl
         return
     end
 
-    -- === FAZA TASKS 750 ===
     if S.phase == "tasks750" then
         local task = TASKS_750[S.taskIdx]
-        if not task then return end
-
-        if monsterName ~= task.monster then return end
+        if not task or monsterName ~= task.monster then return end
 
         S.kills750[S.taskIdx] = S.kills750[S.taskIdx] + 1
         local k = S.kills750[S.taskIdx]
@@ -338,14 +362,15 @@ onTextMessage(function(mode, text)
     end
 end)
 
+
 -- ============================================================
--- PHASE CHECK (co 5 sek) [chyba co 5] xD
+-- PHASE CHECK
 -- ============================================================
+
 
 macro(5000, "Phase Check", function()
     local lvl = level()
 
-    -- UI update
     lvlLabel:setText("Level: " .. lvl)
     phaseLabel:setText("Faza: " .. S.phase)
 
@@ -368,7 +393,6 @@ macro(5000, "Phase Check", function()
         killsLabel:setText("Kille: -")
     end
 
-    -- === INIT O ILE MOZNA TO TAK NAZWAC XD===
     if S.phase == "init" then
         S.phase = "leveling"
         if lvl < 75 then
@@ -385,7 +409,6 @@ macro(5000, "Phase Check", function()
         return
     end
 
-    -- === LEVELING ===
     if S.phase == "leveling" then
         if lvl >= 300 then
             S.phase = "tasks300"
@@ -396,7 +419,6 @@ macro(5000, "Phase Check", function()
         return
     end
 
-    -- === LVL GRINDing (np. po fury, czeka na 700) ===
     if S.phase == "lvlgrind" then
         local nextIdx = S.taskIdx + 1
         local nextTask = TASKS_300[nextIdx]
@@ -411,20 +433,13 @@ macro(5000, "Phase Check", function()
         return
     end
 
-    -- === REPORT 300 -> TASKS 750 ===
     if S.phase == "report300" then
-        -- CaveBot jest na npc_report_all_300 i wykonuje npcsay
-        -- Po zakonczeniu dialogu NPC, CaveBot przechodzi dalej
-        -- do npc_take_all_750 (jest nastepny label w waypoints)
-        -- Ustawiamy faze na tasks750
-        -- Niespimy lecymy
         S.phase = "tasks750"
         S.taskIdx = 1
         print("[MT] Faza 750 aktywna!")
         return
     end
 
-    -- === REPORT 750 -> DONE ===
     if S.phase == "report750" then
         S.phase = "done"
         print("[MT] *** WSZYSTKO ZROBIONE! GG! ***")
@@ -432,9 +447,11 @@ macro(5000, "Phase Check", function()
     end
 end)
 
+
 -- ============================================================
--- LEVEL-UP SWITCH (roty -> dragony -> demony)
+-- LEVEL-UP SWITCH
 -- ============================================================
+
 
 onTextMessage(function(mode, text)
     if S.phase ~= "leveling" then return end
@@ -442,12 +459,10 @@ onTextMessage(function(mode, text)
 
     local lvl = level()
     if lvl == 75 then
-        print("[MT] Lv 75! Przechodzze na Dragony!")
+        print("[MT] Lv 75! Przechodze na Dragony!")
         CaveBot.gotoLabel("RotEND")
     elseif lvl == 150 then
-        print("[MT] Lv 150! Przechodzze na Demony!")
-        -- Trzeba dojsc do konca petli dragon, potem wyjsc
-        -- Alternatywnie: CaveBot.gotoLabel("hunt_demon")
+        print("[MT] Lv 150! Przechodze na Demony!")
     elseif lvl >= 300 then
         S.phase = "tasks300"
         S.taskIdx = 1
@@ -456,7 +471,7 @@ onTextMessage(function(mode, text)
     end
 end)
 
--- Backup check co 15 sek (na wypadek gdyby level-up msg nie zadzialalal)
+
 macro(15000, "Level Backup Check", function()
     if S.phase ~= "leveling" then return end
     local lvl = level()
@@ -467,28 +482,70 @@ macro(15000, "Level Backup Check", function()
     end
 end)
 
+
 -- ============================================================
--- GITHUB VERSION CHECK MAM NADZIEJE ZE DZIALA XD
+-- KOMUNIKAT O RESTART
 -- ============================================================
+
+
+local function showRestartInfo()
+    modules.game_textmessage.displayGameMessage(
+        "[MEGA TASK] Skrypt zaktualizowany - zrestartuj klienta/bota, aby wczytac nowa wersje."
+    )
+end
+
+
+-- ============================================================
+-- GITHUB AUTO-UPDATE (HTTP + zapis pliku klientem)
+-- ============================================================
+
 
 local function checkUpdate()
     if GITHUB_RAW_URL == "" then return end
-    if HTTP and HTTP.get then
-        HTTP.get(GITHUB_RAW_URL, function(data, err)
-            if err then return end
-            local rv = data:match('SCRIPT_VERSION%s*=%s*"([^"]+)"')
-            if rv and rv ~= SCRIPT_VERSION then
-                print("[MT] !!! NOWA WERSJA: " .. rv .. " (masz: " .. SCRIPT_VERSION .. ")")
-            else
-                print("[MT] Wersja aktualna: " .. SCRIPT_VERSION)
-            end
-        end)
+    if not (HTTP and HTTP.get) then
+        print("[MT] Brak HTTP.get - auto-update wylaczony.")
+        return
     end
+
+    HTTP.get(GITHUB_RAW_URL, function(data, err)
+        if err or not data or data == "" then
+            print("[MT] Blad pobierania z GitHuba: " .. tostring(err))
+            return
+        end
+
+        local rv = data:match('SCRIPT_VERSION%s*=%s*"([^"]+)"')
+        if not rv then
+            print("[MT] Nie znaleziono SCRIPT_VERSION w pliku z GitHuba.")
+            return
+        end
+
+        if rv == SCRIPT_VERSION then
+            print("[MT] Wersja aktualna: " .. SCRIPT_VERSION)
+            return
+        end
+
+        print("[MT] Znaleziono nowa wersje: " .. rv .. " (masz: " .. SCRIPT_VERSION .. ")")
+        print("[MT] Probuje zapisac nowy skrypt do: " .. LOCAL_SCRIPT_PATH)
+
+        local ok, errMsg = pcall(function()
+            g_resources.writeFileContents(LOCAL_SCRIPT_PATH, data)
+        end)
+
+        if not ok then
+            print("[MT] BLAD zapisu auto-update: " .. tostring(errMsg))
+            return
+        end
+
+        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby zaladowac nowy plik.")
+        showRestartInfo()
+    end)
 end
+
 
 -- ============================================================
 -- INIT
 -- ============================================================
+
 
 print("================================================================")
 print("  MEGA TASK SYSTEM v" .. SCRIPT_VERSION)
@@ -496,5 +553,6 @@ print("  Voc: " .. (S.vocation or "paladin"):upper())
 print("  Faza: " .. S.phase .. " | Task idx: " .. S.taskIdx)
 print("  Spell CD: " .. SPELL_CD .. "ms (zmien na gorze)")
 print("================================================================")
+
 
 checkUpdate()
