@@ -6,7 +6,7 @@
 ]]
 
 
-local SCRIPT_VERSION = "2.1.1"
+local SCRIPT_VERSION = "2.1.2"
 
 -- GitHub auto-update LUA
 local GITHUB_RAW_URL  = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
@@ -23,8 +23,8 @@ local LOCAL_SCRIPT_PATH = "/bot/memsoria/memsoria300lvVIPsViP.lua"
 
   2) Lokalnie:
        C:\Users\panwo\AppData\Roaming\OTClientV8\otclientv8\bot\Amcia\cavebot_configs\nazwa.cfg
-     w skrypcie:
-       /bot/memsoria/cavebot_configs/nazwa.cfg  (u Ciebie dla tego profilu)
+     w skrypcie (dla tego profilu):
+       /bot/memsoria/cavebot_configs/nazwa.cfg
 
   3) Zeby WPT byl pobierany/aktualizowany:
      - dodajesz wpis do WPT_FILES.
@@ -238,7 +238,12 @@ end)
 UI.Separator()
 
 
--- checkboxy / przyciski do wlaczania makr
+-- ============================================================
+-- AUTO SPELLS (lastCast PRZED makrem)
+-- ============================================================
+
+local lastCast = 0
+
 local autoSpellsMacro = macro(200, "Auto Spells", function()
     local target = g_game.getAttackingCreature()
     if not target or not target:isMonster() then return end
@@ -258,6 +263,11 @@ local autoSpellsMacro = macro(200, "Auto Spells", function()
         end
     end
 end)
+
+
+-- ============================================================
+-- TASK SYSTEM / PHASE / BACKUP MACROS (z przyciskami)
+-- ============================================================
 
 local taskSystemMacro = macro(1000, "Task System", function()
     -- logika w onTextMessage
@@ -354,20 +364,13 @@ end)
 
 
 -- ============================================================
--- AUTO SPELLS (zmienne)
--- ============================================================
-
-local lastCast = 0
-
-
--- ============================================================
 -- HELPERS
 -- ============================================================
 
 local function extractMonster(text)
     local t = text:lower()
     local name = t:match("loot of an? (.-):")
-              or t:match("loot of (.-)%s*:")  -- poprawka na brak spacji w regexie
+              or t:match("loot of (.-)%s*:")  -- poprawka na brak spacji
               or t:match("you killed an? (.-)%.")
               or t:match("you killed (.-)%.")
     if name then return name:match("^%s*(.-)%s*$") end
@@ -449,7 +452,7 @@ end)
 
 
 -- ============================================================
--- LEVEL-UP SWITCH (POPRAWKA: 75 -> hunt_dragon, 150 -> hunt_demon)
+-- LEVEL-UP SWITCH (75 -> hunt_dragon, 150 -> hunt_demon)
 -- ============================================================
 
 onTextMessage(function(mode, text)
@@ -459,10 +462,10 @@ onTextMessage(function(mode, text)
     local lvl = level()
     if lvl == 75 then
         print("[MT] Lv 75! Przechodze na Dragony!")
-        CaveBot.gotoLabel("hunt_dragon")   -- zamiast RotEND
+        CaveBot.gotoLabel("hunt_dragon")
     elseif lvl == 150 then
         print("[MT] Lv 150! Przechodze na Demony!")
-        CaveBot.gotoLabel("hunt_demon")    -- bezposrednio na label demonow
+        CaveBot.gotoLabel("hunt_demon")
     elseif lvl >= 300 then
         S.phase = "tasks300"
         S.taskIdx = 1
@@ -553,7 +556,7 @@ local function checkUpdate()
             return
         end
 
-        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby wczytac nowy plik.")
+        print("[MT] Skrypt zaktualizowany do wersji " .. rv .. ". Zrestartuj klienta/bota, aby wczytac nowa wersje.")
         showRestartInfo()
         updateAllWpt()
     end)
