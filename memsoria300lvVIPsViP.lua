@@ -16,7 +16,7 @@
   ================================================================
 ]]
 
-local SCRIPT_VERSION = "2.1.0"
+local SCRIPT_VERSION = "2.1.1"
 
 -- GitHub auto-update (ustaw swoj URL lub zostaw pusty)
 local GITHUB_RAW_URL = "https://raw.githubusercontent.com/staberro/staberro.github.io/main/memsoria300lvVIPsViP.lua"
