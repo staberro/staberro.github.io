@@ -59,7 +59,7 @@ local FURY_MIN_LEVEL   = 700
 -- ============================================================
 
 local TASKS_300 = {
-    [1]  = { monster = "super fury",          taskName = "Super Fury",          reqLevel = nil },
+    [1]  = { monster = "dangerous fury",      taskName = "Super Fury",          reqLevel = nil },
     [2]  = { monster = "super hellhound",     taskName = "Super Hellhound",     reqLevel = FURY_MIN_LEVEL },
     [3]  = { monster = "old bog raider",      taskName = "Old Bog Raider" },
     [4]  = { monster = "aladin",              taskName = "Aladin" },
