@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c14">
+<title>SQL • Teoria i Składnia | ViralloLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c14;--card:#0e1520;--elevated:#141e2e;--panel:#1a2438;
+  --text:#eef2f8;--text2:#8899bb;--muted:#445577;
+  --sql:#00d4ff;--sql2:#0088cc;--sql3:#005588;
+  --green:#10d48e;--red:#ff4466;--orange:#ff8c42;--gold:#f5c842;
+  --purple:#a855f7;--blue:#3b82f6;--cyan:#06d6ff;--teal:#00b4aa;
+  --border:rgba(0,212,255,0.08);--border2:rgba(0,212,255,0.18);
+  --glow:0 0 60px rgba(0,212,255,0.12);
+  --glow2:0 0 30px rgba(0,212,255,0.2);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+code{font-family:'Fira Code',monospace;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15);padding:2px 8px;border-radius:5px;font-size:0.83em;color:var(--cyan)}
+pre{font-family:'Fira Code',monospace;background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:20px;overflow-x:auto;font-size:0.88rem;line-height:1.7;color:#b8d0f0;position:relative}
+pre code{background:transparent;border:none;padding:0;font-size:inherit}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--sql3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--sql2)}
+
+/* NOISE OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,20,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.05em}
+.nav-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--sql),var(--teal));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:var(--glow2);flex-shrink:0}
+.nav-links{display:flex;gap:2px;flex-wrap:nowrap}
+.nav-links a{padding:6px 11px;border-radius:7px;font-size:0.78rem;color:var(--text2);transition:0.25s;white-space:nowrap}
+.nav-links a:hover{background:var(--elevated);color:var(--sql)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:2px}
+.nav-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--sql),var(--teal),var(--green));transition:width 0.2s}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,212,255,0.06) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.2);border-radius:50px;font-size:0.85rem;color:var(--sql);margin-bottom:28px;animation:fadeUp 0.8s ease both}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.8rem,9vw,5.5rem);font-weight:700;line-height:1.05;margin-bottom:18px;animation:fadeUp 0.8s 0.1s ease both}
+.hero h1 .accent{background:linear-gradient(135deg,var(--sql),var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:640px;color:var(--text2);font-size:1.1rem;margin-bottom:36px;line-height:1.7;animation:fadeUp 0.8s 0.2s ease both}
+.hero-modules{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;animation:fadeUp 0.8s 0.3s ease both}
+.hero-mod{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 20px;min-width:130px;transition:0.3s;cursor:pointer}
+.hero-mod:hover{border-color:var(--sql);transform:translateY(-3px);box-shadow:var(--glow2)}
+.hero-mod .mnum{font-size:0.75rem;color:var(--sql);font-weight:600;margin-bottom:3px;font-family:'Fira Code',monospace}
+.hero-mod .mname{font-size:0.88rem;color:var(--text);font-weight:500}
+.hero-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(135deg,var(--sql),var(--teal));color:#080c14;font-weight:700;border-radius:50px;font-size:1rem;transition:0.3s;border:none;cursor:pointer;font-family:inherit;animation:fadeUp 0.8s 0.4s ease both}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,212,255,0.3)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:80px 0;position:relative;z-index:1}
+.section-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.18);border-radius:50px;font-size:0.8rem;color:var(--sql);font-family:'Fira Code',monospace;margin-bottom:14px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:600px;margin:0 auto 48px;font-size:0.95rem}
+.text-center{text-align:center}
+
+/* ROADMAPA */
+#roadmapa{background:var(--card)}
+.roadmap-grid{display:grid;gap:20px;max-width:1000px;margin:0 auto}
+.roadmap-item{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px 28px;display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:start;transition:0.3s}
+.roadmap-item:hover{border-color:rgba(0,212,255,0.3);box-shadow:0 4px 30px rgba(0,212,255,0.06)}
+@media(max-width:700px){.roadmap-item{grid-template-columns:1fr}}
+.rm-num{background:linear-gradient(135deg,var(--sql),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Cinzel',serif;font-size:2.4rem;font-weight:700;line-height:1}
+.rm-sub{font-size:0.7rem;color:var(--muted);font-family:'Fira Code',monospace}
+.rm-title{font-size:1rem;font-weight:600;margin-bottom:6px;color:var(--text)}
+.rm-desc{color:var(--text2);font-size:0.88rem;margin-bottom:12px}
+.rm-tags{display:flex;flex-wrap:wrap;gap:6px}
+.rm-tag{padding:4px 10px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:0.75rem;color:var(--text2);font-family:'Fira Code',monospace}
+.rm-checks{display:flex;flex-direction:column;gap:7px}
+.rm-check{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--card);border-radius:10px;font-size:0.83rem;color:var(--text2);cursor:pointer;transition:0.2s}
+.rm-check:hover{background:rgba(0,212,255,0.06);color:var(--text)}
+.rm-check input{accent-color:var(--green);width:16px;height:16px;flex-shrink:0}
+.rm-check.done{color:var(--green)}
+
+/* SLOWNIK */
+#slownik{background:var(--bg)}
+.slownik-search{display:flex;gap:10px;max-width:500px;margin:0 auto 28px;flex-wrap:wrap;justify-content:center}
+.slownik-input{flex:1;min-width:220px;padding:12px 18px;background:var(--card);border:1px solid var(--border2);border-radius:50px;color:var(--text);font-family:inherit;font-size:0.9rem;outline:none;transition:0.3s}
+.slownik-input:focus{border-color:var(--sql);box-shadow:0 0 0 3px rgba(0,212,255,0.08)}
+.slownik-filter{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.sf-btn{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:0.78rem;cursor:pointer;font-family:'Fira Code',monospace;transition:0.2s}
+.sf-btn:hover{border-color:var(--sql);color:var(--sql)}
+.sf-btn.active{background:rgba(0,212,255,0.1);border-color:var(--sql);color:var(--sql)}
+.slownik-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.sk-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.3s;cursor:pointer}
+.sk-card:hover{border-color:rgba(0,212,255,0.3)}
+.sk-card.open{border-color:var(--green)}
+.sk-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sk-name{font-family:'Fira Code',monospace;font-size:0.95rem;font-weight:600;color:var(--sql)}
+.sk-badge{font-size:0.7rem;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+.badge-klauzula{background:rgba(0,212,255,0.12);color:var(--sql)}
+.badge-funkcja{background:rgba(168,85,247,0.15);color:#c084fc}
+.badge-dml{background:rgba(16,212,142,0.12);color:var(--green)}
+.badge-ddl{background:rgba(245,200,66,0.12);color:var(--gold)}
+.badge-operator{background:rgba(255,140,66,0.12);color:var(--orange)}
+.badge-join{background:rgba(59,130,246,0.15);color:#60a5fa}
+.badge-agregacja{background:rgba(255,68,102,0.12);color:#ff7799}
+.sk-short{padding:0 16px 10px;font-size:0.84rem;color:var(--text2)}
+.sk-body{padding:0 16px 14px;display:none;border-top:1px solid var(--border)}
+.sk-card.open .sk-body{display:block}
+.sk-body-inner{padding-top:12px;font-size:0.88rem;color:var(--text2);line-height:1.65}
+.sk-body pre{margin-top:10px;font-size:0.8rem;padding:14px}
+.sk-tip{margin-top:10px;padding:10px 14px;background:rgba(245,200,66,0.07);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:0.82rem;color:var(--gold)}
+
+/* MODULY */
+#moduly{background:var(--card)}
+.module-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.mod-tab{padding:10px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text2);cursor:pointer;font-family:inherit;font-size:0.85rem;transition:0.3s;font-weight:500}
+.mod-tab:hover{border-color:rgba(0,212,255,0.3)}
+.mod-tab.active{background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,180,170,0.15));border-color:var(--sql);color:var(--sql)}
+.mod-content{display:none;max-width:920px;margin:0 auto;animation:fadeIn 0.3s ease}
+.mod-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mod-card{background:var(--elevated);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:18px}
+.mod-card h4{color:var(--sql);font-size:1rem;font-family:'Fira Code',monospace;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mod-card p{color:var(--text2);font-size:0.92rem;margin-bottom:14px;line-height:1.65}
+.mod-card ul{color:var(--text2);font-size:0.9rem;padding-left:20px}
+.mod-card li{margin-bottom:5px}
+.mod-card li b{color:var(--sql)}
+.wtopa{background:rgba(255,68,102,0.07);border:1px solid rgba(255,68,102,0.2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.wtopa h5{color:var(--red);margin-bottom:6px;font-size:0.85rem;display:flex;align-items:center;gap:6px}
+.wtopa p{color:var(--text2);font-size:0.85rem;margin:0}
+.tip-box{background:rgba(16,212,142,0.06);border:1px solid rgba(16,212,142,0.2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.tip-box h5{color:var(--green);margin-bottom:6px;font-size:0.85rem;display:flex;align-items:center;gap:6px}
+.tip-box p{color:var(--text2);font-size:0.85rem;margin:0}
+.sql-keyword{color:#00d4ff}
+.sql-clause{color:#f5c842}
+.sql-value{color:#10d48e}
+.sql-comment{color:#4466aa;font-style:italic}
+.order-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15);border-radius:8px;padding:4px 10px;font-size:0.78rem;color:var(--sql);font-family:'Fira Code',monospace;margin:2px}
+
+/* QUERY BUILDER */
+#builder{background:var(--bg)}
+.builder-wrap{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.builder-wrap{grid-template-columns:1fr}}
+.builder-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}
+.builder-panel h4{font-family:'Cinzel',serif;font-size:1rem;margin-bottom:16px;color:var(--sql)}
+.builder-group{margin-bottom:16px}
+.builder-group label{display:block;font-size:0.8rem;color:var(--text2);margin-bottom:6px;font-family:'Fira Code',monospace}
+.builder-select,.builder-input{width:100%;padding:10px 14px;background:var(--elevated);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Fira Code',monospace;font-size:0.85rem;transition:0.2s}
+.builder-select:focus,.builder-input:focus{outline:none;border-color:var(--sql)}
+.builder-btns{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.builder-btn{padding:10px 20px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;font-size:0.88rem;transition:0.3s}
+.builder-btn.primary{background:linear-gradient(135deg,var(--sql),var(--teal));color:#080c14}
+.builder-btn.secondary{background:var(--elevated);color:var(--text);border:1px solid var(--border)}
+.builder-btn:hover{transform:translateY(-2px)}
+.query-output{background:var(--bg);border-radius:12px;padding:16px;min-height:140px;font-family:'Fira Code',monospace;font-size:0.88rem;color:#b8d0f0;white-space:pre-wrap;border:1px solid var(--border);line-height:1.7}
+.query-note{margin-top:10px;font-size:0.8rem;color:var(--muted);font-style:italic}
+
+/* QUIZ */
+#quiz{background:var(--card)}
+.quiz-wrap{max-width:760px;margin:0 auto}
+.quiz-box{background:var(--elevated);border:1px solid var(--border);border-radius:24px;padding:32px}
+.quiz-progress{display:flex;gap:4px;margin-bottom:24px}
+.q-dot{flex:1;height:3px;background:var(--card);border-radius:2px;transition:0.3s}
+.q-dot.done{background:var(--green)}
+.q-dot.current{background:var(--sql)}
+.quiz-num{font-family:'Fira Code',monospace;font-size:0.8rem;color:var(--sql);margin-bottom:10px}
+.quiz-q{font-family:'Cinzel',serif;font-size:1.2rem;margin-bottom:8px;line-height:1.4;color:var(--text)}
+.quiz-hint{font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--muted);margin-bottom:20px;padding:10px 14px;background:var(--card);border-radius:8px}
+.quiz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.q-opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--card);border:2px solid transparent;border-radius:14px;cursor:pointer;transition:0.25s;font-size:0.92rem}
+.q-opt:hover{border-color:rgba(0,212,255,0.3)}
+.q-opt.selected{border-color:var(--gold);background:rgba(245,200,66,0.07)}
+.q-opt.correct{border-color:var(--green);background:rgba(16,212,142,0.07)}
+.q-opt.wrong{border-color:var(--red);background:rgba(255,68,102,0.07)}
+.q-letter{width:32px;height:32px;background:var(--elevated);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;font-family:'Fira Code',monospace}
+.q-opt.selected .q-letter{background:var(--gold);color:#080c14}
+.q-opt.correct .q-letter{background:var(--green);color:#080c14}
+.q-opt.wrong .q-letter{background:var(--red);color:#fff}
+.q-opt code{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);padding:1px 6px;border-radius:4px;font-size:0.82rem}
+.quiz-feedback{padding:14px 16px;border-radius:12px;margin-bottom:18px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(16,212,142,0.07);border:1px solid rgba(16,212,142,0.25)}
+.quiz-feedback.bad{background:rgba(255,68,102,0.07);border:1px solid rgba(255,68,102,0.25)}
+.quiz-feedback h5{margin-bottom:6px;font-size:0.88rem}
+.quiz-feedback.ok h5{color:var(--green)}
+.quiz-feedback.bad h5{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:0.85rem;line-height:1.5}
+.quiz-feedback code{font-size:0.82rem}
+.quiz-btns{display:flex;justify-content:space-between;gap:12px}
+.qbtn{padding:12px 24px;border-radius:50px;font-weight:600;cursor:pointer;border:none;font-family:inherit;font-size:0.9rem;transition:0.3s}
+.qbtn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.qbtn-next{background:linear-gradient(135deg,var(--sql),var(--teal));color:#080c14}
+.qbtn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important}
+.qbtn:not(:disabled):hover{transform:translateY(-2px)}
+.quiz-result{text-align:center;padding:36px 20px}
+.result-score{font-family:'Cinzel',serif;font-size:4.5rem;color:var(--gold);line-height:1}
+.result-max{font-size:1.2rem;color:var(--text2);margin-bottom:16px}
+.result-text{color:var(--text2);margin-bottom:24px;font-size:0.95rem}
+.result-btn{padding:14px 32px;background:linear-gradient(135deg,var(--sql),var(--teal));color:#080c14;font-weight:700;border-radius:50px;border:none;cursor:pointer;font-family:inherit;font-size:0.95rem;transition:0.3s}
+.result-btn:hover{transform:translateY(-2px)}
+
+/* FISZKI */
+#fiszki{background:var(--bg)}
+.flash-wrap{max-width:660px;margin:0 auto}
+.flash-filter{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.ff-btn{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:0.78rem;cursor:pointer;font-family:'Fira Code',monospace;transition:0.2s}
+.ff-btn:hover,.ff-btn.active{border-color:var(--sql);color:var(--sql);background:rgba(0,212,255,0.07)}
+.flashcard{height:280px;perspective:1200px;cursor:pointer;margin-bottom:18px}
+.flash-inner{width:100%;height:100%;transition:transform 0.55s;transform-style:preserve-3d;position:relative}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:30px;text-align:center;border:2px solid}
+.flash-front{background:var(--elevated);border-color:rgba(0,212,255,0.3)}
+.flash-back{background:var(--elevated);border-color:rgba(16,212,142,0.4);transform:rotateY(180deg)}
+.flash-tag{font-family:'Fira Code',monospace;font-size:0.72rem;color:var(--sql);margin-bottom:10px;opacity:0.7}
+.flash-q{font-family:'Cinzel',serif;font-size:1.25rem;line-height:1.4;color:var(--text);margin-bottom:8px}
+.flash-hint{color:var(--muted);font-size:0.8rem}
+.flash-a{font-size:0.95rem;color:var(--text2);line-height:1.6;max-width:100%}
+.flash-a pre{font-size:0.82rem;padding:10px 14px;margin-top:8px;text-align:left}
+.flash-nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.flash-btn{padding:10px 18px;background:var(--card);border:1px solid var(--border);border-radius:50px;color:var(--text);font-weight:500;cursor:pointer;font-family:inherit;font-size:0.85rem;transition:0.25s}
+.flash-btn:hover{border-color:var(--sql);color:var(--sql)}
+.flash-btn.master{background:rgba(16,212,142,0.08);border-color:var(--green);color:var(--green)}
+.flash-count{text-align:center;margin-top:12px;font-size:0.85rem;color:var(--text2);font-family:'Fira Code',monospace}
+.flash-mastered{color:var(--green);font-size:0.78rem;margin-left:8px}
+
+/* TYPING */
+#typing{background:var(--card)}
+.typing-wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:20px;max-width:980px;margin:0 auto}
+@media(max-width:800px){.typing-wrap{grid-template-columns:1fr}}
+.typing-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px}
+.typing-panel h4{font-family:'Cinzel',serif;font-size:0.95rem;margin-bottom:14px;color:var(--sql)}
+.typing-prompt{font-family:'Cinzel',serif;font-size:1.05rem;margin-bottom:8px;min-height:48px;line-height:1.4;color:var(--text)}
+.typing-hint{color:var(--muted);font-size:0.82rem;margin-bottom:14px;font-family:'Fira Code',monospace}
+.typing-input{width:100%;padding:12px 16px;background:var(--card);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:'Fira Code',monospace;font-size:0.95rem;transition:0.3s;resize:none}
+.typing-input:focus{outline:none;border-color:var(--sql)}
+.typing-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.typing-btn{padding:10px 18px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;font-size:0.85rem;transition:0.3s}
+.typing-btn.check{background:linear-gradient(135deg,var(--green),var(--teal));color:#080c14}
+.typing-btn.secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.typing-btn:hover{transform:translateY(-2px)}
+.typing-feedback{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:0.88rem;line-height:1.5}
+.typing-feedback.ok{background:rgba(16,212,142,0.08);color:var(--green);border:1px solid rgba(16,212,142,0.2)}
+.typing-feedback.bad{background:rgba(255,68,102,0.07);color:var(--red);border:1px solid rgba(255,68,102,0.2)}
+.typing-feedback.show2{background:rgba(245,200,66,0.07);color:var(--gold);border:1px solid rgba(245,200,66,0.2)}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-box{background:var(--card);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--border)}
+.stat-label{font-size:0.75rem;color:var(--muted);margin-bottom:4px}
+.stat-val{font-size:1.6rem;font-weight:700;font-family:'Cinzel',serif}
+.stat-val.ok{color:var(--green)}
+.stat-val.bad{color:var(--red)}
+.stat-val.streak{color:var(--gold)}
+.typing-progress{margin-top:16px}
+.typing-progress-bar{height:4px;background:var(--card);border-radius:2px;overflow:hidden;margin-top:6px}
+.typing-progress-fill{height:100%;background:linear-gradient(90deg,var(--sql),var(--green));border-radius:2px;transition:width 0.4s}
+
+/* FOKUS */
+#fokus{background:var(--bg)}
+.fokus-wrap{max-width:820px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:28px}
+.fokus-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.fokus-info{font-family:'Fira Code',monospace;font-size:0.82rem;color:var(--text2)}
+.fokus-info span{color:var(--sql)}
+.fokus-controls{display:flex;gap:8px;flex-wrap:wrap}
+.fokus-btn{padding:9px 16px;border-radius:50px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.82rem;transition:0.25s}
+.fokus-btn:hover{border-color:var(--sql)}
+.fokus-btn.start{background:linear-gradient(135deg,var(--green),var(--teal));color:#080c14;border:none}
+.fokus-card{background:var(--elevated);border-radius:18px;padding:26px;min-height:160px;margin-bottom:18px;border:1px solid var(--border)}
+.fokus-q{font-family:'Cinzel',serif;font-size:1.15rem;color:var(--text);line-height:1.4;margin-bottom:10px}
+.fokus-a{color:var(--text2);display:none;font-size:0.92rem;line-height:1.6;padding-top:12px;border-top:1px solid var(--border)}
+.fokus-a.show{display:block}
+.fokus-a pre{margin-top:8px;font-size:0.82rem}
+.fokus-bar-wrap{height:6px;background:var(--bg);border-radius:50px;overflow:hidden}
+.fokus-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--sql),var(--teal),var(--green));transition:width 0.3s}
+.kbd{font-family:'Fira Code',monospace;font-size:0.72rem;padding:3px 7px;background:var(--elevated);border:1px solid var(--border);border-radius:5px;color:var(--text2)}
+
+/* NOTATNIK */
+#notatnik{background:var(--card)}
+.nb-wrap{display:grid;grid-template-columns:1.1fr 0.9fr;gap:20px;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.nb-wrap{grid-template-columns:1fr}}
+.nb-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:22px}
+.nb-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.nb-head h4{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--sql)}
+.nb-count{font-size:0.78rem;color:var(--text2);font-family:'Fira Code',monospace}
+.nb-items{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
+.nb-item{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;transition:0.2s;cursor:pointer}
+.nb-item:hover{border-color:rgba(0,212,255,0.25)}
+.nb-item input[type="checkbox"]{accent-color:var(--green);width:16px;height:16px;margin-top:3px;flex-shrink:0}
+.nb-item .nb-txt{flex:1;font-size:0.85rem;color:var(--text2);line-height:1.5}
+.nb-item .nb-tag{font-size:0.72rem;color:var(--muted);font-family:'Fira Code',monospace;margin-top:3px}
+.nb-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.nb-btn{padding:9px 14px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.8rem;transition:0.25s}
+.nb-btn:hover{border-color:var(--sql)}
+.nb-btn.primary{background:linear-gradient(135deg,var(--sql),var(--teal));color:#080c14;border:none}
+.nb-btn.danger:hover{border-color:var(--red)}
+.nb-list{display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto}
+.nb-list-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--card);border-radius:10px;padding:10px 12px;border:1px solid var(--border)}
+.nb-list-item .nb-txt{flex:1;font-size:0.85rem;color:var(--text2);line-height:1.5}
+.nb-list-item .nb-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 4px;transition:0.2s}
+.nb-list-item .nb-del:hover{color:var(--red)}
+
+/* FOOTER */
+footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:10px;color:var(--sql)}
+.footer-copy{color:var(--muted);font-size:0.88rem}
+.footer-copy a{color:var(--text2);border-bottom:1px solid rgba(255,255,255,0.1);transition:0.2s}
+.footer-copy a:hover{color:var(--sql);border-bottom-color:var(--sql)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--border2);border-radius:16px;padding:14px 20px;box-shadow:var(--glow);transform:translateY(150%);transition:0.3s;z-index:2000;max-width:300px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:3px;font-size:0.9rem}
+.toast span{color:var(--text2);font-size:0.82rem}
+
+/* UTILS */
+@media(max-width:600px){section{padding:56px 0}.quiz-box,.fokus-wrap{padding:18px}.nb-wrap,.typing-wrap{gap:12px}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-icon">🗄️</div>
+    SQL <span style="color:var(--sql);margin-left:4px">TEORIA</span>
+  </a>
+  <div class="nav-links">
+    <a href="#roadmapa">Roadmapa</a>
+    <a href="#slownik">Słownik</a>
+    <a href="#moduly">Moduły</a>
+    <a href="#builder">Builder</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#fiszki">Fiszki</a>
+    <a href="#typing">Typing</a>
+    <a href="#fokus">Fokus</a>
+    <a href="#notatnik">Notatnik</a>
+  </div>
+  <div class="nav-progress"><div class="nav-bar" id="navBar"></div></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">🗄️ Kompletna teoria SQL • Matura Informatyka</div>
+  <h1>SQL od <span class="accent">SELECT</span><br>do <span class="accent">MISTRZA</span></h1>
+  <p class="hero-desc">Składnia, klauzule, funkcje agregujące, JOIN, podzapytania i wszystko co leci na maturze. Naucz się teorii, przećwicz na fiszkach, sprawdź się w quizie.</p>
+  <div class="hero-modules">
+    <div class="hero-mod"><div class="mnum">01</div><div class="mname">SELECT & FROM</div></div>
+    <div class="hero-mod"><div class="mnum">02</div><div class="mname">WHERE & ORDER</div></div>
+    <div class="hero-mod"><div class="mnum">03</div><div class="mname">JOIN wszystkie typy</div></div>
+    <div class="hero-mod"><div class="mnum">04</div><div class="mname">GROUP BY & HAVING</div></div>
+    <div class="hero-mod"><div class="mnum">05</div><div class="mname">DML & DDL</div></div>
+    <div class="hero-mod"><div class="mnum">06</div><div class="mname">Podzapytania</div></div>
+  </div>
+  <a href="#roadmapa" class="hero-btn">Zaczynam naukę →</a>
+</section>
+
+<!-- ROADMAPA -->
+<section id="roadmapa">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📍 ROADMAPA</div>
+  <h2 class="section-title">Ścieżka nauki SQL</h2>
+  <p class="section-desc">Odhaczaj tematy w miarę postępów. Idź po kolei — każdy krok buduje na poprzednim.</p>
+</div>
+<div class="roadmap-grid">
+
+<div class="roadmap-item">
+  <div><div class="rm-num">01</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">Podstawy SELECT</div>
+    <div class="rm-desc">Fundament wszystkiego. SELECT, FROM, WHERE, ORDER BY, DISTINCT, aliasy, LIMIT.</div>
+    <div class="rm-tags">
+      <span class="rm-tag">SELECT</span><span class="rm-tag">FROM</span><span class="rm-tag">WHERE</span>
+      <span class="rm-tag">ORDER BY</span><span class="rm-tag">DISTINCT</span><span class="rm-tag">AS</span><span class="rm-tag">LIMIT</span>
+    </div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="sql_1_select">Składnia SELECT + FROM</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_1_where">Filtry WHERE + operatory</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_1_order">ORDER BY ASC/DESC</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_1_distinct">DISTINCT + aliasy AS</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">02</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">Funkcje agregujące & GROUP BY</div>
+    <div class="rm-desc">COUNT, SUM, AVG, MIN, MAX. Grupowanie danych i filtrowanie grup z HAVING.</div>
+    <div class="rm-tags">
+      <span class="rm-tag">COUNT</span><span class="rm-tag">SUM</span><span class="rm-tag">AVG</span>
+      <span class="rm-tag">MIN/MAX</span><span class="rm-tag">GROUP BY</span><span class="rm-tag">HAVING</span>
+    </div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="sql_2_agg">Funkcje COUNT/SUM/AVG/MIN/MAX</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_2_group">GROUP BY — grupowanie danych</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_2_having">HAVING vs WHERE — różnica</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_2_combo">Kombinacja GROUP BY + HAVING</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">03</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">JOIN — łączenie tabel</div>
+    <div class="rm-desc">INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL JOIN, CROSS JOIN, self-join. Klucze obce.</div>
+    <div class="rm-tags">
+      <span class="rm-tag">INNER JOIN</span><span class="rm-tag">LEFT JOIN</span><span class="rm-tag">RIGHT JOIN</span>
+      <span class="rm-tag">ON</span><span class="rm-tag">FK</span><span class="rm-tag">alias t1.kol</span>
+    </div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="sql_3_inner">INNER JOIN — tylko wspólne</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_3_left">LEFT/RIGHT JOIN — z NULL</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_3_multi">JOIN wielu tabel</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_3_on">ON vs WHERE w JOINie</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">04</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">DML — modyfikacja danych</div>
+    <div class="rm-desc">INSERT INTO, UPDATE SET, DELETE FROM. CRUD w praktyce. Bezpieczne WHERE.</div>
+    <div class="rm-tags">
+      <span class="rm-tag">INSERT</span><span class="rm-tag">UPDATE</span><span class="rm-tag">DELETE</span><span class="rm-tag">VALUES</span><span class="rm-tag">SET</span>
+    </div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="sql_4_insert">INSERT INTO — dodawanie wierszy</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_4_update">UPDATE SET WHERE — modyfikacja</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_4_delete">DELETE FROM WHERE — usuwanie</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_4_safe">Bezpieczne użycie WHERE</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">05</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">DDL — struktura bazy</div>
+    <div class="rm-desc">CREATE TABLE, ALTER TABLE, DROP TABLE, typy danych, klucze PRIMARY/FOREIGN, indeksy.</div>
+    <div class="rm-tags">
+      <span class="rm-tag">CREATE TABLE</span><span class="rm-tag">ALTER</span><span class="rm-tag">DROP</span>
+      <span class="rm-tag">PRIMARY KEY</span><span class="rm-tag">FOREIGN KEY</span><span class="rm-tag">NOT NULL</span>
+    </div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="sql_5_create">CREATE TABLE + typy danych</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_5_pk">PRIMARY KEY i FOREIGN KEY</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_5_alter">ALTER TABLE — modyfikacja struktury</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_5_drop">DROP TABLE / DROP INDEX</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">06</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">Zaawansowane — PRO matura</div>
+    <div class="rm-desc">Podzapytania (subquery), IN, EXISTS, LIKE, BETWEEN, IS NULL, CASE WHEN, widoki (VIEW).</div>
+    <div class="rm-tags">
+      <span class="rm-tag">Subquery</span><span class="rm-tag">IN/NOT IN</span><span class="rm-tag">EXISTS</span>
+      <span class="rm-tag">LIKE</span><span class="rm-tag">BETWEEN</span><span class="rm-tag">CASE WHEN</span><span class="rm-tag">VIEW</span>
+    </div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="sql_6_sub">Podzapytania + IN/EXISTS</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_6_like">LIKE + wzorce %_</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_6_case">CASE WHEN THEN ELSE</label>
+    <label class="rm-check"><input type="checkbox" data-k="sql_6_view">CREATE VIEW + zastosowanie</label>
+  </div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- SŁOWNIK -->
+<section id="slownik">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📖 SŁOWNIK</div>
+  <h2 class="section-title">Słownik SQL</h2>
+  <p class="section-desc">Kliknij kartę aby rozwinąć pełny opis z przykładem i tipem maturalnym.</p>
+</div>
+<div class="slownik-search">
+  <input class="slownik-input" id="slownikSearch" placeholder="🔍 szukaj (np. GROUP BY)..." oninput="filterSlownik()">
+</div>
+<div class="slownik-filter" id="slownikFilter"></div>
+<div class="slownik-grid" id="slownikGrid"></div>
+</div>
+</section>
+
+<!-- MODUŁY -->
+<section id="moduly">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📚 MODUŁY</div>
+  <h2 class="section-title">Moduły teorii</h2>
+  <p class="section-desc">Pełna teoria z przykładami, typowymi błędami i wskazówkami maturalnymi.</p>
+</div>
+<div class="module-tabs" id="modTabs"></div>
+<div id="modContents"></div>
+</div>
+</section>
+
+<!-- QUERY BUILDER -->
+<section id="builder">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🔨 BUILDER</div>
+  <h2 class="section-title">Query Builder</h2>
+  <p class="section-desc">Zbuduj zapytanie SQL krok po kroku — wybierz klauzule i patrz jak składnia się składa.</p>
+</div>
+<div class="builder-wrap">
+<div class="builder-panel">
+  <h4>⚙️ Konfiguracja zapytania</h4>
+  <div class="builder-group">
+    <label>Typ zapytania</label>
+    <select class="builder-select" id="bType" onchange="buildQuery()">
+      <option value="select">SELECT (pobieranie)</option>
+      <option value="select_agg">SELECT + agregacja</option>
+      <option value="select_join">SELECT + JOIN</option>
+      <option value="select_sub">SELECT + podzapytanie</option>
+      <option value="insert">INSERT INTO</option>
+      <option value="update">UPDATE</option>
+      <option value="delete">DELETE</option>
+      <option value="create">CREATE TABLE</option>
+    </select>
+  </div>
+  <div class="builder-group">
+    <label>Tabela główna</label>
+    <select class="builder-select" id="bTable" onchange="buildQuery()">
+      <option value="Uczniowie">Uczniowie</option>
+      <option value="Filmy">Filmy</option>
+      <option value="Produkty">Produkty</option>
+      <option value="Klienci">Klienci</option>
+      <option value="Zamowienia">Zamowienia</option>
+      <option value="Ksiazki">Ksiazki</option>
+    </select>
+  </div>
+  <div class="builder-group" id="bJoinGroup">
+    <label>JOIN z tabelą (opcjonalnie)</label>
+    <select class="builder-select" id="bJoinType" onchange="buildQuery()">
+      <option value="">— brak —</option>
+      <option value="INNER JOIN">INNER JOIN</option>
+      <option value="LEFT JOIN">LEFT JOIN</option>
+      <option value="RIGHT JOIN">RIGHT JOIN</option>
+    </select>
+  </div>
+  <div class="builder-group">
+    <label>Warunek WHERE (opcjonalnie)</label>
+    <input class="builder-input" id="bWhere" placeholder="np. wiek > 18" oninput="buildQuery()">
+  </div>
+  <div class="builder-group" id="bGroupDiv">
+    <label>GROUP BY (opcjonalnie)</label>
+    <input class="builder-input" id="bGroup" placeholder="np. klasa" oninput="buildQuery()">
+  </div>
+  <div class="builder-group" id="bHavingDiv">
+    <label>HAVING (opcjonalnie)</label>
+    <input class="builder-input" id="bHaving" placeholder="np. COUNT(*) > 3" oninput="buildQuery()">
+  </div>
+  <div class="builder-group">
+    <label>ORDER BY (opcjonalnie)</label>
+    <select class="builder-select" id="bOrder" onchange="buildQuery()">
+      <option value="">— brak —</option>
+      <option value="ASC">pierwsza_kolumna ASC</option>
+      <option value="DESC">pierwsza_kolumna DESC</option>
+    </select>
+  </div>
+  <div class="builder-group">
+    <label>LIMIT</label>
+    <select class="builder-select" id="bLimit" onchange="buildQuery()">
+      <option value="">— brak —</option>
+      <option value="1">LIMIT 1</option>
+      <option value="5">LIMIT 5</option>
+      <option value="10">LIMIT 10</option>
+    </select>
+  </div>
+  <div class="builder-btns">
+    <button class="builder-btn primary" onclick="buildQuery()">🔨 Buduj</button>
+    <button class="builder-btn secondary" onclick="copyQuery()">📋 Kopiuj</button>
+    <button class="builder-btn secondary" onclick="resetBuilder()">Reset</button>
+  </div>
+</div>
+<div class="builder-panel">
+  <h4>📄 Wygenerowane zapytanie</h4>
+  <div class="query-output" id="queryOut"></div>
+  <div class="query-note" id="queryNote"></div>
+  <h4 style="margin-top:20px;font-size:0.88rem;color:var(--text2)">Kolejność klauzul (obowiązkowa):</h4>
+  <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+    <span class="order-badge">SELECT</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">FROM</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">JOIN</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">WHERE</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">GROUP BY</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">HAVING</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">ORDER BY</span><span style="color:var(--muted)">→</span>
+    <span class="order-badge">LIMIT</span>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🎯 QUIZ</div>
+  <h2 class="section-title">Quiz SQL — teoria</h2>
+  <p class="section-desc">25 pytań z wyjasnieniami. Poziomy od podstaw do zadań maturalnych.</p>
+</div>
+<div class="quiz-wrap">
+<div class="quiz-box" id="quizBox">
+  <div class="quiz-progress" id="qProgress"></div>
+  <div class="quiz-num">Pytanie <span id="qNum">1</span> z <span id="qTotal">25</span></div>
+  <h3 class="quiz-q" id="qText"></h3>
+  <div class="quiz-hint" id="qHint"></div>
+  <div class="quiz-opts" id="qOpts"></div>
+  <div class="quiz-feedback" id="qFeedback"><h5 id="qFbTitle"></h5><p id="qFbText"></p></div>
+  <div class="quiz-btns">
+    <button class="qbtn qbtn-prev" id="qPrev" onclick="prevQ()">← Poprzednie</button>
+    <button class="qbtn qbtn-next" id="qNext" onclick="nextQ()">Następne →</button>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FISZKI -->
+<section id="fiszki">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🧠 FISZKI</div>
+  <h2 class="section-title">Fiszki SQL</h2>
+  <p class="section-desc">Kliknij kartę aby odwrócić. ✓ Umiem = pomiń w kolejnych rundach.</p>
+</div>
+<div class="flash-wrap">
+  <div class="flash-filter" id="flashFilter"></div>
+  <div class="flashcard" id="flashcard" onclick="flipCard()">
+    <div class="flash-inner">
+      <div class="flash-front">
+        <div class="flash-tag" id="flashTag"></div>
+        <h3 class="flash-q" id="flashQ"></h3>
+        <p class="flash-hint">Kliknij aby zobaczyć odpowiedź</p>
+      </div>
+      <div class="flash-back">
+        <div class="flash-a" id="flashA"></div>
+      </div>
+    </div>
+  </div>
+  <div class="flash-nav">
+    <button class="flash-btn" onclick="prevCard()">← Poprzednia</button>
+    <button class="flash-btn" onclick="speakCard()">🔊</button>
+    <button class="flash-btn master" onclick="markMastered()">✓ Umiem</button>
+    <button class="flash-btn" onclick="nextCard()">Następna →</button>
+    <button class="flash-btn" onclick="shuffleCards()">🔀 Losuj</button>
+  </div>
+  <div class="flash-count">
+    <span id="flashNum">1</span> z <span id="flashTotal">30</span>
+    <span class="flash-mastered" id="flashMastered"></span>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- TYPING -->
+<section id="typing">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">⌨️ TYPING</div>
+  <h2 class="section-title">Typing Sprint: SQL</h2>
+  <p class="section-desc">Wpisz odpowiedź. Enter = sprawdź. Shift+Enter = pokaż. Trenuj pamięć składni.</p>
+</div>
+<div class="typing-wrap">
+<div class="typing-panel">
+  <h4>Zadanie SQL</h4>
+  <div class="typing-prompt" id="typingPrompt">Kliknij "Następne" aby zacząć</div>
+  <div class="typing-hint" id="typingHint">Wpisz poprawną składnię SQL</div>
+  <textarea class="typing-input" id="typingInput" rows="3" placeholder="Twoja odpowiedź..." autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+  <div class="typing-btns">
+    <button class="typing-btn check" onclick="checkTyping()">Sprawdź ✓</button>
+    <button class="typing-btn secondary" onclick="showTypingAnswer()">👁 Pokaż</button>
+    <button class="typing-btn secondary" onclick="nextTyping()">Następne →</button>
+    <button class="typing-btn secondary" onclick="resetTyping()">Reset</button>
+  </div>
+  <div class="typing-feedback" id="typingFeedback"></div>
+  <div class="typing-progress">
+    <div style="font-size:0.78rem;color:var(--muted);font-family:'Fira Code',monospace">Postęp rundy</div>
+    <div class="typing-progress-bar"><div class="typing-progress-fill" id="typingFill"></div></div>
+  </div>
+</div>
+<div class="typing-panel">
+  <h4>📊 Statystyki</h4>
+  <div class="stat-grid">
+    <div class="stat-box"><div class="stat-label">Poprawne</div><div class="stat-val ok" id="stOk">0</div></div>
+    <div class="stat-box"><div class="stat-label">Błędne</div><div class="stat-val bad" id="stBad">0</div></div>
+    <div class="stat-box"><div class="stat-label">Streak</div><div class="stat-val streak" id="stStreak">0</div></div>
+    <div class="stat-box"><div class="stat-label">Rekord</div><div class="stat-val" style="color:var(--sql)" id="stBest">0</div></div>
+  </div>
+  <div style="margin-top:16px;padding:14px;background:var(--card);border-radius:12px;border:1px solid var(--border)">
+    <div style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;font-family:'Fira Code',monospace">TIP MATURALNY</div>
+    <div id="typingTip" style="font-size:0.85rem;color:var(--text2);line-height:1.5"></div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOKUS -->
+<section id="fokus">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🎯 FOKUS</div>
+  <h2 class="section-title">Tryb Fokus</h2>
+  <p class="section-desc">Intensywna powtórka. <span class="kbd">Spacja</span> = pokaż, <span class="kbd">N</span> = następna, <span class="kbd">S</span> = start.</p>
+</div>
+<div class="fokus-wrap">
+  <div class="fokus-top">
+    <div class="fokus-info">Fiszka <span id="fNum">0</span> / <span id="fTotal">0</span> &nbsp;|&nbsp; Czas: <span id="fTime">90</span>s &nbsp;|&nbsp; Opanowane: <span id="fMastered">0</span></div>
+    <div class="fokus-controls">
+      <button class="fokus-btn start" onclick="fokusStart()">▶ Start</button>
+      <button class="fokus-btn" onclick="fokusReveal()">👁 Pokaż</button>
+      <button class="fokus-btn" onclick="fokusNext()">Następna →</button>
+      <button class="fokus-btn" onclick="fokusReset()">Reset</button>
+    </div>
+  </div>
+  <div class="fokus-card">
+    <div class="fokus-q" id="fokusQ">Kliknij "Start" aby zacząć.</div>
+    <div class="fokus-a" id="fokusA"></div>
+  </div>
+  <div class="fokus-bar-wrap"><div class="fokus-bar" id="fokusBar"></div></div>
+</div>
+</div>
+</section>
+
+<!-- NOTATNIK -->
+<section id="notatnik">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📝 NOTATNIK</div>
+  <h2 class="section-title">Ściąga SQL</h2>
+  <p class="section-desc">Zaznacz ważne reguły i zbuduj własną ściągę do wydruku.</p>
+</div>
+<div class="nb-wrap">
+<div class="nb-panel">
+  <div class="nb-head">
+    <h4>Reguły do zaznaczenia</h4>
+    <span class="nb-count" id="nbSel">0 zaznaczono</span>
+  </div>
+  <div class="nb-items" id="nbBlocks"></div>
+  <div class="nb-btns">
+    <button class="nb-btn" onclick="nbSelectAll(true)">Zaznacz wszystko</button>
+    <button class="nb-btn" onclick="nbSelectAll(false)">Odznacz</button>
+    <button class="nb-btn primary" onclick="nbAddSelected()">Dodaj zaznaczone →</button>
+  </div>
+</div>
+<div class="nb-panel">
+  <div class="nb-head">
+    <h4>Twoja ściąga</h4>
+    <span class="nb-count" id="nbCount">0 punktów</span>
+  </div>
+  <div class="nb-list" id="nbList"></div>
+  <div class="nb-btns">
+    <button class="nb-btn" onclick="nbExport()">📋 Kopiuj</button>
+    <button class="nb-btn" onclick="nbDownload()">💾 Pobierz .txt</button>
+    <button class="nb-btn danger" onclick="nbClear()">🗑️ Wyczyść</button>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-logo">🗄️ SQL Teoria • Matura Informatyka</div>
+  <p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">prof. inż. Kacper Stabrawa</a>) &nbsp;🧠 <strong>ViralloEdu</strong></p>
+</footer>
+
+<div class="toast" id="toast"><b></b><span></span></div>
+
+<script>
+// ===================== DANE =====================
+
+const slownikData = [
+  {name:"SELECT",badge:"klauzula",cat:"klauzula",short:"Pobiera dane z tabeli.",full:"Podstawowa instrukcja pobierania danych. Zawsze zaczyna zapytanie SELECT.\n<br><code>SELECT *</code> — wszystkie kolumny<br><code>SELECT imie, nazwisko</code> — wybrane kolumny",code:"SELECT imie, nazwisko, klasa\nFROM Uczniowie;",tip:"Na maturze: * oznacza 'wszystkie kolumny'. Zawsze pisz listę kolumn gdy potrzebne są konkretne."},
+  {name:"FROM",badge:"klauzula",cat:"klauzula",short:"Wskazuje tabelę źródłową.",full:"Po FROM podajemy tabelę (lub tabele) z której pobieramy dane.",code:"SELECT *\nFROM Filmy;",tip:"Można aliasować: FROM Uczniowie u — wtedy używasz u.imie"},
+  {name:"WHERE",badge:"klauzula",cat:"klauzula",short:"Filtruje wiersze (warunek).",full:"Filtruje wiersze przed grupowaniem. Nie obsługuje funkcji agregujących!<br>Operatory: =, !=, <, >, <=, >=, AND, OR, NOT",code:"SELECT * FROM Uczniowie\nWHERE klasa = '2A' AND plec = 'K';",tip:"WHERE filtruje WIERSZE. Do filtrowania grup użyj HAVING."},
+  {name:"ORDER BY",badge:"klauzula",cat:"klauzula",short:"Sortuje wyniki.",full:"Sortuje wyniki rosnąco (ASC, domyślne) lub malejąco (DESC).<br>Można sortować po kilku kolumnach.",code:"SELECT tytul, rok_produkcji\nFROM Filmy\nORDER BY rok_produkcji DESC;",tip:"Domyślnie ASC. Zawsze pisz DESC jawnie jeśli chcesz malejąco."},
+  {name:"DISTINCT",badge:"klauzula",cat:"klauzula",short:"Usuwa duplikaty wyników.",full:"Zwraca tylko unikalne wartości — usuwa powtórzenia.",code:"SELECT DISTINCT gatunek\nFROM Filmy;",tip:"DISTINCT dotyczy całego wiersza wynikowego, nie pojedynczej kolumny."},
+  {name:"LIMIT",badge:"klauzula",cat:"klauzula",short:"Ogranicza liczbę wyników.",full:"Zwraca tylko N pierwszych wierszy. W Access: TOP N (przed SELECT).",code:"SELECT * FROM Filmy\nORDER BY rok_produkcji DESC\nLIMIT 5;",tip:"Na maturze Access: SELECT TOP 5 * FROM Filmy ORDER BY rok_produkcji DESC"},
+  {name:"AS",badge:"operator",cat:"operator",short:"Alias — zmienia nazwę kolumny/tabeli.",full:"Nadaje tymczasową nazwę kolumnie lub tabeli. Przydatny przy funkcjach agregujących.",code:"SELECT COUNT(*) AS liczba_uczniow,\n       AVG(ocena) AS srednia\nFROM Oceny;",tip:"Alias kolumny NIE może być użyty w WHERE ani GROUP BY (bo SELECT jest late)."},
+  {name:"GROUP BY",badge:"klauzula",cat:"klauzula",short:"Grupuje wiersze po wartości kolumny.",full:"Dzieli wyniki na grupy. Po GROUP BY można używać funkcji agregujących na każdej grupie.<br>Każda kolumna w SELECT (bez funkcji agregującej) musi być w GROUP BY!",code:"SELECT klasa, COUNT(*) AS liczba\nFROM Uczniowie\nGROUP BY klasa;",tip:"Złota zasada: jeśli SELECT zawiera COUNT/SUM/AVG + kolumnę — ta kolumna musi być w GROUP BY."},
+  {name:"HAVING",badge:"klauzula",cat:"klauzula",short:"Filtruje GRUPY (po GROUP BY).",full:"Jak WHERE, ale dla grup. Działa PO GROUP BY. Może używać funkcji agregujących.<br><b>WHERE</b> = filtr wierszy przed grupowaniem<br><b>HAVING</b> = filtr grup po grupowaniu",code:"SELECT klasa, COUNT(*) AS n\nFROM Uczniowie\nGROUP BY klasa\nHAVING COUNT(*) > 5;",tip:"HAVING COUNT(*) > 5 — pokaż tylko klasy z więcej niż 5 uczniami."},
+  {name:"COUNT()",badge:"agregacja",cat:"agregacja",short:"Zlicza wiersze / wartości.",full:"<code>COUNT(*)</code> — zlicza wszystkie wiersze (z NULL)<br><code>COUNT(kolumna)</code> — zlicza nie-NULL wartości<br><code>COUNT(DISTINCT kolumna)</code> — zlicza unikalne wartości",code:"SELECT COUNT(*) AS wszystkich,\n       COUNT(email) AS z_emailem\nFROM Klienci;",tip:"COUNT(*) nigdy nie pomija wierszy. COUNT(kolumna) pomija NULL."},
+  {name:"SUM()",badge:"agregacja",cat:"agregacja",short:"Suma wartości liczbowych.",full:"Oblicza sumę wartości w kolumnie. Ignoruje NULL.",code:"SELECT SUM(cena * ilosc) AS wartosc_zamowienia\nFROM Pozycje_zamowienia\nWHERE id_zamowienia = 1;",tip:"SUM(cena * ilosc) — można sumować wyrażenia, nie tylko kolumny."},
+  {name:"AVG()",badge:"agregacja",cat:"agregacja",short:"Średnia arytmetyczna.",full:"Oblicza średnią wartości. Ignoruje NULL — to ważne!",code:"SELECT klasa, AVG(ocena) AS srednia\nFROM Oceny o\nJOIN Uczniowie u ON o.id_ucznia = u.id_ucznia\nGROUP BY klasa;",tip:"AVG ignoruje NULL — wiersz z NULL oceną nie wpływa na średnią."},
+  {name:"MIN() / MAX()",badge:"agregacja",cat:"agregacja",short:"Wartość minimalna / maksymalna.",full:"Zwraca min/max wartość. Działa na liczbach, datach i tekstach (alfabetycznie).",code:"SELECT MIN(rok_produkcji) AS najstarszy,\n       MAX(rok_produkcji) AS najnowszy\nFROM Filmy;",tip:"MIN/MAX działają też na VARCHAR (porządek leksykograficzny)."},
+  {name:"INNER JOIN",badge:"join",cat:"join",short:"Tylko wiersze pasujące w obu tabelach.",full:"Łączy tabele — zwraca tylko te wiersze, gdzie klucz pasuje w OBIE strony. Wiersze bez pary są pomijane.",code:"SELECT u.imie, o.przedmiot, o.ocena\nFROM Uczniowie u\nINNER JOIN Oceny o ON u.id_ucznia = o.id_ucznia;",tip:"INNER JOIN = JOIN (bez słowa INNER też działa). Wiersze bez dopasowania znikają."},
+  {name:"LEFT JOIN",badge:"join",cat:"join",short:"Wszystkie z lewej + pasujące z prawej.",full:"Zwraca WSZYSTKIE wiersze z lewej tabeli. Dla tych bez pary po prawej — NULL.",code:"SELECT u.imie, o.ocena\nFROM Uczniowie u\nLEFT JOIN Oceny o ON u.id_ucznia = o.id_ucznia\nWHERE o.ocena IS NULL;",tip:"LEFT JOIN + WHERE prawa.kol IS NULL = uczniowie BEZ ocen."},
+  {name:"RIGHT JOIN",badge:"join",cat:"join",short:"Wszystkie z prawej + pasujące z lewej.",full:"Odwrotność LEFT JOIN — zachowuje wszystkie wiersze z prawej tabeli.",code:"SELECT k.imie, z.id_zamowienia\nFROM Zamowienia z\nRIGHT JOIN Klienci k ON z.id_klienta = k.id_klienta;",tip:"RIGHT JOIN jest rzadszy — często można go zastąpić LEFT JOIN ze zmienioną kolejnością tabel."},
+  {name:"ON",badge:"join",cat:"join",short:"Warunek łączenia tabel w JOIN.",full:"Definiuje kolumny po których łączymy tabele. Zazwyczaj klucz główny = klucz obcy.",code:"FROM Uczniowie u\nJOIN Oceny o ON u.id_ucznia = o.id_ucznia",tip:"ON u.id = o.id_ucznia — zawsze sprawdzaj czy typy kolumn są zgodne."},
+  {name:"INSERT INTO",badge:"dml",cat:"dml",short:"Wstawia nowe wiersze do tabeli.",full:"Dodaje nowe rekordy. Można wstawić wiele wierszy jednym poleceniem.",code:"INSERT INTO Uczniowie VALUES\n  (9, 'Marek', 'Kowal', '2B', '2007-05-10', 'M');\n\n-- Wybrane kolumny:\nINSERT INTO Uczniowie (imie, nazwisko)\n  VALUES ('Anna', 'Nowak');",tip:"Jeśli podajesz wszystkie kolumny możesz pominąć ich listę. Bezpieczniej jest zawsze ją pisać."},
+  {name:"UPDATE",badge:"dml",cat:"dml",short:"Modyfikuje istniejące wiersze.",full:"Aktualizuje wartości. ZAWSZE z WHERE — bez niego zmienisz wszystkie wiersze!",code:"UPDATE Produkty\nSET cena = cena * 1.1\nWHERE kategoria = 'Elektronika';",tip:"⚠️ UPDATE bez WHERE = katastrofa! Zawsze sprawdzaj WHERE przed wykonaniem."},
+  {name:"DELETE",badge:"dml",cat:"dml",short:"Usuwa wiersze z tabeli.",full:"Usuwa rekordy. BEZ WHERE usuwa wszystko! Struktura tabeli pozostaje.",code:"DELETE FROM Filmy\nWHERE rok_produkcji < 1990;",tip:"⚠️ DELETE bez WHERE = pusta tabela. Inaczej niż DROP TABLE — struktura zostaje."},
+  {name:"CREATE TABLE",badge:"ddl",cat:"ddl",short:"Tworzy nową tabelę.",full:"Definiuje strukturę tabeli: kolumny, typy, ograniczenia.",code:"CREATE TABLE Oceny (\n  id_oceny    INT PRIMARY KEY,\n  id_ucznia   INT NOT NULL,\n  przedmiot   VARCHAR(50),\n  ocena       INT CHECK(ocena BETWEEN 1 AND 6),\n  data_wyst   DATE\n);",tip:"Pamiętaj o PRIMARY KEY. Typy: INT, VARCHAR(n), DATE, DECIMAL(p,s), BOOLEAN."},
+  {name:"ALTER TABLE",badge:"ddl",cat:"ddl",short:"Modyfikuje strukturę tabeli.",full:"Dodaje/usuwa/zmienia kolumny lub ograniczenia.",code:"ALTER TABLE Uczniowie ADD telefon VARCHAR(15);\nALTER TABLE Uczniowie DROP COLUMN telefon;\nALTER TABLE Filmy RENAME TO FilmyArchiwum;",tip:"ALTER ADD — dodaj kolumnę. ALTER DROP — usuń. ALTER RENAME — zmień nazwę."},
+  {name:"DROP TABLE",badge:"ddl",cat:"ddl",short:"Usuwa tabelę (i dane!).",full:"Usuwa tabelę wraz z danymi i strukturą. Nie da się cofnąć!",code:"DROP TABLE IF EXISTS TempTabela;",tip:"IF EXISTS — nie rzuca błędu jeśli tabela nie istnieje. Zawsze stosuj."},
+  {name:"PRIMARY KEY",badge:"ddl",cat:"ddl",short:"Unikalny identyfikator wiersza.",full:"Klucz główny — unikalny, NOT NULL, jeden na tabelę (może być złożony).",code:"CREATE TABLE Filmy (\n  id_filmu INT PRIMARY KEY,\n  tytul VARCHAR(200) NOT NULL\n);",tip:"PRIMARY KEY automatycznie zakłada UNIQUE + NOT NULL."},
+  {name:"FOREIGN KEY",badge:"ddl",cat:"ddl",short:"Klucz obcy — powiązanie z inną tabelą.",full:"Zapewnia integralność referencyjną — wartość musi istnieć w tabeli nadrzędnej.",code:"CREATE TABLE Oceny (\n  id_ucznia INT REFERENCES Uczniowie(id_ucznia)\n);",tip:"REFERENCES tabela(kolumna) — skrócona forma FK. W Access: powiązania w relacjach."},
+  {name:"LIKE",badge:"operator",cat:"operator",short:"Wyszukiwanie wzorca w tekście.",full:"% — dowolna liczba dowolnych znaków<br>_ — dokładnie jeden dowolny znak",code:"SELECT * FROM Filmy\nWHERE tytul LIKE 'Inter%';  -- zaczyna się od Inter\n\nSELECT * FROM Klienci\nWHERE email LIKE '%@gmail.com';",tip:"LIKE '%abc%' — zawiera abc. LIKE 'A__' — zaczyna się od A i ma 3 znaki."},
+  {name:"BETWEEN",badge:"operator",cat:"operator",short:"Wartość w zakresie (włącznie).",full:"Sprawdza czy wartość jest między min a max (oba krańce włączone).",code:"SELECT * FROM Filmy\nWHERE rok_produkcji BETWEEN 2000 AND 2020;",tip:"BETWEEN 2000 AND 2020 = >= 2000 AND <= 2020. Działa też na datach i tekstach."},
+  {name:"IN / NOT IN",badge:"operator",cat:"operator",short:"Wartość należy do listy.",full:"Sprawdza czy wartość jest na liście wartości. NOT IN odwraca.",code:"SELECT * FROM Uczniowie\nWHERE klasa IN ('1A', '2A', '3A');\n\nSELECT * FROM Produkty\nWHERE kategoria NOT IN ('Odzież', 'Kosmetyki');",tip:"IN (podzapytanie) — bardzo często na maturze! Np. WHERE id IN (SELECT id FROM ...)"},
+  {name:"IS NULL / IS NOT NULL",badge:"operator",cat:"operator",short:"Sprawdza czy wartość jest NULL.",full:"NULL to brak wartości. NIE można porównywać = NULL — tylko IS NULL.",code:"SELECT * FROM Klienci\nWHERE email IS NULL;\n\nSELECT * FROM Wypozyczenia\nWHERE data_zwrotu IS NOT NULL;",tip:"NULL != '' (pusty string). NULL != 0. Nigdy nie pisz = NULL — zawsze IS NULL."},
+  {name:"CASE WHEN",badge:"operator",cat:"operator",short:"Warunkowe wyrażenie (IF w SQL).",full:"Zwraca różne wartości zależnie od warunków. Działa jak IF-ELSE.",code:"SELECT imie,\n  CASE\n    WHEN ocena >= 5 THEN 'Celujący'\n    WHEN ocena >= 3 THEN 'Dostateczny'\n    ELSE 'Niedostateczny'\n  END AS wynik\nFROM Oceny;",tip:"CASE można użyć w SELECT, ORDER BY, nawet wewnątrz SUM(CASE WHEN...)."},
+  {name:"Podzapytanie",badge:"funkcja",cat:"funkcja",short:"Zapytanie wewnątrz zapytania.",full:"Subquery — zapytanie SELECT zagnieżdżone w WHERE, FROM lub SELECT.",code:"-- Uczniowie z oceną wyższą niż średnia:\nSELECT imie FROM Uczniowie\nWHERE id_ucznia IN (\n  SELECT id_ucznia FROM Oceny\n  WHERE ocena > (SELECT AVG(ocena) FROM Oceny)\n);",tip:"Podzapytanie musi zwracać odpowiedni typ: skalarne (1 wartość) lub zbiorowe (lista)."},
+  {name:"CREATE VIEW",badge:"ddl",cat:"ddl",short:"Wirtualna tabela na bazie SELECT.",full:"Widok to zapisane zapytanie SELECT. Możesz go używać jak tabeli.",code:"CREATE VIEW OcenyUczniow AS\nSELECT u.imie, u.klasa, o.przedmiot, o.ocena\nFROM Uczniowie u\nJOIN Oceny o ON u.id_ucznia = o.id_ucznia;\n\n-- Użycie:\nSELECT * FROM OcenyUczniow\nWHERE klasa = '2A';",tip:"Widok nie przechowuje danych — każde SELECT na widoku wykonuje bazowe zapytanie."},
+  {name:"ROUND()",badge:"funkcja",cat:"funkcja",short:"Zaokrągla liczbę.",full:"ROUND(liczba, miejsca_po_przecinku). Przydatne przy cenach, średnich.",code:"SELECT ROUND(AVG(cena), 2) AS srednia_cena\nFROM Produkty;",tip:"ROUND(2.5, 0) = 3. Zaokrągla zgodnie z matematyką."},
+  {name:"LENGTH() / LEN()",badge:"funkcja",cat:"funkcja",short:"Długość tekstu.",full:"Zwraca liczbę znaków w stringu. SQLite/MySQL: LENGTH(). Access/SQL Server: LEN().",code:"SELECT tytul, LENGTH(tytul) AS dlugosc\nFROM Filmy\nORDER BY LENGTH(tytul) DESC;",tip:"Na maturze Access: LEN(). W SQL/SQLite: LENGTH()."},
+  {name:"UPPER() / LOWER()",badge:"funkcja",cat:"funkcja",short:"Zamienia wielkość liter.",full:"UPPER() = WIELKIE LITERY. LOWER() = małe litery.",code:"SELECT UPPER(imie), LOWER(email)\nFROM Klienci;",tip:"Przydatne do porównań case-insensitive: LOWER(email) = LOWER('Test@Mail.pl')"},
+  {name:"SUBSTR()",badge:"funkcja",cat:"funkcja",short:"Wycina fragment tekstu.",full:"SUBSTR(tekst, start, długość). Indeksowanie od 1.",code:"SELECT SUBSTR(data_urodzenia, 1, 4) AS rok_ur\nFROM Uczniowie;",tip:"Access: MID(tekst, start, dlugosc). SQLite: SUBSTR()."},
+  {name:"COALESCE()",badge:"funkcja",cat:"funkcja",short:"Zwraca pierwszą wartość nie-NULL.",full:"Przydatne do zastępowania NULL domyślną wartością.",code:"SELECT imie,\n  COALESCE(email, 'brak@email.pl') AS kontakt\nFROM Klienci;",tip:"COALESCE(a, b, c) — zwraca pierwsze a, b lub c które nie jest NULL."},
+];
+
+const modulyData = [
+{id:"select",name:"SELECT podstawy",icon:"🔍",content:`
+<div class="mod-card">
+<h4>🔍 Anatomia zapytania SELECT</h4>
+<p>Każde zapytanie ma obowiązkową strukturę. Klauzule muszą być w ściśle określonej kolejności:</p>
+<pre><span class="sql-keyword">SELECT</span>   kolumna1, kolumna2          <span class="sql-comment">-- co pobieramy (obowiązkowe)</span>
+<span class="sql-clause">FROM</span>     NazwaTabeli                 <span class="sql-comment">-- skąd (obowiązkowe)</span>
+<span class="sql-clause">WHERE</span>    warunek                     <span class="sql-comment">-- filtr wierszy (opcjonalne)</span>
+<span class="sql-clause">GROUP BY</span> kolumna                    <span class="sql-comment">-- grupowanie (opcjonalne)</span>
+<span class="sql-clause">HAVING</span>   warunek_na_grupie           <span class="sql-comment">-- filtr grup (opcjonalne)</span>
+<span class="sql-clause">ORDER BY</span> kolumna ASC|DESC           <span class="sql-comment">-- sortowanie (opcjonalne)</span>
+<span class="sql-clause">LIMIT</span>    n                           <span class="sql-comment">-- limit wyników (opcjonalne)</span></pre>
+</div>
+<div class="mod-card">
+<h4>📋 Przykłady SELECT</h4>
+<pre><span class="sql-comment">-- Wszystkie kolumny</span>
+<span class="sql-keyword">SELECT</span> * <span class="sql-clause">FROM</span> Filmy;
+
+<span class="sql-comment">-- Wybrane kolumny</span>
+<span class="sql-keyword">SELECT</span> tytul, gatunek, rok_produkcji <span class="sql-clause">FROM</span> Filmy;
+
+<span class="sql-comment">-- Z aliasem kolumny</span>
+<span class="sql-keyword">SELECT</span> tytul <span class="sql-keyword">AS</span> nazwa, rok_produkcji <span class="sql-keyword">AS</span> rok
+<span class="sql-clause">FROM</span> Filmy;
+
+<span class="sql-comment">-- Tylko unikalne wartości</span>
+<span class="sql-keyword">SELECT DISTINCT</span> gatunek <span class="sql-clause">FROM</span> Filmy;
+
+<span class="sql-comment">-- Z filtrem i sortowaniem</span>
+<span class="sql-keyword">SELECT</span> tytul, rok_produkcji
+<span class="sql-clause">FROM</span> Filmy
+<span class="sql-clause">WHERE</span> rok_produkcji > <span class="sql-value">2000</span>
+<span class="sql-clause">ORDER BY</span> rok_produkcji <span class="sql-keyword">DESC</span>
+<span class="sql-clause">LIMIT</span> <span class="sql-value">10</span>;</pre>
+</div>
+<div class="mod-card">
+<h4>⚡ Operatory WHERE</h4>
+<pre><span class="sql-comment">-- Porównania:</span>
+<span class="sql-clause">WHERE</span> cena = <span class="sql-value">99</span>         <span class="sql-comment">-- równe</span>
+<span class="sql-clause">WHERE</span> cena != <span class="sql-value">99</span>        <span class="sql-comment">-- różne (lub: cena <> 99)</span>
+<span class="sql-clause">WHERE</span> cena > <span class="sql-value">100</span>        <span class="sql-comment">-- większe niż</span>
+<span class="sql-clause">WHERE</span> cena <span class="sql-keyword">BETWEEN</span> <span class="sql-value">50</span> <span class="sql-keyword">AND</span> <span class="sql-value">200</span>   <span class="sql-comment">-- zakres</span>
+<span class="sql-clause">WHERE</span> gatunek <span class="sql-keyword">IN</span> (<span class="sql-value">'Sci-Fi'</span>, <span class="sql-value">'Horror'</span>)  <span class="sql-comment">-- lista</span>
+<span class="sql-clause">WHERE</span> tytul <span class="sql-keyword">LIKE</span> <span class="sql-value">'Inter%'</span>  <span class="sql-comment">-- wzorzec</span>
+<span class="sql-clause">WHERE</span> email <span class="sql-keyword">IS NULL</span>    <span class="sql-comment">-- brak wartości</span>
+
+<span class="sql-comment">-- Łączenie warunków:</span>
+<span class="sql-clause">WHERE</span> klasa = <span class="sql-value">'2A'</span> <span class="sql-keyword">AND</span> plec = <span class="sql-value">'K'</span>   <span class="sql-comment">-- oba muszą być spełnione</span>
+<span class="sql-clause">WHERE</span> klasa = <span class="sql-value">'1A'</span> <span class="sql-keyword">OR</span> klasa = <span class="sql-value">'1B'</span>  <span class="sql-comment">-- jeden wystarczy</span>
+<span class="sql-clause">WHERE</span> <span class="sql-keyword">NOT</span> gatunek = <span class="sql-value">'Horror'</span>         <span class="sql-comment">-- negacja</span></pre>
+<div class="wtopa"><h5>⚠️ Klasyczny błąd maturalny</h5><p>Nigdy nie pisz <code>WHERE email = NULL</code> — to ZAWSZE zwraca 0 wyników. Prawidłowo: <code>WHERE email IS NULL</code></p></div>
+</div>`
+},
+{id:"agregacja",name:"Agregacja & GROUP BY",icon:"📊",content:`
+<div class="mod-card">
+<h4>📊 Funkcje agregujące</h4>
+<p>Działają na zbiorach wierszy i zwracają jedną wartość na grupę.</p>
+<pre><span class="sql-keyword">SELECT</span>
+  <span class="sql-keyword">COUNT</span>(*),            <span class="sql-comment">-- liczba wszystkich wierszy</span>
+  <span class="sql-keyword">COUNT</span>(email),        <span class="sql-comment">-- liczba nie-NULL wartości</span>
+  <span class="sql-keyword">COUNT</span>(<span class="sql-keyword">DISTINCT</span> klasa), <span class="sql-comment">-- liczba unikalnych klas</span>
+  <span class="sql-keyword">SUM</span>(cena),           <span class="sql-comment">-- suma</span>
+  <span class="sql-keyword">AVG</span>(ocena),          <span class="sql-comment">-- średnia (pomija NULL!)</span>
+  <span class="sql-keyword">MIN</span>(cena),           <span class="sql-comment">-- minimum</span>
+  <span class="sql-keyword">MAX</span>(cena)            <span class="sql-comment">-- maksimum</span>
+<span class="sql-clause">FROM</span> Tabela;</pre>
+</div>
+<div class="mod-card">
+<h4>📦 GROUP BY — grupowanie danych</h4>
+<p>Dzieli wyniki na grupy według wartości kolumny. Każda kolumna w SELECT bez funkcji agregującej <strong>musi</strong> być w GROUP BY.</p>
+<pre><span class="sql-comment">-- Liczba uczniów w każdej klasie:</span>
+<span class="sql-keyword">SELECT</span> klasa, <span class="sql-keyword">COUNT</span>(*) <span class="sql-keyword">AS</span> liczba
+<span class="sql-clause">FROM</span> Uczniowie
+<span class="sql-clause">GROUP BY</span> klasa
+<span class="sql-clause">ORDER BY</span> liczba <span class="sql-keyword">DESC</span>;
+
+<span class="sql-comment">-- Średnia cena w każdej kategorii:</span>
+<span class="sql-keyword">SELECT</span> kategoria, <span class="sql-keyword">ROUND</span>(<span class="sql-keyword">AVG</span>(cena), <span class="sql-value">2</span>) <span class="sql-keyword">AS</span> avg_cena
+<span class="sql-clause">FROM</span> Produkty
+<span class="sql-clause">GROUP BY</span> kategoria;</pre>
+<div class="tip-box"><h5>✅ Złota zasada GROUP BY</h5><p>W SELECT możesz mieć: (1) kolumny z GROUP BY, (2) funkcje agregujące. NICZEGO INNEGO. Pamiętaj to na maturze.</p></div>
+</div>
+<div class="mod-card">
+<h4>🔍 HAVING — filtrowanie grup</h4>
+<p>HAVING filtruje grupy <em>po</em> ich utworzeniu. WHERE filtruje wiersze <em>przed</em> grupowaniem.</p>
+<pre><span class="sql-comment">-- Klasy z więcej niż 5 uczniami:</span>
+<span class="sql-keyword">SELECT</span> klasa, <span class="sql-keyword">COUNT</span>(*) <span class="sql-keyword">AS</span> n
+<span class="sql-clause">FROM</span> Uczniowie
+<span class="sql-clause">GROUP BY</span> klasa
+<span class="sql-clause">HAVING</span> <span class="sql-keyword">COUNT</span>(*) > <span class="sql-value">5</span>;
+
+<span class="sql-comment">-- WHERE + GROUP BY + HAVING razem:</span>
+<span class="sql-keyword">SELECT</span> klasa, <span class="sql-keyword">AVG</span>(ocena) <span class="sql-keyword">AS</span> srednia
+<span class="sql-clause">FROM</span> Oceny o
+<span class="sql-clause">JOIN</span> Uczniowie u <span class="sql-keyword">ON</span> o.id_ucznia = u.id_ucznia
+<span class="sql-clause">WHERE</span> przedmiot = <span class="sql-value">'Matematyka'</span>   <span class="sql-comment">-- tylko matematyka</span>
+<span class="sql-clause">GROUP BY</span> klasa
+<span class="sql-clause">HAVING</span> <span class="sql-keyword">AVG</span>(ocena) >= <span class="sql-value">4.0</span>        <span class="sql-comment">-- tylko klasy z dobrą średnią</span>
+<span class="sql-clause">ORDER BY</span> srednia <span class="sql-keyword">DESC</span>;</pre>
+<div class="wtopa"><h5>⚠️ WHERE vs HAVING — błąd maturalny nr 1</h5><p><code>WHERE COUNT(*) > 5</code> — BŁĄD! WHERE nie zna jeszcze grup.<br><code>HAVING COUNT(*) > 5</code> — POPRAWNIE!</p></div>
+</div>`
+},
+{id:"join",name:"JOIN — łączenie tabel",icon:"🔗",content:`
+<div class="mod-card">
+<h4>🔗 INNER JOIN — tylko dopasowania</h4>
+<p>Zwraca wiersze które mają parę w OBU tabelach. Wiersze bez pary znikają.</p>
+<pre><span class="sql-keyword">SELECT</span> u.imie, u.nazwisko, o.przedmiot, o.ocena
+<span class="sql-clause">FROM</span> Uczniowie u
+<span class="sql-clause">INNER JOIN</span> Oceny o <span class="sql-keyword">ON</span> u.id_ucznia = o.id_ucznia
+<span class="sql-clause">WHERE</span> o.ocena >= <span class="sql-value">5</span>;</pre>
+<div class="tip-box"><h5>💡 Alias tabeli</h5><p><code>Uczniowie u</code> — u to skrócona nazwa. Używaj potem <code>u.imie</code> zamiast <code>Uczniowie.imie</code>. Na maturze skróty są standardem.</p></div>
+</div>
+<div class="mod-card">
+<h4>↙️ LEFT JOIN — zachowaj lewe</h4>
+<p>Wszystkie wiersze z LEWEJ tabeli + dopasowania z prawej. Brak pary = NULL po prawej stronie.</p>
+<pre><span class="sql-comment">-- Wszyscy uczniowie, nawet ci bez ocen:</span>
+<span class="sql-keyword">SELECT</span> u.imie, u.klasa, <span class="sql-keyword">COUNT</span>(o.id_oceny) <span class="sql-keyword">AS</span> ile_ocen
+<span class="sql-clause">FROM</span> Uczniowie u
+<span class="sql-clause">LEFT JOIN</span> Oceny o <span class="sql-keyword">ON</span> u.id_ucznia = o.id_ucznia
+<span class="sql-clause">GROUP BY</span> u.id_ucznia, u.imie, u.klasa;
+
+<span class="sql-comment">-- Uczniowie BEZ żadnej oceny:</span>
+<span class="sql-keyword">SELECT</span> u.imie
+<span class="sql-clause">FROM</span> Uczniowie u
+<span class="sql-clause">LEFT JOIN</span> Oceny o <span class="sql-keyword">ON</span> u.id_ucznia = o.id_ucznia
+<span class="sql-clause">WHERE</span> o.id_oceny <span class="sql-keyword">IS NULL</span>;</pre>
+</div>
+<div class="mod-card">
+<h4>🔗🔗 JOIN wielu tabel</h4>
+<p>Można łączyć więcej niż 2 tabele — każdy kolejny JOIN dokłada tabelę.</p>
+<pre><span class="sql-keyword">SELECT</span>
+  u.imie, u.klasa,
+  n.nazwisko <span class="sql-keyword">AS</span> nauczyciel,
+  o.przedmiot, o.ocena
+<span class="sql-clause">FROM</span> Uczniowie u
+<span class="sql-clause">JOIN</span> Oceny o     <span class="sql-keyword">ON</span> u.id_ucznia     = o.id_ucznia
+<span class="sql-clause">JOIN</span> Nauczyciele n <span class="sql-keyword">ON</span> o.id_nauczyciela = n.id_nauczyciela
+<span class="sql-clause">WHERE</span> o.ocena = <span class="sql-value">6</span>
+<span class="sql-clause">ORDER BY</span> n.nazwisko;</pre>
+<div class="wtopa"><h5>⚠️ Typowy błąd: brak aliasów przy wielokrotnym JOIN</h5><p>Gdy łączysz 3+ tabele i mają kolumny o tej samej nazwie (np. <code>imie</code>), MUSISZ używać aliasów: <code>u.imie</code>, <code>n.imie</code> — inaczej błąd "ambiguous column".</p></div>
+</div>`
+},
+{id:"dml",name:"DML — INSERT/UPDATE/DELETE",icon:"✏️",content:`
+<div class="mod-card">
+<h4>➕ INSERT INTO — dodawanie wierszy</h4>
+<pre><span class="sql-comment">-- Wstawienie jednego wiersza (wszystkie kolumny):</span>
+<span class="sql-keyword">INSERT INTO</span> Uczniowie
+<span class="sql-clause">VALUES</span> (<span class="sql-value">10</span>, <span class="sql-value">'Anna'</span>, <span class="sql-value">'Nowak'</span>, <span class="sql-value">'2A'</span>, <span class="sql-value">'2007-03-15'</span>, <span class="sql-value">'K'</span>);
+
+<span class="sql-comment">-- Wstawienie z podanymi kolumnami (bezpieczniej):</span>
+<span class="sql-keyword">INSERT INTO</span> Uczniowie (imie, nazwisko, klasa)
+<span class="sql-clause">VALUES</span> (<span class="sql-value">'Piotr'</span>, <span class="sql-value">'Lis'</span>, <span class="sql-value">'3B'</span>);
+
+<span class="sql-comment">-- Wstawienie wielu wierszy na raz:</span>
+<span class="sql-keyword">INSERT INTO</span> Kina (nazwa_kina, miasto)
+<span class="sql-clause">VALUES</span>
+  (<span class="sql-value">'Helios Wrocław'</span>, <span class="sql-value">'Wrocław'</span>),
+  (<span class="sql-value">'Cinema City Łódź'</span>, <span class="sql-value">'Łódź'</span>);</pre>
+</div>
+<div class="mod-card">
+<h4>✏️ UPDATE — modyfikacja danych</h4>
+<pre><span class="sql-comment">-- Aktualizacja jednej kolumny:</span>
+<span class="sql-keyword">UPDATE</span> Produkty
+<span class="sql-clause">SET</span> cena = cena * <span class="sql-value">1.1</span>
+<span class="sql-clause">WHERE</span> kategoria = <span class="sql-value">'Elektronika'</span>;
+
+<span class="sql-comment">-- Aktualizacja wielu kolumn:</span>
+<span class="sql-keyword">UPDATE</span> Klienci
+<span class="sql-clause">SET</span> email = <span class="sql-value">'nowy@mail.pl'</span>,
+    miasto = <span class="sql-value">'Kraków'</span>
+<span class="sql-clause">WHERE</span> id_klienta = <span class="sql-value">3</span>;</pre>
+<div class="wtopa"><h5>⚠️ NAJWIĘKSZY błąd w UPDATE</h5><p>UPDATE bez WHERE modyfikuje WSZYSTKIE wiersze. Na maturze zawsze sprawdź: czy mam WHERE? Jeśli nie — sprawdź czy to zamierzone.</p></div>
+</div>
+<div class="mod-card">
+<h4>🗑️ DELETE — usuwanie wierszy</h4>
+<pre><span class="sql-comment">-- Usuń konkretne wiersze:</span>
+<span class="sql-keyword">DELETE FROM</span> Filmy
+<span class="sql-clause">WHERE</span> rok_produkcji < <span class="sql-value">1990</span>;
+
+<span class="sql-comment">-- Usuń za pomocą podzapytania:</span>
+<span class="sql-keyword">DELETE FROM</span> Oceny
+<span class="sql-clause">WHERE</span> id_ucznia <span class="sql-keyword">IN</span> (
+  <span class="sql-keyword">SELECT</span> id_ucznia <span class="sql-clause">FROM</span> Uczniowie
+  <span class="sql-clause">WHERE</span> klasa = <span class="sql-value">'4A'</span>
+);</pre>
+<div class="tip-box"><h5>💡 DELETE vs DROP TABLE</h5><p>DELETE usuwa wiersze — tabela zostaje.<br>DROP TABLE usuwa całą tabelę z danymi i strukturą.</p></div>
+</div>`
+},
+{id:"ddl",name:"DDL — struktura bazy",icon:"🏗️",content:`
+<div class="mod-card">
+<h4>🏗️ CREATE TABLE — typy danych</h4>
+<pre><span class="sql-keyword">CREATE TABLE</span> Uczniowie (
+  id_ucznia     <span class="sql-value">INT PRIMARY KEY</span>,      <span class="sql-comment">-- liczba całk., klucz główny</span>
+  imie          <span class="sql-value">VARCHAR(50) NOT NULL</span>,  <span class="sql-comment">-- tekst max 50 znaków</span>
+  nazwisko      <span class="sql-value">VARCHAR(50) NOT NULL</span>,
+  klasa         <span class="sql-value">VARCHAR(10)</span>,
+  data_urodzenia <span class="sql-value">DATE</span>,               <span class="sql-comment">-- format: YYYY-MM-DD</span>
+  srednia_ocen  <span class="sql-value">DECIMAL(3,2)</span>,         <span class="sql-comment">-- 9.99 — 3 cyfry, 2 po przecinku</span>
+  aktywny       <span class="sql-value">BOOLEAN DEFAULT TRUE</span>, <span class="sql-comment">-- wartość logiczna</span>
+  opis          <span class="sql-value">TEXT</span>                  <span class="sql-comment">-- długi tekst bez limitu</span>
+);</pre>
+<div class="tip-box"><h5>💡 Typy danych na maturze</h5><p>INT, VARCHAR(n), DATE, DECIMAL(p,s), TEXT, BOOLEAN. W Access: Number, Text, Date/Time, Currency, Yes/No.</p></div>
+</div>
+<div class="mod-card">
+<h4>🔑 Klucze i ograniczenia</h4>
+<pre><span class="sql-keyword">CREATE TABLE</span> Oceny (
+  id_oceny      INT <span class="sql-value">PRIMARY KEY</span>,
+  id_ucznia     INT <span class="sql-value">NOT NULL REFERENCES Uczniowie(id_ucznia)</span>,
+  id_nauczyciela INT <span class="sql-value">REFERENCES Nauczyciele(id_nauczyciela)</span>,
+  przedmiot     VARCHAR(50) <span class="sql-value">NOT NULL</span>,
+  ocena         INT <span class="sql-value">CHECK(ocena BETWEEN 1 AND 6)</span>,
+  data_wystawienia DATE
+);</pre>
+<ul>
+<li><b>PRIMARY KEY</b> — unikalny identyfikator, NOT NULL automatycznie</li>
+<li><b>NOT NULL</b> — pole obowiązkowe</li>
+<li><b>REFERENCES</b> — klucz obcy do innej tabeli</li>
+<li><b>CHECK</b> — ograniczenie wartości</li>
+<li><b>DEFAULT</b> — wartość domyślna</li>
+<li><b>UNIQUE</b> — wartość unikalna (ale może być NULL)</li>
+</ul>
+</div>
+<div class="mod-card">
+<h4>🔧 ALTER TABLE — modyfikacja struktury</h4>
+<pre><span class="sql-comment">-- Dodaj kolumnę:</span>
+<span class="sql-keyword">ALTER TABLE</span> Uczniowie <span class="sql-keyword">ADD</span> telefon VARCHAR(<span class="sql-value">15</span>);
+
+<span class="sql-comment">-- Usuń kolumnę:</span>
+<span class="sql-keyword">ALTER TABLE</span> Uczniowie <span class="sql-keyword">DROP COLUMN</span> telefon;
+
+<span class="sql-comment">-- Zmień nazwę tabeli:</span>
+<span class="sql-keyword">ALTER TABLE</span> Filmy <span class="sql-keyword">RENAME TO</span> FilmyArchiwum;
+
+<span class="sql-comment">-- Usuń tabelę:</span>
+<span class="sql-keyword">DROP TABLE IF EXISTS</span> TempTabela;</pre>
+</div>`
+},
+{id:"zaawansowane",name:"Zaawansowane (PRO)",icon:"🚀",content:`
+<div class="mod-card">
+<h4>🔄 Podzapytania (Subquery)</h4>
+<p>Zapytanie zagnieżdżone wewnątrz innego zapytania. Bardzo częste na maturze!</p>
+<pre><span class="sql-comment">-- Filmy starsze niż średnia:</span>
+<span class="sql-keyword">SELECT</span> tytul, rok_produkcji
+<span class="sql-clause">FROM</span> Filmy
+<span class="sql-clause">WHERE</span> rok_produkcji < (
+  <span class="sql-keyword">SELECT AVG</span>(rok_produkcji) <span class="sql-clause">FROM</span> Filmy
+);
+
+<span class="sql-comment">-- Uczniowie z oceną 6 z Matematyki:</span>
+<span class="sql-keyword">SELECT</span> imie, klasa <span class="sql-clause">FROM</span> Uczniowie
+<span class="sql-clause">WHERE</span> id_ucznia <span class="sql-keyword">IN</span> (
+  <span class="sql-keyword">SELECT</span> id_ucznia <span class="sql-clause">FROM</span> Oceny
+  <span class="sql-clause">WHERE</span> przedmiot = <span class="sql-value">'Matematyka'</span> <span class="sql-keyword">AND</span> ocena = <span class="sql-value">6</span>
+);
+
+<span class="sql-comment">-- Klienci którzy złożyli zamówienie (EXISTS):</span>
+<span class="sql-keyword">SELECT</span> imie <span class="sql-clause">FROM</span> Klienci k
+<span class="sql-clause">WHERE EXISTS</span> (
+  <span class="sql-keyword">SELECT</span> <span class="sql-value">1</span> <span class="sql-clause">FROM</span> Zamowienia z
+  <span class="sql-clause">WHERE</span> z.id_klienta = k.id_klienta
+);</pre>
+</div>
+<div class="mod-card">
+<h4>🎭 CASE WHEN — logika warunkowa</h4>
+<pre><span class="sql-comment">-- Klasyfikacja ocen:</span>
+<span class="sql-keyword">SELECT</span> imie,
+  <span class="sql-keyword">CASE</span>
+    <span class="sql-keyword">WHEN</span> ocena = <span class="sql-value">6</span> <span class="sql-keyword">THEN</span> <span class="sql-value">'Celujący'</span>
+    <span class="sql-keyword">WHEN</span> ocena >= <span class="sql-value">4</span> <span class="sql-keyword">THEN</span> <span class="sql-value">'Dobry'</span>
+    <span class="sql-keyword">WHEN</span> ocena >= <span class="sql-value">2</span> <span class="sql-keyword">THEN</span> <span class="sql-value">'Dostateczny'</span>
+    <span class="sql-keyword">ELSE</span> <span class="sql-value">'Niedostateczny'</span>
+  <span class="sql-keyword">END</span> <span class="sql-keyword">AS</span> wynik
+<span class="sql-clause">FROM</span> Oceny o
+<span class="sql-clause">JOIN</span> Uczniowie u <span class="sql-keyword">ON</span> o.id_ucznia = u.id_ucznia;
+
+<span class="sql-comment">-- SUM z CASE (zlicz oceny 6):</span>
+<span class="sql-keyword">SELECT</span> przedmiot,
+  <span class="sql-keyword">SUM</span>(<span class="sql-keyword">CASE WHEN</span> ocena = <span class="sql-value">6</span> <span class="sql-keyword">THEN</span> <span class="sql-value">1</span> <span class="sql-keyword">ELSE</span> <span class="sql-value">0</span> <span class="sql-keyword">END</span>) <span class="sql-keyword">AS</span> celujacych
+<span class="sql-clause">FROM</span> Oceny
+<span class="sql-clause">GROUP BY</span> przedmiot;</pre>
+</div>
+<div class="mod-card">
+<h4>👁️ CREATE VIEW — widoki</h4>
+<pre><span class="sql-comment">-- Stwórz widok:</span>
+<span class="sql-keyword">CREATE VIEW</span> v_OcenyUczniow <span class="sql-keyword">AS</span>
+<span class="sql-keyword">SELECT</span>
+  u.imie, u.nazwisko, u.klasa,
+  n.imie <span class="sql-keyword">AS</span> nauczyciel,
+  o.przedmiot, o.ocena
+<span class="sql-clause">FROM</span> Uczniowie u
+<span class="sql-clause">JOIN</span> Oceny o <span class="sql-keyword">ON</span> u.id_ucznia = o.id_ucznia
+<span class="sql-clause">JOIN</span> Nauczyciele n <span class="sql-keyword">ON</span> o.id_nauczyciela = n.id_nauczyciela;
+
+<span class="sql-comment">-- Użyj widoku jak tabeli:</span>
+<span class="sql-keyword">SELECT</span> * <span class="sql-clause">FROM</span> v_OcenyUczniow
+<span class="sql-clause">WHERE</span> klasa = <span class="sql-value">'2A'</span>
+<span class="sql-clause">ORDER BY</span> ocena <span class="sql-keyword">DESC</span>;
+
+<span class="sql-comment">-- Usuń widok:</span>
+<span class="sql-keyword">DROP VIEW IF EXISTS</span> v_OcenyUczniow;</pre>
+<div class="tip-box"><h5>💡 Widok vs tabela</h5><p>Widok nie przechowuje danych — to zapisane zapytanie. Przy każdym SELECT na widoku baza wykonuje bazowe zapytanie od nowa.</p></div>
+</div>`
+}
+];
+
+const quizData = [
+  {q:"Co robi klauzula WHERE w zapytaniu SQL?",hint:"WHERE pojawia się po FROM",opts:["Grupuje wiersze","Filtruje wiersze przed grupowaniem","Filtruje grupy po GROUP BY","Sortuje wyniki"],ans:1,exp:"WHERE filtruje wiersze <strong>przed</strong> grupowaniem. Do filtrowania grup po GROUP BY służy HAVING."},
+  {q:"Czym różni się HAVING od WHERE?",hint:"Pomyśl o kolejności działania",opts:["Niczym — to synonimy","WHERE działa na grupach, HAVING na wierszach","HAVING filtruje grupy po GROUP BY, WHERE filtruje wiersze","HAVING jest szybsze od WHERE"],ans:2,exp:"<code>WHERE</code> filtruje wiersze PRZED grupowaniem. <code>HAVING</code> filtruje grupy PO ich utworzeniu przez GROUP BY. HAVING może używać funkcji agregujących."},
+  {q:"Które zapytanie jest poprawne?",hint:"Funkcje agregujące w warunkach filtrujących",opts:["SELECT klasa, COUNT(*) FROM Uczniowie WHERE COUNT(*) > 5 GROUP BY klasa","SELECT klasa, COUNT(*) FROM Uczniowie GROUP BY klasa HAVING COUNT(*) > 5","SELECT klasa, COUNT(*) FROM Uczniowie HAVING COUNT(*) > 5","SELECT klasa, COUNT(*) FROM Uczniowie GROUP BY klasa WHERE COUNT(*) > 5"],ans:1,exp:"Poprawnie: <code>GROUP BY klasa HAVING COUNT(*) > 5</code>. HAVING musi być PO GROUP BY. WHERE nie może używać COUNT(*)."},
+  {q:"Co zwraca LEFT JOIN?",hint:"Myśl o tabeli 'z lewej strony'",opts:["Tylko wiersze pasujące w obu tabelach","Wszystkie wiersze z lewej tabeli + pasujące z prawej (NULL jeśli brak)","Wszystkie wiersze z obu tabel","Tylko wiersze bez pary w prawej tabeli"],ans:1,exp:"LEFT JOIN zachowuje WSZYSTKIE wiersze z lewej tabeli. Jeśli wiersz z lewej nie ma pary w prawej — kolumny z prawej będą NULL."},
+  {q:"Co oznacza COUNT(*) a COUNT(email)?",hint:"Jak NULL wpływa na COUNT",opts:["Są identyczne","COUNT(*) liczy wiersze (z NULL), COUNT(email) pomija NULL","COUNT(*) pomija NULL, COUNT(email) liczy wszystko","Różnią się tylko składnią"],ans:1,exp:"<code>COUNT(*)</code> zlicza WSZYSTKIE wiersze, nawet te z NULL. <code>COUNT(email)</code> pomija wiersze gdzie email IS NULL."},
+  {q:"Jak poprawnie sprawdzić czy email jest NULL?",hint:"Operatory porównania a NULL",opts:["WHERE email = NULL","WHERE email == NULL","WHERE email IS NULL","WHERE ISNULL(email) = TRUE"],ans:2,exp:"NULL wymaga specjalnego operatora <code>IS NULL</code>. Nigdy <code>= NULL</code> bo to zawsze zwraca FALSE/UNKNOWN."},
+  {q:"Co robi DISTINCT w SELECT?",hint:"Powtórzenia w wynikach",opts:["Sortuje wyniki","Usuwa duplikaty — zwraca unikalne wartości","Wybiera losowe wiersze","Zlicza unikalne wartości"],ans:1,exp:"<code>SELECT DISTINCT gatunek FROM Filmy</code> — zwróci każdy gatunek tylko raz, bez duplikatów."},
+  {q:"Która klauzula musi zawierać każdą niezagregowaną kolumnę z SELECT?",hint:"Złota zasada SQL",opts:["HAVING","ORDER BY","WHERE","GROUP BY"],ans:3,exp:"Złota zasada: każda kolumna w SELECT bez funkcji agregującej MUSI być w GROUP BY. Np. <code>SELECT klasa, COUNT(*)</code> wymaga <code>GROUP BY klasa</code>."},
+  {q:"Co robi: UPDATE Produkty SET cena = cena * 1.1 (bez WHERE)?",hint:"Bez WHERE w UPDATE",opts:["Nie wykona się — błąd składni","Aktualizuje tylko pierwszy wiersz","Aktualizuje WSZYSTKIE wiersze w tabeli","Aktualizuje losowe wiersze"],ans:2,exp:"UPDATE bez WHERE modyfikuje WSZYSTKIE wiersze! To jeden z najgroźniejszych błędów. Zawsze sprawdzaj czy masz WHERE przed wykonaniem UPDATE."},
+  {q:"Czym różni się DELETE FROM Tabela od DROP TABLE Tabela?",hint:"Dane vs struktura",opts:["Niczym — oba usuwają wszystko","DELETE usuwa wiersze (tabela zostaje), DROP usuwa całą tabelę ze strukturą","DROP usuwa wiersze, DELETE usuwa strukturę","DELETE jest szybsze od DROP"],ans:1,exp:"<code>DELETE</code> usuwa wiersze danych — tabela z jej strukturą zostaje. <code>DROP TABLE</code> usuwa WSZYSTKO: dane, kolumny, indeksy, ograniczenia."},
+  {q:"Co to jest INNER JOIN?",hint:"Myśl o części wspólnej",opts:["Łączy tabele, zachowując wszystkie wiersze z lewej","Łączy tabele, zwracając tylko wiersze z dopasowaniem w obu tabelach","Łączy tabele, zachowując wszystkie wiersze z obu","Łączy tabelę ze sobą samą"],ans:1,exp:"INNER JOIN = część wspólna. Zwraca tylko te wiersze, które mają dopasowanie w OBU tabelach. Wiersze bez pary znikają."},
+  {q:"Jak wyszukać wszystkich uczniów których imię zaczyna się na 'A'?",hint:"Wzorzec tekstowy",opts:["WHERE imie = 'A*'","WHERE imie STARTS WITH 'A'","WHERE imie LIKE 'A%'","WHERE imie CONTAINS 'A'"],ans:2,exp:"LIKE używa wzorców: <code>%</code> = dowolna liczba dowolnych znaków, <code>_</code> = dokładnie jeden znak. <code>LIKE 'A%'</code> = zaczyna się na A."},
+  {q:"Jaka jest kolejność klauzul w zapytaniu SELECT?",hint:"Myśl o skrócie: SF-W-G-H-O-L",opts:["FROM → SELECT → WHERE → GROUP BY → HAVING → ORDER BY","SELECT → FROM → GROUP BY → WHERE → HAVING → ORDER BY","SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY","FROM → WHERE → SELECT → GROUP BY → ORDER BY → HAVING"],ans:2,exp:"Obowiązkowa kolejność: <strong>SELECT → FROM → (JOIN) → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT</strong>. Naruszenie kolejności = błąd składni."},
+  {q:"Co oznacza PRIMARY KEY w CREATE TABLE?",hint:"Identyfikator wiersza",opts:["Kolumna może mieć dowolne wartości, włącznie z NULL","Kolumna jest unikalnym identyfikatorem — NOT NULL + UNIQUE automatycznie","Kolumna jest posortowana","Kolumna wskazuje na inną tabelę"],ans:1,exp:"PRIMARY KEY automatycznie zakłada UNIQUE + NOT NULL. Każda tabela powinna mieć PRIMARY KEY. Jedna na tabelę (może być złożony z kilku kolumn)."},
+  {q:"Jakie zapytanie policzy ile filmów jest w każdym gatunku?",hint:"Grupowanie + zliczanie",opts:["SELECT gatunek, COUNT(*) FROM Filmy","SELECT gatunek, COUNT(*) FROM Filmy GROUP BY gatunek","SELECT COUNT(gatunek) FROM Filmy","SELECT gatunek FROM Filmy GROUP BY gatunek"],ans:1,exp:"<code>SELECT gatunek, COUNT(*) FROM Filmy GROUP BY gatunek</code> — dla każdego gatunku (GROUP BY) zlicza liczbę wierszy (COUNT(*))."},
+  {q:"Czym jest FOREIGN KEY (klucz obcy)?",hint:"Relacje między tabelami",opts:["Drugi klucz główny w tabeli","Specjalny indeks przyspieszający wyszukiwanie","Kolumna wskazująca na PRIMARY KEY innej tabeli — zapewnia integralność","Klucz szyfrujący dane"],ans:2,exp:"FOREIGN KEY łączy tabele — wartość w kolumnie FK musi istnieć w kolumnie PK tabeli nadrzędnej. Zapewnia integralność referencyjną."},
+  {q:"Co robi: SELECT * FROM Filmy ORDER BY rok_produkcji DESC LIMIT 3?",hint:"Czytaj od końca",opts:["3 najstarsze filmy","3 najnowsze filmy","Losowe 3 filmy","Błąd — DESC i LIMIT nie mogą być razem"],ans:1,exp:"ORDER BY rok_produkcji DESC sortuje od największego roku (najnowsze). LIMIT 3 bierze pierwsze 3. Wynik: 3 najnowsze filmy."},
+  {q:"Które z poniższych to DML (Data Manipulation Language)?",hint:"Operacje na DANYCH",opts:["CREATE TABLE, ALTER TABLE, DROP TABLE","SELECT, INSERT, UPDATE, DELETE","PRIMARY KEY, FOREIGN KEY, INDEX","VIEW, TRIGGER, PROCEDURE"],ans:1,exp:"DML = operacje na danych: SELECT (pobierz), INSERT (dodaj), UPDATE (zmień), DELETE (usuń). DDL = struktura: CREATE, ALTER, DROP."},
+  {q:"Jakie dwa znaki wieloznaczne używa LIKE?",hint:"% i _",opts:["* i ?","% i _","# i @","^ i $"],ans:1,exp:"W LIKE: <code>%</code> = dowolna liczba dowolnych znaków (0 lub więcej), <code>_</code> = dokładnie jeden dowolny znak. Przykład: <code>LIKE 'A_na'</code> pasuje do 'Anna', 'Agna'."},
+  {q:"Czym jest VIEW (widok) w SQL?",hint:"Wirtualna tabela",opts:["Kopia tabeli z danymi","Zapisane zapytanie SELECT — wirtualna tabela bez przechowywania danych","Indeks przyspieszający SELECT","Procedura modyfikująca dane"],ans:1,exp:"VIEW to zapisane zapytanie SELECT. Nie przechowuje danych — przy każdym dostępie wykonuje bazowe zapytanie. Używasz go jak tabeli."},
+  {q:"Co robi BETWEEN 2000 AND 2020?",hint:"Czy krańce są wliczone?",opts:["Wartości między 2001 a 2019 (bez krańców)","Wartości: 2000 <= x <= 2020 (krańce włączone)","Wartości: 2000 < x < 2020 (bez krańców)","Losuje wartość z zakresu"],ans:1,exp:"BETWEEN jest WŁĄCZNY: <code>BETWEEN 2000 AND 2020</code> = <code>>= 2000 AND <= 2020</code>. Działa na liczbach, datach i tekstach."},
+  {q:"Jak zliczać tylko nie-NULL wartości w kolumnie?",hint:"COUNT z argumentem vs *",opts:["COUNT(*) od razu to robi","COUNT(DISTINCT *)","COUNT(nazwa_kolumny) — pomija NULL automatycznie","ISNULL(COUNT(*))"],ans:2,exp:"<code>COUNT(kolumna)</code> automatycznie pomija NULL. <code>COUNT(*)</code> zlicza wszystko. Jeśli chcesz wiedzieć ile wierszy ma wartość w kolumnie — używaj <code>COUNT(kolumna)</code>."},
+  {q:"Jakie zapytanie pobierze uczniów z klas 1A, 2A i 3A?",hint:"Lista wartości",opts:["WHERE klasa = '1A' OR = '2A' OR = '3A'","WHERE klasa = ('1A','2A','3A')","WHERE klasa IN ('1A','2A','3A')","WHERE klasa BETWEEN '1A' AND '3A'"],ans:2,exp:"<code>IN</code> sprawdza czy wartość należy do listy. Jest znacznie czytelniejszy niż seria OR. <code>NOT IN</code> — odwrotność."},
+  {q:"Co się stanie gdy wykonasz INSERT bez podania wszystkich kolumn NOT NULL?",hint:"NOT NULL = obowiązkowe",opts:["Wstawi NULL zamiast brakujących kolumn","Wstawi wartości domyślne","Błąd — kolumna NOT NULL nie może być pusta","Wstawi 0 lub ''"],ans:2,exp:"Jeśli kolumna ma NOT NULL i nie ma DEFAULT, musisz podać wartość. Brak = błąd. Tylko kolumny z DEFAULT lub nullable (bez NOT NULL) mogą być pominięte."},
+  {q:"Co to jest subquery (podzapytanie)?",hint:"Zapytanie w zapytaniu",opts:["Synonim VIEW","Zapytanie zagnieżdżone wewnątrz innego zapytania SQL","Skrócona wersja SELECT *","Funkcja agregująca"],ans:1,exp:"Subquery = zapytanie SELECT wewnątrz innego. Może być w WHERE (np. <code>WHERE id IN (SELECT ...)</code>), FROM lub SELECT. Bardzo popularne na maturze!"},
+];
+
+const fiszkiData = [
+  {q:"Jaka jest kolejność klauzul SELECT?",a:"SELECT → FROM → (JOIN) → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT",cat:"Składnia"},
+  {q:"Co to znaczy GROUP BY?",a:"Grupuje wiersze z identycznymi wartościami. Każda niezagregowana kolumna z SELECT musi być w GROUP BY.",cat:"Agregacja"},
+  {q:"Różnica: WHERE vs HAVING",a:"WHERE = filtr wierszy PRZED grupowaniem (nie obsługuje agregacji). HAVING = filtr grup PO grupowaniu (obsługuje COUNT, SUM itp.)",cat:"Agregacja"},
+  {q:"Co robi COUNT(*) vs COUNT(kolumna)?",a:"COUNT(*) = zlicza wszystkie wiersze (z NULL). COUNT(kol) = zlicza wiersze gdzie kol IS NOT NULL.",cat:"Agregacja"},
+  {q:"INNER JOIN vs LEFT JOIN",a:"INNER: tylko wiersze z dopasowaniem w obu tabelach. LEFT: wszystkie z lewej + dopasowane z prawej (NULL jeśli brak pary).",cat:"JOIN"},
+  {q:"Jak sprawdzić wartość NULL?",a:"IS NULL lub IS NOT NULL. Nigdy = NULL — to zawsze zwraca false!",cat:"Składnia"},
+  {q:"Co oznacza % w LIKE?",a:"% = dowolna liczba dowolnych znaków (0 lub więcej). LIKE 'A%' = zaczyna się na A. _ = dokładnie 1 znak.",cat:"Składnia"},
+  {q:"Składnia INSERT INTO",a:"INSERT INTO tabela (kol1, kol2) VALUES (val1, val2); lub INSERT INTO tabela VALUES (v1, v2, ...);",cat:"DML",code:"INSERT INTO Filmy (tytul, gatunek)\nVALUES ('Matrix', 'Sci-Fi');"},
+  {q:"Składnia UPDATE",a:"UPDATE tabela SET kolumna = wartosc WHERE warunek; — ZAWSZE z WHERE!",cat:"DML",code:"UPDATE Produkty\nSET cena = cena * 1.1\nWHERE kategoria = 'Elektronika';"},
+  {q:"Składnia DELETE",a:"DELETE FROM tabela WHERE warunek; — ZAWSZE z WHERE (bez WHERE kasuje wszystko).",cat:"DML",code:"DELETE FROM Filmy\nWHERE rok_produkcji < 1990;"},
+  {q:"Typy danych SQL na maturze",a:"INT (liczba całk.), VARCHAR(n) (tekst max n znaków), DATE (data YYYY-MM-DD), DECIMAL(p,s) (liczba z przecinkiem), TEXT (długi tekst), BOOLEAN.",cat:"DDL"},
+  {q:"Co to PRIMARY KEY?",a:"Unikalny identyfikator wiersza w tabeli. Automatycznie: NOT NULL + UNIQUE. Jedna na tabelę.",cat:"DDL"},
+  {q:"Co to FOREIGN KEY?",a:"Klucz obcy — wartość musi istnieć w kolumnie PK innej tabeli. Zapewnia integralność referencyjną. REFERENCES tabela(kol)",cat:"DDL"},
+  {q:"SELECT DISTINCT — do czego?",a:"Usuwa duplikaty z wyników. SELECT DISTINCT gatunek FROM Filmy — każdy gatunek tylko raz.",cat:"Składnia"},
+  {q:"Jak wybrać 5 najdroższych produktów?",a:"SELECT * FROM Produkty ORDER BY cena DESC LIMIT 5; (Access: SELECT TOP 5 * FROM Produkty ORDER BY cena DESC)",cat:"Składnia",code:"SELECT * FROM Produkty\nORDER BY cena DESC\nLIMIT 5;"},
+  {q:"Co to podzapytanie (subquery)?",a:"Zapytanie SELECT zagnieżdżone wewnątrz innego. Używaj w WHERE, FROM lub SELECT. Np: WHERE id IN (SELECT id FROM ...)",cat:"Zaawansowane"},
+  {q:"Co robi CASE WHEN?",a:"Warunkowe wyrażenie w SQL: CASE WHEN warunek THEN wynik WHEN ... ELSE default END",cat:"Zaawansowane"},
+  {q:"Co to VIEW (widok)?",a:"Zapisane zapytanie SELECT traktowane jak tabela. Nie przechowuje danych — wykonuje zapytanie przy każdym dostępie.",cat:"Zaawansowane"},
+  {q:"Kiedy używać BETWEEN?",a:"Gdy szukasz wartości w zakresie WŁĄCZNIE z krańcami. BETWEEN 2000 AND 2020 = >= 2000 AND <= 2020. Działa na liczbach, datach, tekstach.",cat:"Składnia"},
+  {q:"Co robi GROUP BY + HAVING?",a:"GROUP BY grupuje wiersze. HAVING filtruje te grupy. Razem: SELECT klasa, COUNT(*) FROM Uczniowie GROUP BY klasa HAVING COUNT(*) > 5;",cat:"Agregacja",code:"SELECT klasa, COUNT(*) AS n\nFROM Uczniowie\nGROUP BY klasa\nHAVING COUNT(*) > 5;"},
+  {q:"Jak znaleźć uczniów BEZ żadnej oceny?",a:"LEFT JOIN Oceny + WHERE oceny.id IS NULL — LEFT JOIN zachowuje uczniów bez par, filtrujemy tych bez ocen.",cat:"JOIN",code:"SELECT u.imie FROM Uczniowie u\nLEFT JOIN Oceny o ON u.id_ucznia = o.id_ucznia\nWHERE o.id_oceny IS NULL;"},
+  {q:"Co to AVG() i jak traktuje NULL?",a:"AVG() oblicza średnią. Automatycznie pomija NULL — wiersze z NULL nie wpływają na średnią.",cat:"Agregacja"},
+  {q:"ALTER TABLE — do czego?",a:"Modyfikuje strukturę tabeli: ADD (dodaj kolumnę), DROP COLUMN (usuń), RENAME TO (zmień nazwę), MODIFY (zmień typ).",cat:"DDL"},
+  {q:"IN vs podzapytanie IN",a:"IN ('a','b','c') — lista stałych. IN (SELECT ...) — lista z podzapytania. Drugi wariant jest bardzo popularny na maturze.",cat:"Zaawansowane"},
+  {q:"Jak zliczać unikalne wartości?",a:"COUNT(DISTINCT kolumna) — zlicza tylko unikalne nie-NULL wartości. Np: COUNT(DISTINCT gatunek) — ile różnych gatunków.",cat:"Agregacja"},
+  {q:"DELETE vs DROP TABLE",a:"DELETE FROM T WHERE ... — usuwa wiersze, tabela zostaje. DROP TABLE T — usuwa całą tabelę: dane + struktura.",cat:"DML"},
+  {q:"Jak działa ORDER BY z wieloma kolumnami?",a:"ORDER BY kol1 ASC, kol2 DESC — sortuj po kol1 rosnąco, przy równych wartościach po kol2 malejąco.",cat:"Składnia"},
+  {q:"NOT IN z podzapytaniem",a:"WHERE id NOT IN (SELECT id FROM ...) — wybierz wiersze których id NIE ma w podzapytaniu. Uwaga: jeśli podzapytanie zawiera NULL, NOT IN może nie działać!",cat:"Zaawansowane"},
+  {q:"COALESCE() — do czego?",a:"Zwraca pierwszą nie-NULL wartość z listy. COALESCE(email, 'brak') — jeśli email NULL, zwraca 'brak'.",cat:"Funkcje"},
+  {q:"Jak złączyć trzy tabele?",a:"FROM A JOIN B ON A.id=B.id JOIN C ON B.id=C.id — każdy JOIN dokłada kolejną tabelę. Zawsze używaj aliasów!",cat:"JOIN"},
+];
+
+const typingData = [
+  {p:"Pobierz imię i klasę wszystkich uczniów posortowanych po klasie",h:"SELECT ... FROM ... ORDER BY ...",a:"SELECT imie, klasa FROM Uczniowie ORDER BY klasa;",tip:"ORDER BY domyślnie ASC (rosnąco). Jawnie pisz DESC jeśli chcesz malejąco."},
+  {p:"Policz ile filmów jest w każdym gatunku",h:"SELECT ... COUNT(*) ... GROUP BY ...",a:"SELECT gatunek, COUNT(*) AS liczba FROM Filmy GROUP BY gatunek;",tip:"Pamiętaj: gatunek musi być w GROUP BY bo jest w SELECT bez funkcji agregującej."},
+  {p:"Pokaż gatunki w których jest więcej niż 3 filmy",h:"SELECT ... HAVING COUNT(*) > ...",a:"SELECT gatunek, COUNT(*) AS n FROM Filmy GROUP BY gatunek HAVING COUNT(*) > 3;",tip:"HAVING filtruje grupy PO GROUP BY. WHERE nie może mieć COUNT(*)."},
+  {p:"Znajdź uczniów z klasy 2A i 3B razem",h:"WHERE ... IN (...)",a:"SELECT * FROM Uczniowie WHERE klasa IN ('2A', '3B');",tip:"IN jest czytelniejsze od serii OR."},
+  {p:"Usuń wszystkie filmy wyprodukowane przed 2000 rokiem",h:"DELETE FROM ... WHERE ...",a:"DELETE FROM Filmy WHERE rok_produkcji < 2000;",tip:"⚠️ ZAWSZE sprawdź WHERE przed DELETE!"},
+  {p:"Podwyższ cenę wszystkich produktów elektronicznych o 10%",h:"UPDATE ... SET ... WHERE ...",a:"UPDATE Produkty SET cena = cena * 1.1 WHERE kategoria = 'Elektronika';",tip:"SET cena = cena * 1.1 — można używać wyrażeń z aktualną wartością."},
+  {p:"Wstaw nowy film: id=16, tytuł 'Matrix', gatunek 'Sci-Fi', rok 1999",h:"INSERT INTO ... VALUES ...",a:"INSERT INTO Filmy VALUES (16, 'Matrix', 'Sci-Fi', 1999);",tip:"Podając wszystkie kolumny po kolei możesz pominąć ich nazwy."},
+  {p:"Pokaż imię ucznia i jego oceny łącząc obie tabele",h:"SELECT ... FROM ... JOIN ... ON ...",a:"SELECT u.imie, o.przedmiot, o.ocena FROM Uczniowie u JOIN Oceny o ON u.id_ucznia = o.id_ucznia;",tip:"INNER JOIN = JOIN. Zawsze używaj aliasów przy JOIN."},
+  {p:"Znajdź uczniów którzy NIE mają żadnej oceny",h:"LEFT JOIN ... WHERE ... IS NULL",a:"SELECT u.imie FROM Uczniowie u LEFT JOIN Oceny o ON u.id_ucznia = o.id_ucznia WHERE o.id_oceny IS NULL;",tip:"LEFT JOIN + IS NULL = wiersze BEZ pary w prawej tabeli."},
+  {p:"Oblicz średnią ocen w każdym przedmiocie, tylko dla średnich >= 4.0",h:"SELECT ... AVG() ... GROUP BY ... HAVING ...",a:"SELECT przedmiot, AVG(ocena) AS srednia FROM Oceny GROUP BY przedmiot HAVING AVG(ocena) >= 4.0;",tip:"AVG() pomija NULL. HAVING może używać AVG() bezpośrednio."},
+  {p:"Utwórz tabelę Recenzje z kolumnami: id INT PRIMARY KEY, tekst TEXT, ocena INT",h:"CREATE TABLE ... (...)",a:"CREATE TABLE Recenzje (id INT PRIMARY KEY, tekst TEXT, ocena INT);",tip:"PRIMARY KEY automatycznie = NOT NULL + UNIQUE."},
+  {p:"Dodaj kolumnę 'telefon VARCHAR(15)' do tabeli Klienci",h:"ALTER TABLE ... ADD ...",a:"ALTER TABLE Klienci ADD telefon VARCHAR(15);",tip:"ALTER TABLE ADD — dodaje kolumnę. Nowa kolumna domyślnie NULL (jeśli nie ma DEFAULT)."},
+  {p:"Pobierz 3 najdroższe produkty",h:"ORDER BY ... DESC LIMIT ...",a:"SELECT * FROM Produkty ORDER BY cena DESC LIMIT 3;",tip:"Access: SELECT TOP 3 * FROM Produkty ORDER BY cena DESC"},
+  {p:"Znajdź filmy których tytuł zawiera słowo 'Star'",h:"WHERE tytul LIKE ...",a:"SELECT * FROM Filmy WHERE tytul LIKE '%Star%';",tip:"% przed i po = zawiera. % tylko na końcu = zaczyna się od."},
+  {p:"Policz ilu klientów nie ma podanego emaila",h:"WHERE email IS NULL",a:"SELECT COUNT(*) FROM Klienci WHERE email IS NULL;",tip:"Zawsze IS NULL — nigdy = NULL!"},
+];
+
+const notatnikData = [
+  {txt:"SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY → LIMIT — obowiązkowa kolejność klauzul",tag:"Składnia"},
+  {txt:"WHERE filtruje WIERSZE przed grupowaniem. HAVING filtruje GRUPY po GROUP BY.",tag:"Agregacja"},
+  {txt:"COUNT(*) liczy wszystkie wiersze. COUNT(kol) pomija NULL.",tag:"Agregacja"},
+  {txt:"Każda kolumna w SELECT bez funkcji agregującej MUSI być w GROUP BY.",tag:"GROUP BY"},
+  {txt:"INNER JOIN = tylko wiersze z dopasowaniem w obu tabelach.",tag:"JOIN"},
+  {txt:"LEFT JOIN = wszystkie z lewej + pasujące z prawej (NULL jeśli brak pary).",tag:"JOIN"},
+  {txt:"NULL sprawdzamy: IS NULL lub IS NOT NULL — nigdy = NULL!",tag:"NULL"},
+  {txt:"LIKE '%abc%' = zawiera. LIKE 'A%' = zaczyna się na A. _ = jeden dowolny znak.",tag:"LIKE"},
+  {txt:"UPDATE bez WHERE = wszystkie wiersze zmienione! DELETE bez WHERE = tabela pusta!",tag:"Bezpieczeństwo"},
+  {txt:"BETWEEN a AND b = >= a AND <= b (krańce WLICZONE).",tag:"Operatory"},
+  {txt:"IN (val1, val2, ...) lub IN (SELECT ...) — podzapytanie w IN to klasyk maturalny.",tag:"Operatory"},
+  {txt:"PRIMARY KEY = NOT NULL + UNIQUE automatycznie. Jeden na tabelę.",tag:"DDL"},
+  {txt:"FOREIGN KEY = REFERENCES tabela(kolumna). Zapewnia integralność referencyjną.",tag:"DDL"},
+  {txt:"Typy: INT, VARCHAR(n), DATE, DECIMAL(p,s), TEXT, BOOLEAN.",tag:"DDL"},
+  {txt:"CASE WHEN w1 THEN v1 WHEN w2 THEN v2 ELSE d END — warunkowe wyrażenie.",tag:"Zaawansowane"},
+  {txt:"VIEW = zapisane zapytanie. Nie przechowuje danych. Używasz jak tabeli.",tag:"Zaawansowane"},
+  {txt:"DELETE usuwa wiersze — tabela zostaje. DROP TABLE usuwa tabelę ze strukturą.",tag:"DML"},
+  {txt:"AVG() pomija NULL. COUNT(*) nie pomija. COUNT(kol) pomija NULL.",tag:"Agregacja"},
+  {txt:"Aliasy: SELECT imie AS i, tabela AS t. U maturze skróty jak u.imie są standardem.",tag:"Składnia"},
+  {txt:"LEFT JOIN + WHERE prawa.kol IS NULL = wiersze z lewej BEZ pary w prawej.",tag:"JOIN"},
+];
+
+const fokusData = [...fiszkiData]; // Używamy tych samych fiszek
+
+// ===================== INIT =====================
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('navBar').style.width = pct + '%';
+});
+
+function toast(title, msg) {
+  const t = document.getElementById('toast');
+  t.querySelector('b').textContent = title;
+  t.querySelector('span').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===================== ROADMAPA checkboxes =====================
+document.querySelectorAll('.rm-check input').forEach(cb => {
+  const k = cb.dataset.k;
+  if (localStorage.getItem(k)) { cb.checked = true; cb.closest('.rm-check').classList.add('done'); }
+  cb.addEventListener('change', () => {
+    localStorage.setItem(k, cb.checked ? '1' : '');
+    cb.closest('.rm-check').classList.toggle('done', cb.checked);
+  });
+});
+
+// ===================== SŁOWNIK =====================
+const allCats = ['wszystkie', ...new Set(slownikData.map(d => d.cat))];
+let activeSlownikCat = 'wszystkie';
+
+function renderSlownikFilter() {
+  const f = document.getElementById('slownikFilter');
+  f.innerHTML = allCats.map(c =>
+    `<button class="sf-btn ${c === activeSlownikCat ? 'active' : ''}" onclick="setSlownikCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setSlownikCat(c) {
+  activeSlownikCat = c;
+  renderSlownikFilter();
+  filterSlownik();
+}
+
+function filterSlownik() {
+  const q = document.getElementById('slownikSearch').value.toLowerCase();
+  const filtered = slownikData.filter(d =>
+    (activeSlownikCat === 'wszystkie' || d.cat === activeSlownikCat) &&
+    (d.name.toLowerCase().includes(q) || d.short.toLowerCase().includes(q))
+  );
+  renderSlownikGrid(filtered);
+}
+
+function renderSlownikGrid(data) {
+  const g = document.getElementById('slownikGrid');
+  g.innerHTML = data.map(d => `
+    <div class="sk-card" onclick="toggleCard(this)">
+      <div class="sk-head">
+        <span class="sk-name">${d.name}</span>
+        <span class="sk-badge badge-${d.badge}">${d.badge}</span>
+      </div>
+      <div class="sk-short">${d.short}</div>
+      <div class="sk-body">
+        <div class="sk-body-inner">${d.full}</div>
+        ${d.code ? `<pre><code>${escHtml(d.code)}</code></pre>` : ''}
+        ${d.tip ? `<div class="sk-tip">🎓 Matura: ${d.tip}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function toggleCard(el) {
+  el.classList.toggle('open');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+renderSlownikFilter();
+renderSlownikGrid(slownikData);
+
+// ===================== MODUŁY =====================
+function renderModuly() {
+  const tabs = document.getElementById('modTabs');
+  const contents = document.getElementById('modContents');
+  tabs.innerHTML = modulyData.map((m, i) =>
+    `<button class="mod-tab ${i===0?'active':''}" onclick="switchMod(${i})">${m.icon} ${m.name}</button>`
+  ).join('');
+  contents.innerHTML = modulyData.map((m, i) =>
+    `<div class="mod-content ${i===0?'active':''}" id="mod_${i}">${m.content}</div>`
+  ).join('');
+}
+
+function switchMod(idx) {
+  document.querySelectorAll('.mod-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.mod-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+}
+
+renderModuly();
+
+// ===================== QUERY BUILDER =====================
+const tableSchemas = {
+  Uczniowie: {cols:['id_ucznia','imie','nazwisko','klasa','data_urodzenia','plec'], related:'Oceny', fk:'id_ucznia', aggCol:'klasa'},
+  Filmy:     {cols:['id_filmu','tytul','gatunek','rok_produkcji','czas_trwania','kraj'], related:'Seanse', fk:'id_filmu', aggCol:'gatunek'},
+  Produkty:  {cols:['id_produktu','nazwa','kategoria','cena','producent','stan_magazynu'], related:'Pozycje_zamowienia', fk:'id_produktu', aggCol:'kategoria'},
+  Klienci:   {cols:['id_klienta','imie','nazwisko','email','miasto'], related:'Zamowienia', fk:'id_klienta', aggCol:'miasto'},
+  Zamowienia:{cols:['id_zamowienia','id_klienta','data_zamowienia','status','rabat'], related:'Klienci', fk:'id_klienta', aggCol:'status'},
+  Ksiazki:   {cols:['id_ksiazki','tytul','autor','rok_wydania','gatunek'], related:'Wypozyczenia', fk:'id_ksiazki', aggCol:'gatunek'},
+};
+
+function buildQuery() {
+  const type = document.getElementById('bType').value;
+  const table = document.getElementById('bTable').value;
+  const schema = tableSchemas[table];
+  const where = document.getElementById('bWhere').value.trim();
+  const grp = document.getElementById('bGroup').value.trim();
+  const hav = document.getElementById('bHaving').value.trim();
+  const ord = document.getElementById('bOrder').value;
+  const lim = document.getElementById('bLimit').value;
+  const joinType = document.getElementById('bJoinType').value;
+
+  let q = '', note = '';
+  const nl = '\n';
+
+  if (type === 'select') {
+    q = `SELECT ${schema.cols.slice(0,3).join(', ')}${nl}FROM ${table}`;
+    if (joinType) { q += `${nl}${joinType} ${schema.related} r ON ${table}.${schema.fk} = r.${schema.fk}`; }
+    if (where) q += `${nl}WHERE ${where}`;
+    if (grp) q += `${nl}GROUP BY ${grp}`;
+    if (hav) q += `${nl}HAVING ${hav}`;
+    if (ord) q += `${nl}ORDER BY ${schema.cols[0]} ${ord}`;
+    if (lim) q += `${nl}LIMIT ${lim}`;
+    q += ';';
+    note = 'Zapytanie SELECT z wybranymi kolumnami.';
+  } else if (type === 'select_agg') {
+    q = `SELECT ${schema.aggCol}, COUNT(*) AS liczba, AVG(${schema.cols[schema.cols.length-1]}) AS srednia${nl}FROM ${table}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    q += `${nl}GROUP BY ${schema.aggCol}`;
+    if (hav) q += `${nl}HAVING ${hav}`;
+    q += `${nl}ORDER BY liczba DESC;`;
+    note = `Grupowanie po ${schema.aggCol} z COUNT i AVG.`;
+  } else if (type === 'select_join') {
+    q = `SELECT t.${schema.cols[1]}, r.*${nl}FROM ${table} t${nl}${joinType||'INNER JOIN'} ${schema.related} r ON t.${schema.fk} = r.${schema.fk}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    if (ord) q += `${nl}ORDER BY t.${schema.cols[0]} ${ord}`;
+    q += ';';
+    note = `JOIN: ${table} ↔ ${schema.related}`;
+  } else if (type === 'select_sub') {
+    q = `SELECT * FROM ${table}${nl}WHERE ${schema.fk} IN (${nl}  SELECT ${schema.fk} FROM ${schema.related}${where ? nl + '  WHERE ' + where : ''}${nl});`;
+    note = 'Podzapytanie — wybierz wiersze których id jest na liście z innej tabeli.';
+  } else if (type === 'insert') {
+    const vals = schema.cols.map((c,i) => i===0 ? '1' : i===1 ? "'wartość'" : i===2 ? "'wartość'" : 'NULL').join(', ');
+    q = `INSERT INTO ${table} (${schema.cols.join(', ')})${nl}VALUES (${vals});`;
+    note = 'Wstaw nowy wiersz z wartościami.';
+  } else if (type === 'update') {
+    q = `UPDATE ${table}${nl}SET ${schema.cols[1]} = 'nowa_wartość'`;
+    if (where) q += `${nl}WHERE ${where}`;
+    else q += `${nl}WHERE ${schema.cols[0]} = 1`;
+    q += ';';
+    note = '⚠️ Zawsze używaj WHERE w UPDATE!';
+  } else if (type === 'delete') {
+    q = `DELETE FROM ${table}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    else q += `${nl}WHERE ${schema.cols[0]} = 1  -- ⚠️ Dodaj WHERE!`;
+    q += ';';
+    note = '⚠️ DELETE bez WHERE usuwa wszystkie wiersze!';
+  } else if (type === 'create') {
+    q = `CREATE TABLE Nowa_${table} (\n  id          INT PRIMARY KEY,\n  nazwa       VARCHAR(100) NOT NULL,\n  id_ref      INT REFERENCES ${table}(${schema.fk}),\n  data_dodania DATE DEFAULT CURRENT_DATE\n);`;
+    note = 'CREATE TABLE z kluczem obcym do istniejącej tabeli.';
+  }
+
+  document.getElementById('queryOut').textContent = q;
+  document.getElementById('queryNote').textContent = note;
+}
+
+function copyQuery() {
+  const q = document.getElementById('queryOut').textContent;
+  navigator.clipboard.writeText(q).then(() => toast('Skopiowano!', 'Zapytanie w schowku'));
+}
+
+function resetBuilder() {
+  document.getElementById('bType').value = 'select';
+  document.getElementById('bTable').value = 'Uczniowie';
+  document.getElementById('bWhere').value = '';
+  document.getElementById('bGroup').value = '';
+  document.getElementById('bHaving').value = '';
+  document.getElementById('bOrder').value = '';
+  document.getElementById('bLimit').value = '';
+  document.getElementById('bJoinType').value = '';
+  buildQuery();
+}
+
+buildQuery();
+
+// ===================== QUIZ =====================
+let qIdx = 0, qAnswered = [], qSelected = null;
+
+function renderQuiz() {
+  const total = quizData.length;
+  document.getElementById('qTotal').textContent = total;
+  const prog = document.getElementById('qProgress');
+  prog.innerHTML = quizData.map((_, i) =>
+    `<div class="q-dot ${i < qIdx ? 'done' : i === qIdx ? 'current' : ''}"></div>`
+  ).join('');
+
+  const q = quizData[qIdx];
+  document.getElementById('qNum').textContent = qIdx + 1;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qHint').textContent = '💡 ' + q.hint;
+
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = q.opts.map((o, i) => `
+    <div class="q-opt" onclick="selectOpt(${i})" data-i="${i}">
+      <div class="q-letter">${'ABCD'[i]}</div>
+      <span>${o.replace(/`([^`]+)`/g, '<code>$1</code>')}</span>
+    </div>`).join('');
+
+  const fb = document.getElementById('qFeedback');
+  fb.className = 'quiz-feedback';
+  document.getElementById('qPrev').disabled = qIdx === 0;
+  document.getElementById('qNext').disabled = true;
+
+  if (qAnswered[qIdx] !== undefined) {
+    revealAnswer(qAnswered[qIdx]);
+  }
+}
+
+function selectOpt(i) {
+  if (qAnswered[qIdx] !== undefined) return;
+  qSelected = i;
+  document.querySelectorAll('.q-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.q-opt')[i].classList.add('selected');
+  qAnswered[qIdx] = i;
+  revealAnswer(i);
+}
+
+function revealAnswer(chosen) {
+  const q = quizData[qIdx];
+  document.querySelectorAll('.q-opt').forEach((o, i) => {
+    o.classList.remove('selected','correct','wrong');
+    if (i === q.ans) o.classList.add('correct');
+    else if (i === chosen && i !== q.ans) o.classList.add('wrong');
+  });
+  const fb = document.getElementById('qFeedback');
+  const ok = chosen === q.ans;
+  fb.className = 'quiz-feedback show ' + (ok ? 'ok' : 'bad');
+  document.getElementById('qFbTitle').innerHTML = ok ? '✅ Dobrze!' : '❌ Nie tym razem';
+  document.getElementById('qFbText').innerHTML = q.exp;
+  document.getElementById('qNext').disabled = false;
+  if (qIdx === quizData.length - 1 && ok !== undefined) {
+    document.getElementById('qNext').textContent = 'Wyniki →';
+  }
+}
+
+function nextQ() {
+  if (qIdx === quizData.length - 1) {
+    showResult(); return;
+  }
+  qIdx++; renderQuiz();
+}
+function prevQ() { if (qIdx > 0) { qIdx--; renderQuiz(); } }
+
+function showResult() {
+  const correct = qAnswered.filter((a, i) => a === quizData[i].ans).length;
+  const total = quizData.length;
+  const pct = Math.round(correct / total * 100);
+  const msgs = ['Spróbuj jeszcze raz! 💪', 'Niezły start! 🙂', 'Dobrze! 👍', 'Świetnie! 🎉', 'Perfekcja! 🏆'];
+  const msgIdx = Math.floor(pct / 25);
+  document.getElementById('quizBox').innerHTML = `
+    <div class="quiz-result">
+      <div class="result-score">${correct}</div>
+      <div class="result-max">/ ${total} poprawnych (${pct}%)</div>
+      <p class="result-text">${msgs[Math.min(msgIdx, 4)]}</p>
+      <button class="result-btn" onclick="resetQuiz()">🔄 Jeszcze raz</button>
+    </div>`;
+}
+
+function resetQuiz() {
+  qIdx = 0; qAnswered = []; qSelected = null;
+  document.getElementById('quizBox').innerHTML = `
+    <div class="quiz-progress" id="qProgress"></div>
+    <div class="quiz-num">Pytanie <span id="qNum">1</span> z <span id="qTotal">25</span></div>
+    <h3 class="quiz-q" id="qText"></h3>
+    <div class="quiz-hint" id="qHint"></div>
+    <div class="quiz-opts" id="qOpts"></div>
+    <div class="quiz-feedback" id="qFeedback"><h5 id="qFbTitle"></h5><p id="qFbText"></p></div>
+    <div class="quiz-btns">
+      <button class="qbtn qbtn-prev" id="qPrev" onclick="prevQ()">← Poprzednie</button>
+      <button class="qbtn qbtn-next" id="qNext" onclick="nextQ()">Następne →</button>
+    </div>`;
+  renderQuiz();
+}
+
+renderQuiz();
+
+// ===================== FISZKI =====================
+const allFlashCats = ['Wszystkie', ...new Set(fiszkiData.map(f => f.cat))];
+let flashCat = 'Wszystkie', flashDeck = [...fiszkiData], flashIdx = 0;
+let masteredSet = new Set(JSON.parse(localStorage.getItem('sql_mastered') || '[]'));
+
+function renderFlashFilter() {
+  document.getElementById('flashFilter').innerHTML = allFlashCats.map(c =>
+    `<button class="ff-btn ${c === flashCat ? 'active' : ''}" onclick="setFlashCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setFlashCat(c) {
+  flashCat = c;
+  flashDeck = c === 'Wszystkie' ? [...fiszkiData] : fiszkiData.filter(f => f.cat === c);
+  flashIdx = 0;
+  renderFlashFilter();
+  renderCard();
+}
+
+function renderCard() {
+  const card = flashDeck[flashIdx];
+  if (!card) return;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('flashTag').textContent = card.cat;
+  document.getElementById('flashQ').textContent = card.q;
+  const aEl = document.getElementById('flashA');
+  if (card.code) {
+    aEl.innerHTML = `<div>${card.a}</div><pre><code>${escHtml(card.code)}</code></pre>`;
+  } else {
+    aEl.textContent = card.a;
+  }
+  document.getElementById('flashNum').textContent = flashIdx + 1;
+  document.getElementById('flashTotal').textContent = flashDeck.length;
+  const m = flashDeck.filter((_, i) => masteredSet.has(i)).length;
+  document.getElementById('flashMastered').textContent = m > 0 ? `• ${m} opanowane` : '';
+}
+
+function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+function prevCard() { flashIdx = (flashIdx - 1 + flashDeck.length) % flashDeck.length; renderCard(); }
+function nextCard() { flashIdx = (flashIdx + 1) % flashDeck.length; renderCard(); }
+function shuffleCards() {
+  flashDeck = [...flashDeck].sort(() => Math.random() - 0.5);
+  flashIdx = 0; renderCard(); toast('Przetasowano!', 'Kolejność losowa');
+}
+function markMastered() {
+  masteredSet.add(flashIdx);
+  localStorage.setItem('sql_mastered', JSON.stringify([...masteredSet]));
+  nextCard(); toast('✓ Umiem!', 'Dodano do opanowanych');
+}
+function speakCard() {
+  const q = fiszkiData[flashIdx]?.q;
+  if (q && 'speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(q);
+    u.lang = 'pl-PL';
+    speechSynthesis.speak(u);
+  }
+}
+
+renderFlashFilter();
+renderCard();
+
+// ===================== TYPING =====================
+let tIdx = 0, tOk = 0, tBad = 0, tStreak = 0, tBest = 0;
+const tips = [
+  "WHERE przed GROUP BY. HAVING po GROUP BY.",
+  "COUNT(*) — wszystkie wiersze. COUNT(kol) — pomija NULL.",
+  "INNER JOIN = część wspólna. LEFT JOIN = zachowaj lewą.",
+  "UPDATE i DELETE zawsze z WHERE!",
+  "NULL sprawdzamy: IS NULL. Nigdy = NULL!",
+  "BETWEEN a AND b = >= a AND <= b (włącznie).",
+];
+let tipIdx = 0;
+
+function renderTyping() {
+  const t = typingData[tIdx];
+  document.getElementById('typingPrompt').textContent = t.p;
+  document.getElementById('typingHint').textContent = '📝 ' + t.h;
+  document.getElementById('typingInput').value = '';
+  document.getElementById('typingFeedback').className = 'typing-feedback';
+  document.getElementById('typingFeedback').textContent = '';
+  document.getElementById('typingTip').textContent = tips[tipIdx % tips.length];
+  const pct = Math.round((tIdx / typingData.length) * 100);
+  document.getElementById('typingFill').style.width = pct + '%';
+}
+
+function normalizeSQL(s) {
+  return s.replace(/\s+/g, ' ').trim().toLowerCase().replace(/;$/, '');
+}
+
+function checkTyping() {
+  const t = typingData[tIdx];
+  const input = document.getElementById('typingInput').value;
+  const fb = document.getElementById('typingFeedback');
+  if (normalizeSQL(input) === normalizeSQL(t.a)) {
+    tOk++; tStreak++; tBest = Math.max(tBest, tStreak);
+    fb.className = 'typing-feedback ok';
+    fb.textContent = '✅ Poprawnie! ' + t.tip;
+    tipIdx++;
+  } else {
+    tBad++; tStreak = 0;
+    fb.className = 'typing-feedback bad';
+    fb.textContent = '❌ Spróbuj ponownie lub kliknij "Pokaż"';
+  }
+  updateStats();
+}
+
+function showTypingAnswer() {
+  const t = typingData[tIdx];
+  const fb = document.getElementById('typingFeedback');
+  fb.className = 'typing-feedback show2';
+  fb.textContent = '👁 Odpowiedź: ' + t.a;
+  document.getElementById('typingInput').value = t.a;
+}
+
+function nextTyping() {
+  tIdx = (tIdx + 1) % typingData.length;
+  renderTyping();
+}
+
+function resetTyping() {
+  tIdx = 0; tOk = 0; tBad = 0; tStreak = 0; tBest = 0;
+  updateStats(); renderTyping();
+}
+
+function updateStats() {
+  document.getElementById('stOk').textContent = tOk;
+  document.getElementById('stBad').textContent = tBad;
+  document.getElementById('stStreak').textContent = tStreak;
+  document.getElementById('stBest').textContent = tBest;
+}
+
+document.getElementById('typingInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); checkTyping(); }
+  if (e.key === 'Enter' && e.shiftKey) { e.preventDefault(); showTypingAnswer(); }
+});
+
+renderTyping();
+updateStats();
+
+// ===================== FOKUS =====================
+let fokusIdx = 0, fokusTimer = null, fokusTime = 90;
+let fMasteredSet = new Set();
+
+function fokusRender() {
+  if (fokusData.length === 0) return;
+  const card = fokusData[fokusIdx];
+  document.getElementById('fNum').textContent = fokusIdx + 1;
+  document.getElementById('fTotal').textContent = fokusData.length;
+  document.getElementById('fMastered').textContent = fMasteredSet.size;
+  document.getElementById('fokusQ').textContent = card.q;
+  document.getElementById('fokusA').className = 'fokus-a';
+  const aEl = document.getElementById('fokusA');
+  if (card.code) {
+    aEl.innerHTML = `${card.a}<pre><code>${escHtml(card.code)}</code></pre>`;
+  } else {
+    aEl.textContent = card.a;
+  }
+  const pct = ((fokusIdx + 1) / fokusData.length) * 100;
+  document.getElementById('fokusBar').style.width = pct + '%';
+}
+
+function fokusStart() {
+  fokusTime = 90;
+  document.getElementById('fTime').textContent = fokusTime;
+  clearInterval(fokusTimer);
+  fokusTimer = setInterval(() => {
+    fokusTime--;
+    document.getElementById('fTime').textContent = fokusTime;
+    if (fokusTime <= 0) { clearInterval(fokusTimer); fokusNext(); fokusTime = 90; }
+  }, 1000);
+  fokusRender();
+}
+
+function fokusReveal() {
+  document.getElementById('fokusA').classList.add('show');
+}
+
+function fokusNext() {
+  fMasteredSet.add(fokusIdx);
+  fokusIdx = (fokusIdx + 1) % fokusData.length;
+  fokusTime = 90;
+  document.getElementById('fTime').textContent = fokusTime;
+  fokusRender();
+}
+
+function fokusReset() {
+  clearInterval(fokusTimer);
+  fokusIdx = 0; fMasteredSet.clear(); fokusTime = 90;
+  document.getElementById('fTime').textContent = fokusTime;
+  fokusRender();
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.querySelector('#fokus')) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const fokusVisible = document.getElementById('fokus').getBoundingClientRect().top < window.innerHeight;
+  if (!fokusVisible) return;
+  if (e.code === 'Space') { e.preventDefault(); fokusReveal(); }
+  if (e.key === 'n' || e.key === 'N') fokusNext();
+  if (e.key === 's' || e.key === 'S') fokusStart();
+});
+
+fokusRender();
+
+// ===================== NOTATNIK =====================
+let nbSelected = new Set(), nbList = [];
+
+function renderNbBlocks() {
+  const el = document.getElementById('nbBlocks');
+  el.innerHTML = notatnikData.map((d, i) => `
+    <label class="nb-item">
+      <input type="checkbox" ${nbSelected.has(i) ? 'checked' : ''} onchange="toggleNb(${i}, this.checked)">
+      <div>
+        <div class="nb-txt">${d.txt}</div>
+        <div class="nb-tag">${d.tag}</div>
+      </div>
+    </label>`).join('');
+  document.getElementById('nbSel').textContent = nbSelected.size + ' zaznaczono';
+}
+
+function toggleNb(i, v) {
+  if (v) nbSelected.add(i); else nbSelected.delete(i);
+  document.getElementById('nbSel').textContent = nbSelected.size + ' zaznaczono';
+}
+
+function nbSelectAll(v) {
+  nbSelected = v ? new Set(notatnikData.map((_, i) => i)) : new Set();
+  renderNbBlocks();
+}
+
+function nbAddSelected() {
+  nbSelected.forEach(i => {
+    if (!nbList.includes(i)) nbList.push(i);
+  });
+  renderNbList();
+  toast('Dodano!', nbSelected.size + ' punktów w ściądze');
+}
+
+function renderNbList() {
+  const el = document.getElementById('nbList');
+  el.innerHTML = nbList.map((i, j) => `
+    <div class="nb-list-item">
+      <div class="nb-txt"><span style="color:var(--muted);font-size:0.75rem;font-family:'Fira Code',monospace">[${notatnikData[i].tag}]</span> ${notatnikData[i].txt}</div>
+      <button class="nb-del" onclick="nbRemove(${j})">×</button>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:0.85rem;padding:10px">Nic tu jeszcze nie ma. Dodaj punkty →</div>';
+  document.getElementById('nbCount').textContent = nbList.length + ' punktów';
+}
+
+function nbRemove(j) { nbList.splice(j, 1); renderNbList(); }
+
+function nbExport() {
+  const text = nbList.map(i => `[${notatnikData[i].tag}] ${notatnikData[i].txt}`).join('\n');
+  navigator.clipboard.writeText(text).then(() => toast('Skopiowano!', 'Ściąga w schowku'));
+}
+
+function nbDownload() {
+  const text = 'ŚCIĄGA SQL — MATURA\n' + '='.repeat(40) + '\n\n' +
+    nbList.map(i => `[${notatnikData[i].tag}]\n${notatnikData[i].txt}`).join('\n\n');
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'sciaga_sql.txt';
+  a.click();
+}
+
+function nbClear() { nbList = []; renderNbList(); }
+
+renderNbBlocks();
+renderNbList();
+</script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViralloEdu — Platforma Maturalna</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080f;--card:#0c1018;--elevated:#111720;--panel:#161e2c;
+  --text:#f0f4ff;--text2:#7a90b8;--muted:#3a4a66;
+  --border:rgba(255,255,255,0.05);--border2:rgba(255,255,255,0.1);
+  --sql:#00d4ff;--sql-g:rgba(0,212,255,0.08);
+  --py:#ffd43b;--py-g:rgba(255,212,59,0.08);
+  --xl:#10d48e;--xl-g:rgba(16,212,142,0.08);
+  --ac:#ff8c42;--ac-g:rgba(255,140,66,0.08);
+  --php:#a78bfa;--php-g:rgba(167,139,250,0.08);
+  --fiz:#f43f5e;--fiz-g:rgba(244,63,94,0.08);
+  --mat:#3b82f6;--mat-g:rgba(59,130,246,0.08);
+  --hub:#c8b4ff;
+  --gold:#f5c842;
+  --glow-sql:0 0 40px rgba(0,212,255,0.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:1}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(6,8,15,0.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:12px;font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;letter-spacing:0.06em}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--hub),#6366f1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;box-shadow:0 0 20px rgba(200,180,255,0.2)}
+.nav-badge{font-size:0.7rem;padding:3px 10px;background:rgba(200,180,255,0.1);border:1px solid rgba(200,180,255,0.2);border-radius:20px;color:var(--hub);margin-left:6px;font-family:'Fira Code',monospace}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-link{padding:7px 14px;border-radius:8px;font-size:0.82rem;color:var(--text2);transition:0.2s;font-weight:500}
+.nav-link:hover{background:var(--elevated);color:var(--text)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px 60px;position:relative;z-index:1}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(200,180,255,0.06) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(200,180,255,0.07);border:1px solid rgba(200,180,255,0.18);border-radius:50px;font-size:0.82rem;color:var(--hub);margin-bottom:28px;font-family:'Fira Code',monospace;animation:up 0.7s ease both}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(3rem,9vw,6rem);font-weight:900;line-height:0.95;margin-bottom:20px;animation:up 0.7s 0.1s ease both;letter-spacing:-0.01em}
+.hero h1 .v{background:linear-gradient(135deg,#c8b4ff,#818cf8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .l{background:linear-gradient(135deg,#ffd43b,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.1rem;color:var(--text2);max-width:560px;line-height:1.7;margin-bottom:40px;animation:up 0.7s 0.2s ease both}
+.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:44px;animation:up 0.7s 0.3s ease both}
+.h-stat{text-align:center}
+.h-stat-val{font-family:'Cinzel',serif;font-size:2rem;color:var(--hub);line-height:1}
+.h-stat-label{font-size:0.78rem;color:var(--muted);margin-top:2px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:up 0.7s 0.4s ease both}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;background:linear-gradient(135deg,#c8b4ff,#818cf8);color:#06080f;font-weight:700;border-radius:50px;font-size:0.95rem;transition:0.3s;border:none;cursor:pointer;font-family:inherit}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(200,180,255,0.25)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;background:transparent;color:var(--text);font-weight:600;border-radius:50px;font-size:0.95rem;transition:0.3s;border:1px solid var(--border2);cursor:pointer;font-family:inherit}
+.btn-secondary:hover{background:var(--elevated);border-color:rgba(200,180,255,0.3)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.subjects{padding:60px 24px 80px;position:relative;z-index:1}
+.section-label{text-align:center;font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+.section-title{text-align:center;font-family:'Cinzel',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:8px}
+.section-sub{text-align:center;color:var(--text2);font-size:0.92rem;margin-bottom:44px}
+.subjects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;max-width:1200px;margin:0 auto}
+.subject-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;transition:0.3s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:0}
+.subject-card::before{content:'';position:absolute;inset:0;opacity:0;transition:0.4s;pointer-events:none;border-radius:20px}
+.subject-card:hover{transform:translateY(-4px)}
+.subject-card:hover::before{opacity:1}
+.subject-card[data-color="sql"]{--c:var(--sql);--bg:var(--sql-g)}
+.subject-card[data-color="py"]{--c:var(--py);--bg:var(--py-g)}
+.subject-card[data-color="xl"]{--c:var(--xl);--bg:var(--xl-g)}
+.subject-card[data-color="ac"]{--c:var(--ac);--bg:var(--ac-g)}
+.subject-card[data-color="php"]{--c:var(--php);--bg:var(--php-g)}
+.subject-card[data-color="fiz"]{--c:var(--fiz);--bg:var(--fiz-g)}
+.subject-card[data-color="mat"]{--c:var(--mat);--bg:var(--mat-g)}
+.subject-card:hover{border-color:var(--c);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
+.subject-card::before{background:radial-gradient(ellipse 60% 50% at 50% 0%,var(--bg),transparent)}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.sc-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;background:var(--bg, rgba(255,255,255,0.04));border:1px solid var(--border)}
+.sc-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.sc-badge{font-size:0.7rem;padding:3px 10px;border-radius:20px;font-family:'Fira Code',monospace;font-weight:600}
+.badge-done{background:rgba(16,212,142,0.12);color:#10d48e;border:1px solid rgba(16,212,142,0.2)}
+.badge-wip{background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.2)}
+.badge-soon{background:rgba(100,116,139,0.15);color:#64748b;border:1px solid rgba(100,116,139,0.2)}
+.sc-name{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;color:var(--c,var(--text))}
+.sc-desc{font-size:0.86rem;color:var(--text2);line-height:1.55;margin-bottom:16px;flex:1}
+.sc-modules{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.sc-mod{font-size:0.72rem;padding:3px 9px;background:var(--elevated);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-family:'Fira Code',monospace}
+.sc-links{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.sc-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:10px;font-size:0.82rem;font-weight:600;transition:0.25s;text-align:center;border:1px solid var(--border)}
+.sc-btn.teoria{background:var(--elevated);color:var(--text)}
+.sc-btn.teoria:hover{background:var(--panel);border-color:rgba(255,255,255,0.15)}
+.sc-btn.cwicz{background:var(--bg, rgba(255,255,255,0.04));color:var(--c,var(--text));border-color:var(--c)}
+.sc-btn.cwicz:hover{background:var(--c);color:#06080f}
+.sc-btn.disabled{opacity:0.35;pointer-events:none;cursor:not-allowed}
+.sc-btn.single{grid-column:1/-1}
+.sc-progress{height:3px;background:var(--elevated);border-radius:2px;margin-top:14px;overflow:hidden}
+.sc-progress-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--c),var(--c));transition:width 0.5s;opacity:0.7}
+footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:10px;color:var(--hub)}
+.footer-copy{font-size:0.85rem;color:var(--muted)}
+.footer-copy a{color:var(--text2);transition:0.2s}
+.footer-copy a:hover{color:var(--hub)}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--panel);border:1px solid rgba(200,180,255,0.2);border-radius:14px;padding:12px 18px;box-shadow:0 8px 40px rgba(0,0,0,0.4);transform:translateY(140%);transition:0.3s;z-index:999;max-width:280px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:2px;font-size:0.88rem;color:var(--hub)}
+.toast span{font-size:0.8rem;color:var(--text2)}
+@media(max-width:600px){
+  .subjects-grid{grid-template-columns:1fr}
+  .sc-links{grid-template-columns:1fr}
+  .sc-btn.single{grid-column:1}
+  .hero h1{font-size:3rem}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">🧠</div>
+    Virallo<span style="color:var(--hub)">Edu</span>
+    <span class="nav-badge">MATURA 2025/26</span>
+  </div>
+  <div class="nav-right">
+    <a href="#materialy" class="nav-link">Materiały</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">🎓 Kompletna platforma edukacyjna pod maturę</div>
+  <h1><span class="v">Virallo</span><span class="l">Edu</span></h1>
+  <p class="hero-sub">SQL, Python, Excel, Access, Fizyka rozszerzona, Matematyka rozszerzona + podstawa. Każdy przedmiot: teoria + interaktywne ćwiczenia na najwyższym poziomie.</p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="h-stat-val">6</div><div class="h-stat-label">przedmiotów</div></div>
+    <div class="h-stat"><div class="h-stat-val">14</div><div class="h-stat-label">plików HTML</div></div>
+    <div class="h-stat"><div class="h-stat-val">4</div><div class="h-stat-label">ukończone</div></div>
+    <div class="h-stat"><div class="h-stat-val">∞</div><div class="h-stat-label">powtórek</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#materialy" class="btn-primary">Przeglądaj materiały →</a>
+  </div>
+</section>
+
+<section class="subjects" id="materialy">
+  <div class="section-label">// materiały edukacyjne</div>
+  <h2 class="section-title">Wszystkie materiały</h2>
+  <p class="section-sub">Każdy przedmiot = plik z teorią + plik z ćwiczeniami. Kliknij aby otworzyć.</p>
+
+  <div class="subjects-grid">
+
+    <!-- SQL -->
+    <div class="subject-card" data-color="sql">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2)">🗄️</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">SQL</div>
+      <div class="sc-desc">Kompletna teoria SQL + 757 zadań z izolowanymi tabelami. Obejmuje SELECT, JOIN, GROUP BY, HAVING, DML, DDL, podzapytania — wszystko co leci na maturze informatycznej.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">SELECT</span><span class="sc-mod">JOIN</span><span class="sc-mod">GROUP BY</span>
+        <span class="sc-mod">HAVING</span><span class="sc-mod">DML</span><span class="sc-mod">DDL</span>
+        <span class="sc-mod">Subquery</span><span class="sc-mod">VIEW</span>
+      </div>
+      <div class="sc-links">
+        <a href="sql_teoria.html" class="sc-btn teoria">📚 Teoria SQL</a>
+        <a href="sqledukacja_v25.html" class="sc-btn cwicz">⚡ 757 Zadań</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
+    </div>
+
+    <!-- PYTHON -->
+    <div class="subject-card" data-color="py">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(255,212,59,0.08);border-color:rgba(255,212,59,0.2)">🐍</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+        </div>
+      </div>
+      <div class="sc-name">Python</div>
+      <div class="sc-desc">Zmienne, listy, słowniki, pętle, funkcje, pliki, NumPy, algorytmy. Teoria + zadania maturalne z automatycznym sprawdzaniem kodu.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Podstawy</span><span class="sc-mod">Listy/dicts</span><span class="sc-mod">Funkcje</span>
+        <span class="sc-mod">Pliki I/O</span><span class="sc-mod">Algorytmy</span><span class="sc-mod">Matura</span>
+      </div>
+      <div class="sc-links">
+        <a href="python_teoria.html" class="sc-btn teoria">📚 Teoria Py</a>
+        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Py</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:50%"></div></div>
+    </div>
+
+    <!-- EXCEL -->
+    <div class="subject-card" data-color="xl">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(16,212,142,0.08);border-color:rgba(16,212,142,0.2)">📊</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+        </div>
+      </div>
+      <div class="sc-name">Excel</div>
+      <div class="sc-desc">Formuły, funkcje (SUMA, ŚREDNIA, JEŻELI, WYSZUKAJ.PIONOWO), tabele przestawne, wykresy, makra VBA. Kompletne przygotowanie do matury i egzaminu ECDL.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Formuły</span><span class="sc-mod">JEŻELI</span><span class="sc-mod">WYSZUKAJ.PIONOWO</span>
+        <span class="sc-mod">Tabele</span><span class="sc-mod">Wykresy</span><span class="sc-mod">VBA</span>
+      </div>
+      <div class="sc-links">
+        <a href="excel_teoria.html" class="sc-btn teoria">📚 Teoria Excel</a>
+        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Excel</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:50%"></div></div>
+    </div>
+
+    <!-- ACCESS -->
+    <div class="subject-card" data-color="ac">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(255,140,66,0.08);border-color:rgba(255,140,66,0.2)">🗂️</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+        </div>
+      </div>
+      <div class="sc-name">Access</div>
+      <div class="sc-desc">Bazy danych w MS Access: tabele, relacje, kwerendy SQL (SELECT TOP, IIF), formularze, raporty. Specyfika Access vs standardowy SQL — co różni i jak unikać błędów na maturze.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Tabele</span><span class="sc-mod">Relacje</span><span class="sc-mod">Kwerendy</span>
+        <span class="sc-mod">SELECT TOP</span><span class="sc-mod">IIF()</span><span class="sc-mod">Formularze</span>
+      </div>
+      <div class="sc-links">
+        <a href="#" class="sc-btn teoria disabled">📚 Teoria Access</a>
+        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Access</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:0%"></div></div>
+    </div>
+
+    <!-- FIZYKA -->
+    <div class="subject-card" data-color="fiz">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(244,63,94,0.08);border-color:rgba(244,63,94,0.2)">⚛️</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+        </div>
+      </div>
+      <div class="sc-name">Fizyka Rozszerzona</div>
+      <div class="sc-desc">Mechanika, elektrodynamika, optyka, termodynamika, fizyka kwantowa i jądrowa. Teoria z wyprowadzeniami wzorów + zadania obliczeniowe na poziomie rozszerzonym CKE.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Mechanika</span><span class="sc-mod">Elektryczność</span><span class="sc-mod">Optyka</span>
+        <span class="sc-mod">Termodynamika</span><span class="sc-mod">Kwanty</span><span class="sc-mod">Jądro</span>
+      </div>
+      <div class="sc-links">
+        <a href="#" class="sc-btn teoria disabled">📚 Teoria Fizyki</a>
+        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Fizyki</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:0%"></div></div>
+    </div>
+
+    <!-- MATEMATYKA -->
+    <div class="subject-card" data-color="mat">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2)">📐</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+          <span class="sc-badge badge-soon">⏳ WKRÓTCE</span>
+        </div>
+      </div>
+      <div class="sc-name">Matematyka Rozszerzona</div>
+      <div class="sc-desc">Funkcje, pochodne, całki, ciągi, granice, geometria analityczna, liczby zespolone, kombinatoryka, rachunek prawdopodobieństwa. Pełne przygotowanie na poziom rozszerzony + podstawa.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Funkcje</span><span class="sc-mod">Pochodne</span><span class="sc-mod">Całki</span>
+        <span class="sc-mod">Ciągi</span><span class="sc-mod">Geometria</span><span class="sc-mod">Statystyka</span>
+      </div>
+      <div class="sc-links">
+        <a href="#" class="sc-btn teoria disabled">📚 Teoria Matmy</a>
+        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Matmy</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:0%"></div></div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">🧠 ViralloEdu</div>
+  <p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">prof. inż. Kacper Stabrawa</a>) &nbsp;🧠 <strong>ViralloEdu</strong></p>
+</footer>
+
+<div class="toast" id="toast"><b></b><span></span></div>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    link.style.color = (rect.top < 100 && rect.bottom > 0) ? 'var(--hub)' : '';
+  });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.subject-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

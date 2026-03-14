@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c14">
+<title>Excel • Teoria i Formuły | ViralloEdu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c14;--card:#0e1520;--elevated:#141e2e;--panel:#1a2438;
+  --text:#eef2f8;--text2:#8899bb;--muted:#445577;
+  --xl:#10d48e;--xl2:#0ab87a;--xl3:#065940;--hub:#c8b4ff;
+  --sec:#38bdf8;--sec2:#0ea5e9;
+  --green:#10d48e;--red:#ff4466;--blue:#3b82f6;--cyan:#06d6ff;--teal:#00b4aa;
+  --purple:#a855f7;--gold:#ffd43b;--py:#ffd43b;
+  --border:rgba(16,212,142,0.08);--border2:rgba(16,212,142,0.18);
+  --glow:0 0 60px rgba(16,212,142,0.10);
+  --glow2:0 0 30px rgba(16,212,142,0.18);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+code{font-family:'Fira Code',monospace;background:rgba(16,212,142,0.08);border:1px solid rgba(16,212,142,0.15);padding:2px 8px;border-radius:5px;font-size:0.83em;color:var(--xl)}
+pre{font-family:'Fira Code',monospace;background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:20px;overflow-x:auto;font-size:0.88rem;line-height:1.7;color:#b8d0f0;position:relative}
+pre code{background:transparent;border:none;padding:0;font-size:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--xl3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--xl2)}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,20,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.05em}
+.nav-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--xl),var(--sec));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--glow2);flex-shrink:0}
+.nav-links{display:flex;gap:2px;flex-wrap:nowrap}
+.nav-links a{padding:6px 11px;border-radius:7px;font-size:0.78rem;color:var(--text2);transition:0.25s;white-space:nowrap}
+.nav-links a:hover{background:var(--elevated);color:var(--xl)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:2px}
+.nav-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--xl),var(--sec),var(--blue));transition:width 0.2s}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(16,212,142,0.06) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(16,212,142,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(16,212,142,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(16,212,142,0.07);border:1px solid rgba(16,212,142,0.2);border-radius:50px;font-size:0.85rem;color:var(--xl);margin-bottom:28px;animation:fadeUp 0.8s ease both}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.8rem,9vw,5.5rem);font-weight:700;line-height:1.05;margin-bottom:18px;animation:fadeUp 0.8s 0.1s ease both}
+.hero h1 .accent{background:linear-gradient(135deg,var(--xl),var(--sec));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:640px;color:var(--text2);font-size:1.1rem;margin-bottom:36px;line-height:1.7;animation:fadeUp 0.8s 0.2s ease both}
+.hero-modules{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;animation:fadeUp 0.8s 0.3s ease both}
+.hero-mod{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 20px;min-width:130px;transition:0.3s;cursor:pointer}
+.hero-mod:hover{border-color:var(--xl);transform:translateY(-3px);box-shadow:var(--glow2)}
+.hero-mod .mnum{font-size:0.75rem;color:var(--xl);font-weight:600;margin-bottom:3px;font-family:'Fira Code',monospace}
+.hero-mod .mname{font-size:0.88rem;color:var(--text);font-weight:500}
+.hero-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(135deg,var(--xl),var(--sec));color:#080c14;font-weight:700;border-radius:50px;font-size:1rem;transition:0.3s;border:none;cursor:pointer;font-family:inherit;animation:fadeUp 0.8s 0.4s ease both}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(16,212,142,0.25)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:80px 0;position:relative;z-index:1}
+.section-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(16,212,142,0.07);border:1px solid rgba(16,212,142,0.18);border-radius:50px;font-size:0.8rem;color:var(--xl);font-family:'Fira Code',monospace;margin-bottom:14px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:600px;margin:0 auto 48px;font-size:0.95rem}
+.text-center{text-align:center}
+
+/* ROADMAPA */
+#roadmapa{background:var(--card)}
+.roadmap-grid{display:grid;gap:20px;max-width:1000px;margin:0 auto}
+.roadmap-item{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px 28px;display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:start;transition:0.3s}
+.roadmap-item:hover{border-color:rgba(16,212,142,0.3);box-shadow:0 4px 30px rgba(16,212,142,0.06)}
+@media(max-width:700px){.roadmap-item{grid-template-columns:1fr}}
+.rm-num{background:linear-gradient(135deg,var(--xl),var(--sec));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Cinzel',serif;font-size:2.4rem;font-weight:700;line-height:1}
+.rm-sub{font-size:0.7rem;color:var(--muted);font-family:'Fira Code',monospace}
+.rm-title{font-size:1rem;font-weight:600;margin-bottom:6px;color:var(--text)}
+.rm-desc{color:var(--text2);font-size:0.88rem;margin-bottom:12px}
+.rm-tags{display:flex;flex-wrap:wrap;gap:6px}
+.rm-tag{padding:4px 10px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:0.75rem;color:var(--text2);font-family:'Fira Code',monospace}
+.rm-checks{display:flex;flex-direction:column;gap:7px}
+.rm-check{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--card);border-radius:10px;font-size:0.83rem;color:var(--text2);cursor:pointer;transition:0.2s}
+.rm-check:hover{background:rgba(16,212,142,0.06);color:var(--text)}
+.rm-check input{accent-color:var(--green);width:16px;height:16px;flex-shrink:0}
+.rm-check.done{color:var(--green)}
+
+/* SLOWNIK */
+#slownik{background:var(--bg)}
+.slownik-input{flex:1;min-width:220px;padding:12px 18px;background:var(--card);border:1px solid var(--border2);border-radius:50px;color:var(--text);font-family:inherit;font-size:0.9rem;outline:none;transition:0.3s}
+.slownik-input:focus{border-color:var(--xl);box-shadow:0 0 0 3px rgba(16,212,142,0.08)}
+.slownik-filter{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.sf-btn{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:0.78rem;cursor:pointer;font-family:'Fira Code',monospace;transition:0.2s}
+.sf-btn:hover{border-color:var(--xl);color:var(--xl)}
+.sf-btn.active{background:rgba(16,212,142,0.1);border-color:var(--xl);color:var(--xl)}
+.slownik-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.sk-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.3s;cursor:pointer}
+.sk-card:hover{border-color:rgba(16,212,142,0.3)}
+.sk-card.open{border-color:var(--green)}
+.sk-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sk-name{font-family:'Fira Code',monospace;font-size:0.93rem;font-weight:600;color:var(--xl)}
+.sk-badge{font-size:0.7rem;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+.badge-podstawy{background:rgba(16,212,142,0.12);color:var(--xl)}
+.badge-formuly{background:rgba(56,189,248,0.12);color:#60c8f8}
+.badge-logika{background:rgba(168,85,247,0.15);color:#c084fc}
+.badge-wyszukiwanie{background:rgba(251,146,60,0.15);color:#fb923c}
+.badge-tabele{background:rgba(255,68,102,0.12);color:#ff7799}
+.badge-wykresy{background:rgba(6,214,255,0.12);color:var(--cyan)}
+.badge-tekst{background:rgba(245,200,66,0.12);color:var(--gold)}
+.badge-data{background:rgba(0,180,170,0.12);color:var(--teal)}
+.badge-vba{background:rgba(255,212,59,0.12);color:#ffd43b}
+.sk-short{padding:0 16px 10px;font-size:0.84rem;color:var(--text2)}
+.sk-body{padding:0 16px 14px;display:none;border-top:1px solid var(--border)}
+.sk-card.open .sk-body{display:block}
+.sk-body-inner{padding-top:12px;font-size:0.88rem;color:var(--text2);line-height:1.65}
+.sk-body pre{margin-top:10px;font-size:0.8rem;padding:14px}
+.sk-tip{margin-top:10px;padding:10px 14px;background:rgba(16,212,142,0.07);border-left:3px solid var(--xl);border-radius:0 8px 8px 0;font-size:0.82rem;color:var(--xl)}
+
+/* MODUŁY */
+#moduly{background:var(--card)}
+.module-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.mod-tab{padding:10px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text2);cursor:pointer;font-family:inherit;font-size:0.85rem;transition:0.3s;font-weight:500}
+.mod-tab:hover{border-color:rgba(16,212,142,0.3)}
+.mod-tab.active{background:linear-gradient(135deg,rgba(16,212,142,0.15),rgba(56,189,248,0.12));border-color:var(--xl);color:var(--xl)}
+.mod-content{display:none;max-width:920px;margin:0 auto;animation:fadeIn 0.3s ease}
+.mod-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mod-card{background:var(--elevated);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:18px}
+.mod-card h4{color:var(--xl);font-size:1rem;font-family:'Fira Code',monospace;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mod-card p{color:var(--text2);font-size:0.92rem;margin-bottom:14px;line-height:1.65}
+.mod-card ul{color:var(--text2);font-size:0.9rem;padding-left:20px}
+.mod-card li{margin-bottom:5px}
+.mod-card li b{color:var(--xl)}
+.wtopa{background:rgba(255,68,102,0.07);border:1px solid rgba(255,68,102,0.2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.wtopa h5{color:var(--red);margin-bottom:6px;font-size:0.85rem;display:flex;align-items:center;gap:6px}
+.wtopa p{color:var(--text2);font-size:0.85rem;margin:0}
+.tip-box{background:rgba(16,212,142,0.06);border:1px solid rgba(16,212,142,0.2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.tip-box h5{color:var(--green);margin-bottom:6px;font-size:0.85rem;display:flex;align-items:center;gap:6px}
+.tip-box p{color:var(--text2);font-size:0.85rem;margin:0}
+
+/* Excel syntax highlight */
+.xl-fn{color:#10d48e;font-weight:600}
+.xl-ref{color:#38bdf8}
+.xl-str{color:#86efac}
+.xl-num{color:#fb923c}
+.xl-op{color:#8899bb}
+.xl-bool{color:#f472b6;font-weight:600}
+.xl-sep{color:#64748b}
+.xl-err{color:#ff4466}
+.xl-com{color:#4a5a7a;font-style:italic}
+
+/* SYMULATOR */
+#symulator{background:var(--bg)}
+.sim-wrap{max-width:1000px;margin:0 auto}
+.sim-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.sim-label{font-size:0.8rem;color:var(--muted);font-family:'Fira Code',monospace;margin-right:4px}
+.sim-select{padding:7px 12px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Fira Code',monospace;font-size:0.8rem;cursor:pointer;outline:none}
+.sim-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font-size:0.8rem;cursor:pointer;font-family:inherit;transition:0.2s}
+.sim-btn:hover{border-color:var(--xl);color:var(--xl)}
+.sim-btn.primary{background:rgba(16,212,142,0.15);border-color:var(--xl);color:var(--xl);font-weight:700}
+.sim-formula-bar{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:8px 14px;margin-bottom:10px}
+.sim-cell-name{font-family:'Fira Code',monospace;font-size:0.82rem;color:var(--xl);min-width:36px;font-weight:700}
+.sim-formula-sep{color:var(--border2);font-size:1.2rem}
+.sim-formula-input{flex:1;background:transparent;border:none;color:var(--text);font-family:'Fira Code',monospace;font-size:0.88rem;outline:none}
+.sim-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px}
+.sim-table{width:100%;border-collapse:collapse;font-family:'Fira Code',monospace;font-size:0.82rem}
+.sim-table th{background:var(--elevated);color:var(--text2);padding:7px 12px;border:1px solid var(--border);font-weight:600;font-size:0.78rem;text-align:center;user-select:none}
+.sim-table td{background:var(--card);border:1px solid var(--border);padding:0;position:relative}
+.sim-table td.row-header{background:var(--elevated);color:var(--text2);text-align:center;padding:4px 8px;font-size:0.78rem;cursor:default;user-select:none;width:36px}
+.cell-input{width:100%;height:100%;padding:5px 8px;background:transparent;border:none;color:var(--text);font-family:'Fira Code',monospace;font-size:0.82rem;outline:none;min-height:32px;cursor:pointer}
+.cell-input:focus{background:rgba(16,212,142,0.07);cursor:text}
+.sim-table td.selected{background:rgba(16,212,142,0.08);outline:2px solid var(--xl);outline-offset:-1px;z-index:2}
+.sim-table td.formula-cell .cell-input{color:var(--xl)}
+.sim-table td.error-cell .cell-input{color:var(--red)}
+.sim-output-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:700px){.sim-output-row{grid-template-columns:1fr}}
+.sim-log{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;min-height:80px;font-family:'Fira Code',monospace;font-size:0.78rem;color:#b8d0f0;white-space:pre-wrap;max-height:160px;overflow-y:auto}
+.sim-hints{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+.sim-hints h5{font-size:0.82rem;color:var(--xl);margin-bottom:8px;font-family:'Fira Code',monospace}
+.sim-hint-list{display:flex;flex-direction:column;gap:4px}
+.sim-hint-item{font-size:0.8rem;color:var(--text2);padding:5px 10px;background:var(--elevated);border-radius:6px;cursor:pointer;transition:0.15s;border:1px solid transparent}
+.sim-hint-item:hover{border-color:var(--xl);color:var(--text)}
+.sim-examples{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sim-ex-btn{padding:5px 12px;background:var(--elevated);border:1px solid var(--border);border-radius:16px;font-size:0.75rem;color:var(--text2);cursor:pointer;font-family:'Fira Code',monospace;transition:0.2s}
+.sim-ex-btn:hover{border-color:var(--xl);color:var(--xl)}
+
+/* QUIZ */
+#quiz{background:var(--card)}
+.quiz-wrap{max-width:760px;margin:0 auto}
+.quiz-box{background:var(--elevated);border:1px solid var(--border);border-radius:24px;padding:32px}
+.quiz-progress{display:flex;gap:4px;margin-bottom:24px}
+.q-dot{flex:1;height:3px;background:var(--card);border-radius:2px;transition:0.3s}
+.q-dot.done{background:var(--green)}
+.q-dot.current{background:var(--xl)}
+.quiz-num{font-family:'Fira Code',monospace;font-size:0.8rem;color:var(--xl);margin-bottom:10px}
+.quiz-q{font-family:'Cinzel',serif;font-size:1.15rem;margin-bottom:8px;line-height:1.4;color:var(--text)}
+.quiz-hint{font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--muted);margin-bottom:20px;padding:10px 14px;background:var(--card);border-radius:8px}
+.quiz-code{background:var(--bg);border:1px solid var(--border2);border-radius:10px;padding:14px;margin-bottom:16px;font-family:'Fira Code',monospace;font-size:0.85rem;line-height:1.65;color:#b8d0f0;white-space:pre}
+.quiz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.q-opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--card);border:2px solid transparent;border-radius:14px;cursor:pointer;transition:0.25s;font-size:0.92rem}
+.q-opt:hover{border-color:rgba(16,212,142,0.3)}
+.q-opt.selected{border-color:var(--xl);background:rgba(16,212,142,0.07)}
+.q-opt.correct{border-color:var(--green);background:rgba(16,212,142,0.07)}
+.q-opt.wrong{border-color:var(--red);background:rgba(255,68,102,0.07)}
+.q-letter{width:32px;height:32px;background:var(--elevated);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;font-family:'Fira Code',monospace}
+.q-opt.selected .q-letter{background:var(--xl);color:#080c14}
+.q-opt.correct .q-letter{background:var(--green);color:#080c14}
+.q-opt.wrong .q-letter{background:var(--red);color:#fff}
+.quiz-feedback{padding:14px 16px;border-radius:12px;margin-bottom:18px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(16,212,142,0.07);border:1px solid rgba(16,212,142,0.25)}
+.quiz-feedback.bad{background:rgba(255,68,102,0.07);border:1px solid rgba(255,68,102,0.25)}
+.quiz-feedback h5{margin-bottom:6px;font-size:0.88rem}
+.quiz-feedback.ok h5{color:var(--green)}
+.quiz-feedback.bad h5{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:0.85rem;line-height:1.5}
+.quiz-btns{display:flex;justify-content:space-between;gap:12px}
+.qbtn{padding:11px 24px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.88rem;transition:0.25s}
+.qbtn:hover{border-color:var(--xl);color:var(--xl)}
+.qbtn-next{background:linear-gradient(135deg,var(--xl),var(--sec));color:#080c14;border:none}
+.qbtn-next:hover{transform:translateY(-2px);color:#080c14}
+.quiz-result{display:none;text-align:center;padding:20px}
+.quiz-score{font-family:'Cinzel',serif;font-size:3rem;color:var(--xl);line-height:1}
+.quiz-score-sub{color:var(--text2);margin-top:8px;font-size:0.95rem}
+
+/* FISZKI */
+#fiszki{background:var(--bg)}
+.flash-wrap{max-width:680px;margin:0 auto}
+.flash-filter{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.flashcard{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:48px 36px;text-align:center;cursor:pointer;transition:0.35s;min-height:240px;display:flex;flex-direction:column;justify-content:center;position:relative;perspective:1000px}
+.flashcard:hover{border-color:rgba(16,212,142,0.3);box-shadow:var(--glow)}
+.flash-inner{position:relative}
+.flash-front,.flash-back{transition:0.35s}
+.flash-back{display:none}
+.flashcard.flipped .flash-front{display:none}
+.flashcard.flipped .flash-back{display:block}
+.flash-tag{font-family:'Fira Code',monospace;font-size:0.72rem;color:var(--xl);margin-bottom:12px;letter-spacing:0.05em}
+.flash-q{font-family:'Cinzel',serif;font-size:1.35rem;color:var(--text);line-height:1.35}
+.flash-a{font-size:0.95rem;color:var(--text2);line-height:1.65}
+.flash-a code{font-size:0.85em}
+.flash-hint{font-size:0.78rem;color:var(--muted);margin-top:16px;font-family:'Fira Code',monospace}
+.flash-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:24px}
+.flash-btn{padding:10px 24px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.88rem;transition:0.25s}
+.flash-btn:hover{border-color:var(--xl)}
+.flash-counter{font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--muted)}
+.flash-mastered{color:var(--green);font-size:0.8rem;margin-left:8px;font-family:'Fira Code',monospace}
+.flash-master-btn{margin-top:14px;padding:8px 20px;border-radius:50px;border:1px solid rgba(16,212,142,0.3);background:rgba(16,212,142,0.07);color:var(--green);font-size:0.82rem;cursor:pointer;font-family:inherit;transition:0.25s}
+.flash-master-btn:hover{background:rgba(16,212,142,0.15)}
+
+/* TYPING */
+#typing{background:var(--card)}
+.typing-wrap{max-width:760px;margin:0 auto}
+.typing-task{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:16px}
+.typing-label{font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--xl);margin-bottom:8px;letter-spacing:0.05em}
+.typing-target{font-family:'Fira Code',monospace;font-size:1rem;color:var(--text2);margin-bottom:16px;line-height:1.7;padding:12px 16px;background:var(--card);border-radius:10px;border:1px solid var(--border)}
+.typing-target .t-correct{color:var(--green)}
+.typing-target .t-wrong{color:var(--red);text-decoration:underline}
+.typing-target .t-cursor{border-right:2px solid var(--xl);animation:blink 0.8s step-end infinite}
+@keyframes blink{50%{border-color:transparent}}
+.typing-input{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:'Fira Code',monospace;font-size:0.95rem;outline:none;transition:0.3s}
+.typing-input:focus{border-color:var(--xl)}
+.typing-stats{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
+.typing-stat{font-family:'Fira Code',monospace;font-size:0.8rem;color:var(--muted)}
+.typing-stat b{color:var(--xl)}
+.typing-done{color:var(--green);font-size:0.88rem;font-family:'Fira Code',monospace}
+.typing-nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px}
+.typing-progress{font-family:'Fira Code',monospace;font-size:0.82rem;color:var(--muted)}
+.typing-progress b{color:var(--xl)}
+
+/* FOKUS */
+#fokus{background:var(--bg)}
+.fokus-wrap{max-width:600px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:28px;padding:44px;text-align:center}
+.fokus-timer{font-family:'Cinzel',serif;font-size:5rem;font-weight:700;color:var(--xl);line-height:1;margin-bottom:10px}
+.fokus-label{font-size:0.85rem;color:var(--text2);margin-bottom:28px;font-family:'Fira Code',monospace}
+.fokus-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.fokus-btn{padding:12px 28px;border-radius:50px;font-weight:700;font-size:0.92rem;cursor:pointer;font-family:inherit;transition:0.3s;border:none}
+.fokus-btn.start{background:linear-gradient(135deg,var(--xl),var(--sec));color:#080c14}
+.fokus-btn.stop{background:var(--elevated);border:1px solid var(--border);color:var(--text)}
+.fokus-btn:hover{transform:translateY(-2px)}
+.fokus-tip{font-size:0.88rem;color:var(--text2);line-height:1.6;max-width:420px;margin:0 auto}
+.fokus-tip b{color:var(--xl)}
+.fokus-ring{width:160px;height:160px;margin:0 auto 24px;position:relative}
+.fokus-ring svg{transform:rotate(-90deg)}
+.fokus-ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.fokus-ring .bg{stroke:var(--elevated)}
+.fokus-ring .fg{stroke:var(--xl);transition:stroke-dashoffset 1s linear;stroke-dasharray:440;stroke-dashoffset:0}
+
+/* NOTATNIK */
+#notatnik{background:var(--card)}
+.notatnik-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+@media(max-width:900px){.notatnik-wrap{grid-template-columns:1fr}}
+.nb-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:22px}
+.nb-panel-title{font-family:'Cinzel',serif;font-size:1rem;margin-bottom:4px;color:var(--xl)}
+.nb-panel-sub{font-size:0.82rem;color:var(--muted);margin-bottom:16px;font-family:'Fira Code',monospace}
+.nb-search{width:100%;padding:9px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.85rem;outline:none;margin-bottom:12px}
+.nb-search:focus{border-color:var(--xl)}
+.nb-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.nb-cat{padding:4px 10px;background:var(--card);border:1px solid var(--border);border-radius:16px;font-size:0.73rem;color:var(--text2);cursor:pointer;font-family:'Fira Code',monospace;transition:0.2s}
+.nb-cat.active{background:rgba(16,212,142,0.1);border-color:var(--xl);color:var(--xl)}
+.nb-items{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
+.nb-item{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;transition:0.2s;cursor:pointer}
+.nb-item:hover{border-color:rgba(16,212,142,0.25)}
+.nb-item input[type="checkbox"]{accent-color:var(--green);width:16px;height:16px;margin-top:3px;flex-shrink:0}
+.nb-item .nb-txt{flex:1;font-size:0.85rem;color:var(--text2);line-height:1.5}
+.nb-item .nb-tag{font-size:0.72rem;color:var(--muted);font-family:'Fira Code',monospace;margin-top:3px}
+.nb-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.nb-btn{padding:9px 14px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:0.8rem;transition:0.25s}
+.nb-btn:hover{border-color:var(--xl)}
+.nb-btn.primary{background:linear-gradient(135deg,var(--xl),var(--sec));color:#080c14;border:none}
+.nb-btn.danger:hover{border-color:var(--red)}
+.nb-list{display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto}
+.nb-list-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--card);border-radius:10px;padding:10px 12px;border:1px solid var(--border)}
+.nb-list-item .nb-txt{flex:1;font-size:0.85rem;color:var(--text2);line-height:1.5}
+.nb-list-item .nb-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 4px;transition:0.2s}
+.nb-list-item .nb-del:hover{color:var(--red)}
+
+/* FOOTER */
+footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:10px;color:var(--hub)}
+.footer-copy{font-size:0.85rem;color:var(--muted)}
+.footer-copy a{color:var(--text2);transition:0.2s}
+.footer-copy a:hover{color:var(--hub)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--border2);border-radius:16px;padding:14px 20px;box-shadow:var(--glow);transform:translateY(150%);transition:0.3s;z-index:2000;max-width:300px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:3px;font-size:0.9rem}
+.toast span{color:var(--text2);font-size:0.82rem}
+@media(max-width:600px){section{padding:56px 0}.quiz-box,.fokus-wrap{padding:18px}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-icon">📊</div>
+    EXCEL <span style="color:var(--xl);margin-left:4px">TEORIA</span>
+  </a>
+  <div class="nav-links">
+    <a href="#roadmapa">Roadmapa</a>
+    <a href="#slownik">Słownik</a>
+    <a href="#moduly">Moduły</a>
+    <a href="#symulator">Symulator</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#fiszki">Fiszki</a>
+    <a href="#typing">Typing</a>
+    <a href="#fokus">Fokus</a>
+    <a href="#notatnik">Notatnik</a>
+  </div>
+  <div class="nav-progress"><div class="nav-bar" id="navBar"></div></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">📊 Microsoft Excel • Arkusze kalkulacyjne • Matura</div>
+  <h1>Excel<br><span class="accent">Teoria i Formuły</span></h1>
+  <p class="hero-desc">Kompletny kurs Excel: od podstaw przez formuły i funkcje logiczne, aż po tabele przestawne, wykresy i automatyzację VBA. Wszystko czego potrzebujesz na maturze z Informatyki.</p>
+  <div class="hero-modules">
+    <div class="hero-mod" onclick="document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">01</div><div class="mname">Podstawy</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">02</div><div class="mname">Formuły</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">03</div><div class="mname">Logika</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">04</div><div class="mname">Wyszukiwanie</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">05</div><div class="mname">Tabele</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">06</div><div class="mname">VBA</div>
+    </div>
+  </div>
+  <a href="#roadmapa" class="hero-btn">Zaczynam naukę →</a>
+</section>
+
+<!-- ROADMAPA -->
+<section id="roadmapa">
+<div class="container text-center">
+  <div class="section-badge">📍 ROADMAPA</div>
+  <h2 class="section-title">Ścieżka nauki Excela</h2>
+  <p class="section-desc">Odhaczaj tematy w miarę postępów. Każdy poziom buduje na poprzednim.</p>
+</div>
+<div class="container">
+  <div class="roadmap-grid" id="roadmapGrid"></div>
+</div>
+</section>
+
+<!-- SŁOWNIK -->
+<section id="slownik">
+<div class="container text-center">
+  <div class="section-badge">📖 SŁOWNIK</div>
+  <h2 class="section-title">Słownik Excela</h2>
+  <p class="section-desc">Kliknij kartę aby rozwinąć pełny opis z przykładem i wskazówką maturalną.</p>
+  <input class="slownik-input" id="slownikSearch" placeholder="🔍 szukaj (np. JEŻELI, WYSZUKAJ...)..." oninput="filterSlownik()" style="max-width:500px;margin-bottom:16px">
+</div>
+<div class="container">
+  <div class="slownik-filter" id="slownikFilter"></div>
+  <div class="slownik-grid" id="slownikGrid"></div>
+</div>
+</section>
+
+<!-- MODUŁY -->
+<section id="moduly">
+<div class="container text-center">
+  <div class="section-badge">📚 MODUŁY</div>
+  <h2 class="section-title">Moduły teorii</h2>
+  <p class="section-desc">Pełna teoria z przykładami, typowymi błędami i wskazówkami maturalnymi.</p>
+</div>
+<div class="container">
+  <div class="module-tabs" id="modTabs"></div>
+  <div id="modContents"></div>
+</div>
+</section>
+
+<!-- SYMULATOR -->
+<section id="symulator">
+<div class="container text-center">
+  <div class="section-badge">⚡ SYMULATOR</div>
+  <h2 class="section-title">Symulator Formuł</h2>
+  <p class="section-desc">Wpisuj formuły Excela w komórkach i obserwuj wyniki na żywo. Testuj JEŻELI, WYSZUKAJ.PIONOWO i inne.</p>
+</div>
+<div class="container">
+  <div class="sim-wrap">
+    <div class="sim-toolbar">
+      <span class="sim-label">Załaduj przykład:</span>
+      <div class="sim-examples" id="simExamples"></div>
+      <button class="sim-btn" onclick="clearSim()">🗑 Wyczyść</button>
+      <button class="sim-btn primary" onclick="evalAllSim()">▶ Oblicz wszystko</button>
+    </div>
+    <div class="sim-formula-bar">
+      <span class="sim-cell-name" id="simCellName">A1</span>
+      <span class="sim-formula-sep">|</span>
+      <span style="font-size:0.8rem;color:var(--xl);font-family:'Fira Code',monospace;">fx</span>
+      <input class="sim-formula-input" id="simFormulaInput" placeholder="Wpisz wartość lub formułę (np. =SUMA(A1:A5))..." onkeydown="simFormulaKeydown(event)">
+    </div>
+    <div class="sim-table-wrap">
+      <table class="sim-table" id="simTable"></table>
+    </div>
+    <div class="sim-output-row">
+      <div>
+        <div style="font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--xl);margin-bottom:6px">📋 LOG</div>
+        <div class="sim-log" id="simLog">Kliknij komórkę i wpisz wartość lub formułę...</div>
+      </div>
+      <div class="sim-hints">
+        <h5>💡 Funkcje — kliknij aby wstawić</h5>
+        <div class="sim-hint-list" id="simHints"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+<div class="container text-center">
+  <div class="section-badge">🎯 QUIZ</div>
+  <h2 class="section-title">Quiz Excel — teoria</h2>
+  <p class="section-desc">25 pytań z przykładami formuł do interpretacji + wyjaśnienia.</p>
+</div>
+<div class="container">
+  <div class="quiz-wrap">
+    <div class="quiz-box" id="quizBox">
+      <div class="quiz-progress" id="qProgress"></div>
+      <div class="quiz-num">Pytanie <span id="qNum">1</span> z <span id="qTotal">25</span></div>
+      <h3 class="quiz-q" id="qText"></h3>
+      <div class="quiz-hint" id="qHint"></div>
+      <div class="quiz-code hidden" id="qCode"></div>
+      <div class="quiz-opts" id="qOpts"></div>
+      <div class="quiz-feedback" id="qFeedback"><h5 id="qFbTitle"></h5><p id="qFbText"></p></div>
+      <div class="quiz-btns">
+        <button class="qbtn qbtn-prev" id="qPrev" onclick="prevQ()">← Poprzednie</button>
+        <button class="qbtn qbtn-next" id="qNext" onclick="nextQ()">Następne →</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FISZKI -->
+<section id="fiszki">
+<div class="container text-center">
+  <div class="section-badge">🧠 FISZKI</div>
+  <h2 class="section-title">Fiszki Excel</h2>
+  <p class="section-desc">Kliknij kartę aby odwrócić. ✓ Umiem = pomiń w kolejnych rundach.</p>
+</div>
+<div class="container">
+  <div class="flash-wrap">
+    <div class="flash-filter" id="flashFilter"></div>
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flash-inner">
+        <div class="flash-front">
+          <div class="flash-tag" id="flashTag"></div>
+          <h3 class="flash-q" id="flashQ"></h3>
+          <div class="flash-hint">👆 kliknij aby zobaczyć odpowiedź</div>
+        </div>
+        <div class="flash-back">
+          <div class="flash-tag" id="flashTag2"></div>
+          <div class="flash-a" id="flashA"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <button class="flash-master-btn" id="flashMasterBtn" onclick="markMastered()">✓ Umiem — pomiń</button>
+    </div>
+    <div class="flash-nav">
+      <button class="flash-btn" onclick="prevCard()">← Poprzednia</button>
+      <span class="flash-counter">
+        <span id="flashNum">1</span> z <span id="flashTotal">35</span>
+        <span class="flash-mastered" id="flashMastered"></span>
+      </span>
+      <button class="flash-btn" onclick="nextCard()">Następna →</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- TYPING -->
+<section id="typing">
+<div class="container text-center">
+  <div class="section-badge">⌨️ TYPING</div>
+  <h2 class="section-title">Typing Sprint — Formuły</h2>
+  <p class="section-desc">Przepisuj formuły Excela aby zbudować pamięć mięśniową składni.</p>
+</div>
+<div class="container">
+  <div class="typing-wrap" id="typingWrap"></div>
+</div>
+</section>
+
+<!-- FOKUS -->
+<section id="fokus">
+<div class="container text-center">
+  <div class="section-badge">⏱️ FOKUS</div>
+  <h2 class="section-title">Tryb Fokus</h2>
+  <p class="section-desc">Skoncentruj się na jednym temacie przez 90 sekund. Bez rozpraszania.</p>
+</div>
+<div class="container">
+  <div class="fokus-wrap">
+    <div class="fokus-ring">
+      <svg viewBox="0 0 160 160" width="160" height="160">
+        <circle class="bg" cx="80" cy="80" r="70"/>
+        <circle class="fg" id="fokusRing" cx="80" cy="80" r="70"/>
+      </svg>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column">
+        <div class="fokus-timer" id="fokusTimer">01:30</div>
+      </div>
+    </div>
+    <div class="fokus-label" id="fokusLabel">Gotowy? Kliknij Start i skup się na jednej formule.</div>
+    <div class="fokus-btns">
+      <button class="fokus-btn start" onclick="startFokus()">▶ Start</button>
+      <button class="fokus-btn stop" onclick="resetFokus()">■ Reset</button>
+    </div>
+    <div class="fokus-tip" id="fokusTip">
+      <b>Wskazówka:</b> Wybierz jedną formułę (np. WYSZUKAJ.PIONOWO) i przez 90 sekund pisz ją ręcznie, analizuj składnię, twórz własne przykłady. Powtarzanie = zapamiętywanie.
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- NOTATNIK -->
+<section id="notatnik">
+<div class="container text-center">
+  <div class="section-badge">📝 NOTATNIK</div>
+  <h2 class="section-title">Notatnik — Ściąga Excel</h2>
+  <p class="section-desc">Zaznacz ważne reguły i eksportuj jako ściągę do nauki.</p>
+</div>
+<div class="container">
+  <div class="notatnik-wrap">
+    <div class="nb-panel">
+      <div class="nb-panel-title">Baza reguł</div>
+      <div class="nb-panel-sub" id="nbSel">0 zaznaczono</div>
+      <input class="nb-search" placeholder="🔍 filtruj reguły..." oninput="filterNb(this.value)">
+      <div class="nb-cats" id="nbCats"></div>
+      <div class="nb-items" id="nbBlocks"></div>
+      <div class="nb-btns">
+        <button class="nb-btn primary" onclick="nbAddSelected()">➕ Dodaj do ściągi</button>
+        <button class="nb-btn" onclick="nbSelectAll(true)">☑ Wszystkie</button>
+        <button class="nb-btn" onclick="nbSelectAll(false)">☐ Odznacz</button>
+      </div>
+    </div>
+    <div class="nb-panel">
+      <div class="nb-panel-title">Moja ściąga</div>
+      <div class="nb-panel-sub"><span id="nbCount">0 punktów</span></div>
+      <div class="nb-list" id="nbList"></div>
+      <div class="nb-btns">
+        <button class="nb-btn primary" onclick="nbExport()">📋 Kopiuj</button>
+        <button class="nb-btn" onclick="nbDownload()">⬇ Pobierz .txt</button>
+        <button class="nb-btn danger" onclick="nbClear()">🗑 Wyczyść</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-logo">🧠 ViralloEdu</div>
+  <p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">prof. inż. Kacper Stabrawa</a>) &nbsp;🧠 <strong>ViralloEdu</strong></p>
+</footer>
+
+<div class="toast" id="toast"><b id="toastTitle"></b><span id="toastMsg"></span></div>
+
+<script>
+// ===================== UTILITY =====================
+function toast(title, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('navBar').style.width = (window.scrollY / h * 100) + '%';
+});
+
+// ===================== DATA =====================
+const roadmapData = [
+  {
+    num:'01', level:'PODSTAWY',
+    title:'Podstawy Excela',
+    desc:'Interfejs, nawigacja, typy danych, formatowanie komórek, zakresy i pierwsze formuły.',
+    tags:['Interfejs','Komórki','Typy danych','Zakresy','Formatowanie'],
+    checks:['Znam budowę arkusza (wiersze, kolumny, komórki)','Potrafię wpisywać i formatować dane','Rozumiem typy danych: liczba, tekst, data, logiczna','Używam autouzupełniania i serii danych','Stosuję formatowanie warunkowe']
+  },
+  {
+    num:'02', level:'FORMUŁY',
+    title:'Formuły i Funkcje matematyczne',
+    desc:'Odwołania względne/bezwzględne, SUMA, ŚREDNIA, MAX, MIN, ZAOKR, MOD, POTĘGA i inne.',
+    tags:['SUMA','ŚREDNIA','MAX/MIN','$A$1','ZAOKR','ILE.LICZB'],
+    checks:['Rozumiem odwołania względne ($A1, A$1, $A$1)','Używam SUMA, ŚREDNIA, MAX, MIN, ILE.LICZB','Stosuję ZAOKR, ZAOKR.DO.CAŁK, MOD','Znam POTĘGA, PIERWIASTEK, ABS','Tworzę formuły z wieloma operatorami']
+  },
+  {
+    num:'03', level:'LOGIKA',
+    title:'Funkcje logiczne i warunkowe',
+    desc:'JEŻELI, ORAZ, LUB, NIE, JEŻELI.BŁĄD, SUMA.JEŻELI, LICZ.JEŻELI — fundamenty analizy warunkowej.',
+    tags:['JEŻELI','ORAZ/LUB','SUMA.JEŻELI','LICZ.JEŻELI','JEŻELI.BŁĄD'],
+    checks:['Buduję złożone formuły JEŻELI zagnieżdżone','Łączę ORAZ i LUB z JEŻELI','Używam SUMA.JEŻELI z kryterium tekstowym i liczbowym','Stosuję LICZ.JEŻELI do zliczania warunkowego','Obsługuję błędy z JEŻELI.BŁĄD']
+  },
+  {
+    num:'04', level:'WYSZUKIWANIE',
+    title:'Funkcje wyszukiwania',
+    desc:'WYSZUKAJ.PIONOWO, WYSZUKAJ.POZIOMO, INDEKS, PODAJ.POZYCJĘ, XLOOKUP.',
+    tags:['WYSZUKAJ.PIONOWO','INDEKS','PODAJ.POZYCJĘ','XLOOKUP','WYSZUKAJ'],
+    checks:['Używam WYSZUKAJ.PIONOWO z dopasowaniem dokładnym i przybliżonym','Łączę INDEKS z PODAJ.POZYCJĘ','Znam ograniczenia WYSZUKAJ.PIONOWO (tylko prawdopodobieństwo)','Stosuję XLOOKUP zamiast WYSZUKAJ.PIONOWO (Excel 365)','Wyszukuję w wielu kolumnach']
+  },
+  {
+    num:'05', level:'TABELE',
+    title:'Tabele przestawne i wykresy',
+    desc:'Tworzenie tabel przestawnych, grupowanie, filtrowanie, wykresy i formatowanie wizualizacji.',
+    tags:['Tabela przestawna','Wykres','Filtrowanie','Sortowanie','Grupowanie'],
+    checks:['Tworzę tabelę przestawną z danych','Grupuję i filtruję w tabeli przestawnej','Wybieam odpowiedni typ wykresu','Formatuję i opisuję wykresy','Używam fragmentatorów (Slicer)']
+  },
+  {
+    num:'06', level:'VBA',
+    title:'Makra i podstawy VBA',
+    desc:'Rejestrowanie makr, edytor VBE, zmienne, pętle, warunki, zdarzenia i procedury Sub.',
+    tags:['Sub/End Sub','Dim','For...Next','If...Then','MsgBox','Range'],
+    checks:['Nagrywam i uruchamiam makra','Rozumiem strukturę Sub i Function','Używam zmiennych (Dim, Integer, String)','Stosuję If...Then...Else','Piszę pętle For...Next i For Each']
+  }
+];
+
+const slownikData = [
+  // PODSTAWY
+  {name:'Komórka',cat:'podstawy',short:'Podstawowa jednostka arkusza identyfikowana adresem (np. A1, B3).',
+   body:'Komórka to przecięcie kolumny i wiersza. Kolumny są oznaczone literami (A, B, C...), wiersze liczbami (1, 2, 3...). Adres komórki to litera kolumny + numer wiersza.',
+   ex:'A1, B3, Z100, AA1',tip:'Na maturze pamiętaj: "A1" to kolumna A, wiersz 1. Zawsze litera przed cyfra!'},
+  {name:'Zakres',cat:'podstawy',short:'Prostokątny blok komórek, np. A1:C5 lub niesąsiadujące A1,C3.',
+   body:'Zakres ciągły zapisujemy z dwukropkiem: A1:C5 (wszystkie komórki od A1 do C5). Zakresy niesąsiadujące rozdzielamy średnikiem: A1:A5;C1:C5.',
+   ex:'=SUMA(A1:A10)  — suma 10 komórek\n=SUMA(A1:A5;C1:C5)  — niesąsiadujące',tip:'Zakres A1:C3 to 3×3=9 komórek. Policz zawsze!'},
+  {name:'Odwołanie bezwzględne',cat:'podstawy',short:'$A$1 — adres który nie zmienia się przy kopiowaniu formuły.',
+   body:'Znak $ blokuje wiersz lub kolumnę:\n• $A$1 — zablokowana kolumna i wiersz (pełne)\n• A$1 — zablokowany tylko wiersz\n• $A1 — zablokowana tylko kolumna\nBez $ — odwołanie względne, zmienia się przy kopiowaniu.',
+   ex:'=A1*$B$1  — mnożymy A1 przez stałą stawkę z B1',tip:'Skrót: F4 przełącza typy odwołania ($A$1 → A$1 → $A1 → A1)'},
+  {name:'Formatowanie warunkowe',cat:'podstawy',short:'Automatyczne zmienianie wyglądu komórki na podstawie jej wartości.',
+   body:'Narzędzie Narzędzia główne → Formatowanie warunkowe. Możesz kolorować komórki spełniające warunki: większe niż X, zawierające tekst, duplikaty itp.',
+   ex:'Czerwone tło gdy wartość < 0\nZielone gdy powyżej średniej',tip:'Na maturze może być pytanie o to które komórki zostaną wyróżnione — sprawdź warunek!'},
+  {name:'Serie danych',cat:'podstawy',short:'Autouzupełnianie wzorców: 1,2,3... lub Pn, Wt, Śr... przez przeciąganie.',
+   body:'Wpisz kilka pierwszych wartości, zaznacz je i przeciągnij za uchwyt (lewy dolny róg zaznaczenia). Excel rozpoznaje wzorce liczbowe i tekstowe.',
+   ex:'1, 2 → 3, 4, 5...\nSty, Lut → Mar, Kwi...',tip:'Możesz definiować własne listy w Plik → Opcje → Zaawansowane → Edytuj listy niestandardowe'},
+
+  // FORMUŁY
+  {name:'SUMA',cat:'formuly',short:'=SUMA(zakres) — sumuje wszystkie liczby w zakresie.',
+   body:'Najczęściej używana funkcja w Excelu. Ignoruje komórki puste i tekstowe.',
+   ex:'=SUMA(A1:A10)  → suma 10 liczb\n=SUMA(A1:A5;C1:C5)  → suma dwóch zakresów\n=SUMA(A:A)  → cała kolumna A',tip:'SUMA.JEŻELI gdy chcesz sumować warunkowo. SUMA.WARUNKÓW gdy wiele kryteriów.'},
+  {name:'ŚREDNIA',cat:'formuly',short:'=ŚREDNIA(zakres) — oblicza średnią arytmetyczną z zakresu.',
+   body:'Ignoruje puste komórki i tekst, ale NIE ignoruje zer. =ŚREDNIA(1;2;3) = 2.',
+   ex:'=ŚREDNIA(B2:B20)  → średnia ocen\n=ŚREDNIA.JEŻELI(A1:A10;">0")  → śr. liczb > 0',tip:'Uwaga: ŚREDNIA(1,2,0) = 1, nie 1,5! Zero jest liczone.'},
+  {name:'MAX / MIN',cat:'formuly',short:'Zwracają największą lub najmniejszą wartość w zakresie.',
+   body:'=MAX(zakres) — największa wartość\n=MIN(zakres) — najmniejsza wartość\n=MAX.WARUNKÓW i =MIN.WARUNKÓW — warunkowe (nowsze wersje)',
+   ex:'=MAX(A1:A100)  → najwyższy wynik\n=MIN(C2:C50)   → najniższa cena',tip:'Aby znaleźć adres komórki z max: =PODAJ.POZYCJĘ(MAX(A1:A10);A1:A10;0)'},
+  {name:'ILE.LICZB',cat:'formuly',short:'Zlicza komórki zawierające liczby (nie tekst, nie puste).',
+   body:'=ILE.LICZB(zakres) — zlicza liczby\n=ILE.NIEPUSTYCH(zakres) — zlicza niepuste\n=LICZ.PUSTE(zakres) — zlicza puste',
+   ex:'=ILE.LICZB(A1:A10)  → ile liczb\n=ILE.NIEPUSTYCH(A:A)-1  → ile danych (bez nagłówka)',tip:'Na maturze często pojawia się pytanie o zliczanie z warunkiem → użyj LICZ.JEŻELI'},
+  {name:'ZAOKR',cat:'formuly',short:'=ZAOKR(liczba; miejsca) — zaokrągla do podanej liczby miejsc po przecinku.',
+   body:'=ZAOKR(3.567; 2) = 3.57\n=ZAOKR(3.567; 0) = 4\n=ZAOKR(3.567; -1) = 0  (do dziesiątek)\n=ZAOKR.DO.CAŁK(x) — zawsze w dół\n=ZAOKR.W.GÓRĘ(x;1) — zawsze w górę',
+   ex:'=ZAOKR(A1/B1; 2)  → wynik do 2 miejsc po przecinku',tip:'=ZAOKR(x; 2) ≠ formatowanie do 2 miejsc! ZAOKR zmienia wartość, formatowanie tylko wygląd.'},
+  {name:'MOD',cat:'formuly',short:'=MOD(liczba; dzielnik) — reszta z dzielenia (modulo).',
+   body:'=MOD(10; 3) = 1 (bo 10 = 3×3 + 1)\n=MOD(12; 2) = 0 → liczba parzysta\nTypowe użycie: sprawdzanie parzystości, naprzemienne formatowanie.',
+   ex:'=JEŻELI(MOD(A1;2)=0;"parzysty";"nieparzysty")',tip:'Na maturze: MOD(n, 2) = 0 → parzyste. MOD(n, 2) = 1 → nieparzyste'},
+  {name:'POTĘGA / PIERWIASTEK',cat:'formuly',short:'POTĘGA(x;n) = x^n. PIERWIASTEK(x) = √x.',
+   body:'=POTĘGA(2; 10) = 1024\n=PIERWIASTEK(144) = 12\nAlternatywnie: =2^10, =144^(1/2)',
+   ex:'=POTĘGA(A1; 2)  → kwadrat liczby\n=PIERWIASTEK(A1^2+B1^2)  → długość wektora',tip:'Operator ^ jest szybszy niż POTĘGA, ale POTĘGA jest czytelniejsza w złożonych formułach'},
+
+  // LOGIKA
+  {name:'JEŻELI',cat:'logika',short:'=JEŻELI(warunek; wartość_gdy_prawda; wartość_gdy_fałsz)',
+   body:'Podstawowa funkcja warunkowa Excela. Struktura:\n=JEŻELI(test_logiczny; wartość_jeżeli_prawda; wartość_jeżeli_fałsz)\nMożna zagnieżdżać do 64 razy (praktycznie do ~7).',
+   ex:'=JEŻELI(A1>=50;"zdał";"nie zdał")\n=JEŻELI(A1>90;"5";JEŻELI(A1>70;"4";"3"))',tip:'Zagnieżdżone JEŻELI trudne? Użyj JEŻELI.WARUNKI w nowszych wersjach Excela.'},
+  {name:'ORAZ / LUB',cat:'logika',short:'ORAZ — wszystkie warunki muszą być prawdą. LUB — choć jeden.',
+   body:'=ORAZ(warunek1; warunek2; ...) → PRAWDA gdy wszystkie PRAWDA\n=LUB(warunek1; warunek2; ...) → PRAWDA gdy choć jeden PRAWDA\nZwykle używane wewnątrz JEŻELI.',
+   ex:'=JEŻELI(ORAZ(A1>=18;B1="aktywny");"uprawniony";"brak")\n=JEŻELI(LUB(A1<0;A1>100);"błąd";"ok")',tip:'ORAZ to mnożenie logiczne (AND), LUB to dodawanie logiczne (OR).'},
+  {name:'NIE',cat:'logika',short:'=NIE(wartość_logiczna) — odwraca PRAWDA na FAŁSZ i odwrotnie.',
+   body:'=NIE(PRAWDA) = FAŁSZ\n=NIE(FAŁSZ) = PRAWDA\n=NIE(A1>10) = to samo co A1<=10',
+   ex:'=JEŻELI(NIE(JEST.PUSTA(A1));"dane OK";"puste!")',tip:'Rzadko używane samodzielnie, ale przydatne z JEST.PUSTA, JEST.BŁĄD itp.'},
+  {name:'JEŻELI.BŁĄD',cat:'logika',short:'=JEŻELI.BŁĄD(wartość; wartość_gdy_błąd) — obsługa błędów w formułach.',
+   body:'Zwraca wartość_gdy_błąd gdy formuła zwróci: #BRAK, #DZIEL/0!, #N/D, #NAZWA?, #NULL!, #LICZBA!, #ADR!',
+   ex:'=JEŻELI.BŁĄD(WYSZUKAJ.PIONOWO(A1;tabela;2;0);"Nie znaleziono")\n=JEŻELI.BŁĄD(B1/C1;0)',tip:'Zawijaj WYSZUKAJ.PIONOWO w JEŻELI.BŁĄD — gdy nie znajdzie danych, wyświetli Twój tekst zamiast #N/D!'},
+  {name:'SUMA.JEŻELI',cat:'logika',short:'=SUMA.JEŻELI(zakres; kryterium; zakres_sumy) — suma warunkowa.',
+   body:'Sumuje tylko te komórki w zakres_sumy, dla których odpowiednie komórki w zakresie spełniają kryterium.\nKryterium może być: liczba, tekst ("Warszawa"), operatory (">100"), znaki wieloznaczne ("A*").',
+   ex:'=SUMA.JEŻELI(B:B;"Warszawa";C:C)  → suma sprzedaży w Warszawie\n=SUMA.JEŻELI(A:A;">100";A:A)  → suma liczb >100',tip:'SUMA.WARUNKÓW gdy chcesz wiele kryteriów jednocześnie.'},
+  {name:'LICZ.JEŻELI',cat:'logika',short:'=LICZ.JEŻELI(zakres; kryterium) — zlicza komórki spełniające warunek.',
+   body:'=LICZ.JEŻELI(A1:A100;"Tak") → ile razy "Tak"\n=LICZ.JEŻELI(B:B;">50") → ile liczb >50\n=LICZ.JEŻELI(A:A;"A*") → ile wartości zaczyna się od A\nLICZ.WARUNKI — wiele kryteriów.',
+   ex:'=LICZ.JEŻELI(C2:C100;"pozytywna")  → ile pozytywnych ocen\n=LICZ.JEŻELI(A:A;A1)>1  → czy wartość się powtarza?',tip:'Znaki wieloznaczne: * (dowolny ciąg), ? (jeden znak). Np. "Jan*" pasuje do "Janusz", "Janina".'},
+
+  // WYSZUKIWANIE
+  {name:'WYSZUKAJ.PIONOWO',cat:'wyszukiwanie',short:'=WYSZUKAJ.PIONOWO(szukana; tabela; nr_kol; [dopas]) — wyszukaj w pierwszej kolumnie tabeli.',
+   body:'Składnia: =WYSZUKAJ.PIONOWO(szukana_wartość; zakres_tabeli; nr_kolumny; typ_dopasowania)\n• szukana_wartość: co szukamy\n• zakres_tabeli: gdzie szukamy (pierwsza kolumna = klucz)\n• nr_kolumny: która kolumna ma zwrócić wynik (1=pierwsza)\n• typ_dopasowania: FAŁSZ/0 = dokładne, PRAWDA/1 = przybliżone',
+   ex:'=WYSZUKAJ.PIONOWO(A2;Produkty!A:C;2;FAŁSZ)\n  → szukaj A2 w kolumnie A tabeli Produkty, zwróć wartość z kol.2',tip:'ZAWSZE używaj FAŁSZ na końcu! PRAWDA (przybliżone) wymaga sortowania i daje nieoczekiwane wyniki.'},
+  {name:'WYSZUKAJ.POZIOMO',cat:'wyszukiwanie',short:'=WYSZUKAJ.POZIOMO — wyszukuje w pierwszym wierszu tabeli (poziomo).',
+   body:'Analogiczne do WYSZUKAJ.PIONOWO, ale przeszukuje pierwszy WIERSZ zamiast pierwszej kolumny.\n=WYSZUKAJ.POZIOMO(szukana; tabela; nr_wiersza; dopas)',
+   ex:'=WYSZUKAJ.POZIOMO("Q4";A1:D1;3;FAŁSZ)  → wartość z 3. wiersza w kolumnie "Q4"',tip:'Rzadziej używane na maturze niż WYSZUKAJ.PIONOWO. Potrzebne gdy dane ułożone poziomo.'},
+  {name:'INDEKS',cat:'wyszukiwanie',short:'=INDEKS(zakres; nr_wiersza; [nr_kolumny]) — zwraca wartość z komórki na przecięciu.',
+   body:'=INDEKS(A1:C10; 3; 2) → wartość z 3. wiersza, 2. kolumny zakresu A1:C10\nBardzo potężne w połączeniu z PODAJ.POZYCJĘ.',
+   ex:'=INDEKS(B2:B100; PODAJ.POZYCJĘ(MAX(B2:B100);B2:B100;0))  → imię przy najwyższej wartości',tip:'Kombinacja INDEKS+PODAJ.POZYCJĘ jest mocniejsza od WYSZUKAJ.PIONOWO — szuka w każdym kierunku!'},
+  {name:'PODAJ.POZYCJĘ',cat:'wyszukiwanie',short:'=PODAJ.POZYCJĘ(szukana; zakres; [typ]) — zwraca numer pozycji elementu w zakresie.',
+   body:'=PODAJ.POZYCJĘ("Jan"; A1:A100; 0) → numer wiersza z "Jan"\nTyp: 0=dokładne, 1=mniejsze-lub-równe (posort.↑), -1=większe-lub-równe (posort.↓)',
+   ex:'=PODAJ.POZYCJĘ(MAX(C:C);C:C;0)  → numer wiersza z max\n=INDEKS(A:A;PODAJ.POZYCJĘ(MAX(C:C);C:C;0))  → imię przy max',tip:'Pamiętaj: PODAJ.POZYCJĘ zwraca NUMER (1, 2, 3...), nie wartość. Użyj INDEKS żeby pobrać wartość.'},
+
+  // TEKST
+  {name:'LEWY / PRAWY / FRAGMENT',cat:'tekst',short:'Funkcje do wycinania fragmentów tekstu z podanej pozycji.',
+   body:'=LEWY(tekst; n) — n pierwszych znaków\n=PRAWY(tekst; n) — n ostatnich znaków\n=FRAGMENT.TEKSTU(tekst; start; długość) — fragment od pozycji start',
+   ex:'=LEWY("Excel 2024"; 5) = "Excel"\n=PRAWY("Raport.xlsx"; 4) = "xlsx"\n=FRAGMENT.TEKSTU("Jan Kowalski"; 5; 7) = "Kowalsk"',tip:'=DŁ(tekst) zwraca długość tekstu — przydatne przy dynamicznym wycinaniu.'},
+  {name:'ZŁĄCZ.TEKSTY / CONCATENATE',cat:'tekst',short:'Łączenie tekstu z wielu komórek lub ciągów znaków.',
+   body:'=ZŁĄCZ.TEKSTY(tekst1; tekst2; ...)\nAlternatywnie operator &:\n="Jan" & " " & "Kowalski"\nW nowszych wersjach: =POŁĄCZ.TEKSTY(separator; ignoruj_puste; ...)',
+   ex:'=A1&" "&B1  → "Jan Kowalski"\n=ZŁĄCZ.TEKSTY(A1;", ";B1)',tip:'Operator & jest szybszy w pisaniu. POŁĄCZ.TEKSTY lepszy gdy łączysz wiele komórek ze separatorem.'},
+  {name:'SZUKAJ.TEKST / ZNAJDŹ',cat:'tekst',short:'Szukanie pozycji podciągu w tekście.',
+   body:'=SZUKAJ.TEKST(szukany; tekst; [od]) — zwraca pozycję (ignoruje wielkość liter)\n=ZNAJDŹ(szukany; tekst; [od]) — zwraca pozycję (rozróżnia wielkość liter)',
+   ex:'=SZUKAJ.TEKST("@"; A1)  → pozycja @ w adresie email\n=JEŻELI.BŁĄD(SZUKAJ.TEKST("@";A1);"brak @")',tip:'Jeśli nie znajdzie → zwraca #WARTOŚĆ! Zawijaj w JEŻELI.BŁĄD.'},
+  {name:'USUŃ.ZBĘDNE.ODSTĘPY',cat:'tekst',short:'=USUŃ.ZBĘDNE.ODSTĘPY(tekst) — usuwa nadmiarowe spacje.',
+   body:'Usuwa spacje z początku, końca i podwójne spacje wewnątrz tekstu. Niezbędne przy imporcie danych.',
+   ex:'=USUŃ.ZBĘDNE.ODSTĘPY("  Jan  Kowalski  ") = "Jan Kowalski"',tip:'Przy imporcie danych z zewnętrznych źródeł ZAWSZE sprawdzaj czy nie ma ukrytych spacji!'},
+
+  // DATY
+  {name:'DZIŚ / TERAZ',cat:'data',short:'=DZIŚ() — bieżąca data. =TERAZ() — bieżąca data i czas.',
+   body:'=DZIŚ() — aktualizuje się przy każdym przeliczeniu arkusza\n=TERAZ() — data + czas\nObie funkcje nie mają argumentów.',
+   ex:'=DZIŚ()-A1  → ile dni temu\n=ROK(DZIŚ())-ROK(A1)  → wiek w latach',tip:'Daty w Excelu to liczby seryjne (1 = 1 stycznia 1900). To pozwala na działania arytmetyczne na datach.'},
+  {name:'ROK / MIESIĄC / DZIEŃ',cat:'data',short:'Funkcje wyciągające składowe daty.',
+   body:'=ROK(data) — zwraca rok (np. 2024)\n=MIESIĄC(data) — zwraca miesiąc (1-12)\n=DZIEŃ(data) — zwraca dzień (1-31)\n=DZIEŃ.TYG(data; 2) — dzień tygodnia (2=Pn=1)',
+   ex:'=ROK(A1)  → 2024\n=MIESIĄC("2024-03-15")  → 3\n=DZIEŃ.TYG(DZIŚ();2)  → 1 gdy poniedziałek',tip:'DZIEŃ.TYG(data; 2) — tryb 2 to poniedziałek=1, niedziela=7. Najczęściej używany w Polsce.'},
+  {name:'DATA',cat:'data',short:'=DATA(rok; miesiąc; dzień) — tworzy datę z trzech liczb.',
+   body:'=DATA(2024; 12; 25) = 25 grudnia 2024\nPrzydatne gdy masz rok, miesiąc i dzień w osobnych komórkach.',
+   ex:'=DATA(ROK(DZIŚ());1;1)  → 1 stycznia bieżącego roku\n=DATA(A1;B1;C1)  → data z komórek',tip:'=TEKST(data;"RRRR-MM-DD") — formatuje datę jako tekst w wybranym formacie.'},
+
+  // WYKRESY
+  {name:'Typy wykresów',cat:'wykresy',short:'Kolumnowy, liniowy, kołowy, słupkowy, punktowy, warstwowy — kiedy który?',
+   body:'• Kolumnowy/słupkowy — porównanie kategorii\n• Liniowy — zmiany w czasie, trendy\n• Kołowy — udział w całości (max 6-7 sektorów)\n• Punktowy (XY) — zależność między dwiema zmiennymi\n• Warstwowy — zmiany i suma w czasie',
+   ex:'Wyniki uczniów → kolumnowy\nSprzedaż miesięczna → liniowy\nUdział produktów → kołowy',tip:'Na maturze może być pytanie o KTÓRY TYP wykresu wybrać — pamiętaj zasady powyżej.'},
+  {name:'Elementy wykresu',cat:'wykresy',short:'Tytuł, oś X/Y, legenda, etykiety danych, obszar wykresu.',
+   body:'Podstawowe elementy wykresu:\n• Tytuł wykresu\n• Tytuł osi X (kategorie) i Y (wartości)\n• Legenda (objaśnienie serii)\n• Etykiety danych (wartości na słupkach)\n• Linia trendu (dla wykresów liniowych/punktowych)',
+   ex:'Zawsze opisz osie! Examiner wymaga tytułów i jednostek.',tip:'Kliknij element wykresu prawym przyciskiem — pojawi się menu kontekstowe z opcjami formatowania.'},
+
+  // VBA
+  {name:'Sub / End Sub',cat:'vba',short:'Procedura VBA — blok kodu który można uruchomić.',
+   body:'Sub NazwaProcedury()\n  \'kod\nEnd Sub\n\nProcedury uruchamiane przez: Alt+F8, przycisk, zdarzenie.',
+   ex:'Sub PowitajUsera()\n    MsgBox "Witaj w Excelu!"\nEnd Sub',tip:'Nagrywanie makra (Deweloper → Nagraj makro) to najlepszy sposób na naukę VBA dla początkujących.'},
+  {name:'Range i Cells',cat:'vba',short:'Range("A1") lub Cells(1,1) — odwołanie do komórki w VBA.',
+   body:'Range("A1").Value = 42  — zapisz wartość\nRange("A1:C10").Select  — zaznacz zakres\nCells(wiersz, kolumna).Value  — przez numery\nCells(1, 1) = Cells(1, 1) + 1  — inkrementacja',
+   ex:'Range("A1").Value = "Excel VBA"\nFor i = 1 To 10\n    Cells(i, 1).Value = i * 2\nNext i',tip:'Cells(wiersz, kolumna) — kolejność odwrotna niż w arkuszu! Najpierw wiersz, potem kolumna.'},
+  {name:'Dim i typy zmiennych',cat:'vba',short:'Dim nazwa As typ — deklaracja zmiennej w VBA.',
+   body:'Dim i As Integer  — liczba całkowita (-32768 do 32767)\nDim d As Double   — liczba zmiennoprzecinkowa\nDim s As String   — tekst\nDim b As Boolean  — PRAWDA/FAŁSZ\nDim dt As Date    — data',
+   ex:'Dim suma As Double\nDim i As Integer\nFor i = 1 To 10\n    suma = suma + Cells(i, 1).Value\nNext i\nMsgBox "Suma: " & suma',tip:'Zawsze deklaruj zmienne (Option Explicit na górze modułu). Unikasz błędów literówek.'},
+  {name:'If...Then...Else',cat:'vba',short:'Warunek w VBA — If warunek Then ... Else ... End If.',
+   body:'If warunek Then\n    \'kod gdy prawda\nElse\n    \'kod gdy fałsz\nEnd If\nElseIf — dodatkowy warunek (jak Elif w Python).',
+   ex:'Dim wynik As Integer\nwynik = Range("A1").Value\nIf wynik >= 50 Then\n    MsgBox "Zdał!"\nElse\n    MsgBox "Nie zdał."\nEnd If',tip:'Jednoliniowe: If x > 0 Then MsgBox "+" — dla prostych warunków.'},
+  {name:'For...Next / For Each',cat:'vba',short:'Pętle VBA do iteracji po liczbach lub kolekcji.',
+   body:'For i = 1 To 10 ... Next i  — po liczbach\nFor Each cell In Range("A1:A10") ... Next cell — po komórkach\nExit For — wychodzi z pętli',
+   ex:'Dim suma As Double\nFor Each cell In Range("A1:A10")\n    If IsNumeric(cell.Value) Then\n        suma = suma + cell.Value\n    End If\nNext cell',tip:'For Each jest bardziej "Excelowy" — iteruje po komórkach w zakresie bez indeksowania.'},
+];
+
+const modulyData = [
+  {
+    id:'podstawy', icon:'🧩', name:'Podstawy Excela',
+    cards:[
+      {h:'Interfejs Excela',icon:'🖥️',
+       body:`<p>Excel składa się z:</p>
+<ul>
+<li><b>Pasek formuł</b> — pokazuje zawartość aktywnej komórki (wartość lub formułę)</li>
+<li><b>Pole nazwy</b> — adres aktywnej komórki (np. A1), można tu wpisać adres aby przejść</li>
+<li><b>Arkusze</b> — zakładki na dole (Arkusz1, Arkusz2...)</li>
+<li><b>Kolumny A-XFD</b> (16 384 kolumn), <b>Wiersze 1-1 048 576</b></li>
+</ul>`,
+       tip:'<p>Przydatne skróty: <b>Ctrl+Home</b> = idź do A1, <b>Ctrl+End</b> = ostatnia używana komórka, <b>Ctrl+strzałka</b> = przeskocz do ostatniej wartości w ciągu.</p>'},
+      {h:'Typy danych w komórce',icon:'📊',
+       body:`<p>Excel rozróżnia automatycznie typy danych:</p>
+<ul>
+<li><b>Liczba</b> — wyrównana do prawej: 42, 3.14, -100</li>
+<li><b>Tekst</b> — wyrównany do lewej: "Jan", "Tak", "123" (z apostrofem)</li>
+<li><b>Data/czas</b> — liczba + format: 45000 = 18-10-2023</li>
+<li><b>Logiczna</b> — PRAWDA / FAŁSZ</li>
+<li><b>Błąd</b> — #DZIEL/0!, #BRAK, #N/D!, #NAZWA?</li>
+</ul>`,
+       tip:'<p>Aby wymusić tekst z cyfr — poprzedź apostrofem: <b>\'123</b> = tekst "123". Przydatne dla PESEL, kodów pocztowych.</p>'},
+      {h:'Odwołania: względne, bezwzględne, mieszane',icon:'🔒',
+       body:`<p>Przy kopiowaniu formuły odwołania zmieniają się lub nie:</p>
+<pre><code class="xl-com">// Względne — zmienia się przy kopiowaniu</code>
+<code>=<span class="xl-ref">A1</span>+<span class="xl-ref">B1</span>  →  skopiuj w dół: =A2+B2</code>
+
+<code class="xl-com">// Bezwzględne — NIE zmienia się</code>
+<code>=<span class="xl-ref">A1</span>*<span class="xl-ref">$B$1</span>  →  skopiuj w dół: =A2*$B$1</code>
+
+<code class="xl-com">// Mieszane — blokuje tylko wiersz lub kolumnę</code>
+<code>=<span class="xl-ref">$A1</span>  →  kolumna zablokowana, wiersz zmienia się</code>
+<code>=<span class="xl-ref">A$1</span>  →  wiersz zablokowany, kolumna zmienia się</code></pre>`,
+       tip:'<p><b>F4</b> podczas edycji adresu przełącza typy: A1 → $A$1 → A$1 → $A1 → A1. Najważniejszy skrót w Excelu!</p>'},
+      {h:'Błędy w formułach — co oznaczają?',icon:'⚠️',
+       body:`<ul>
+<li><b>#DZIEL/0!</b> — dzielenie przez zero lub pustą komórkę</li>
+<li><b>#BRAK / #N/D!</b> — wartość nie znaleziona (WYSZUKAJ.PIONOWO)</li>
+<li><b>#NAZWA?</b> — Excel nie rozpoznaje nazwy funkcji (literówka!)</li>
+<li><b>#ADR!</b> — odwołanie do nieistniejącej komórki (np. usunięty wiersz)</li>
+<li><b>#WARTOŚĆ!</b> — zły typ argumentu (np. tekst zamiast liczby)</li>
+<li><b>#LICZBA!</b> — nieprawidłowa wartość liczbowa (np. PIERWIASTEK(-1))</li>
+<li><b>#NULL!</b> — błędne przecięcie zakresów (spacja zamiast ;)</li>
+</ul>`,
+       wtopa:'<h5>⚠️ Częsty błąd</h5><p>#NAZWA? to zwykle literówka w nazwie funkcji lub brak cudzysłowów przy tekście. JEŻELI(A1=tak) → JEŻELI(A1="tak")</p>'},
+    ]
+  },
+  {
+    id:'formuly', icon:'🔢', name:'Formuły matematyczne',
+    cards:[
+      {h:'Operatory i priorytety',icon:'⚙️',
+       body:`<p>Operatory w kolejności priorytetu (jak PEMDAS/BODMAS):</p>
+<pre><code>1. <span class="xl-op">^</span>           potęgowanie: 2^3 = 8
+2. <span class="xl-op">*</span>  <span class="xl-op">/</span>        mnożenie, dzielenie
+3. <span class="xl-op">+</span>  <span class="xl-op">-</span>        dodawanie, odejmowanie
+4. <span class="xl-op">&</span>           łączenie tekstu
+5. <span class="xl-op">=</span> <span class="xl-op">&lt;</span> <span class="xl-op">&gt;</span> <span class="xl-op">&lt;=</span> <span class="xl-op">&gt;=</span> <span class="xl-op">&lt;&gt;</span>  porównania</code></pre>
+<p>Nawiasy zmieniają kolejność: <code>=(A1+B1)*C1</code></p>`,
+       tip:'<p>Użyj nawiasów nawet gdy nie są konieczne — poprawi czytelność: <code>=(A1*B1)+(C1*D1)</code></p>'},
+      {h:'SUMA, ŚREDNIA, MAX, MIN — zaawansowane użycie',icon:'📐',
+       body:`<pre><code><span class="xl-com">// Standardowe</span>
+=<span class="xl-fn">SUMA</span>(<span class="xl-ref">A1:A10</span>)
+=<span class="xl-fn">ŚREDNIA</span>(<span class="xl-ref">B2:B20</span>)
+=<span class="xl-fn">MAX</span>(<span class="xl-ref">C:C</span>)
+
+<span class="xl-com">// Ignorowanie błędów</span>
+=<span class="xl-fn">ŁĄCZNA.SUMA</span>(<span class="xl-num">9</span>;<span class="xl-ref">A1:A10</span>)  <span class="xl-com">// tylko widoczne</span>
+
+<span class="xl-com">// Wiele zakresów</span>
+=<span class="xl-fn">SUMA</span>(<span class="xl-ref">A1:A5</span>;<span class="xl-ref">C1:C5</span>;<span class="xl-ref">E1</span>)
+
+<span class="xl-com">// Z warunkiem</span>
+=<span class="xl-fn">SUMA.JEŻELI</span>(<span class="xl-ref">B:B</span>;<span class="xl-str">"&gt;100"</span>;<span class="xl-ref">C:C</span>)</code></pre>`,
+       tip:'<p><b>ILE.LICZB</b> zlicza liczby, <b>ILE.NIEPUSTYCH</b> zlicza wszystko niepuste. Na maturze sprawdź które jest potrzebne!</p>'},
+      {h:'Zaokrąglanie — różne funkcje',icon:'🔵',
+       body:`<pre><code>=<span class="xl-fn">ZAOKR</span>(<span class="xl-num">3.567</span>; <span class="xl-num">2</span>)        = <span class="xl-num">3.57</span>   <span class="xl-com">// do 2 miejsc</span>
+=<span class="xl-fn">ZAOKR</span>(<span class="xl-num">1234</span>; <span class="xl-op">-</span><span class="xl-num">2</span>)       = <span class="xl-num">1200</span>   <span class="xl-com">// do setek</span>
+=<span class="xl-fn">ZAOKR.DO.CAŁK</span>(<span class="xl-num">3.9</span>)   = <span class="xl-num">3</span>      <span class="xl-com">// zawsze w dół</span>
+=<span class="xl-fn">ZAOKR.W.GÓRĘ</span>(<span class="xl-num">3.1</span>;<span class="xl-num">1</span>) = <span class="xl-num">4</span>      <span class="xl-com">// zawsze w górę</span>
+=<span class="xl-fn">ZAOKR.W.DÓŁ</span>(<span class="xl-num">3.9</span>;<span class="xl-num">1</span>) = <span class="xl-num">3</span>      <span class="xl-com">// zawsze w dół</span>
+=<span class="xl-fn">MOD</span>(<span class="xl-num">10</span>; <span class="xl-num">3</span>)            = <span class="xl-num">1</span>      <span class="xl-com">// reszta z dzielenia</span></code></pre>`,
+       wtopa:'<h5>⚠️ Formatowanie ≠ Zaokrąglenie!</h5><p>Formatowanie 2 miejsc po przecinku tylko UKRYWA cyfry. ZAOKR faktycznie zmienia wartość. Na maturze pytanie o obliczoną wartość wymaga ZAOKR!</p>'},
+    ]
+  },
+  {
+    id:'logika', icon:'🔀', name:'Funkcje logiczne',
+    cards:[
+      {h:'JEŻELI — składnia i zagnieżdżanie',icon:'🌿',
+       body:`<pre><code><span class="xl-com">// Podstawowa składnia</span>
+=<span class="xl-fn">JEŻELI</span>(<span class="xl-ref">A1</span>&gt;=<span class="xl-num">50</span>; <span class="xl-str">"zdał"</span>; <span class="xl-str">"nie zdał"</span>)
+
+<span class="xl-com">// Zagnieżdżone — 3 opcje</span>
+=<span class="xl-fn">JEŻELI</span>(<span class="xl-ref">A1</span>&gt;=<span class="xl-num">90</span>; <span class="xl-str">"A"</span>;
+  <span class="xl-fn">JEŻELI</span>(<span class="xl-ref">A1</span>&gt;=<span class="xl-num">70</span>; <span class="xl-str">"B"</span>;
+    <span class="xl-fn">JEŻELI</span>(<span class="xl-ref">A1</span>&gt;=<span class="xl-num">50</span>; <span class="xl-str">"C"</span>; <span class="xl-str">"F"</span>)))
+
+<span class="xl-com">// Z ORAZ i LUB</span>
+=<span class="xl-fn">JEŻELI</span>(<span class="xl-fn">ORAZ</span>(<span class="xl-ref">A1</span>&gt;=<span class="xl-num">18</span>; <span class="xl-ref">B1</span>=<span class="xl-str">"aktywny"</span>);
+  <span class="xl-str">"uprawniony"</span>; <span class="xl-str">"brak"</span>)</code></pre>`,
+       tip:'<p>Jeśli masz 4+ warunków — użyj <b>JEŻELI.WARUNKI</b> (Excel 2019+): <code>=JEŻELI.WARUNKI(A1>=90;"A";A1>=70;"B";A1>=50;"C";PRAWDA;"F")</code></p>'},
+      {h:'SUMA.JEŻELI i LICZ.JEŻELI — składnia',icon:'🔣',
+       body:`<pre><code><span class="xl-com">// LICZ.JEŻELI — jeden warunek</span>
+=<span class="xl-fn">LICZ.JEŻELI</span>(<span class="xl-ref">B:B</span>; <span class="xl-str">"Warszawa"</span>)
+=<span class="xl-fn">LICZ.JEŻELI</span>(<span class="xl-ref">C:C</span>; <span class="xl-str">"&gt;100"</span>)
+=<span class="xl-fn">LICZ.JEŻELI</span>(<span class="xl-ref">A:A</span>; <span class="xl-str">"Jan*"</span>)   <span class="xl-com">// wildcard!</span>
+
+<span class="xl-com">// SUMA.JEŻELI — kryterium + zakres sumy</span>
+=<span class="xl-fn">SUMA.JEŻELI</span>(<span class="xl-ref">B:B</span>; <span class="xl-str">"Warszawa"</span>; <span class="xl-ref">C:C</span>)
+
+<span class="xl-com">// LICZ.WARUNKI — wiele kryteriów</span>
+=<span class="xl-fn">LICZ.WARUNKI</span>(<span class="xl-ref">B:B</span>; <span class="xl-str">"M"</span>; <span class="xl-ref">C:C</span>; <span class="xl-str">"&gt;=18"</span>)
+
+<span class="xl-com">// SUMA.WARUNKÓW</span>
+=<span class="xl-fn">SUMA.WARUNKÓW</span>(<span class="xl-ref">D:D</span>; <span class="xl-ref">B:B</span>; <span class="xl-str">"M"</span>; <span class="xl-ref">C:C</span>; <span class="xl-str">"&gt;=18"</span>)</code></pre>`,
+       tip:'<p>Znaki wieloznaczne w kryteriach: <b>*</b> = dowolny ciąg, <b>?</b> = jeden dowolny znak. Np. <code>"Jan*"</code> pasuje do "Janusz", "Janina", "Jana".</p>'},
+      {h:'JEŻELI.BŁĄD — obsługa błędów',icon:'🛡️',
+       body:`<pre><code><span class="xl-com">// Zamiast #N/D wyświetl tekst</span>
+=<span class="xl-fn">JEŻELI.BŁĄD</span>(
+  <span class="xl-fn">WYSZUKAJ.PIONOWO</span>(<span class="xl-ref">A2</span>;<span class="xl-ref">B:C</span>;<span class="xl-num">2</span>;<span class="xl-num">0</span>);
+  <span class="xl-str">"Nie znaleziono"</span>
+)
+
+<span class="xl-com">// Zamiast #DZIEL/0! wyświetl 0</span>
+=<span class="xl-fn">JEŻELI.BŁĄD</span>(<span class="xl-ref">B1</span>/<span class="xl-ref">C1</span>; <span class="xl-num">0</span>)
+
+<span class="xl-com">// JEST.BŁĄD — sprawdź czy to błąd</span>
+=<span class="xl-fn">JEŻELI</span>(<span class="xl-fn">JEST.BŁĄD</span>(<span class="xl-ref">A1</span>); <span class="xl-str">"błąd!"</span>; <span class="xl-ref">A1</span>)</code></pre>`,
+       tip:'<p>Zawsze zawijaj WYSZUKAJ.PIONOWO w JEŻELI.BŁĄD. To profesjonalna praktyka i wymóg maturalny.</p>'},
+    ]
+  },
+  {
+    id:'wyszukiwanie', icon:'🔍', name:'Funkcje wyszukiwania',
+    cards:[
+      {h:'WYSZUKAJ.PIONOWO — anatomia',icon:'🔎',
+       body:`<pre><code>=<span class="xl-fn">WYSZUKAJ.PIONOWO</span>(
+  <span class="xl-ref">A2</span>;          <span class="xl-com">// szukana wartość</span>
+  <span class="xl-ref">Produkty!A:C</span>; <span class="xl-com">// zakres tabeli (1. kol = klucz)</span>
+  <span class="xl-num">2</span>;           <span class="xl-com">// nr kolumny do zwrócenia</span>
+  <span class="xl-bool">FAŁSZ</span>         <span class="xl-com">// 0/FAŁSZ = dokładne dopasowanie</span>
+)</code></pre>
+<p><b>Ograniczenia WYSZUKAJ.PIONOWO:</b></p>
+<ul>
+<li>Szuka tylko w PIERWSZEJ kolumnie zakresu</li>
+<li>Nie może zwrócić wartości z kolumny NA LEWO</li>
+<li>Przy duplikatach zwraca PIERWSZE znalezione</li>
+</ul>`,
+       wtopa:'<h5>⚠️ Najczęstszy błąd!</h5><p>Używanie PRAWDA (przybliżone) zamiast FAŁSZ. Przy PRAWDA dane muszą być POSORTOWANE — inaczej wyniki są błędne!</p>'},
+      {h:'INDEKS + PODAJ.POZYCJĘ — mocniejsza alternatywa',icon:'💪',
+       body:`<pre><code><span class="xl-com">// Znajdź imię przy najwyższym wyniku</span>
+=<span class="xl-fn">INDEKS</span>(
+  <span class="xl-ref">A2:A100</span>;         <span class="xl-com">// zakres z wynikiem</span>
+  <span class="xl-fn">PODAJ.POZYCJĘ</span>(    <span class="xl-com">// numer wiersza</span>
+    <span class="xl-fn">MAX</span>(<span class="xl-ref">B2:B100</span>);    <span class="xl-com">// szukana wartość</span>
+    <span class="xl-ref">B2:B100</span>;        <span class="xl-com">// zakres szukania</span>
+    <span class="xl-num">0</span>               <span class="xl-com">// 0 = dokładne</span>
+  )
+)
+
+<span class="xl-com">// Może szukać w DOWOLNYM kierunku!</span>
+<span class="xl-com">// Zwraca wartość z kolumny NA LEWO od klucza</span></code></pre>`,
+       tip:'<p>INDEKS+PODAJ.POZYCJĘ > WYSZUKAJ.PIONOWO bo: szuka w dowolnym kierunku, działa gdy klucz nie jest w pierwszej kolumnie, szybsze dla dużych danych.</p>'},
+      {h:'XLOOKUP — nowy standard (Excel 365)',icon:'🚀',
+       body:`<pre><code>=<span class="xl-fn">XLOOKUP</span>(
+  <span class="xl-ref">A2</span>;            <span class="xl-com">// szukana wartość</span>
+  <span class="xl-ref">B:B</span>;           <span class="xl-com">// zakres szukania</span>
+  <span class="xl-ref">C:C</span>;           <span class="xl-com">// zakres wyników</span>
+  <span class="xl-str">"Nie znaleziono"</span>; <span class="xl-com">// gdy brak</span>
+  <span class="xl-num">0</span>;             <span class="xl-com">// 0=dokładne</span>
+  <span class="xl-num">1</span>              <span class="xl-com">// 1=od początku</span>
+)</code></pre>
+<p>XLOOKUP zastępuje WYSZUKAJ.PIONOWO i jest prostszy. Nie wymaga JEŻELI.BŁĄD!</p>`,
+       tip:'<p>XLOOKUP działa tylko w Excel 365 / 2021+. Na maturze sprawdź którą wersję masz!</p>'},
+    ]
+  },
+  {
+    id:'tabele', icon:'📋', name:'Tabele przestawne',
+    cards:[
+      {h:'Tworzenie tabeli przestawnej',icon:'🔄',
+       body:`<p>Tabela przestawna (Pivot Table) to interaktywne podsumowanie danych.</p>
+<p><b>Jak stworzyć:</b></p>
+<ol style="padding-left:20px;color:var(--text2);font-size:0.9rem">
+<li>Kliknij w dane → Wstawianie → Tabela przestawna</li>
+<li>Wybierz gdzie umieścić (nowy/istniejący arkusz)</li>
+<li>Przeciągnij pola do: Wiersze, Kolumny, Wartości, Filtry</li>
+</ol>
+<p style="margin-top:12px"><b>Obszary tabeli przestawnej:</b></p>
+<ul>
+<li><b>Filtry</b> — filtruj cały raport</li>
+<li><b>Kolumny</b> — grupuj poziomo</li>
+<li><b>Wiersze</b> — grupuj pionowo</li>
+<li><b>Wartości</b> — co obliczać (suma, liczba, średnia)</li>
+</ul>`,
+       tip:'<p>Kliknij prawym przyciskiem na komórkę wartości → Podsumuj wartości według → zmień z Suma na Liczba, Średnia itp.</p>'},
+      {h:'Sortowanie i filtrowanie',icon:'🔀',
+       body:`<p>W tabeli przestawnej możesz:</p>
+<ul>
+<li>Kliknąć strzałkę przy polu wierszy/kolumn → sortuj A→Z, Z→A, lub według wartości</li>
+<li>Odznaczać pozycje aby je ukryć z raportu</li>
+<li>Wstawić <b>Fragmentator</b> (Slicer) — wizualny filtr do klikania</li>
+<li>Wstawić <b>Oś czasu</b> — filtr po datach</li>
+</ul>`,
+       tip:'<p>Fragmentatory (Wstawianie → Fragmentator) to najlepsza metoda filtrowania w prezentacjach i dashboardach.</p>'},
+    ]
+  },
+  {
+    id:'vba', icon:'⚙️', name:'Makra i VBA',
+    cards:[
+      {h:'Struktura kodu VBA',icon:'📝',
+       body:`<pre><code><span class="xl-com">' Procedura (Sub) — uruchamiana ręcznie</span>
+<span class="xl-fn">Sub</span> NazwaMakra()
+    <span class="xl-com">' Deklaracja zmiennych</span>
+    <span class="xl-fn">Dim</span> i <span class="xl-fn">As Integer</span>
+    <span class="xl-fn">Dim</span> suma <span class="xl-fn">As Double</span>
+    
+    <span class="xl-com">' Kod działania</span>
+    suma = <span class="xl-fn">WorksheetFunction</span>.Sum(<span class="xl-fn">Range</span>(<span class="xl-str">"A1:A10"</span>))
+    <span class="xl-fn">MsgBox</span> <span class="xl-str">"Suma: "</span> & suma
+<span class="xl-fn">End Sub</span>
+
+<span class="xl-com">' Funkcja — zwraca wartość</span>
+<span class="xl-fn">Function</span> Podwoj(x <span class="xl-fn">As Double</span>) <span class="xl-fn">As Double</span>
+    Podwoj = x * <span class="xl-num">2</span>
+<span class="xl-fn">End Function</span></code></pre>`,
+       tip:'<p>Alt+F11 otwiera edytor VBE. Alt+F8 otwiera listę makr. F5 uruchamia makro w edytorze.</p>'},
+      {h:'Pętle i warunki w VBA',icon:'🔁',
+       body:`<pre><code><span class="xl-com">' For...Next — po liczbach</span>
+<span class="xl-fn">For</span> i = <span class="xl-num">1</span> <span class="xl-fn">To</span> <span class="xl-num">10</span>
+    <span class="xl-fn">Cells</span>(i, <span class="xl-num">1</span>).Value = i * <span class="xl-num">2</span>
+<span class="xl-fn">Next</span> i
+
+<span class="xl-com">' For Each — po komórkach zakresu</span>
+<span class="xl-fn">For Each</span> komorka <span class="xl-fn">In Range</span>(<span class="xl-str">"A1:A10"</span>)
+    <span class="xl-fn">If</span> komorka.Value &gt; <span class="xl-num">100</span> <span class="xl-fn">Then</span>
+        komorka.Interior.Color = vbYellow
+    <span class="xl-fn">End If</span>
+<span class="xl-fn">Next</span> komorka</code></pre>`,
+       tip:'<p>Do Not use Select i Activate — spowolnia kod. Bezpośrednio: <code>Range("A1").Value = 42</code> zamiast <code>Range("A1").Select: Selection.Value = 42</code></p>'},
+    ]
+  }
+];
+
+const quizData = [
+  {q:'Co oznacza odwołanie $A$1 w formule Excel?',hint:'Chodzi o kopiowanie formuły',
+   code:'=B2*$A$1',
+   opts:['Komórka A1 jest zablokowana — nie zmienia się przy kopiowaniu','Komórka A1 jest zaznaczona aktualnie','A1 zawiera formułę tablicową','A1 jest ukryta'],
+   ans:0,fb:'$A$1 to odwołanie bezwzględne. Znak $ przed literą blokuje kolumnę, $ przed liczbą blokuje wiersz. Przy kopiowaniu formuły w dowolnym kierunku A1 pozostaje A1.'},
+  {q:'Jaką wartość zwróci formuła =MOD(17; 5)?',hint:'MOD to reszta z dzielenia',
+   code:'=MOD(17; 5)',
+   opts:['2','3','3.4','0'],ans:0,
+   fb:'17 = 5×3 + 2. Reszta z dzielenia 17 przez 5 to 2. MOD(a, b) = a - b*INT(a/b).'},
+  {q:'Która formuła policzy ile komórek w A1:A100 jest większych niż 50?',hint:'Zliczanie z warunkiem',
+   opts:['=LICZ.JEŻELI(A1:A100;">50")','=ILE.LICZB(A1:A100;50)','=SUMA.JEŻELI(A1:A100;">50")','=LICZ.WARUNKI(">50")'],
+   ans:0,fb:'LICZ.JEŻELI(zakres; kryterium) — zlicza komórki spełniające kryterium. Kryterium ">50" to ciąg znaków z operatorem.'},
+  {q:'Co jest błędne w tej formule WYSZUKAJ.PIONOWO?',hint:'Sprawdź ostatni argument',
+   code:'=WYSZUKAJ.PIONOWO(A2; B:D; 2; PRAWDA)',
+   opts:['Argument PRAWDA wymaga posortowanych danych — może dać błędny wynik','Indeks kolumny 2 jest nieprawidłowy','Zakres B:D jest za szeroki','Formuła jest całkowicie poprawna'],
+   ans:0,fb:'PRAWDA (przybliżone dopasowanie) zakłada że dane są POSORTOWANE rosnąco. Dla niesortowanych danych zawsze używaj FAŁSZ/0.'},
+  {q:'Jaki wynik zwróci: =JEŻELI(ORAZ(3>2; 5<4); "tak"; "nie")?',hint:'ORAZ wymaga że WSZYSTKIE warunki są prawdziwe',
+   code:'=JEŻELI(ORAZ(3>2; 5<4); "tak"; "nie")',
+   opts:['"nie"','"tak"','BŁĄD','PRAWDA'],ans:0,
+   fb:'ORAZ(3>2; 5<4) = ORAZ(PRAWDA; FAŁSZ) = FAŁSZ. Ponieważ warunek JEŻELI jest FAŁSZ, zwracana jest "nie".'},
+  {q:'Czym różni się =ILE.LICZB(A1:A5) od =ILE.NIEPUSTYCH(A1:A5)?',hint:'Jeden zlicza liczby, drugi cokolwiek niepuste',
+   opts:['ILE.LICZB zlicza tylko liczby, ILE.NIEPUSTYCH zlicza wszystko niepuste (też tekst)','ILE.LICZB jest szybsze','Są identyczne','ILE.LICZB zlicza też tekst'],
+   ans:0,fb:'ILE.LICZB = Count (tylko liczby). ILE.NIEPUSTYCH = CountA (liczby + tekst + logiczne). LICZ.PUSTE = CountBlank.'},
+  {q:'Co robi =JEŻELI.BŁĄD(WYSZUKAJ.PIONOWO(A1;B:C;2;0); "brak")?',hint:'Chodzi o obsługę błędów',
+   opts:['Gdy WYSZUKAJ.PIONOWO zwróci błąd (#N/D), wyświetla "brak"','Sprawdza czy A1 jest błędem','Zawsze zwraca "brak"','Formuła ma błąd składni'],
+   ans:0,fb:'JEŻELI.BŁĄD(wartość; wynik_gdy_błąd) — gdy pierwsza wartość jest błędem Excel (#N/D, #DZIEL/0! itp.), zwraca drugi argument.'},
+  {q:'Jak obliczyć sumę sprzedaży tylko dla miasta "Kraków" z kolumny C, gdy miasta są w kolumnie B?',hint:'SUMA warunkowa',
+   opts:['=SUMA.JEŻELI(B:B;"Kraków";C:C)','=SUMA(C:C;B:B="Kraków")','=JEŻELI(B:B="Kraków";SUMA(C:C))','=SUMA.WARUNKI(C:C;"Kraków")'],
+   ans:0,fb:'SUMA.JEŻELI(zakres_kryterium; kryterium; zakres_sumy). Zakres_kryterium = B:B (tu sprawdzamy), zakres_sumy = C:C (tu sumujemy).'},
+  {q:'=ZAOKR(3.565; 2) — jaki wynik?',hint:'Zaokrąglenie do 2 miejsc po przecinku',
+   code:'=ZAOKR(3.565; 2)',
+   opts:['3.57','3.56','3.6','4'],ans:0,
+   fb:'ZAOKR(3.565; 2) = 3.57. Trzecia cyfra po przecinku to 5 → zaokrąglamy w górę. Drugi argument to liczba miejsc po przecinku.'},
+  {q:'Jaki błąd pojawi się w =A1/B1 gdy B1 = 0?',hint:'Dzielenie przez zero',
+   opts:['#DZIEL/0!','#WARTOŚĆ!','#BRAK!','#NULL!'],ans:0,
+   fb:'#DZIEL/0! = Division by zero. Obsłuż go przez: =JEŻELI.BŁĄD(A1/B1; 0) lub =JEŻELI(B1=0; 0; A1/B1).'},
+  {q:'Które odwołanie NIE zmieni się przy kopiowaniu formuły w dół?',hint:'Blokowanie wiersza',
+   opts:['A$1','A1','$A1','Wszystkie się zmienią'],ans:0,
+   fb:'A$1 — dolar przed LICZBĄ blokuje WIERSZ. Przy kopiowaniu w dół wiersz pozostaje 1. Kolumna A może się zmienić przy kopiowaniu w prawo.'},
+  {q:'Jaką funkcją połączysz tekst z komórki A1 i B1 ze spacją między nimi?',hint:'Łączenie tekstu',
+   opts:['=A1&" "&B1','=SUMA(A1;" ";B1)','=POŁĄCZ(A1;B1)','=A1+" "+B1'],ans:0,
+   fb:'Operator & łączy tekst. "tekst1" & " " & "tekst2". Alternatywnie: =ZŁĄCZ.TEKSTY(A1;" ";B1) lub =POŁĄCZ.TEKSTY(" ";PRAWDA;A1;B1).'},
+  {q:'W WYSZUKAJ.PIONOWO ile wynosi nr_kolumny gdy szukamy w zakresie B:E i chcemy wartość z kolumny D?',hint:'Policz od lewej krawędzi zakresu',
+   code:'=WYSZUKAJ.PIONOWO(A1; B:E; ?; FAŁSZ)',
+   opts:['3','2','4','D'],ans:0,
+   fb:'Liczymy od lewej krawędzi zakresu B:E: B=1, C=2, D=3, E=4. Kolumna D = nr 3.'},
+  {q:'Co oznacza #N/D w wyniku WYSZUKAJ.PIONOWO?',hint:'Szukana wartość...',
+   opts:['Szukana wartość nie została znaleziona w tabeli','Formuła ma błąd składni','Zakres tabeli jest nieprawidłowy','Nr kolumny jest za duży'],
+   ans:0,fb:'#N/D = "Not Defined" lub "Nie Dotyczy". W WYSZUKAJ.PIONOWO oznacza że szukana wartość NIE ISTNIEJE w pierwszej kolumnie zakresu.'},
+  {q:'=INDEKS(A1:A5; 3) — co zwróci?',hint:'INDEKS zwraca wartość z pozycji',
+   code:'=INDEKS(A1:A5; 3)',
+   opts:['Wartość z komórki A3 (trzeci element zakresu A1:A5)','Adres komórki A3','Sumę trzech pierwszych komórek','Błąd'],
+   ans:0,fb:'INDEKS(zakres; nr_wiersza) zwraca wartość z podanej pozycji w zakresie. Zakres A1:A5, pozycja 3 = komórka A3.'},
+  {q:'Jak sprawdzić czy tekst w A1 zaczyna się od "PL"?',hint:'Wyszukiwanie w tekście',
+   opts:['=LEWY(A1;2)="PL"','=A1="PL*"','=SZUKAJ.TEKST("PL";A1)','=ZACZYNA.SIĘ(A1;"PL")'],
+   ans:0,fb:'=LEWY(A1;2)="PL" pobiera 2 pierwsze znaki i porównuje z "PL". Alternatywnie: =LICZ.JEŻELI(A1;"PL*")>0 lub =NIE(JEST.BŁĄD(SZUKAJ.TEKST("PL";A1;1))).'},
+  {q:'Ile wynosi =DŁUGOŚĆ("Excel 2024")?',hint:'DŁ to długość napisu',
+   code:'=DŁ("Excel 2024")',
+   opts:['10','9','8','11'],ans:0,
+   fb:'"Excel 2024" = E-x-c-e-l-spacja-2-0-2-4 = 10 znaków. DŁ(tekst) liczy wszystkie znaki włącznie ze spacjami.'},
+  {q:'Co zwróci =FRAGMENT.TEKSTU("Informatyka"; 3; 4)?',hint:'Wycinanie fragmentu: start, długość',
+   code:'=FRAGMENT.TEKSTU("Informatyka"; 3; 4)',
+   opts:['"form"','"Info"','"nfor"','"mat"'],ans:0,
+   fb:'FRAGMENT.TEKSTU("Informatyka"; 3; 4) = 4 znaki od pozycji 3. "Informatyka": I(1)n(2)f(3)o(4)r(5)m(6)... → od pozycji 3, 4 znaki = "form".'},
+  {q:'Jaką funkcją policzyć ile dni minęło od daty w A1 do dziś?',hint:'Dzisiejsza data minus data w A1',
+   opts:['=DZIŚ()-A1','=DATA()-A1','=TERAZ()-A1','=DNI(DZIŚ();A1)'],ans:0,
+   fb:'Daty w Excelu to liczby seryjne. DZIŚ() = dzisiejsza data jako liczba. Odejmowanie dat = różnica w dniach. Sformatuj wynik jako Liczba (nie Data)!'},
+  {q:'=ROK(DATA(2024; 13; 1)) — co zwróci?',hint:'Co dzieje się gdy miesiąc > 12?',
+   code:'=ROK(DATA(2024; 13; 1))',
+   opts:['2025','BŁĄD','2024','13'],ans:0,
+   fb:'DATA(2024; 13; 1) = Excel "przejeżdża" miesiąc 13 → staje się 1 następnego roku → DATA(2025; 1; 1). Następnie ROK() = 2025.'},
+  {q:'Co oznacza PRAWDA w ostatnim argumencie =WYSZUKAJ.PIONOWO(A1; B:C; 2; PRAWDA)?',hint:'Dotyczy sposobu dopasowania',
+   opts:['Przybliżone dopasowanie — tabela musi być posortowana rosnąco','Dokładne dopasowanie','Szukaj od końca','Zwróć PRAWDA gdy znajdzie'],
+   ans:0,fb:'PRAWDA/1 = dopasowanie przybliżone (wyszukiwanie binarne). Zakłada posortowane dane! FAŁSZ/0 = dokładne dopasowanie. Na maturze ZAWSZE FAŁSZ chyba że zadanie wskazuje inaczej.'},
+  {q:'Jak stworzyć formułę sumującą tylko komórki z "Tak" w A:A odpowiadające wartościom w B:B?',hint:'SUMA warunkowa z kryterium tekstowym',
+   opts:['=SUMA.JEŻELI(A:A;"Tak";B:B)','=SUMA(JEŻELI(A:A="Tak";B:B))','=SUMA(B:B;A:A="Tak")','=SUMA.WARUNKI(A:A;"Tak")'],
+   ans:0,fb:'SUMA.JEŻELI(zakres_kryterium; kryterium; zakres_sumy). Zakres_kryterium = A:A, kryterium = "Tak", zakres_sumy = B:B.'},
+  {q:'Co robi Ctrl+` (backtick) w Excelu?',hint:'Tryb podglądu',
+   opts:['Przełącza widok formuł / wartości w całym arkuszu','Wstawia bieżącą datę','Otwiera pasek formuł','Kopiuje komórkę powyżej'],
+   ans:0,fb:'Ctrl+` (klawisz pod Esc) przełącza tryb wyświetlania formuł. Zamiast wyników komórki pokazują formuły. Przydatne do debugowania arkusza.'},
+  {q:'Jaka formuła zwróci imię ucznia z najwyższą oceną, jeśli imiona są w A:A a oceny w B:B?',hint:'Połącz INDEKS i PODAJ.POZYCJĘ z MAX',
+   opts:['=INDEKS(A:A;PODAJ.POZYCJĘ(MAX(B:B);B:B;0))','=WYSZUKAJ.PIONOWO(MAX(B:B);A:A;1;0)','=MAX(INDEKS(A:A;B:B))','=A:A(PODAJ.POZYCJĘ(MAX(B:B);B:B))'],
+   ans:0,fb:'PODAJ.POZYCJĘ(MAX(B:B);B:B;0) = numer wiersza z najwyższą oceną. INDEKS(A:A; numer_wiersza) = imię z tego wiersza. Klasyczna kombinacja!'},
+  {q:'Jaki błąd zwróci =PIERWIASTEK(-4)?',hint:'Pierwiastek z liczby ujemnej',
+   code:'=PIERWIASTEK(-4)',
+   opts:['#LICZBA!','#WARTOŚĆ!','#DZIEL/0!','0'],ans:0,
+   fb:'#LICZBA! pojawia się gdy wynik matematycznie nie istnieje lub jest poza zakresem liczb Excela. Pierwiastek kwadratowy z liczby ujemnej jest liczbą zespoloną — Excel jej nie obsługuje.'},
+];
+
+const fiszkiData = [
+  {tag:'FORMUŁA',q:'Składnia WYSZUKAJ.PIONOWO',a:'=WYSZUKAJ.PIONOWO(<b>szukana</b>; <b>tabela</b>; <b>nr_kol</b>; <b>FAŁSZ</b>)<br>Np: <code>=WYSZUKAJ.PIONOWO(A2;B:D;2;FAŁSZ)</code><br>Ostatni argument FAŁSZ = dokładne dopasowanie!'},
+  {tag:'FORMUŁA',q:'Składnia JEŻELI',a:'=JEŻELI(<b>test</b>; <b>gdy_prawda</b>; <b>gdy_fałsz</b>)<br>Np: <code>=JEŻELI(A1>=50;"zdał";"nie zdał")</code><br>Można zagnieżdżać do 64 razy'},
+  {tag:'FORMUŁA',q:'Składnia SUMA.JEŻELI',a:'=SUMA.JEŻELI(<b>zakres_kryterium</b>; <b>kryterium</b>; <b>zakres_sumy</b>)<br>Np: <code>=SUMA.JEŻELI(B:B;"Kraków";C:C)</code>'},
+  {tag:'FORMUŁA',q:'Składnia LICZ.JEŻELI',a:'=LICZ.JEŻELI(<b>zakres</b>; <b>kryterium</b>)<br>Np: <code>=LICZ.JEŻELI(A:A;">50")</code><br>Kryterium z operatorem: <code>"&gt;100"</code>, <code>"Tak"</code>, <code>"Jan*"</code>'},
+  {tag:'FORMUŁA',q:'Składnia INDEKS + PODAJ.POZYCJĘ',a:'=INDEKS(<b>zakres_wynik</b>; PODAJ.POZYCJĘ(<b>szukana</b>; <b>zakres_szukania</b>; 0))<br>Np: <code>=INDEKS(A:A;PODAJ.POZYCJĘ(MAX(B:B);B:B;0))</code>'},
+  {tag:'FORMUŁA',q:'Jak obliczyć resztę z dzielenia?',a:'=MOD(<b>liczba</b>; <b>dzielnik</b>)<br><code>=MOD(10;3)</code> = 1<br>Parzystość: <code>=MOD(A1;2)=0</code> → PRAWDA gdy parzyste'},
+  {tag:'BŁĄD',q:'Co oznacza błąd #N/D lub #BRAK?',a:'Wartość szukana <b>nie istnieje</b> w tabeli (WYSZUKAJ.PIONOWO, PODAJ.POZYCJĘ).<br>Rozwiązanie: <code>=JEŻELI.BŁĄD(...;"Nie znaleziono")</code>'},
+  {tag:'BŁĄD',q:'Co oznacza błąd #DZIEL/0!?',a:'Dzielenie przez <b>zero</b> lub przez <b>pustą komórkę</b>.<br>Rozwiązanie: <code>=JEŻELI.BŁĄD(A1/B1;0)</code><br>lub: <code>=JEŻELI(B1=0;0;A1/B1)</code>'},
+  {tag:'BŁĄD',q:'Co oznacza błąd #NAZWA??',a:'Excel <b>nie rozpoznaje nazwy</b> funkcji — zwykle literówka.<br>Sprawdź: pisownię, czy tekst ma cudzysłowy, czy nie brakuje dwukropka w zakresie'},
+  {tag:'BŁĄD',q:'Co oznacza błąd #WARTOŚĆ!?',a:'Zły <b>typ danych</b> — np. tekst zamiast liczby w formule matematycznej.<br>Przykład: <code>=A1+B1</code> gdy B1 zawiera tekst "abc"'},
+  {tag:'SKRÓT',q:'Skrót do przełączania $ w odwołaniu',a:'<b>F4</b> podczas edycji adresu komórki<br>Przełącza: A1 → $A$1 → A$1 → $A1 → A1<br>Najważniejszy skrót w Excelu!'},
+  {tag:'SKRÓT',q:'Skrót: podgląd wszystkich formuł',a:'<b>Ctrl + `</b> (backtick, klawisz pod Esc)<br>Przełącza widok: wartości ↔ formuły<br>Przydatne do audytu arkusza'},
+  {tag:'SKRÓT',q:'Szybkie skróty nawigacji',a:'<b>Ctrl+Home</b> → komórka A1<br><b>Ctrl+End</b> → ostatnia użyta komórka<br><b>Ctrl+Strzałka</b> → ostatnia wartość w ciągu<br><b>Ctrl+Shift+End</b> → zaznacz do końca danych'},
+  {tag:'SKRÓT',q:'Jak szybko zastosować AutoSumę?',a:'<b>Alt + =</b> → wstawia =SUMA() i zaznacza sąsiednie komórki<br>Działa pionowo i poziomo'},
+  {tag:'ZASADA',q:'Odwołanie względne vs bezwzględne',a:'<b>A1</b> — względne, zmienia się przy kopiowaniu<br><b>$A$1</b> — bezwzględne, NIE zmienia się<br><b>A$1</b> — mieszane, zablokowany wiersz<br><b>$A1</b> — mieszane, zablokowana kolumna'},
+  {tag:'ZASADA',q:'Kiedy używać FAŁSZ w WYSZUKAJ.PIONOWO?',a:'<b>ZAWSZE</b> gdy chcesz dokładne dopasowanie (99% przypadków).<br>PRAWDA (przybliżone) tylko gdy: dane POSORTOWANE i szukasz zakresu (np. skala ocen)'},
+  {tag:'ZASADA',q:'ILE.LICZB vs ILE.NIEPUSTYCH',a:'<b>ILE.LICZB</b> — zlicza tylko liczby (Count)<br><b>ILE.NIEPUSTYCH</b> — zlicza wszystko niepuste: liczby, tekst, logiczne (CountA)<br><b>LICZ.PUSTE</b> — zlicza puste komórki'},
+  {tag:'ZASADA',q:'SUMA.JEŻELI vs SUMA.WARUNKÓW',a:'<b>SUMA.JEŻELI</b> — jedno kryterium<br><b>SUMA.WARUNKÓW</b> — wiele kryteriów jednocześnie<br>Analogicznie: LICZ.JEŻELI vs LICZ.WARUNKI'},
+  {tag:'ZASADA',q:'Kiedy używać INDEKS+PODAJ.POZYCJĘ zamiast WYSZUKAJ.PIONOWO?',a:'Gdy klucz nie jest w <b>pierwszej kolumnie</b>, gdy chcesz zwrócić wartość <b>na lewo</b> od klucza, gdy tabela jest duża (szybsze), lub gdy kolumny mogą być przestawiane'},
+  {tag:'ZASADA',q:'Formatowanie ≠ wartość',a:'Formatowanie 2 miejsc po przecinku tylko <b>ukrywa</b> cyfry — wartość w komórce się nie zmienia!<br>Użyj <b>=ZAOKR(A1;2)</b> aby faktycznie zaokrąglić wartość'},
+  {tag:'TEKST',q:'Jak wyciąć pierwsze N znaków z tekstu?',a:'=LEWY(<b>tekst</b>; <b>n</b>)<br><code>=LEWY("Excel";3)</code> = "Exc"<br>Ostatnie znaki: =PRAWY(tekst; n)<br>Fragment: =FRAGMENT.TEKSTU(tekst; start; długość)'},
+  {tag:'TEKST',q:'Jak połączyć tekst z dwóch komórek?',a:'Operator <b>&</b>: <code>=A1&" "&B1</code><br>lub =ZŁĄCZ.TEKSTY(A1;" ";B1)<br>lub =POŁĄCZ.TEKSTY(" ";PRAWDA;A1:B1)'},
+  {tag:'DATA',q:'Jak policzyć wiek w latach na podstawie daty urodzenia?',a:'=<b>LATA.MIĘDZY</b>(data_ur; DZIŚ(); "y")<br>lub prościej: =ROK(DZIŚ())-ROK(A1)<br>Uwaga: drugi sposób nie uwzględnia czy urodziny już były'},
+  {tag:'DATA',q:'Jak wyciągnąć rok, miesiąc, dzień z daty?',a:'=ROK(data) → np. 2024<br>=MIESIĄC(data) → 1-12<br>=DZIEŃ(data) → 1-31<br>=DZIEŃ.TYG(data;2) → Pn=1, Nd=7'},
+  {tag:'VBA',q:'Jak odwołać się do komórki A1 w VBA?',a:'<b>Range("A1").Value</b> — przez adres<br><b>Cells(1, 1).Value</b> — przez numer wiersza i kolumny<br>Uwaga: Cells(wiersz, kolumna) — wiersz PIERWSZY!'},
+  {tag:'VBA',q:'Jak zadeklarować zmienną w VBA?',a:'<b>Dim</b> nazwa <b>As</b> typ<br>Typy: Integer, Long, Double, String, Boolean, Date, Variant<br>Przykład: <code>Dim suma As Double</code>'},
+  {tag:'VBA',q:'Jak napisać pętlę For w VBA?',a:'<code>For i = 1 To 10</code><br><code>  Cells(i, 1).Value = i</code><br><code>Next i</code><br>Lub: <code>For Each komorka In Range("A1:A10")</code>'},
+  {tag:'TABELA',q:'Jak szybko stworzyć tabelę przestawną?',a:'1. Kliknij w dane<br>2. Wstawianie → Tabela przestawna<br>3. Przeciągnij pola do: Wiersze, Kolumny, Wartości, Filtry<br>Klawisz Alt+N+V skraca krok 2'},
+  {tag:'WYKRES',q:'Który typ wykresu do czego?',a:'<b>Kolumnowy/słupkowy</b> — porównanie kategorii<br><b>Liniowy</b> — zmiany w czasie, trendy<br><b>Kołowy</b> — udział w całości (max 6-7 sektorów)<br><b>Punktowy XY</b> — zależność dwóch zmiennych'},
+  {tag:'ZASADA',q:'Jak obsłużyć błędy w formułach?',a:'=<b>JEŻELI.BŁĄD</b>(formuła; wartość_gdy_błąd)<br>Np: <code>=JEŻELI.BŁĄD(WYSZUKAJ.PIONOWO(...);"brak")</code><br>Przechwytuje: #N/D, #DZIEL/0!, #NAZWA?, #ADR!, #WARTOŚĆ!, #LICZBA!'},
+];
+
+const typingData = [
+  {label:'PODSTAWY',text:'=SUMA(A1:A10)'},
+  {label:'PODSTAWY',text:'=ŚREDNIA(B2:B20)'},
+  {label:'PODSTAWY',text:'=MAX(C1:C100)'},
+  {label:'PODSTAWY',text:'=MIN(D:D)'},
+  {label:'PODSTAWY',text:'=ILE.LICZB(A1:A50)'},
+  {label:'ZAOKR',text:'=ZAOKR(A1/B1; 2)'},
+  {label:'ZAOKR',text:'=ZAOKR.DO.CAŁK(A1)'},
+  {label:'MOD',text:'=JEŻELI(MOD(A1;2)=0;"parzysta";"nieparzysta")'},
+  {label:'JEŻELI',text:'=JEŻELI(A1>=50;"zdał";"nie zdał")'},
+  {label:'JEŻELI',text:'=JEŻELI(A1>90;"A";JEŻELI(A1>70;"B";"C"))'},
+  {label:'ORAZ/LUB',text:'=JEŻELI(ORAZ(A1>=18;B1="aktywny");"ok";"brak")'},
+  {label:'LICZ.JEŻELI',text:'=LICZ.JEŻELI(B:B;">50")'},
+  {label:'SUMA.JEŻELI',text:'=SUMA.JEŻELI(A:A;"Kraków";B:B)'},
+  {label:'JEŻELI.BŁĄD',text:'=JEŻELI.BŁĄD(WYSZUKAJ.PIONOWO(A2;B:C;2;FAŁSZ);"brak")'},
+  {label:'WYSZUKAJ.PIONOWO',text:'=WYSZUKAJ.PIONOWO(A2;Dane!A:C;2;FAŁSZ)'},
+  {label:'INDEKS+POZYCJA',text:'=INDEKS(A:A;PODAJ.POZYCJĘ(MAX(B:B);B:B;0))'},
+  {label:'TEKST',text:'=LEWY(A1;3)&"..."'},
+  {label:'TEKST',text:'=A1&" "&B1'},
+  {label:'DATA',text:'=ROK(DZIŚ())-ROK(A1)'},
+  {label:'TYPY',text:'=ILE.NIEPUSTYCH(A:A)-1'},
+];
+
+const notatnikData = [
+  {tag:'ODWOŁANIA',txt:'$A$1 = bezwzględne (nie zmienia się), A1 = względne, A$1/$A1 = mieszane. F4 przełącza typy.'},
+  {tag:'ODWOŁANIA',txt:'Przy kopiowaniu formuły w DÓŁ — zmienia się numer wiersza. W PRAWO — zmienia się litera kolumny.'},
+  {tag:'JEŻELI',txt:'=JEŻELI(test; gdy_prawda; gdy_fałsz) — jeśli test=PRAWDA zwraca drugi argument, jeśli FAŁSZ — trzeci.'},
+  {tag:'JEŻELI',txt:'Zagnieżdżone JEŻELI: =JEŻELI(A1>90;"A";JEŻELI(A1>70;"B";"C")). Sprawdzaj od najwyższego warunku!'},
+  {tag:'JEŻELI',txt:'ORAZ(w1;w2) = PRAWDA gdy WSZYSTKIE prawda. LUB(w1;w2) = PRAWDA gdy CHOĆ JEDEN prawda.'},
+  {tag:'WYSZUKAJ',txt:'WYSZUKAJ.PIONOWO(szukana; tabela; nr_kol; FAŁSZ) — ZAWSZE używaj FAŁSZ dla dokładnego dopasowania!'},
+  {tag:'WYSZUKAJ',txt:'WYSZUKAJ.PIONOWO szuka TYLKO w pierwszej kolumnie zakresu. Dla kolumn z lewej → użyj INDEKS+PODAJ.POZYCJĘ.'},
+  {tag:'WYSZUKAJ',txt:'INDEKS(zakres; PODAJ.POZYCJĘ(szukana; zakres_szukania; 0)) — mocniejsza alternatywa, szuka w każdym kierunku.'},
+  {tag:'BŁĘDY',txt:'#N/D = nie znaleziono (WYSZUKAJ.PIONOWO). Obsłuż: =JEŻELI.BŁĄD(formuła;"Nie znaleziono")'},
+  {tag:'BŁĘDY',txt:'#DZIEL/0! = dzielenie przez zero lub pustą komórkę. =JEŻELI.BŁĄD(A1/B1;0) lub =JEŻELI(B1=0;0;A1/B1)'},
+  {tag:'BŁĘDY',txt:'#NAZWA? = literówka w nazwie funkcji lub brak cudzysłowów: JEŻELI(A1=tak) → JEŻELI(A1="tak")'},
+  {tag:'LICZ.JEŻELI',txt:'=LICZ.JEŻELI(zakres; kryterium) — kryterium z operatorem w cudzysłowach: ">50", "Tak", "Jan*"'},
+  {tag:'LICZ.JEŻELI',txt:'Znaki wieloznaczne: * = dowolny ciąg, ? = jeden znak. "Jan*" pasuje do Janusz, Janina, Jana.'},
+  {tag:'SUMA.JEŻELI',txt:'=SUMA.JEŻELI(zakres_kryterium; kryterium; zakres_sumy) — 3 argumenty! Kryterium i suma z różnych kolumn.'},
+  {tag:'ZAOKRĄGLANIE',txt:'=ZAOKR(liczba; miejsca) — ujemne miejsca: ZAOKR(1234;-2)=1200. ZAOKR(n;2) ≠ format wyświetlania!'},
+  {tag:'ZAOKRĄGLANIE',txt:'ZAOKR.DO.CAŁK = zawsze w dół. ZAOKR.W.GÓRĘ = zawsze w górę. MOD(n;2)=0 → parzyste.'},
+  {tag:'TEKST',txt:'Łączenie: =A1&" "&B1 lub =ZŁĄCZ.TEKSTY(A1;" ";B1). Operator & szybszy w pisaniu.'},
+  {tag:'TEKST',txt:'LEWY(t;n) = n pierwszych znaków. PRAWY(t;n) = n ostatnich. FRAGMENT.TEKSTU(t;start;dł) = fragment.'},
+  {tag:'DATY',txt:'Daty to liczby seryjne! DZIŚ()-data_ur = wiek w dniach. ROK(DZIŚ())-ROK(A1) = wiek w latach (przybliżony).'},
+  {tag:'DATY',txt:'ROK(data), MIESIĄC(data), DZIEŃ(data) — wyciągają składowe. DZIEŃ.TYG(data;2) = 1 to poniedziałek.'},
+  {tag:'VBA',txt:'Sub NazwaMakra() ... End Sub — blok kodu. Dim x As Integer — deklaracja zmiennej. MsgBox "tekst" — okienko.'},
+  {tag:'VBA',txt:'Range("A1").Value = 42 — zapisz wartość. Cells(wiersz, kolumna).Value — przez numery (wiersz PIERWSZY!).'},
+  {tag:'TABELE',txt:'Tabela przestawna: zaznacz dane → Wstawianie → Tabela przestawna. Obszary: Wiersze, Kolumny, Wartości, Filtry.'},
+  {tag:'WYKRESY',txt:'Kolumnowy = porównanie kategorii. Liniowy = trendy w czasie. Kołowy = udziały (max ~7 sektorów). Punktowy = korelacja.'},
+  {tag:'SKRÓTY',txt:'F4 = przełącz typ odwołania. Alt+= = AutoSuma. Ctrl+` = widok formuł. Ctrl+Shift+L = Filtrowanie.'},
+];
+
+const simExamples = [
+  {name:'Oceny',data:[
+    ['Imię','Ocena','Wynik'],
+    ['Anna','85','=JEŻELI(B2>=50;"zdał";"nie zdał")'],
+    ['Bartek','42','=JEŻELI(B3>=50;"zdał";"nie zdał")'],
+    ['Celina','90','=JEŻELI(B4>=50;"zdał";"nie zdał")'],
+    ['Dawid','55','=JEŻELI(B5>=50;"zdał";"nie zdał")'],
+    ['Suma:','=SUMA(B2:B5)','=ŚREDNIA(B2:B5)'],
+  ]},
+  {name:'Sklep',data:[
+    ['Produkt','Cena','Ilość','Wartość'],
+    ['Jabłko','2.50','10','=B2*C2'],
+    ['Gruszka','3.00','8','=B3*C3'],
+    ['Banan','1.80','15','=B4*C4'],
+    ['SUMA','','','=SUMA(D2:D4)'],
+    ['MAX cena','=MAX(B2:B4)','','=LICZ.JEŻELI(D2:D4;">25")'],
+  ]},
+  {name:'WYSZUKAJ',data:[
+    ['ID','Imię','Wynik'],
+    ['101','Anna','85'],
+    ['102','Bartek','42'],
+    ['103','Celina','90'],
+    ['','',''],
+    ['Szukaj ID:','102','=WYSZUKAJ.PIONOWO(B6;A2:C4;2;FAŁSZ)'],
+  ]},
+];
+
+const simHints = [
+  '=SUMA(A1:A10)',
+  '=ŚREDNIA(B2:B10)',
+  '=JEŻELI(A1>50;"tak";"nie")',
+  '=LICZ.JEŻELI(A:A;">0")',
+  '=SUMA.JEŻELI(A:A;"Tak";B:B)',
+  '=WYSZUKAJ.PIONOWO(A1;B:C;2;FAŁSZ)',
+  '=ZAOKR(A1/B1;2)',
+  '=JEŻELI.BŁĄD(A1/B1;0)',
+  '=MAX(A1:A10)',
+  '=INDEKS(A:A;PODAJ.POZYCJĘ(MAX(B:B);B:B;0))',
+];
+
+// ===================== NAV =====================
+document.querySelectorAll('.hero-mod').forEach(m => {
+  m.addEventListener('click', () => document.getElementById('roadmapa').scrollIntoView({behavior:'smooth'}));
+});
+
+// ===================== ROADMAPA =====================
+let rmChecks = JSON.parse(localStorage.getItem('xl_rm') || '{}');
+function renderRoadmap() {
+  const grid = document.getElementById('roadmapGrid');
+  grid.innerHTML = roadmapData.map((item, ri) => `
+    <div class="roadmap-item">
+      <div>
+        <div class="rm-num">${item.num}</div>
+        <div class="rm-sub">${item.level}</div>
+      </div>
+      <div>
+        <div class="rm-title">${item.title}</div>
+        <div class="rm-desc">${item.desc}</div>
+        <div class="rm-tags">${item.tags.map(t=>`<span class="rm-tag">${t}</span>`).join('')}</div>
+      </div>
+      <div class="rm-checks">
+        ${item.checks.map((c,ci)=>{
+          const key=`r${ri}c${ci}`;
+          const done=rmChecks[key];
+          return `<label class="rm-check${done?' done':''}"><input type="checkbox"${done?' checked':''} onchange="toggleCheck('${key}',this)"> ${c}</label>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+}
+function toggleCheck(key, el) {
+  if(el.checked) { rmChecks[key]=1; el.parentElement.classList.add('done'); }
+  else { delete rmChecks[key]; el.parentElement.classList.remove('done'); }
+  localStorage.setItem('xl_rm', JSON.stringify(rmChecks));
+}
+renderRoadmap();
+
+// ===================== SŁOWNIK =====================
+let slownikCat = 'wszystkie';
+const cats = [...new Set(slownikData.map(d=>d.cat))];
+const catLabels = {podstawy:'🧩 Podstawy',formuly:'🔢 Formuły',logika:'🔀 Logika',wyszukiwanie:'🔍 Wyszukiwanie',tekst:'🔤 Tekst',data:'📅 Daty',wykresy:'📊 Wykresy',vba:'⚙️ VBA'};
+
+function renderSlownikFilter() {
+  const f = document.getElementById('slownikFilter');
+  f.innerHTML = `<button class="sf-btn${slownikCat==='wszystkie'?' active':''}" onclick="setSlownikCat('wszystkie')">Wszystkie (${slownikData.length})</button>` +
+    cats.map(c=>`<button class="sf-btn${slownikCat===c?' active':''}" onclick="setSlownikCat('${c}')">${catLabels[c]||c} (${slownikData.filter(d=>d.cat===c).length})</button>`).join('');
+}
+function setSlownikCat(c) { slownikCat=c; renderSlownikFilter(); filterSlownik(); }
+function filterSlownik() {
+  const q = document.getElementById('slownikSearch').value.toLowerCase();
+  const filtered = slownikData.filter(d => (slownikCat==='wszystkie'||d.cat===slownikCat) && (!q||(d.name+d.short+d.body).toLowerCase().includes(q)));
+  renderSlownikGrid(filtered);
+}
+function renderSlownikGrid(data) {
+  document.getElementById('slownikGrid').innerHTML = data.map((d,i)=>`
+    <div class="sk-card" id="sk${i}" onclick="toggleSk(${i})">
+      <div class="sk-head">
+        <span class="sk-name">${d.name}</span>
+        <span class="sk-badge badge-${d.cat}">${(catLabels[d.cat]||d.cat).replace(/^[^ ]+ /,'')}</span>
+      </div>
+      <div class="sk-short">${d.short}</div>
+      <div class="sk-body">
+        <div class="sk-body-inner">${d.body}</div>
+        ${d.ex?`<pre><code>${d.ex}</code></pre>`:''}
+        ${d.tip?`<div class="sk-tip">💡 ${d.tip}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+function toggleSk(i) {
+  const c = document.getElementById('sk'+i);
+  c.classList.toggle('open');
+}
+renderSlownikFilter();
+filterSlownik();
+
+// ===================== MODUŁY =====================
+function renderModuly() {
+  const tabs = document.getElementById('modTabs');
+  const contents = document.getElementById('modContents');
+  tabs.innerHTML = modulyData.map((m,i)=>`<button class="mod-tab${i===0?' active':''}" onclick="switchMod(${i})">${m.icon} ${m.name}</button>`).join('');
+  contents.innerHTML = modulyData.map((m,i)=>`
+    <div class="mod-content${i===0?' active':''}" id="mod${i}">
+      ${m.cards.map(c=>`
+        <div class="mod-card">
+          <h4>${c.icon} ${c.h}</h4>
+          ${c.body||''}
+          ${c.tip?`<div class="tip-box"><h5>💡 Wskazówka</h5>${c.tip}</div>`:''}
+          ${c.wtopa?`<div class="wtopa">${c.wtopa}</div>`:''}
+        </div>`).join('')}
+    </div>`).join('');
+}
+function switchMod(i) {
+  document.querySelectorAll('.mod-tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.mod-content').forEach((c,j)=>c.classList.toggle('active',i===j));
+}
+renderModuly();
+
+// ===================== SYMULATOR =====================
+const SIM_ROWS = 8, SIM_COLS = 6;
+const COLS = ['A','B','C','D','E','F'];
+let simData = {};
+let simSelected = {r:0, c:0};
+
+function buildSimTable() {
+  const table = document.getElementById('simTable');
+  let html = '<thead><tr><th></th>' + COLS.map(c=>`<th>${c}</th>`).join('') + '</tr></thead><tbody>';
+  for(let r=0;r<SIM_ROWS;r++) {
+    html += `<tr><td class="row-header">${r+1}</td>`;
+    for(let c=0;c<SIM_COLS;c++) {
+      html += `<td id="cell-${r}-${c}"><input class="cell-input" id="ci-${r}-${c}" value="" onfocus="selectSimCell(${r},${c})" onblur="commitSimCell(${r},${c},this.value)" onkeydown="simCellKey(event,${r},${c})"></td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+function selectSimCell(r,c) {
+  document.querySelectorAll('.sim-table td').forEach(td=>td.classList.remove('selected'));
+  const td = document.getElementById(`cell-${r}-${c}`);
+  if(td) td.classList.add('selected');
+  simSelected = {r,c};
+  const raw = simData[`${r}-${c}`] || '';
+  document.getElementById('simCellName').textContent = COLS[c]+(r+1);
+  document.getElementById('simFormulaInput').value = raw;
+}
+
+function commitSimCell(r,c,val) {
+  simData[`${r}-${c}`] = val;
+  evalAllSim();
+}
+
+function simCellKey(e,r,c) {
+  if(e.key==='Enter') {
+    commitSimCell(r,c,e.target.value);
+    if(r+1<SIM_ROWS) { document.getElementById(`ci-${r+1}-${c}`)?.focus(); }
+  }
+  if(e.key==='Tab') {
+    e.preventDefault();
+    commitSimCell(r,c,e.target.value);
+    if(c+1<SIM_COLS) document.getElementById(`ci-${r}-${c+1}`)?.focus();
+  }
+}
+
+function simFormulaKeydown(e) {
+  if(e.key==='Enter') {
+    const val = e.target.value;
+    const {r,c} = simSelected;
+    simData[`${r}-${c}`] = val;
+    document.getElementById(`ci-${r}-${c}`).value = val;
+    evalAllSim();
+  }
+}
+
+function getCellValue(addr) {
+  const m = addr.match(/^([A-F])(\d+)$/i);
+  if(!m) return addr;
+  const c = COLS.indexOf(m[1].toUpperCase());
+  const r = parseInt(m[2])-1;
+  if(c<0||r<0||r>=SIM_ROWS) return 0;
+  const raw = simData[`${r}-${c}`] || '';
+  if(raw.startsWith('=')) return evalFormula(raw.slice(1));
+  return isNaN(raw)||raw==='' ? raw : parseFloat(raw);
+}
+
+function parseRange(expr) {
+  const m = expr.match(/^([A-F]\d+):([A-F]\d+)$/i);
+  if(!m) return null;
+  const c1=COLS.indexOf(m[1][0].toUpperCase()), r1=parseInt(m[1].slice(1))-1;
+  const c2=COLS.indexOf(m[2][0].toUpperCase()), r2=parseInt(m[2].slice(1))-1;
+  const vals=[];
+  for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++) {
+    const raw=simData[`${r}-${c}`]||'';
+    const v=raw.startsWith('=')?evalFormula(raw.slice(1)):(isNaN(raw)||raw===''?raw:parseFloat(raw));
+    if(v!==''&&v!==null&&!isNaN(v)) vals.push(Number(v));
+  }
+  return vals;
+}
+
+function evalFormula(expr) {
+  try {
+    expr = expr.trim();
+    // JEŻELI
+    expr = expr.replace(/JEŻELI\.BŁĄD\(/gi,'IFERROR(');
+    expr = expr.replace(/JEŻELI\(/gi,'IF(');
+    expr = expr.replace(/ORAZ\(/gi,'AND(');
+    expr = expr.replace(/LUB\(/gi,'OR(');
+    expr = expr.replace(/NIE\(/gi,'NOT(');
+    expr = expr.replace(/PRAWDA/gi,'true');
+    expr = expr.replace(/FAŁSZ/gi,'false');
+    expr = expr.replace(/FAŁSZ/gi,'false');
+
+    // Replace Polish function names
+    const fnMap = {
+      'SUMA':'SUM','ŚREDNIA':'AVG','MAX':'MAX','MIN':'MIN',
+      'ILE\\.LICZB':'COUNT','ILE\\.NIEPUSTYCH':'COUNTA',
+      'ZAOKR':'ROUND','MOD':'MOD','POTĘGA':'POW',
+      'PIERWIASTEK':'SQRT','ABS':'ABS','LEWY':'LEFT',
+      'PRAWY':'RIGHT','DŁ':'LEN','LICZ\\.JEŻELI':'COUNTIF',
+      'SUMA\\.JEŻELI':'SUMIF','PODAJ\\.POZYCJĘ':'MATCH',
+      'INDEKS':'INDEXFN','WYSZUKAJ\\.PIONOWO':'VLOOKUP',
+      'FRAGMENT\\.TEKSTU':'MID','ROK':'YEAR','MIESIĄC':'MONTH','DZIEŃ':'DAY',
+    };
+    Object.entries(fnMap).forEach(([pl,en])=>{ expr=expr.replace(new RegExp(pl+'\\(','gi'),en+'('); });
+
+    // resolve cell references and ranges in functions
+    const calcFn = (name, argsStr) => {
+      const args = smartSplit(argsStr);
+      if(name==='SUM') {
+        let s=0; args.forEach(a=>{const r=parseRange(a.trim());if(r)r.forEach(v=>s+=v);else{const v=resolveVal(a.trim());if(!isNaN(v))s+=Number(v);}});return s;
+      }
+      if(name==='AVG'||name==='AVERAGE') {
+        let s=0,cnt=0;args.forEach(a=>{const r=parseRange(a.trim());if(r){r.forEach(v=>{s+=v;cnt++;});}else{const v=resolveVal(a.trim());if(!isNaN(v)){s+=Number(v);cnt++;}}});return cnt?s/cnt:0;
+      }
+      if(name==='MAX') {
+        let vals=[];args.forEach(a=>{const r=parseRange(a.trim());if(r)vals=vals.concat(r);else{const v=resolveVal(a.trim());if(!isNaN(v))vals.push(Number(v));}});return vals.length?Math.max(...vals):'';
+      }
+      if(name==='MIN') {
+        let vals=[];args.forEach(a=>{const r=parseRange(a.trim());if(r)vals=vals.concat(r);else{const v=resolveVal(a.trim());if(!isNaN(v))vals.push(Number(v));}});return vals.length?Math.min(...vals):'';
+      }
+      if(name==='COUNT') {
+        let cnt=0;args.forEach(a=>{const r=parseRange(a.trim());if(r)cnt+=r.length;else{const v=resolveVal(a.trim());if(!isNaN(v)&&v!=='')cnt++;}});return cnt;
+      }
+      if(name==='ROUND') {
+        const v=resolveVal(args[0]?.trim()||'0');const d=resolveVal(args[1]?.trim()||'0');return Math.round(Number(v)*Math.pow(10,Number(d)))/Math.pow(10,Number(d));
+      }
+      if(name==='MOD'){const a=resolveVal(args[0]?.trim()),b=resolveVal(args[1]?.trim());return ((a%b)+b)%b;}
+      if(name==='ABS'){return Math.abs(resolveVal(args[0]?.trim()));}
+      if(name==='SQRT'){const v=resolveVal(args[0]?.trim());return v<0?'#LICZBA!':Math.sqrt(v);}
+      if(name==='POW'){return Math.pow(resolveVal(args[0]?.trim()),resolveVal(args[1]?.trim()));}
+      if(name==='LEN'){const s=resolveStr(args[0]?.trim());return s.length;}
+      if(name==='LEFT'){const s=resolveStr(args[0]?.trim());const n=resolveVal(args[1]?.trim())||1;return s.slice(0,n);}
+      if(name==='RIGHT'){const s=resolveStr(args[0]?.trim());const n=resolveVal(args[1]?.trim())||1;return s.slice(-n);}
+      if(name==='MID'){const s=resolveStr(args[0]?.trim());const st=resolveVal(args[1]?.trim())-1;const l=resolveVal(args[2]?.trim());return s.slice(st,st+l);}
+      if(name==='COUNTIF') {
+        const rng=parseRange(args[0]?.trim()||'')||[];
+        const crit=resolveStr(args[1]?.trim()||'');
+        return rng.filter(v=>matchCrit(v,crit)).length;
+      }
+      if(name==='SUMIF') {
+        const rng=parseRange(args[0]?.trim()||'')||[];
+        const crit=resolveStr(args[1]?.trim()||'');
+        const sumRng=parseRange(args[2]?.trim()||'')||rng;
+        let s=0;rng.forEach((v,i)=>{if(matchCrit(v,crit))s+=Number(sumRng[i]||0);});return s;
+      }
+      if(name==='IF') {
+        const cond=evalSimExpr(args[0]?.trim());
+        return cond ? evalSimExpr(args[1]?.trim()) : evalSimExpr(args[2]?.trim());
+      }
+      if(name==='IFERROR'){try{const v=evalSimExpr(args[0]?.trim());return (v===null||String(v).startsWith('#'))?evalSimExpr(args[1]?.trim()):v;}catch(e){return evalSimExpr(args[1]?.trim());}}
+      if(name==='AND'){return args.every(a=>evalSimExpr(a.trim()));}
+      if(name==='OR'){return args.some(a=>evalSimExpr(a.trim()));}
+      if(name==='NOT'){return !evalSimExpr(args[0]?.trim());}
+      if(name==='INDEXFN'){
+        const rng2=parseRange(args[0]?.trim()||'')||[];
+        const pos=resolveVal(args[1]?.trim())-1;
+        return rng2[pos]??'#ADR!';
+      }
+      if(name==='MATCH'||name==='PODAJ_POZYCJE'){
+        const val=resolveVal(args[0]?.trim());
+        const rng3=parseRange(args[1]?.trim()||'')||[];
+        const idx=rng3.findIndex(v=>v==val);
+        return idx>=0?idx+1:'#BRAK!';
+      }
+      if(name==='VLOOKUP'){
+        const sv=resolveVal(args[0]?.trim());
+        const tbl=args[1]?.trim()||'';
+        const col=resolveVal(args[2]?.trim())-1;
+        const m2=tbl.match(/^([A-F]\d+):([A-F]\d+)$/i);
+        if(!m2)return '#ADR!';
+        const c1=COLS.indexOf(m2[1][0].toUpperCase()),r1=parseInt(m2[1].slice(1))-1;
+        const r2=parseInt(m2[2].slice(1))-1;
+        for(let r=r1;r<=r2;r++){
+          const raw=simData[`${r}-${c1}`]||'';const v=raw.startsWith('=')?evalFormula(raw.slice(1)):(isNaN(raw)||raw===''?raw:parseFloat(raw));
+          if(String(v)==String(sv)){
+            const raw2=simData[`${r}-${c1+col}`]||'';return raw2.startsWith('=')?evalFormula(raw2.slice(1)):(isNaN(raw2)||raw2===''?raw2:parseFloat(raw2));
+          }
+        }
+        return '#BRAK!';
+      }
+      if(name==='YEAR'){const d=new Date(resolveStr(args[0]?.trim()));return d.getFullYear();}
+      if(name==='MONTH'){const d=new Date(resolveStr(args[0]?.trim()));return d.getMonth()+1;}
+      if(name==='DAY'){const d=new Date(resolveStr(args[0]?.trim()));return d.getDate();}
+      return '#NAZWA?';
+    };
+
+    function resolveVal(s) {
+      const m=s?.match(/^([A-F])(\d+)$/i);
+      if(m){const c=COLS.indexOf(m[1].toUpperCase());const r=parseInt(m[2])-1;const raw=simData[`${r}-${c}`]||'';return raw.startsWith('=')?evalFormula(raw.slice(1)):(isNaN(raw)||raw===''?raw:parseFloat(raw));}
+      s=s?.replace(/"/g,'');
+      return isNaN(s)?s:parseFloat(s);
+    }
+    function resolveStr(s) {
+      const m=s?.match(/^([A-F])(\d+)$/i);
+      if(m){const c=COLS.indexOf(m[1].toUpperCase());const r=parseInt(m[2])-1;return String(simData[`${r}-${c}`]||'');}
+      return String(s||'').replace(/^"|"$/g,'');
+    }
+    function matchCrit(v,crit) {
+      const opM=crit.match(/^([><=!]+)(.*)$/);
+      if(opM){const op=opM[1],val=parseFloat(opM[2]);if(op==='>') return Number(v)>val;if(op==='<') return Number(v)<val;if(op==='>=') return Number(v)>=val;if(op==='<=') return Number(v)<=val;if(op==='<>') return v!=val;}
+      return String(v).toLowerCase()===String(crit).toLowerCase().replace(/"/g,'');
+    }
+    function smartSplit(s) {
+      const res=[];let depth=0,cur='',inQ=false;
+      for(const ch of s){if(ch==='"')inQ=!inQ;if(!inQ&&ch==='(')depth++;if(!inQ&&ch===')')depth--;if(!inQ&&ch===';'&&depth===0){res.push(cur);cur='';}else cur+=ch;}
+      if(cur)res.push(cur);return res;
+    }
+    function evalSimExpr(s) {
+      if(!s) return '';
+      s=s.trim();
+      // Recurse function calls
+      s=s.replace(/([A-Z_]+)\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g,(m,fn,args)=>String(calcFn(fn,args)));
+      // Resolve cell refs
+      s=s.replace(/([A-F])(\d+)/gi,(_,col,row)=>{
+        const c=COLS.indexOf(col.toUpperCase()),r=parseInt(row)-1;
+        const raw=simData[`${r}-${c}`]||'';
+        const v=raw.startsWith('=')?evalFormula(raw.slice(1)):(isNaN(raw)||raw===''?`"${raw}"`:raw);
+        return typeof v==='string'&&isNaN(v)?`"${v}"`:v;
+      });
+      // String concat with &
+      if(s.includes('&')) {
+        const parts=s.split('&').map(p=>p.trim().replace(/^"|"$/g,''));
+        return parts.join('');
+      }
+      // Comparison ops
+      s=s.replace(/"([^"]*)"=="([^"]*)"/g,(_,a,b)=>a===b);
+      s=s.replace(/"([^"]*)"="([^"]*)"/g,(_,a,b)=>a===b);
+      try{return Function('"use strict";return ('+s+')')();}catch(e){return '#WARTOŚĆ!';}
+    }
+
+    return evalSimExpr(expr);
+  } catch(e) { return '#BŁĄD!'; }
+}
+
+function evalAllSim() {
+  let log = '';
+  for(let r=0;r<SIM_ROWS;r++) {
+    for(let c=0;c<SIM_COLS;c++) {
+      const raw = simData[`${r}-${c}`] || '';
+      const inp = document.getElementById(`ci-${r}-${c}`);
+      const td = document.getElementById(`cell-${r}-${c}`);
+      if(!inp||!td) continue;
+      if(raw.startsWith('=')) {
+        const result = evalFormula(raw.slice(1));
+        inp.value = String(result);
+        td.classList.add('formula-cell');
+        if(String(result).startsWith('#')) { td.classList.add('error-cell'); log += `${COLS[c]}${r+1}: ${raw} → ${result}\n`; }
+        else { td.classList.remove('error-cell'); log += `${COLS[c]}${r+1}: ${raw} → ${result}\n`; }
+      } else {
+        inp.value = raw;
+        td.classList.remove('formula-cell','error-cell');
+      }
+    }
+  }
+  if(log) document.getElementById('simLog').textContent = log;
+}
+
+function clearSim() { simData={}; for(let r=0;r<SIM_ROWS;r++) for(let c=0;c<SIM_COLS;c++) { const inp=document.getElementById(`ci-${r}-${c}`); if(inp) inp.value=''; document.getElementById(`cell-${r}-${c}`)?.classList.remove('formula-cell','error-cell'); } document.getElementById('simLog').textContent='Arkusz wyczyszczony'; }
+
+function loadSimExample(idx) {
+  clearSim();
+  simExamples[idx].data.forEach((row,r) => row.forEach((val,c) => { simData[`${r}-${c}`]=val; }));
+  evalAllSim();
+}
+
+function buildSimUI() {
+  buildSimTable();
+  document.getElementById('simExamples').innerHTML = simExamples.map((e,i)=>`<button class="sim-ex-btn" onclick="loadSimExample(${i})">${e.name}</button>`).join('');
+  document.getElementById('simHints').innerHTML = simHints.map(h=>`<div class="sim-hint-item" onclick="insertHint('${h.replace(/'/g,"\\'")}')">${h}</div>`).join('');
+}
+function insertHint(h) {
+  const {r,c}=simSelected;
+  simData[`${r}-${c}`]=h;
+  const inp=document.getElementById(`ci-${r}-${c}`);
+  if(inp){inp.value=h;inp.focus();}
+  document.getElementById('simFormulaInput').value=h;
+  evalAllSim();
+}
+buildSimUI();
+
+// ===================== QUIZ =====================
+let qCurrent=0, qAnswered=[];
+function renderQuiz() {
+  const total=quizData.length;
+  document.getElementById('qTotal').textContent=total;
+  document.getElementById('qProgress').innerHTML=quizData.map((_,i)=>`<div class="q-dot${i<qCurrent?' done':i===qCurrent?' current':''}"></div>`).join('');
+  const q=quizData[qCurrent];
+  document.getElementById('qNum').textContent=qCurrent+1;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qHint').textContent=q.hint||'';
+  const codeEl=document.getElementById('qCode');
+  if(q.code){codeEl.textContent=q.code;codeEl.classList.remove('hidden');}else codeEl.classList.add('hidden');
+  document.getElementById('qOpts').innerHTML=q.opts.map((o,i)=>`<div class="q-opt" id="opt${i}" onclick="answerQ(${i})"><span class="q-letter">${'ABCD'[i]}</span> <span>${o}</span></div>`).join('');
+  const fb=document.getElementById('qFeedback'); fb.className='quiz-feedback'; fb.style.display='none';
+  document.getElementById('qPrev').style.opacity=qCurrent===0?'0.3':'1';
+  document.getElementById('qNext').textContent=qCurrent===total-1?'Zakończ ✓':'Następne →';
+  if(qAnswered[qCurrent]!==undefined) showAnswer(qAnswered[qCurrent]);
+}
+function answerQ(i) {
+  if(qAnswered[qCurrent]!==undefined) return;
+  qAnswered[qCurrent]=i;
+  showAnswer(i);
+}
+function showAnswer(i) {
+  const q=quizData[qCurrent];
+  document.querySelectorAll('.q-opt').forEach((o,j)=>{
+    if(j===q.ans) o.classList.add('correct');
+    else if(j===i&&i!==q.ans) o.classList.add('wrong');
+  });
+  if(i===q.ans) {document.getElementById('opt'+i).classList.add('selected');}
+  const fb=document.getElementById('qFeedback');
+  fb.className='quiz-feedback show '+(i===q.ans?'ok':'bad');
+  fb.style.display='block';
+  document.getElementById('qFbTitle').textContent=i===q.ans?'✓ Poprawnie!':'✗ Niepoprawnie';
+  document.getElementById('qFbText').textContent=q.fb;
+}
+function nextQ() {
+  if(qCurrent<quizData.length-1){qCurrent++;renderQuiz();}
+  else{const correct=qAnswered.filter((a,i)=>a===quizData[i].ans).length;toast(`Wynik: ${correct}/${quizData.length}`,`${Math.round(correct/quizData.length*100)}% poprawnych`);}
+}
+function prevQ(){if(qCurrent>0){qCurrent--;renderQuiz();}}
+renderQuiz();
+
+// ===================== FISZKI =====================
+let flashIdx=0, flashMasteredSet=new Set(JSON.parse(localStorage.getItem('xl_flash')||'[]'));
+const flashCats=[...new Set(fiszkiData.map(f=>f.tag))];
+
+function renderFlashFilter() {
+  document.getElementById('flashFilter').innerHTML =
+    `<button class="sf-btn active" onclick="setFlashCat('all',this)">Wszystkie</button>` +
+    flashCats.map(c=>`<button class="sf-btn" onclick="setFlashCat('${c}',this)">${c}</button>`).join('');
+}
+let flashFiltered=[...fiszkiData];
+function setFlashCat(cat, el) {
+  document.querySelectorAll('#flashFilter .sf-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');
+  flashFiltered=cat==='all'?[...fiszkiData]:fiszkiData.filter(f=>f.tag===cat);
+  flashIdx=0; showCard();
+}
+function showCard() {
+  const active=flashFiltered.filter((_,i)=>!flashMasteredSet.has(flashFiltered.indexOf(flashFiltered[i])));
+  const pool=flashFiltered;
+  if(!pool.length) return;
+  flashIdx=Math.max(0,Math.min(flashIdx,pool.length-1));
+  const f=pool[flashIdx];
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('flashTag').textContent=f.tag;
+  document.getElementById('flashTag2').textContent=f.tag;
+  document.getElementById('flashQ').textContent=f.q;
+  document.getElementById('flashA').innerHTML=f.a;
+  document.getElementById('flashNum').textContent=flashIdx+1;
+  document.getElementById('flashTotal').textContent=pool.length;
+  document.getElementById('flashMastered').textContent=flashMasteredSet.size?`(${flashMasteredSet.size} opanowanych)`:'';
+}
+function flipCard(){document.getElementById('flashcard').classList.toggle('flipped');}
+function nextCard(){flashIdx=(flashIdx+1)%flashFiltered.length;showCard();}
+function prevCard(){flashIdx=(flashIdx-1+flashFiltered.length)%flashFiltered.length;showCard();}
+function markMastered(){
+  const i=fiszkiData.indexOf(flashFiltered[flashIdx]);
+  flashMasteredSet.add(i);
+  localStorage.setItem('xl_flash',JSON.stringify([...flashMasteredSet]));
+  toast('Opanowane!','Karta pominięta w następnych rundach');
+  nextCard();
+}
+renderFlashFilter();
+showCard();
+
+// ===================== TYPING =====================
+let typIdx=0, typStarted=false, typStart=0, typErrors=0;
+function renderTyping() {
+  const wrap=document.getElementById('typingWrap');
+  const t=typingData[typIdx];
+  const done=typIdx>=typingData.length;
+  if(done){wrap.innerHTML=`<div class="typing-task"><div class="typing-done">🎉 Ukończyłeś wszystkie ${typingData.length} formuł!</div><button class="qbtn" onclick="typIdx=0;typErrors=0;renderTyping()">🔄 Zacznij od nowa</button></div>`;return;}
+  wrap.innerHTML=`
+    <div class="typing-task">
+      <div class="typing-label">${t.label} — przepisz formułę:</div>
+      <div class="typing-target" id="typTarget">${t.text}</div>
+      <input class="typing-input" id="typInput" placeholder="Wpisz formułę tutaj..." oninput="checkTyping()" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="typing-stats"><span class="typing-stat">Błędy: <b id="typErrCount">${typErrors}</b></span><span class="typing-stat">Postęp: <b id="typProgress">0/${t.text.length}</b></span></div>
+    </div>
+    <div class="typing-nav">
+      <span class="typing-progress">Formuła <b>${typIdx+1}</b> z <b>${typingData.length}</b></span>
+      <button class="qbtn" onclick="typIdx=(typIdx+1)%typingData.length;renderTyping()">Pomiń →</button>
+    </div>`;
+  setTimeout(()=>document.getElementById('typInput')?.focus(),50);
+}
+function checkTyping() {
+  const inp=document.getElementById('typInput').value;
+  const target=typingData[typIdx].text;
+  if(inp===target) {
+    toast('✓ Poprawnie!',target);
+    typErrors=0;
+    setTimeout(()=>{typIdx++;renderTyping();},600);
+    return;
+  }
+  let wrong=false;
+  for(let i=0;i<inp.length;i++) if(inp[i]!==target[i]){wrong=true;break;}
+  if(wrong) typErrors++;
+  document.getElementById('typErrCount').textContent=typErrors;
+  document.getElementById('typProgress').textContent=`${inp.length}/${target.length}`;
+}
+renderTyping();
+
+// ===================== FOKUS =====================
+let fokusT=null,fokusLeft=90,fokusRunning=false;
+const fokusMax=90;
+const fokusFormulas=['=WYSZUKAJ.PIONOWO(szukana; tabela; nr_kol; FAŁSZ)','=JEŻELI(test; gdy_prawda; gdy_fałsz)','=SUMA.JEŻELI(zakres; kryterium; zakres_sumy)','=INDEKS(zakres; PODAJ.POZYCJĘ(szukana; zakres; 0))','=LICZ.JEŻELI(zakres; ">50")','=JEŻELI.BŁĄD(formuła; "wartość gdy błąd")'];
+let fokusIdx=0;
+function startFokus() {
+  if(fokusRunning) return;
+  fokusRunning=true; fokusLeft=fokusMax;
+  document.getElementById('fokusLabel').textContent='Skup się na formule poniżej ↓';
+  document.getElementById('fokusTip').innerHTML=`<b>Formuła do opanowania:</b><br><code style="color:var(--xl);font-size:1rem">${fokusFormulas[fokusIdx%fokusFormulas.length]}</code><br><br>Przepisuj ją wielokrotnie, analizuj każdy argument, twórz własne przykłady.`;
+  fokusIdx++;
+  fokusT=setInterval(()=>{
+    fokusLeft--;
+    const m=String(Math.floor(fokusLeft/60)).padStart(2,'0');
+    const s=String(fokusLeft%60).padStart(2,'0');
+    document.getElementById('fokusTimer').textContent=`${m}:${s}`;
+    const circ=document.getElementById('fokusRing');
+    const offset=440*(1-fokusLeft/fokusMax);
+    circ.style.strokeDashoffset=offset;
+    if(fokusLeft<=0){clearInterval(fokusT);fokusRunning=false;toast('Fokus zakończony!','Świetna robota 💪');}
+  },1000);
+}
+function resetFokus() { clearInterval(fokusT);fokusRunning=false;fokusLeft=fokusMax;document.getElementById('fokusTimer').textContent='01:30';document.getElementById('fokusRing').style.strokeDashoffset=0;document.getElementById('fokusLabel').textContent='Gotowy? Kliknij Start i skup się na jednej formule.';}
+
+// ===================== NOTATNIK =====================
+let nbSelected=new Set(), nbList=[];
+let nbCatFilter='wszystkie';
+const nbCats=[...new Set(notatnikData.map(n=>n.tag))];
+
+function renderNbBlocks(filterQ='') {
+  const items=notatnikData.filter(n=>(nbCatFilter==='wszystkie'||n.tag===nbCatFilter)&&(!filterQ||(n.txt+n.tag).toLowerCase().includes(filterQ.toLowerCase())));
+  document.getElementById('nbBlocks').innerHTML=items.map((n,i)=>{
+    const idx=notatnikData.indexOf(n);
+    return `<label class="nb-item"><input type="checkbox"${nbSelected.has(idx)?'checked':''} onchange="toggleNb(${idx},this.checked)"><div><div class="nb-txt">${n.txt}</div><div class="nb-tag">[${n.tag}]</div></div></label>`;
+  }).join('') || '<div style="color:var(--muted);font-size:0.85rem;padding:10px">Brak wyników</div>';
+  document.getElementById('nbSel').textContent=nbSelected.size+' zaznaczono';
+}
+function renderNbCats() {
+  document.getElementById('nbCats').innerHTML=
+    `<button class="nb-cat${nbCatFilter==='wszystkie'?' active':''}" onclick="setNbCat('wszystkie')">Wszystkie</button>`+
+    nbCats.map(c=>`<button class="nb-cat${nbCatFilter===c?' active':''}" onclick="setNbCat('${c}')">${c}</button>`).join('');
+}
+function setNbCat(c){nbCatFilter=c;renderNbCats();renderNbBlocks();}
+function filterNb(q){renderNbBlocks(q);}
+function toggleNb(i,v){if(v)nbSelected.add(i);else nbSelected.delete(i);document.getElementById('nbSel').textContent=nbSelected.size+' zaznaczono';}
+function nbSelectAll(v){nbSelected=v?new Set(notatnikData.map((_,i)=>i)):new Set();renderNbBlocks();}
+function nbAddSelected(){nbSelected.forEach(i=>{if(!nbList.includes(i))nbList.push(i);});renderNbList();toast('Dodano!',nbSelected.size+' punktów');}
+function renderNbList(){
+  const el=document.getElementById('nbList');
+  el.innerHTML=nbList.map((i,j)=>`<div class="nb-list-item"><div class="nb-txt"><span style="color:var(--muted);font-size:0.75rem;font-family:'Fira Code',monospace">[${notatnikData[i].tag}]</span> ${notatnikData[i].txt}</div><button class="nb-del" onclick="nbRemove(${j})">×</button></div>`).join('')||'<div style="color:var(--muted);font-size:0.85rem;padding:10px">Nic tu jeszcze nie ma. Dodaj punkty →</div>';
+  document.getElementById('nbCount').textContent=nbList.length+' punktów';
+}
+function nbRemove(j){nbList.splice(j,1);renderNbList();}
+function nbExport(){const t=nbList.map(i=>`[${notatnikData[i].tag}] ${notatnikData[i].txt}`).join('\n');navigator.clipboard.writeText(t).then(()=>toast('Skopiowano!',''));}
+function nbDownload(){const t='ŚCIĄGA EXCEL — MATURA\n'+'='.repeat(40)+'\n\n'+nbList.map(i=>`[${notatnikData[i].tag}]\n${notatnikData[i].txt}`).join('\n\n');const b=new Blob([t],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sciaga_excel.txt';a.click();}
+function nbClear(){nbList=[];renderNbList();}
+renderNbCats();
+renderNbBlocks();
+renderNbList();
+</script>
+</body>
+</html>

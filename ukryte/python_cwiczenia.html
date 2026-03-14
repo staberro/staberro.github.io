@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d12">
+<title>Python Trainer — Matura</title>
+<script src="https://skulpt.org/js/skulpt.min.js"></script>
+<script src="https://skulpt.org/js/skulpt-stdlib.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0d0d12;--card:#14141c;--el:#1c1c28;--el2:#252535;
+--text:#f0f0f5;--text2:#a0a0b5;--muted:#606075;
+--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+--green:#22c55e;--red:#dc2626;--orange:#f97316;--gold:#eab308;
+--purple:#a855f7;--blue:#3b82f6;--cyan:#06b6d4;
+--accent:#ffd43b;--accent2:#f59e0b;
+--kw:#569cd6;--fn:#dcdcaa;--str:#ce9178;--num:#b5cea8;--cm:#6a9955;--op:#c586c0;--bi:#4ec9b0;--dec:#c084fc;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow:hidden;height:100vh}
+code{font-family:'Fira Code',monospace;background:var(--el);padding:2px 8px;border-radius:6px;font-size:.85em;color:var(--accent)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--el);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+button{cursor:pointer;font-family:inherit}
+
+.app{display:grid;grid-template-rows:52px 1fr;height:100vh}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(13,13,18,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--orange));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900;color:#000}
+.logo span{color:var(--accent)}
+.t-badge{font-family:'Outfit';font-size:.7rem;padding:3px 10px;background:rgba(255,212,59,.12);color:var(--accent);border-radius:50px;margin-left:8px}
+.nav-r{display:flex;align-items:center;gap:10px}
+.nav-pill{padding:6px 14px;background:var(--el);border:1px solid var(--border);border-radius:50px;font-size:.8rem;color:var(--text2)}
+.nav-pill b{color:var(--accent)}
+.nbtn{padding:6px 14px;background:var(--el);border:1px solid var(--border);border-radius:50px;font-size:.8rem;color:var(--text2);transition:.3s}
+.nbtn:hover{border-color:var(--accent);color:var(--text)}
+
+.main{display:flex;flex-direction:row;height:calc(100vh - 52px);overflow:hidden}
+
+.side{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;background:var(--card);width:280px;flex-shrink:0}
+.side-top{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:4px;flex-wrap:wrap}
+.ftag{padding:4px 10px;font-size:.7rem;font-weight:600;border:1px solid var(--border);border-radius:50px;background:none;color:var(--muted);transition:.2s;text-transform:uppercase;letter-spacing:.3px}
+.ftag:hover,.ftag.on{background:var(--el);color:var(--accent);border-color:rgba(255,212,59,.3)}
+.tlist{overflow-y:auto;flex:1}
+.ti{padding:8px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.15s;border-left:3px solid transparent}
+.ti:hover{background:var(--el)}
+.ti.on{background:var(--el);border-left-color:var(--accent)}
+.ti.done .dot{background:var(--green)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--el2);flex-shrink:0}
+.ti-n{font-size:.8rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti.on .ti-n{color:var(--accent);font-weight:600}
+.lvl{font-size:.5rem;font-weight:700;padding:1px 4px;border-radius:3px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase}
+.lvl-e{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.lvl-m{background:rgba(255,212,59,.15);color:#ffd43b;border:1px solid rgba(255,212,59,.3)}
+.lvl-h{background:rgba(249,115,22,.15);color:#fb923c;border:1px solid rgba(249,115,22,.3)}
+.side-footer{padding:10px 14px;border-top:1px solid var(--border);font-size:.65rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap}
+.side-stat{background:var(--el);padding:3px 8px;border-radius:4px;display:flex;gap:4px}
+.side-stat b{color:var(--accent)}
+.ti.repeat .dot{background:#ef4444!important;box-shadow:0 0 5px #ef4444}
+.ti.repeat{border-left-color:#ef4444!important}
+.repeat-badge{display:inline-block;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:3px;font-size:.52rem;padding:1px 4px;margin-left:2px;vertical-align:middle;font-weight:700}
+.ftag-repeat{border-color:rgba(239,68,68,.35)!important;color:#f87171!important}
+.ftag-repeat.on{background:rgba(239,68,68,.12)!important}
+
+.center{display:flex;flex-direction:column;overflow:hidden;flex:1;min-width:0}
+.task-q{padding:14px 20px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0}
+.task-q h2{font-family:'Cinzel',serif;font-size:1rem;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.task-q h2 .cat-badge{font-size:.6rem;font-family:'Outfit';padding:2px 8px;border-radius:4px;font-weight:700;text-transform:uppercase}
+.task-q p{font-size:.88rem;color:var(--text2);line-height:1.5}
+.hint-btn{margin-top:6px;font-size:.7rem;background:none;border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:4px;transition:.2s}
+.hint-btn:hover{border-color:var(--accent);color:var(--accent)}
+.hint-box{display:none;margin-top:8px;padding:6px 10px;background:rgba(255,212,59,.06);border:1px solid rgba(255,212,59,.2);border-radius:6px;font-size:.78rem;color:var(--accent2)}
+.hint-box.show{display:block}
+
+.cat-podstawy{background:rgba(6,182,212,.15);color:#22d3ee}
+.cat-listy{background:rgba(168,85,247,.15);color:#c084fc}
+.cat-slowniki{background:rgba(249,115,22,.15);color:#fb923c}
+.cat-funkcje{background:rgba(34,197,94,.15);color:#4ade80}
+.cat-pliki_algorytmy{background:rgba(59,130,246,.15);color:#60a5fa}
+.cat-matura{background:rgba(255,212,59,.15);color:#ffd43b}
+
+.code-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.code-box{flex:1;position:relative;min-height:80px;overflow:hidden;background:#1e1e1e;border-bottom:1px solid var(--border)}
+.code-hl,.code-ta{position:absolute;inset:0;padding:14px 16px;font-family:'Fira Code',monospace;font-size:.82rem;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;overflow:auto;tab-size:4}
+.code-hl{pointer-events:none;z-index:1;color:#d4d4d4}
+.code-ta{background:transparent;border:none;outline:none;resize:none;z-index:2;color:transparent;caret-color:var(--accent);-webkit-text-fill-color:transparent}
+.code-hl .kw{color:var(--kw);font-weight:600}
+.code-hl .bi{color:var(--bi)}
+.code-hl .fn{color:var(--fn)}
+.code-hl .dec{color:var(--dec)}
+.code-hl .str{color:var(--str)}
+.code-hl .num{color:var(--num)}
+.code-hl .cm{color:var(--cm);font-style:italic}
+.code-hl .op{color:var(--op)}
+.code-hl .paren{color:#ffd43b}
+.code-hl .bool{color:#569cd6;font-weight:600}
+.ln-gutter{position:absolute;left:0;top:0;bottom:0;width:40px;background:#1a1a1a;border-right:1px solid #2a2a2a;pointer-events:none;z-index:3;overflow:hidden}
+.ln-nums{padding:14px 8px 14px 0;font-family:'Fira Code';font-size:.82rem;line-height:1.8;text-align:right;color:#444;user-select:none}
+.code-hl,.code-ta{padding-left:50px!important}
+
+.pybar{display:flex;flex-wrap:wrap;gap:3px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;max-height:60px;overflow-y:auto}
+.pyb{padding:2px 8px;font-size:.65rem;font-family:'Fira Code';font-weight:600;border:1px solid transparent;border-radius:4px;background:rgba(255,255,255,0.04);transition:.15s;opacity:.88;color:var(--text2);border-color:var(--border)}
+.pyb:hover{opacity:1;transform:translateY(-1px);color:var(--accent);border-color:rgba(255,212,59,.3)}
+
+.actbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0}
+.actbar-l,.actbar-r{display:flex;gap:6px;align-items:center}
+.abtn{padding:6px 16px;border-radius:50px;font-size:.8rem;font-weight:600;border:none;transition:.3s;display:inline-flex;align-items:center;gap:5px}
+.abtn-run{background:linear-gradient(135deg,var(--accent),var(--orange));color:#000}
+.abtn-run:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,212,59,.3)}
+.abtn-ans{background:var(--el);color:var(--text2);border:1px solid var(--border)}
+.abtn-ans:hover{border-color:var(--purple);color:var(--purple)}
+.abtn-clear{background:var(--el);color:var(--text2);border:1px solid var(--border)}
+.abtn-clear:hover{border-color:var(--red);color:var(--red)}
+.abtn-next{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
+.abtn-next:hover{transform:translateY(-1px)}
+.kbd{font-size:.6rem;background:var(--el2);padding:1px 5px;border-radius:3px;border:1px solid var(--border2);color:var(--muted);font-family:'Fira Code'}
+
+.ans-wrap{display:none;padding:8px 14px;background:rgba(34,197,94,.05);border-bottom:1px solid rgba(34,197,94,.1);flex-shrink:0;max-height:150px;overflow:auto}
+.ans-wrap.show{display:block}
+.ans-lbl{font-size:.6rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.ans-code{font-family:'Fira Code';font-size:.75rem;color:#55efc4;line-height:1.6;white-space:pre-wrap}
+.ans-expected{margin-top:6px;padding:6px 10px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);border-radius:6px}
+.ans-expected-lbl{font-size:.58rem;color:var(--cyan);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.ans-expected-val{font-family:'Fira Code';font-size:.75rem;color:#7dd3fc;white-space:pre-wrap;line-height:1.5}
+
+.verdict{padding:8px 14px;font-size:.85rem;font-weight:600;display:none;flex-shrink:0;align-items:center;gap:8px}
+.verdict.ok{background:rgba(34,197,94,.08);border-bottom:1px solid rgba(34,197,94,.15);color:var(--green);display:flex}
+.verdict.err{background:rgba(220,38,38,.08);border-bottom:1px solid rgba(220,38,38,.15);color:#f87171;display:flex}
+
+.self-assess{display:none;flex-shrink:0;padding:6px 14px;background:var(--card);border-bottom:1px solid var(--border);align-items:center;gap:8px}
+.self-assess.show{display:flex}
+.self-assess-lbl{font-size:.72rem;color:var(--muted);flex:1}
+.abtn-know{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none}
+.abtn-know:hover{transform:translateY(-1px);filter:brightness(1.1);box-shadow:0 4px 14px rgba(22,163,74,.35)}
+.abtn-nope{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none}
+.abtn-nope:hover{transform:translateY(-1px);filter:brightness(1.1);box-shadow:0 4px 14px rgba(220,38,38,.35)}
+
+.prog-wrap{height:3px;background:var(--el);flex-shrink:0}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--orange));transition:width .4s;border-radius:0 2px 2px 0}
+
+.out-wrap{height:180px;flex-shrink:0;display:flex;flex-direction:column;border-top:1px solid var(--border)}
+.out-bar{padding:5px 14px;background:var(--el);display:flex;justify-content:space-between;align-items:center;font-size:.7rem;flex-shrink:0}
+.out-label{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;font-size:.6rem}
+.out-status{font-size:.7rem;font-weight:600}
+.out-status.ok{color:var(--green)}
+.out-status.err{color:var(--red)}
+.out-status.run{color:var(--accent)}
+.out-content{flex:1;overflow:auto;padding:10px 14px;font-family:'Fira Code';font-size:.8rem;line-height:1.7;background:#0e0e14;white-space:pre-wrap}
+.out-content .out-text{color:#e5e5e5}
+.out-content .out-err{color:#f87171}
+.out-content .out-hint{color:#94a3b8;font-style:italic}
+
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:flex;align-items:center;justify-content:center}
+.modal{background:#1a1d27;border:1px solid #2d3139;border-radius:14px;padding:20px 22px;max-width:500px;width:92%;max-height:85vh;display:flex;flex-direction:column;gap:0}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="nav">
+  <div class="logo">
+    <div class="logo-icon">&#x1F40D;</div>
+    <span>Python</span> Trainer
+    <span class="t-badge">MATURA</span>
+  </div>
+  <div class="nav-r">
+    <div class="nav-pill">Zaliczone: <b id="doneCount">0</b>/<b id="totalCount">0</b></div>
+    <div class="nav-pill" id="progPct" style="color:var(--accent)">0%</div>
+    <button class="nbtn" onclick="showDailyModal()">&#x1F4C5; Plan dnia</button>
+    <button class="nbtn" onclick="rnd()">&#x1F3B2; Losuj</button>
+    <button class="nbtn" onclick="clearProgress()" title="Reset">&#x21BA;</button>
+  </div>
+</nav>
+<div class="main">
+<aside class="side">
+  <div class="side-top" id="filterBar"></div>
+  <div class="tlist" id="taskList"></div>
+  <div class="side-footer" id="sideFooter"></div>
+</aside>
+<div class="center">
+  <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  <div class="task-q" id="taskQ">
+    <h2 id="taskTitle"><span class="cat-badge" id="catBadge"></span></h2>
+    <p id="taskDesc">Wybierz zadanie z listy po lewej stronie.</p>
+    <div style="display:flex;gap:6px;margin-top:6px;align-items:center">
+      <button class="hint-btn" onclick="toggleHint()">&#x1F4A1; Podpowiedź</button>
+      <span id="lvlBadge" class="lvl"></span>
+    </div>
+    <div class="hint-box" id="hintBox"></div>
+  </div>
+  <div class="ans-wrap" id="ansWrap">
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <div class="ans-lbl">&#x2713; Kod rozwiązania (Python)</div>
+        <div class="ans-code" id="ansCode"></div>
+      </div>
+      <div class="ans-expected">
+        <div class="ans-expected-lbl">&#x1F4E4; Oczekiwany output</div>
+        <div class="ans-expected-val" id="ansExpected"></div>
+      </div>
+    </div>
+  </div>
+  <div class="verdict" id="verdict"></div>
+  <div class="pybar" id="pyBar"></div>
+  <div class="code-wrap">
+    <div class="code-box" id="codeBox">
+      <div class="ln-gutter"><div class="ln-nums" id="lnNums">1</div></div>
+      <div class="code-hl" id="hl"></div>
+      <textarea class="code-ta" id="ed" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+    </div>
+    <div class="actbar">
+      <div class="actbar-l">
+        <button class="abtn abtn-run" onclick="runCode()">&#9654; Uruchom <span class="kbd">Ctrl+Enter</span></button>
+        <button class="abtn abtn-ans" onclick="toggleAns()">&#x1F441; Rozwiązanie</button>
+        <button class="abtn abtn-clear" onclick="clearCode()">&#x2717; Wyczyść</button>
+      </div>
+      <div class="actbar-r">
+        <button class="abtn abtn-next" id="btnNext" style="display:none" onclick="nextTask()">Następne &#8594;</button>
+      </div>
+    </div>
+    <div class="self-assess" id="selfAssess">
+      <span class="self-assess-lbl">&#x1F4AC; Czy rozwiązałeś to zadanie?</span>
+      <button class="abtn abtn-know" onclick="markKnow()">&#x2713; Umiem</button>
+      <button class="abtn abtn-nope" onclick="markNope()">&#x2717; Powtórka</button>
+    </div>
+    <div class="out-wrap">
+      <div class="out-bar">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="out-label">Output</span>
+          <span class="out-status" id="outStatus"></span>
+        </div>
+        <button class="nbtn" style="font-size:.65rem;padding:3px 10px" onclick="clearOutput()">Wyczyść</button>
+      </div>
+      <div class="out-content" id="outContent"><span class="out-hint">// Wyjście programu pojawi się tutaj...</span></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// TASK DATABASE (273 verified tasks)
+// ═══════════════════════════════════════
+const T = [{"c": "podstawy", "n": "Hello, World!", "lvl": 1, "d": "Wypisz na ekranie tekst: <code>Hello, World!</code>", "sol": "print('Hello, World!')", "a": "Hello, World!", "hint": "Użyj funkcji print()", "starter": ""}, {"c": "podstawy", "n": "Dodawanie liczb", "lvl": 1, "d": "Wypisz sumę liczb 15 i 27.", "sol": "print(15 + 27)", "a": "42", "hint": "print(15 + 27)", "starter": ""}, {"c": "podstawy", "n": "Zmienne", "lvl": 1, "d": "Utwórz zmienną <code>x = 10</code> i wypisz jej wartość.", "sol": "x = 10\nprint(x)", "a": "10", "hint": "x = 10 i print(x)", "starter": "x = 10\n"}, {"c": "podstawy", "n": "Typ zmiennej", "lvl": 1, "d": "Wypisz typ liczby <code>42</code> i stringa <code>'Python'</code>, każdy w osobnej linii.", "sol": "print(type(42))\nprint(type('Python'))", "a": "<class 'int'>\n<class 'str'>", "hint": "Użyj type() i print()", "starter": ""}, {"c": "podstawy", "n": "Konwersja typów", "lvl": 1, "d": "Zamień string <code>'42'</code> na int, dodaj 8 i wypisz wynik.", "sol": "print(int('42') + 8)", "a": "50", "hint": "int('42') + 8", "starter": ""}, {"c": "podstawy", "n": "Operatory arytmetyczne", "lvl": 1, "d": "Wypisz w osobnych liniach: 17//3, 17%3, 2**10", "sol": "print(17 // 3)\nprint(17 % 3)\nprint(2 ** 10)", "a": "5\n2\n1024", "hint": "// dzielenie całk., % reszta, ** potęga", "starter": ""}, {"c": "podstawy", "n": "f-string", "lvl": 1, "d": "Mając <code>imie='Anna'</code> i <code>wiek=25</code>, wypisz: <code>Anna ma 25 lat.</code> używając f-stringa.", "sol": "imie = 'Anna'\nwiek = 25\nprint(f'{imie} ma {wiek} lat.')", "a": "Anna ma 25 lat.", "hint": "f'{imie} ma {wiek} lat.'", "starter": "imie = 'Anna'\nwiek = 25\n"}, {"c": "podstawy", "n": "Operatory logiczne", "lvl": 1, "d": "Wypisz wyniki: <code>True and False</code>, <code>True or False</code>, <code>not True</code> — każdy w osobnej linii.", "sol": "print(True and False)\nprint(True or False)\nprint(not True)", "a": "False\nTrue\nFalse", "hint": "Operatory: and, or, not", "starter": ""}, {"c": "podstawy", "n": "Porównania", "lvl": 1, "d": "Wypisz w osobnych liniach: 5 > 3, 5 == 3, 5 != 3, 5 >= 5", "sol": "print(5 > 3)\nprint(5 == 3)\nprint(5 != 3)\nprint(5 >= 5)", "a": "True\nFalse\nTrue\nTrue", "hint": "Operatory: >, ==, !=, >=", "starter": ""}, {"c": "podstawy", "n": "if-else", "lvl": 1, "d": "Mając <code>x = 17</code>, wypisz <code>parzysta</code> jeśli x jest parzyste, lub <code>nieparzysta</code>.", "sol": "x = 17\nif x % 2 == 0:\n    print('parzysta')\nelse:\n    print('nieparzysta')", "a": "nieparzysta", "hint": "x % 2 == 0 sprawdza parzystość", "starter": "x = 17\n"}, {"c": "podstawy", "n": "if-elif-else", "lvl": 1, "d": "Mając <code>ocena = 4</code>, wypisz: 5→'bardzo dobry', 4→'dobry', 3→'dostateczny', inaczej→'niedostateczny'.", "sol": "ocena = 4\nif ocena == 5:\n    print('bardzo dobry')\nelif ocena == 4:\n    print('dobry')\nelif ocena == 3:\n    print('dostateczny')\nelse:\n    print('niedostateczny')", "a": "dobry", "hint": "if/elif/else z warunkami ==", "starter": "ocena = 4\n"}, {"c": "podstawy", "n": "Pętla for range", "lvl": 1, "d": "Wypisz liczby od 1 do 5 (włącznie), każda w osobnej linii.", "sol": "for i in range(1, 6):\n    print(i)", "a": "1\n2\n3\n4\n5", "hint": "range(1, 6) daje 1,2,3,4,5", "starter": ""}, {"c": "podstawy", "n": "Pętla while", "lvl": 1, "d": "Używając pętli while, wypisz: 10, 8, 6, 4, 2 (każda w osobnej linii).", "sol": "i = 10\nwhile i >= 2:\n    print(i)\n    i -= 2", "a": "10\n8\n6\n4\n2", "hint": "i = 10; while i >= 2: print(i); i -= 2", "starter": ""}, {"c": "podstawy", "n": "Suma 1-100", "lvl": 1, "d": "Oblicz i wypisz sumę liczb od 1 do 100.", "sol": "print(sum(range(1, 101)))", "a": "5050", "hint": "sum(range(1, 101))", "starter": ""}, {"c": "podstawy", "n": "Silnia", "lvl": 2, "d": "Mając <code>n = 7</code>, oblicz n! i wypisz wynik.", "sol": "n = 7\nwynik = 1\nfor i in range(1, n + 1):\n    wynik *= i\nprint(wynik)", "a": "5040", "hint": "wynik *= i w pętli od 1 do n", "starter": "n = 7\n"}, {"c": "podstawy", "n": "Iteracja po stringu", "lvl": 1, "d": "Wypisz każdą literę słowa <code>'Python'</code> w osobnej linii.", "sol": "for c in 'Python':\n    print(c)", "a": "P\ny\nt\nh\no\nn", "hint": "for c in 'Python': print(c)", "starter": ""}, {"c": "podstawy", "n": "break i continue", "lvl": 2, "d": "Wypisz liczby 1-10, pomijając 5, kończąc na 8.", "sol": "for i in range(1, 11):\n    if i == 5:\n        continue\n    if i > 8:\n        break\n    print(i)", "a": "1\n2\n3\n4\n6\n7\n8", "hint": "continue pomija, break kończy", "starter": ""}, {"c": "podstawy", "n": "Zagnieżdżone pętle", "lvl": 2, "d": "Wypisz tabliczkę mnożenia 3×3 (wyniki 1*1 do 3*3), każdy w osobnej linii.", "sol": "for i in range(1, 4):\n    for j in range(1, 4):\n        print(i * j)", "a": "1\n2\n3\n2\n4\n6\n3\n6\n9", "hint": "Dwie zagnieżdżone pętle range(1,4)", "starter": ""}, {"c": "podstawy", "n": "Liczba pierwsza", "lvl": 2, "d": "Sprawdź czy <code>n = 17</code> jest liczbą pierwszą. Wypisz <code>pierwsza</code> lub <code>nie pierwsza</code>.", "sol": "n = 17\nis_prime = True\nif n < 2:\n    is_prime = False\nelse:\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            is_prime = False\n            break\nprint('pierwsza' if is_prime else 'nie pierwsza')", "a": "pierwsza", "hint": "Sprawdź dzielniki od 2 do sqrt(n)", "starter": "n = 17\n"}, {"c": "podstawy", "n": "Odwrócenie stringa", "lvl": 1, "d": "Wypisz odwrócony string <code>'matura'</code>.", "sol": "print('matura'[::-1])", "a": "arutam", "hint": "s[::-1] odwraca string", "starter": ""}, {"c": "podstawy", "n": "Długość stringa", "lvl": 1, "d": "Wypisz liczbę znaków w <code>'programowanie'</code>.", "sol": "print(len('programowanie'))", "a": "13", "hint": "len() zwraca długość", "starter": ""}, {"c": "podstawy", "n": "upper/lower", "lvl": 1, "d": "Mając <code>s = 'Hello World'</code>, wypisz wielką i małą wersję w osobnych liniach.", "sol": "s = 'Hello World'\nprint(s.upper())\nprint(s.lower())", "a": "HELLO WORLD\nhello world", "hint": ".upper() i .lower()", "starter": "s = 'Hello World'\n"}, {"c": "podstawy", "n": "split i join", "lvl": 2, "d": "Podziel <code>'Jan,Anna,Piotr'</code> po przecinku i wypisz każde imię w osobnej linii.", "sol": "for name in 'Jan,Anna,Piotr'.split(','):\n    print(name)", "a": "Jan\nAnna\nPiotr", "hint": "s.split(',') dzieli string", "starter": ""}, {"c": "podstawy", "n": "strip i replace", "lvl": 2, "d": "Oczyść <code>'  Hello  '</code> (strip) i zamień 'Hello' na 'Matura'. Wypisz wynik.", "sol": "s = '  Hello  '\nprint(s.strip().replace('Hello', 'Matura'))", "a": "Matura", "hint": ".strip() usuwa spacje, .replace() zamienia", "starter": ""}, {"c": "podstawy", "n": "Zliczanie znaków", "lvl": 2, "d": "Policz ile razy litera <code>'a'</code> występuje w <code>'abrakadabra'</code>. Wypisz liczbę.", "sol": "print('abrakadabra'.count('a'))", "a": "5", "hint": ".count('a') zlicza wystąpienia", "starter": ""}, {"c": "podstawy", "n": "Operator in", "lvl": 1, "d": "Sprawdź czy <code>'atu'</code> jest w <code>'matura'</code>. Wypisz True lub False.", "sol": "print('atu' in 'matura')", "a": "True", "hint": "'atu' in 'matura'", "starter": ""}, {"c": "podstawy", "n": "Wycinanie stringa", "lvl": 2, "d": "Z <code>'Python 3.11'</code> wypisz tylko <code>'Python'</code> (pierwsze 6 znaków).", "sol": "print('Python 3.11'[:6])", "a": "Python", "hint": "s[:6] bierze 6 pierwszych znaków", "starter": ""}, {"c": "podstawy", "n": "Palindrom", "lvl": 2, "d": "Sprawdź czy <code>'kajak'</code> jest palindromem. Wypisz <code>TAK</code> lub <code>NIE</code>.", "sol": "s = 'kajak'\nprint('TAK' if s == s[::-1] else 'NIE')", "a": "TAK", "hint": "s == s[::-1] sprawdza palindrom", "starter": "s = 'kajak'\n"}, {"c": "podstawy", "n": "FizzBuzz", "lvl": 2, "d": "Dla liczb 1-15: wypisz FizzBuzz (podzielna przez 3 i 5), Fizz (przez 3), Buzz (przez 5), inaczej liczbę.", "sol": "for i in range(1, 16):\n    if i % 15 == 0:\n        print('FizzBuzz')\n    elif i % 3 == 0:\n        print('Fizz')\n    elif i % 5 == 0:\n        print('Buzz')\n    else:\n        print(i)", "a": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz", "hint": "if i%15==0: FizzBuzz; elif i%3==0: Fizz...", "starter": ""}, {"c": "podstawy", "n": "Trójkąt gwiazdek", "lvl": 2, "d": "Wypisz trójkąt: 1, 2, 3, 4 gwiazdki w kolejnych wierszach.", "sol": "for i in range(1, 5):\n    print('*' * i)", "a": "*\n**\n***\n****", "hint": "'*' * i powtarza gwiazdkę i razy", "starter": ""}, {"c": "podstawy", "n": "Fibonacci", "lvl": 2, "d": "Wypisz 8 pierwszych liczb Fibonacciego (od 0), każda w osobnej linii.", "sol": "a, b = 0, 1\nfor _ in range(8):\n    print(a)\n    a, b = b, a + b", "a": "0\n1\n1\n2\n3\n5\n8\n13", "hint": "a, b = b, a+b w pętli", "starter": ""}, {"c": "podstawy", "n": "Liczba cyfr", "lvl": 2, "d": "Policz ile cyfr (0-9) jest w <code>'abc123def456'</code>. Wypisz liczbę.", "sol": "print(sum(1 for c in 'abc123def456' if c.isdigit()))", "a": "6", "hint": "c.isdigit() sprawdza czy cyfra", "starter": ""}, {"c": "podstawy", "n": "Parzyste 1-20", "lvl": 1, "d": "Wypisz wszystkie parzyste od 2 do 20 (każda w osobnej linii).", "sol": "for i in range(2, 21, 2):\n    print(i)", "a": "2\n4\n6\n8\n10\n12\n14\n16\n18\n20", "hint": "range(2, 21, 2)", "starter": ""}, {"c": "podstawy", "n": "Suma cyfr", "lvl": 2, "d": "Oblicz sumę cyfr liczby <code>12345</code>. Wypisz wynik.", "sol": "print(sum(int(c) for c in str(12345)))", "a": "15", "hint": "Zamień na string, sumuj int(cyfra)", "starter": ""}, {"c": "podstawy", "n": "Potęgi dwójki", "lvl": 1, "d": "Wypisz potęgi 2 od 2^0 do 2^8, każda w osobnej linii.", "sol": "for i in range(9):\n    print(2 ** i)", "a": "1\n2\n4\n8\n16\n32\n64\n128\n256", "hint": "2**i w pętli range(9)", "starter": ""}, {"c": "podstawy", "n": "Konwersja temperatury", "lvl": 1, "d": "Zamień 100°F na °C: C=(F-32)*5/9. Wypisz zaokrąglone do 2 miejsc.", "sol": "print(round((100 - 32) * 5 / 9, 2))", "a": "37.78", "hint": "round((f-32)*5/9, 2)", "starter": ""}, {"c": "podstawy", "n": "NWD", "lvl": 2, "d": "Oblicz NWD(48, 18) algorytmem Euklidesa. Wypisz wynik.", "sol": "a, b = 48, 18\nwhile b:\n    a, b = b, a % b\nprint(a)", "a": "6", "hint": "while b: a, b = b, a % b", "starter": ""}, {"c": "podstawy", "n": "Odwróć słowa", "lvl": 1, "d": "Odwróć kolejność słów w <code>'Python jest super'</code>. Wypisz wynik.", "sol": "print(' '.join('Python jest super'.split()[::-1]))", "a": "super jest Python", "hint": "split()[::-1] + join", "starter": ""}, {"c": "podstawy", "n": "Wielokrotności 7", "lvl": 1, "d": "Wypisz wielokrotności 7 od 7 do 49, każda w osobnej linii.", "sol": "for i in range(7, 50, 7):\n    print(i)", "a": "7\n14\n21\n28\n35\n42\n49", "hint": "range(7, 50, 7)", "starter": ""}, {"c": "podstawy", "n": "Min i max", "lvl": 1, "d": "Z listy <code>[7, 2, 9, 4, 1, 8]</code> wypisz minimum i maximum w osobnych liniach.", "sol": "lst = [7, 2, 9, 4, 1, 8]\nprint(min(lst))\nprint(max(lst))", "a": "1\n9", "hint": "min() i max()", "starter": ""}, {"c": "podstawy", "n": "Abs wartość bezwzgl.", "lvl": 1, "d": "Wypisz wartości bezwzgl.: -5, 3, -8, 0 — każda w osobnej linii.", "sol": "for x in [-5, 3, -8, 0]:\n    print(abs(x))", "a": "5\n3\n8\n0", "hint": "abs(x)", "starter": ""}, {"c": "podstawy", "n": "Gwiazdki odwrócone", "lvl": 1, "d": "Wypisz odwrócony trójkąt: 5, 4, 3, 2, 1 gwiazdek.", "sol": "for i in range(5, 0, -1):\n    print('*' * i)", "a": "*****\n****\n***\n**\n*", "hint": "range(5, 0, -1)", "starter": ""}, {"c": "podstawy", "n": "Zamiana wartości", "lvl": 1, "d": "Mając <code>a=5, b=10</code>, zamień wartości i wypisz a, b w osobnych liniach.", "sol": "a, b = 5, 10\na, b = b, a\nprint(a)\nprint(b)", "a": "10\n5", "hint": "a, b = b, a", "starter": "a = 5\nb = 10\n"}, {"c": "podstawy", "n": "Średnia", "lvl": 1, "d": "Oblicz średnią z <code>[4, 8, 15, 16, 23, 42]</code>. Wypisz wynik.", "sol": "lst = [4, 8, 15, 16, 23, 42]\nprint(sum(lst) / len(lst))", "a": "18.0", "hint": "sum(lst) / len(lst)", "starter": ""}, {"c": "podstawy", "n": "Title case", "lvl": 1, "d": "Zamień <code>'hello world python'</code> na Title Case (pierwsza wielka). Wypisz.", "sol": "print('hello world python'.title())", "a": "Hello World Python", "hint": ".title()", "starter": ""}, {"c": "podstawy", "n": "Sprawdź hasło", "lvl": 2, "d": "Sprawdź czy <code>'P@ssw0rd'</code> ma ≥8 znaków, cyfrę i wielką literę. Wypisz True/False.", "sol": "h = 'P@ssw0rd'\nprint(len(h) >= 8 and any(c.isdigit() for c in h) and any(c.isupper() for c in h))", "a": "True", "hint": "any() z generatorem sprawdzającym", "starter": ""}, {"c": "podstawy", "n": "Szachownica", "lvl": 2, "d": "Wypisz szachownicę 4×4 z # i . (zaczynając od #).", "sol": "for i in range(4):\n    row = ''\n    for j in range(4):\n        row += '#' if (i + j) % 2 == 0 else '.'\n    print(row)", "a": "#.#.\n.#.#\n#.#.\n.#.#", "hint": "(i+j)%2 determinuje znak", "starter": ""}, {"c": "podstawy", "n": "Ciąg arytmetyczny", "lvl": 1, "d": "Wypisz 8 elementów ciągu: a1=5, r=3.", "sol": "a = 5\nfor _ in range(8):\n    print(a)\n    a += 3", "a": "5\n8\n11\n14\n17\n20\n23\n26", "hint": "a += r w pętli", "starter": ""}, {"c": "listy", "n": "Utwórz listę", "lvl": 1, "d": "Utwórz listę <code>[1, 2, 3, 4, 5]</code> i wypisz ją.", "sol": "print([1, 2, 3, 4, 5])", "a": "[1, 2, 3, 4, 5]", "hint": "print([1, 2, 3, 4, 5])", "starter": ""}, {"c": "listy", "n": "Indeksowanie", "lvl": 1, "d": "Z listy <code>[10, 20, 30, 40, 50]</code> wypisz element o indeksie 2.", "sol": "print([10, 20, 30, 40, 50][2])", "a": "30", "hint": "lista[2] — indeksy od 0", "starter": ""}, {"c": "listy", "n": "Indeks ujemny", "lvl": 1, "d": "Z listy <code>[10, 20, 30, 40, 50]</code> wypisz ostatni element (indeks -1).", "sol": "print([10, 20, 30, 40, 50][-1])", "a": "50", "hint": "lista[-1] daje ostatni", "starter": ""}, {"c": "listy", "n": "Slicing", "lvl": 1, "d": "Z <code>[1,2,3,4,5,6]</code> wypisz elementy od indeksu 1 do 4 (bez 4).", "sol": "print([1, 2, 3, 4, 5, 6][1:4])", "a": "[2, 3, 4]", "hint": "lista[1:4]", "starter": ""}, {"c": "listy", "n": "append i len", "lvl": 1, "d": "Dodaj 6 do listy <code>[1,2,3,4,5]</code> i wypisz jej długość.", "sol": "lst = [1, 2, 3, 4, 5]\nlst.append(6)\nprint(len(lst))", "a": "6", "hint": ".append() dodaje, len() zwraca długość", "starter": ""}, {"c": "listy", "n": "Kwadraty 1-10", "lvl": 1, "d": "Utwórz listę kwadratów 1-10 (list comprehension) i wypisz.", "sol": "print([x**2 for x in range(1, 11)])", "a": "[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]", "hint": "[x**2 for x in range(1, 11)]", "starter": ""}, {"c": "listy", "n": "Filtruj parzyste", "lvl": 1, "d": "Z listy 1-10 zostaw tylko parzyste. Wypisz wynik.", "sol": "print([x for x in range(1, 11) if x % 2 == 0])", "a": "[2, 4, 6, 8, 10]", "hint": "[x for x in ... if x%2==0]", "starter": ""}, {"c": "listy", "n": "Suma listy", "lvl": 1, "d": "Oblicz sumę <code>[10, 20, 30, 40, 50]</code>. Wypisz.", "sol": "print(sum([10, 20, 30, 40, 50]))", "a": "150", "hint": "sum(lista)", "starter": ""}, {"c": "listy", "n": "Odwróć listę", "lvl": 1, "d": "Odwróć <code>[1, 2, 3, 4, 5]</code> i wypisz.", "sol": "print([1, 2, 3, 4, 5][::-1])", "a": "[5, 4, 3, 2, 1]", "hint": "lista[::-1]", "starter": ""}, {"c": "listy", "n": "Sortuj malejąco", "lvl": 1, "d": "Posortuj <code>[3,1,4,1,5,9,2,6]</code> malejąco. Wypisz.", "sol": "print(sorted([3, 1, 4, 1, 5, 9, 2, 6], reverse=True))", "a": "[9, 6, 5, 4, 3, 2, 1, 1]", "hint": "sorted(..., reverse=True)", "starter": ""}, {"c": "listy", "n": "Unikalne elementy", "lvl": 1, "d": "Z <code>[1,2,2,3,3,3,4]</code> wypisz unikalne posortowane.", "sol": "print(sorted(set([1, 2, 2, 3, 3, 3, 4])))", "a": "[1, 2, 3, 4]", "hint": "sorted(set(lista))", "starter": ""}, {"c": "listy", "n": "Indeks maximum", "lvl": 1, "d": "Znajdź indeks największego elementu w <code>[5,3,8,1,9,2]</code>.", "sol": "lst = [5, 3, 8, 1, 9, 2]\nprint(lst.index(max(lst)))", "a": "4", "hint": "lista.index(max(lista))", "starter": ""}, {"c": "listy", "n": "Spłaszcz listę", "lvl": 2, "d": "Spłaszcz <code>[[1,2],[3,4],[5,6]]</code> do jednej listy.", "sol": "print([x for sub in [[1,2],[3,4],[5,6]] for x in sub])", "a": "[1, 2, 3, 4, 5, 6]", "hint": "[x for sub in lista for x in sub]", "starter": ""}, {"c": "listy", "n": "Zip", "lvl": 2, "d": "Połącz <code>['a','b','c']</code> z <code>[1,2,3]</code> i wypisz każdą parę.", "sol": "for a, b in zip(['a', 'b', 'c'], [1, 2, 3]):\n    print(a, b)", "a": "a 1\nb 2\nc 3", "hint": "zip(lista1, lista2)", "starter": ""}, {"c": "listy", "n": "Enumerate", "lvl": 2, "d": "Wypisz elementy <code>['python','java','c++']</code> z indeksami: <code>0: python</code>", "sol": "for i, x in enumerate(['python', 'java', 'c++']):\n    print(f'{i}: {x}')", "a": "0: python\n1: java\n2: c++", "hint": "enumerate(lista)", "starter": ""}, {"c": "listy", "n": "Przecięcie list", "lvl": 2, "d": "Znajdź wspólne elementy <code>[1,2,3,4,5]</code> i <code>[4,5,6,7,8]</code>. Wypisz posortowane.", "sol": "print(sorted(set([1,2,3,4,5]) & set([4,5,6,7,8])))", "a": "[4, 5]", "hint": "set(a) & set(b)", "starter": ""}, {"c": "listy", "n": "Macierz 3x3", "lvl": 2, "d": "Wypisz wiersze macierzy <code>[[1,2,3],[4,5,6],[7,8,9]]</code>.", "sol": "for r in [[1,2,3],[4,5,6],[7,8,9]]:\n    print(r)", "a": "[1, 2, 3]\n[4, 5, 6]\n[7, 8, 9]", "hint": "Iteruj po wierszach", "starter": ""}, {"c": "listy", "n": "Transpozycja", "lvl": 3, "d": "Transponuj <code>[[1,2,3],[4,5,6]]</code> i wypisz wiersze.", "sol": "m = [[1,2,3],[4,5,6]]\nfor r in zip(*m):\n    print(list(r))", "a": "[1, 4]\n[2, 5]\n[3, 6]", "hint": "zip(*m) transponuje", "starter": ""}, {"c": "listy", "n": "Mediana", "lvl": 2, "d": "Oblicz medianę <code>[7,3,1,9,5]</code>. Wypisz.", "sol": "lst = sorted([7, 3, 1, 9, 5])\nprint(lst[len(lst) // 2])", "a": "5", "hint": "Posortuj, weź środkowy element", "starter": ""}, {"c": "listy", "n": "Co trzeci element", "lvl": 1, "d": "Z <code>[0,1,2,3,4,5,6,7,8,9]</code> wypisz co trzeci.", "sol": "print(list(range(10))[::3])", "a": "[0, 3, 6, 9]", "hint": "lista[::3]", "starter": ""}, {"c": "listy", "n": "Usuń duplikaty zachowaj kolejność", "lvl": 2, "d": "Z <code>[3,1,4,1,5,9,2,6,5,3]</code> usuń duplikaty zachowując kolejność.", "sol": "lst = [3,1,4,1,5,9,2,6,5,3]\nseen = set()\nresult = []\nfor x in lst:\n    if x not in seen:\n        result.append(x)\n        seen.add(x)\nprint(result)", "a": "[3, 1, 4, 5, 9, 2, 6]", "hint": "set + lista do śledzenia", "starter": ""}, {"c": "listy", "n": "Chunk lista", "lvl": 2, "d": "Podziel <code>[1,2,3,4,5,6,7,8,9]</code> na grupy po 3. Wypisz każdą.", "sol": "lst = [1,2,3,4,5,6,7,8,9]\nfor i in range(0, len(lst), 3):\n    print(lst[i:i+3])", "a": "[1, 2, 3]\n[4, 5, 6]\n[7, 8, 9]", "hint": "lst[i:i+3] w range(0, len, 3)", "starter": ""}, {"c": "listy", "n": "Rotacja listy", "lvl": 2, "d": "Obróć <code>[1,2,3,4,5]</code> w lewo o 2. Wypisz.", "sol": "lst = [1,2,3,4,5]\nk = 2\nprint(lst[k:] + lst[:k])", "a": "[3, 4, 5, 1, 2]", "hint": "lst[k:] + lst[:k]", "starter": ""}, {"c": "listy", "n": "Drugi największy", "lvl": 2, "d": "Znajdź drugi największy w <code>[5,1,8,3,9,2]</code>.", "sol": "print(sorted(set([5,1,8,3,9,2]))[-2])", "a": "8", "hint": "sorted(set(lst))[-2]", "starter": ""}, {"c": "listy", "n": "Lista par", "lvl": 2, "d": "Wygeneruj pary (i,j) gdzie i,j od 1 do 3 i i<j. Wypisz.", "sol": "for i in range(1, 4):\n    for j in range(i + 1, 4):\n        print((i, j))", "a": "(1, 2)\n(1, 3)\n(2, 3)", "hint": "Zagnieżdżone pętle z j > i", "starter": ""}, {"c": "listy", "n": "Macierz identyczności", "lvl": 2, "d": "Wygeneruj macierz identyczności 3×3 i wypisz wiersze.", "sol": "for i in range(3):\n    print([1 if i == j else 0 for j in range(3)])", "a": "[1, 0, 0]\n[0, 1, 0]\n[0, 0, 1]", "hint": "1 if i==j else 0", "starter": ""}, {"c": "listy", "n": "Suma kolumn", "lvl": 2, "d": "Oblicz sumy kolumn macierzy <code>[[1,2,3],[4,5,6],[7,8,9]]</code>. Wypisz w jednej linii.", "sol": "m = [[1,2,3],[4,5,6],[7,8,9]]\nprint(' '.join(str(sum(r[j] for r in m)) for j in range(3)))", "a": "12 15 18", "hint": "sum(r[j] for r in m)", "starter": ""}, {"c": "listy", "n": "Najdłuższa seria rosnąca", "lvl": 2, "d": "Najdłuższa seria rosnąca w <code>[1,2,3,1,2,1,2,3,4,5]</code>. Wypisz długość.", "sol": "lst = [1,2,3,1,2,1,2,3,4,5]\nm = c = 1\nfor i in range(1, len(lst)):\n    if lst[i] > lst[i-1]:\n        c += 1\n        m = max(m, c)\n    else:\n        c = 1\nprint(m)", "a": "5", "hint": "Zlicz rosnące, resetuj gdy spada", "starter": ""}, {"c": "listy", "n": "Flatten i unique", "lvl": 2, "d": "Z <code>[[1,2,3],[3,4,5],[5,6,7]]</code> zrób płaską listę unikalnych, posortuj.", "sol": "print(sorted(set(x for sub in [[1,2,3],[3,4,5],[5,6,7]] for x in sub)))", "a": "[1, 2, 3, 4, 5, 6, 7]", "hint": "set() + list comprehension", "starter": ""}, {"c": "listy", "n": "Permutacje 2-el", "lvl": 2, "d": "Wypisz wszystkie permutacje 2-elementowe z <code>[1,2,3]</code>.", "sol": "lst = [1, 2, 3]\nfor i in lst:\n    for j in lst:\n        if i != j:\n            print((i, j))", "a": "(1, 2)\n(1, 3)\n(2, 1)\n(2, 3)\n(3, 1)\n(3, 2)", "hint": "Dwie pętle, i != j", "starter": ""}, {"c": "listy", "n": "Okno przesuwne", "lvl": 3, "d": "Wypisz sumy okien rozmiaru 3 w <code>[1,2,3,4,5,6]</code>.", "sol": "lst = [1,2,3,4,5,6]\nfor i in range(len(lst) - 2):\n    print(sum(lst[i:i+3]))", "a": "6\n9\n12\n15", "hint": "sum(lst[i:i+3])", "starter": ""}, {"c": "listy", "n": "Liczby w stringu", "lvl": 2, "d": "Z <code>'a1b2c3d4'</code> wyciągnij cyfry jako listę intów. Wypisz.", "sol": "print([int(c) for c in 'a1b2c3d4' if c.isdigit()])", "a": "[1, 2, 3, 4]", "hint": "[int(c) for c in s if c.isdigit()]", "starter": ""}, {"c": "listy", "n": "Odwróć zagnieżdżone", "lvl": 2, "d": "Odwróć każdy podlistę w <code>[[1,2],[3,4],[5,6]]</code>. Wypisz.", "sol": "print([sub[::-1] for sub in [[1,2],[3,4],[5,6]]])", "a": "[[2, 1], [4, 3], [6, 5]]", "hint": "[sub[::-1] for sub in lista]", "starter": ""}, {"c": "listy", "n": "Minimum z indeksem", "lvl": 2, "d": "Znajdź minimum i jego indeks w <code>[5,8,2,9,1,7]</code>. Wypisz np. <code>1 4</code>.", "sol": "lst = [5, 8, 2, 9, 1, 7]\nm = min(lst)\nprint(m, lst.index(m))", "a": "1 4", "hint": "min(lst), lst.index(min(lst))", "starter": ""}, {"c": "listy", "n": "extend vs append", "lvl": 1, "d": "Utwórz [1,2], dodaj extend([3,4]) i wypisz listę.", "sol": "lst = [1, 2]\nlst.extend([3, 4])\nprint(lst)", "a": "[1, 2, 3, 4]", "hint": ".extend() dodaje elementy z listy", "starter": ""}, {"c": "listy", "n": "Posortuj po długości", "lvl": 2, "d": "Posortuj <code>['python','c','java','go']</code> po długości. Wypisz.", "sol": "print(sorted(['python', 'c', 'java', 'go'], key=len))", "a": "['c', 'go', 'java', 'python']", "hint": "sorted(..., key=len)", "starter": ""}, {"c": "listy", "n": "Iloczyn elementów", "lvl": 2, "d": "Oblicz iloczyn <code>[2, 3, 4, 5]</code>. Wypisz.", "sol": "result = 1\nfor x in [2, 3, 4, 5]:\n    result *= x\nprint(result)", "a": "120", "hint": "result *= x w pętli", "starter": ""}, {"c": "listy", "n": "Lista stringów → int", "lvl": 1, "d": "Zamień <code>['1','2','3','4']</code> na listę intów. Wypisz.", "sol": "print(list(map(int, ['1', '2', '3', '4'])))", "a": "[1, 2, 3, 4]", "hint": "list(map(int, lista))", "starter": ""}, {"c": "listy", "n": "Policz wystąpienia", "lvl": 2, "d": "Policz ile razy każdy element występuje w <code>[1,2,2,3,3,3]</code>. Wypisz posortowane pary.", "sol": "lst = [1, 2, 2, 3, 3, 3]\nfor x in sorted(set(lst)):\n    print(f'{x}: {lst.count(x)}')", "a": "1: 1\n2: 2\n3: 3", "hint": "lst.count(x) dla każdego unikalnego", "starter": ""}, {"c": "listy", "n": "Połącz i posortuj", "lvl": 1, "d": "Połącz <code>[3,1,5]</code> i <code>[4,2,6]</code>, posortuj. Wypisz.", "sol": "print(sorted([3, 1, 5] + [4, 2, 6]))", "a": "[1, 2, 3, 4, 5, 6]", "hint": "sorted(a + b)", "starter": ""}, {"c": "listy", "n": "Elementy większe od średniej", "lvl": 2, "d": "Z <code>[4,8,2,10,6]</code> wypisz elementy większe od średniej.", "sol": "lst = [4, 8, 2, 10, 6]\navg = sum(lst) / len(lst)\nprint([x for x in lst if x > avg])", "a": "[8, 10]", "hint": "Oblicz średnią, filtruj", "starter": ""}, {"c": "listy", "n": "Zamień na tuple", "lvl": 1, "d": "Zamień <code>[1, 2, 3]</code> na tuple i wypisz.", "sol": "print(tuple([1, 2, 3]))", "a": "(1, 2, 3)", "hint": "tuple(lista)", "starter": ""}, {"c": "listy", "n": "Najczęstszy element", "lvl": 2, "d": "Znajdź najczęstszy element w <code>[1,3,2,1,4,1,3,2,1]</code>. Wypisz.", "sol": "lst = [1, 3, 2, 1, 4, 1, 3, 2, 1]\nprint(max(set(lst), key=lst.count))", "a": "1", "hint": "max(set(lst), key=lst.count)", "starter": ""}, {"c": "listy", "n": "pop i insert", "lvl": 1, "d": "Z <code>[1,2,3,4,5]</code> usuń ostatni (pop) i wstaw 10 na indeks 0. Wypisz.", "sol": "lst = [1, 2, 3, 4, 5]\nlst.pop()\nlst.insert(0, 10)\nprint(lst)", "a": "[10, 1, 2, 3, 4]", "hint": ".pop() usuwa ostatni, .insert(0, x)", "starter": ""}, {"c": "listy", "n": "all i any", "lvl": 2, "d": "Sprawdź czy wszystkie w <code>[2,4,6,8]</code> parzyste (all) i czy jakiś > 7 (any). Wypisz oba.", "sol": "lst = [2, 4, 6, 8]\nprint(all(x % 2 == 0 for x in lst))\nprint(any(x > 7 for x in lst))", "a": "True\nTrue", "hint": "all() i any() z generatorem", "starter": ""}, {"c": "listy", "n": "Liczby nieparzyste z kwadratu", "lvl": 2, "d": "Wypisz kwadraty nieparzystych z 1-10.", "sol": "print([x**2 for x in range(1, 11) if x % 2 != 0])", "a": "[1, 9, 25, 49, 81]", "hint": "[x**2 for x in ... if x%2!=0]", "starter": ""}, {"c": "listy", "n": "reverse() vs reversed()", "lvl": 1, "d": "Odwróć <code>[1,2,3]</code> metodą .reverse() i wypisz.", "sol": "lst = [1, 2, 3]\nlst.reverse()\nprint(lst)", "a": "[3, 2, 1]", "hint": ".reverse() zmienia in-place", "starter": ""}, {"c": "listy", "n": "Stringi z list comprehension", "lvl": 2, "d": "Z listy <code>[1,2,3,4,5]</code> utwórz stringi i złącz: '1-2-3-4-5'. Wypisz.", "sol": "print('-'.join(str(x) for x in [1, 2, 3, 4, 5]))", "a": "1-2-3-4-5", "hint": "'-'.join(str(x) for x in lst)", "starter": ""}, {"c": "listy", "n": "Macierz suma diagonali", "lvl": 2, "d": "Oblicz sumę głównej diagonali <code>[[1,2,3],[4,5,6],[7,8,9]]</code>.", "sol": "m = [[1,2,3],[4,5,6],[7,8,9]]\nprint(sum(m[i][i] for i in range(3)))", "a": "15", "hint": "sum(m[i][i] for i in range(n))", "starter": ""}, {"c": "listy", "n": "Filtruj po warunku złożonym", "lvl": 2, "d": "Z <code>[12,7,15,3,22,8,11,30]</code> zostaw >=10 i parzyste.", "sol": "print([x for x in [12,7,15,3,22,8,11,30] if x >= 10 and x % 2 == 0])", "a": "[12, 22, 30]", "hint": "if x >= 10 and x % 2 == 0", "starter": ""}, {"c": "slowniki", "n": "Utwórz słownik", "lvl": 1, "d": "Utwórz słownik <code>{'Anna': 25, 'Jan': 30, 'Ewa': 22}</code> i wypisz.", "sol": "print({'Anna': 25, 'Jan': 30, 'Ewa': 22})", "a": "{'Anna': 25, 'Jan': 30, 'Ewa': 22}", "hint": "d = {'klucz': wartosc}", "starter": ""}, {"c": "slowniki", "n": "Dostęp po kluczu", "lvl": 1, "d": "Ze słownika <code>{'a':1,'b':2,'c':3}</code> wypisz wartość 'b'.", "sol": "print({'a': 1, 'b': 2, 'c': 3}['b'])", "a": "2", "hint": "d['klucz']", "starter": ""}, {"c": "slowniki", "n": "Dodaj element", "lvl": 1, "d": "Do <code>{'a':1,'b':2}</code> dodaj <code>'c':3</code> i wypisz.", "sol": "d = {'a': 1, 'b': 2}\nd['c'] = 3\nprint(d)", "a": "{'a': 1, 'b': 2, 'c': 3}", "hint": "d['c'] = 3", "starter": ""}, {"c": "slowniki", "n": "keys/values/items", "lvl": 1, "d": "Wypisz klucze i wartości <code>{'x':10,'y':20,'z':30}</code>: format <code>x: 10</code>", "sol": "d = {'x': 10, 'y': 20, 'z': 30}\nfor k, v in d.items():\n    print(f'{k}: {v}')", "a": "x: 10\ny: 20\nz: 30", "hint": "d.items() → pary (klucz, wartosc)", "starter": ""}, {"c": "slowniki", "n": "Sprawdź klucz", "lvl": 1, "d": "Sprawdź czy 'd' jest w <code>{'a':1,'b':2,'c':3}</code>. Wypisz True/False.", "sol": "print('d' in {'a': 1, 'b': 2, 'c': 3})", "a": "False", "hint": "'klucz' in slownik", "starter": ""}, {"c": "slowniki", "n": "get() z domyślną", "lvl": 1, "d": "Z <code>{'a':1,'b':2}</code> pobierz 'c' z domyślną 0.", "sol": "print({'a': 1, 'b': 2}.get('c', 0))", "a": "0", "hint": "d.get('c', 0)", "starter": ""}, {"c": "slowniki", "n": "Zlicz litery", "lvl": 2, "d": "Zlicz wystąpienia każdej litery w <code>'abracadabra'</code>. Wypisz posortowane.", "sol": "s = 'abracadabra'\nd = {}\nfor c in s:\n    d[c] = d.get(c, 0) + 1\nfor k in sorted(d):\n    print(f'{k}: {d[k]}')", "a": "a: 5\nb: 2\nc: 1\nd: 1\nr: 2", "hint": "d[c] = d.get(c, 0) + 1", "starter": ""}, {"c": "slowniki", "n": "Odwróć klucze-wartości", "lvl": 2, "d": "Odwróć <code>{'a':1,'b':2,'c':3}</code>. Wypisz.", "sol": "print({v: k for k, v in {'a': 1, 'b': 2, 'c': 3}.items()})", "a": "{1: 'a', 2: 'b', 3: 'c'}", "hint": "{v:k for k,v in d.items()}", "starter": ""}, {"c": "slowniki", "n": "Najczęstsze słowo", "lvl": 2, "d": "Najczęstsze słowo w <code>'the cat sat on the mat the cat'</code>. Wypisz słowo i liczbę.", "sol": "s = 'the cat sat on the mat the cat'\nd = {}\nfor w in s.split():\n    d[w] = d.get(w, 0) + 1\nm = max(d, key=d.get)\nprint(m, d[m])", "a": "the 3", "hint": "max(d, key=d.get)", "starter": ""}, {"c": "slowniki", "n": "Połącz słowniki", "lvl": 1, "d": "Połącz <code>{'a':1}</code> i <code>{'b':2,'c':3}</code>. Wypisz.", "sol": "d = {**{'a': 1}, **{'b': 2, 'c': 3}}\nprint(d)", "a": "{'a': 1, 'b': 2, 'c': 3}", "hint": "{**d1, **d2}", "starter": ""}, {"c": "slowniki", "n": "Filtruj słownik", "lvl": 2, "d": "Z <code>{'a':1,'b':5,'c':3,'d':8,'e':2}</code> wypisz pary z wartością > 3.", "sol": "d = {'a': 1, 'b': 5, 'c': 3, 'd': 8, 'e': 2}\nfor k, v in d.items():\n    if v > 3:\n        print(f'{k}: {v}')", "a": "b: 5\nd: 8", "hint": "if v > 3 w pętli", "starter": ""}, {"c": "slowniki", "n": "Dict comprehension", "lvl": 2, "d": "Utwórz słownik kwadratów {1:1, 2:4, ..., 5:25}. Wypisz.", "sol": "print({x: x**2 for x in range(1, 6)})", "a": "{1: 1, 2: 4, 3: 9, 4: 16, 5: 25}", "hint": "{x: x**2 for x in range(1,6)}", "starter": ""}, {"c": "slowniki", "n": "Grupuj po długości", "lvl": 2, "d": "Pogrupuj <code>['ala','ma','kota','i','psa']</code> po długości. Wypisz posortowane.", "sol": "lst = ['ala', 'ma', 'kota', 'i', 'psa']\nd = {}\nfor w in lst:\n    d.setdefault(len(w), []).append(w)\nfor k in sorted(d):\n    print(f'{k}: {d[k]}')", "a": "1: ['i']\n2: ['ma']\n3: ['ala', 'psa']\n4: ['kota']", "hint": "d.setdefault(len(w), []).append(w)", "starter": ""}, {"c": "slowniki", "n": "Sortuj po wartości", "lvl": 2, "d": "Posortuj <code>{'c':3,'a':1,'b':2}</code> po wartościach rosnąco. Wypisz pary.", "sol": "for k, v in sorted({'c': 3, 'a': 1, 'b': 2}.items(), key=lambda x: x[1]):\n    print(f'{k}: {v}')", "a": "a: 1\nb: 2\nc: 3", "hint": "sorted(d.items(), key=lambda x: x[1])", "starter": ""}, {"c": "slowniki", "n": "Najdłuższy klucz", "lvl": 1, "d": "Najdłuższy klucz w <code>{'ab':1,'abcde':2,'abc':3,'a':4}</code>. Wypisz.", "sol": "print(max({'ab': 1, 'abcde': 2, 'abc': 3, 'a': 4}.keys(), key=len))", "a": "abcde", "hint": "max(d.keys(), key=len)", "starter": ""}, {"c": "slowniki", "n": "Nested dict", "lvl": 2, "d": "Z <code>{'a':{'x':1},'b':{'x':2,'y':3}}</code> wypisz sumę wszystkich wartości.", "sol": "d = {'a': {'x': 1}, 'b': {'x': 2, 'y': 3}}\nprint(sum(v for inner in d.values() for v in inner.values()))", "a": "6", "hint": "Podwójna iteracja po .values()", "starter": ""}, {"c": "slowniki", "n": "JSON-like", "lvl": 2, "d": "Z <code>{'users':[{'name':'Anna'},{'name':'Jan'}]}</code> wypisz imiona.", "sol": "d = {'users': [{'name': 'Anna'}, {'name': 'Jan'}]}\nfor u in d['users']:\n    print(u['name'])", "a": "Anna\nJan", "hint": "d['users'] → lista słowników", "starter": ""}, {"c": "slowniki", "n": "Słownik z dwóch list", "lvl": 1, "d": "Z kluczy <code>['a','b','c']</code> i wartości <code>[1,2,3]</code> utwórz słownik.", "sol": "print(dict(zip(['a', 'b', 'c'], [1, 2, 3])))", "a": "{'a': 1, 'b': 2, 'c': 3}", "hint": "dict(zip(klucze, wartosci))", "starter": ""}, {"c": "slowniki", "n": "Usuń klucz", "lvl": 1, "d": "Z <code>{'a':1,'b':2,'c':3}</code> usuń 'b' i wypisz.", "sol": "d = {'a': 1, 'b': 2, 'c': 3}\ndel d['b']\nprint(d)", "a": "{'a': 1, 'c': 3}", "hint": "del d['b']", "starter": ""}, {"c": "slowniki", "n": "Zlicz samogłoski i spółgłoski", "lvl": 2, "d": "W <code>'python'</code> policz samogłoski i spółgłoski. Wypisz słownik.", "sol": "s = 'python'\nresult = {'samogloski': 0, 'spolgloski': 0}\nfor c in s:\n    if c in 'aeiouy':\n        result['samogloski'] += 1\n    else:\n        result['spolgloski'] += 1\nprint(result)", "a": "{'samogloski': 2, 'spolgloski': 4}", "hint": "Zlicz w dwóch kategoriach", "starter": ""}, {"c": "slowniki", "n": "Suma wartości", "lvl": 1, "d": "Oblicz sumę wartości <code>{'a':10,'b':20,'c':30}</code>. Wypisz.", "sol": "print(sum({'a': 10, 'b': 20, 'c': 30}.values()))", "a": "60", "hint": "sum(d.values())", "starter": ""}, {"c": "slowniki", "n": "Klucz o max wartości", "lvl": 2, "d": "Znajdź klucz o max wartości w <code>{'mat':4,'inf':5,'fiz':3}</code>. Wypisz.", "sol": "d = {'mat': 4, 'inf': 5, 'fiz': 3}\nprint(max(d, key=d.get))", "a": "inf", "hint": "max(d, key=d.get)", "starter": ""}, {"c": "slowniki", "n": "Aktualizacja update", "lvl": 1, "d": "Zaktualizuj <code>{'a':1,'b':2}</code> słownikiem <code>{'b':5,'c':3}</code>. Wypisz.", "sol": "d = {'a': 1, 'b': 2}\nd.update({'b': 5, 'c': 3})\nprint(d)", "a": "{'a': 1, 'b': 5, 'c': 3}", "hint": "d.update(d2)", "starter": ""}, {"c": "slowniki", "n": "Inwersja freq", "lvl": 2, "d": "Z freq <code>{'a':3,'b':1,'c':2}</code> utwórz odwrotny. Wypisz posortowane.", "sol": "d = {'a': 3, 'b': 1, 'c': 2}\ninv = {}\nfor k, v in d.items():\n    inv.setdefault(v, []).append(k)\nfor k in sorted(inv):\n    print(f'{k}: {inv[k]}')", "a": "1: ['b']\n2: ['c']\n3: ['a']", "hint": "setdefault(v, []).append(k)", "starter": ""}, {"c": "slowniki", "n": "Zlicz mississippi", "lvl": 2, "d": "Zlicz litery w <code>'mississippi'</code>. Wypisz posortowane.", "sol": "s = 'mississippi'\nd = {}\nfor c in s:\n    d[c] = d.get(c, 0) + 1\nfor k in sorted(d):\n    print(f'{k}: {d[k]}')", "a": "i: 4\nm: 1\np: 2\ns: 4", "hint": "d.get(c, 0) + 1", "starter": ""}, {"c": "slowniki", "n": "Top 3 litery", "lvl": 2, "d": "Znajdź 3 najczęstsze litery w <code>'abracadabra'</code>. Wypisz z liczbami.", "sol": "s = 'abracadabra'\nd = {}\nfor c in s:\n    d[c] = d.get(c, 0) + 1\nfor k, v in sorted(d.items(), key=lambda x: -x[1])[:3]:\n    print(f'{k}: {v}')", "a": "a: 5\nb: 2\nr: 2", "hint": "sorted(..., key=lambda x: -x[1])[:3]", "starter": ""}, {"c": "slowniki", "n": "defaultdict pattern", "lvl": 2, "d": "Pogrupuj <code>[(1,'a'),(1,'b'),(2,'c'),(2,'d')]</code> po kluczu. Wypisz posortowane.", "sol": "pairs = [(1, 'a'), (1, 'b'), (2, 'c'), (2, 'd')]\nd = {}\nfor k, v in pairs:\n    d.setdefault(k, []).append(v)\nfor k in sorted(d):\n    print(f'{k}: {d[k]}')", "a": "1: ['a', 'b']\n2: ['c', 'd']", "hint": "d.setdefault(k, []).append(v)", "starter": ""}, {"c": "slowniki", "n": "Porównaj słowniki", "lvl": 2, "d": "Wspólne klucze <code>{'a':1,'b':2,'c':3}</code> i <code>{'b':5,'c':3,'d':4}</code>. Wypisz posortowane.", "sol": "d1 = {'a': 1, 'b': 2, 'c': 3}\nd2 = {'b': 5, 'c': 3, 'd': 4}\nfor k in sorted(set(d1) & set(d2)):\n    print(k)", "a": "b\nc", "hint": "set(d1) & set(d2)", "starter": ""}, {"c": "slowniki", "n": "Dict z enumerate", "lvl": 2, "d": "Utwórz słownik {0:'a', 1:'b', 2:'c'} z listy ['a','b','c']. Wypisz.", "sol": "print(dict(enumerate(['a', 'b', 'c'])))", "a": "{0: 'a', 1: 'b', 2: 'c'}", "hint": "dict(enumerate(lista))", "starter": ""}, {"c": "slowniki", "n": "Filtruj po kluczu", "lvl": 2, "d": "Z <code>{'ala':5,'bob':3,'celina':4,'dan':2}</code> zostaw klucze dłuższe niż 3 znaki.", "sol": "d = {'ala': 5, 'bob': 3, 'celina': 4, 'dan': 2}\nprint({k: v for k, v in d.items() if len(k) > 3})", "a": "{'celina': 4}", "hint": "{k:v for k,v in d.items() if len(k)>3}", "starter": ""}, {"c": "slowniki", "n": "Oceny uczniów", "lvl": 2, "d": "Oblicz średnią dla <code>{'Anna':[5,4,3],'Jan':[4,3,5,4]}</code>. Wypisz imię: średnia.", "sol": "d = {'Anna': [5, 4, 3], 'Jan': [4, 3, 5, 4]}\nfor k, v in d.items():\n    print(f'{k}: {sum(v)/len(v)}')", "a": "Anna: 4.0\nJan: 4.0", "hint": "sum(v)/len(v)", "starter": ""}, {"c": "slowniki", "n": "pop z domyślną", "lvl": 1, "d": "Z <code>{'a':1,'b':2}</code> pop klucz 'c' z domyślną 0. Wypisz wynik.", "sol": "d = {'a': 1, 'b': 2}\nprint(d.pop('c', 0))", "a": "0", "hint": "d.pop('c', 0)", "starter": ""}, {"c": "slowniki", "n": "Odwróć string→dict", "lvl": 2, "d": "Utwórz słownik: litera→pozycja dla <code>'python'</code>. Wypisz posortowane.", "sol": "d = {c: i for i, c in enumerate('python')}\nfor k in sorted(d):\n    print(f'{k}: {d[k]}')", "a": "h: 3\nn: 5\no: 4\np: 0\nt: 2\ny: 1", "hint": "{c: i for i, c in enumerate(s)}", "starter": ""}, {"c": "slowniki", "n": "Zamień klucze na wielkie", "lvl": 2, "d": "Zamień klucze <code>{'hello':1,'world':2}</code> na wielkie litery. Wypisz.", "sol": "print({k.upper(): v for k, v in {'hello': 1, 'world': 2}.items()})", "a": "{'HELLO': 1, 'WORLD': 2}", "hint": "{k.upper(): v for k,v in d.items()}", "starter": ""}, {"c": "slowniki", "n": "Zagnieżdżony dostęp", "lvl": 2, "d": "Z <code>{'a':{'b':{'c':42}}}</code> wypisz wartość pod 'c'.", "sol": "print({'a': {'b': {'c': 42}}}['a']['b']['c'])", "a": "42", "hint": "d['a']['b']['c']", "starter": ""}, {"c": "slowniki", "n": "Histagram słów", "lvl": 2, "d": "Ile słów o każdej długości w <code>'ala ma kota i psa'</code>? Wypisz posortowane.", "sol": "s = 'ala ma kota i psa'\nd = {}\nfor w in s.split():\n    l = len(w)\n    d[l] = d.get(l, 0) + 1\nfor k in sorted(d):\n    print(f'{k}: {d[k]}')", "a": "1: 1\n2: 1\n3: 2\n4: 1", "hint": "d[len(w)] = d.get(...) + 1", "starter": ""}, {"c": "slowniki", "n": "Lista słowników", "lvl": 2, "d": "Z <code>[{'n':'A','w':25},{'n':'B','w':30}]</code> wypisz imiona osób w wieku > 26.", "sol": "lst = [{'n': 'A', 'w': 25}, {'n': 'B', 'w': 30}]\nfor d in lst:\n    if d['w'] > 26:\n        print(d['n'])", "a": "B", "hint": "if d['w'] > 26", "starter": ""}, {"c": "slowniki", "n": "Słownik z krotkami", "lvl": 1, "d": "Z krotek <code>(('x',1),('y',2),('z',3))</code> utwórz słownik. Wypisz.", "sol": "print(dict((('x', 1), ('y', 2), ('z', 3))))", "a": "{'x': 1, 'y': 2, 'z': 3}", "hint": "dict(krotki)", "starter": ""}, {"c": "slowniki", "n": "Puste wartości", "lvl": 2, "d": "Z <code>{'a':0,'b':'','c':None,'d':5,'e':'ok'}</code> zostaw tylko truthy. Wypisz.", "sol": "d = {'a': 0, 'b': '', 'c': None, 'd': 5, 'e': 'ok'}\nprint({k: v for k, v in d.items() if v})", "a": "{'d': 5, 'e': 'ok'}", "hint": "{k:v for k,v in d.items() if v}", "starter": ""}, {"c": "slowniki", "n": "Policz True/False", "lvl": 2, "d": "Policz True i False w <code>[True,False,True,True,False]</code>. Wypisz jako słownik.", "sol": "lst = [True, False, True, True, False]\nd = {}\nfor x in lst:\n    d[x] = d.get(x, 0) + 1\nprint(d)", "a": "{True: 3, False: 2}", "hint": "d[x] = d.get(x, 0) + 1", "starter": ""}, {"c": "slowniki", "n": "Transformuj wartości", "lvl": 2, "d": "Podwój wartości w <code>{'a':1,'b':2,'c':3}</code>. Wypisz.", "sol": "print({k: v * 2 for k, v in {'a': 1, 'b': 2, 'c': 3}.items()})", "a": "{'a': 2, 'b': 4, 'c': 6}", "hint": "{k: v*2 for k,v in d.items()}", "starter": ""}, {"c": "funkcje", "n": "Pierwsza funkcja", "lvl": 1, "d": "Napisz funkcję <code>powitanie()</code> wypisującą 'Cześć!'. Wywołaj ją.", "sol": "def powitanie():\n    print('Cześć!')\npowitanie()", "a": "Cześć!", "hint": "def powitanie(): print('Cześć!')", "starter": ""}, {"c": "funkcje", "n": "return", "lvl": 1, "d": "Napisz <code>kwadrat(n)</code> zwracającą n². Wypisz kwadrat(7).", "sol": "def kwadrat(n):\n    return n ** 2\nprint(kwadrat(7))", "a": "49", "hint": "return n ** 2", "starter": ""}, {"c": "funkcje", "n": "Dwa argumenty", "lvl": 1, "d": "Napisz <code>dodaj(a, b)</code> zwracającą sumę. Wypisz dodaj(3, 4).", "sol": "def dodaj(a, b):\n    return a + b\nprint(dodaj(3, 4))", "a": "7", "hint": "return a + b", "starter": ""}, {"c": "funkcje", "n": "Domyślny argument", "lvl": 1, "d": "Napisz <code>powitaj(imie, zwrot='Cześć')</code> → 'Cześć, Anna!'. Wypisz.", "sol": "def powitaj(imie, zwrot='Cześć'):\n    return f'{zwrot}, {imie}!'\nprint(powitaj('Anna'))", "a": "Cześć, Anna!", "hint": "Argument domyślny: zwrot='Cześć'", "starter": ""}, {"c": "funkcje", "n": "Wiele wartości", "lvl": 2, "d": "Napisz <code>min_max(lst)</code> zwracającą (min, max). Wypisz dla [3,1,4,1,5].", "sol": "def min_max(lst):\n    return min(lst), max(lst)\nprint(min_max([3, 1, 4, 1, 5]))", "a": "(1, 5)", "hint": "return min(lst), max(lst)", "starter": ""}, {"c": "funkcje", "n": "*args", "lvl": 2, "d": "Napisz <code>suma(*args)</code> sumującą dowolne argumenty. Wypisz suma(1,2,3,4,5).", "sol": "def suma(*args):\n    return sum(args)\nprint(suma(1, 2, 3, 4, 5))", "a": "15", "hint": "*args zbiera w krotkę", "starter": ""}, {"c": "funkcje", "n": "Silnia rekurencyjna", "lvl": 2, "d": "Napisz rekurencyjną <code>silnia(n)</code>. Wypisz silnia(6).", "sol": "def silnia(n):\n    if n <= 1:\n        return 1\n    return n * silnia(n - 1)\nprint(silnia(6))", "a": "720", "hint": "silnia(n) = n * silnia(n-1)", "starter": ""}, {"c": "funkcje", "n": "Lambda sort", "lvl": 2, "d": "Posortuj <code>[('b',2),('a',3),('c',1)]</code> po 2. elemencie. Wypisz.", "sol": "print(sorted([('b', 2), ('a', 3), ('c', 1)], key=lambda x: x[1]))", "a": "[('c', 1), ('b', 2), ('a', 3)]", "hint": "key=lambda x: x[1]", "starter": ""}, {"c": "funkcje", "n": "Map", "lvl": 2, "d": "Użyj map żeby podwoić [1,2,3,4,5]. Wypisz listę.", "sol": "print(list(map(lambda x: x * 2, [1, 2, 3, 4, 5])))", "a": "[2, 4, 6, 8, 10]", "hint": "map(lambda x: x*2, lista)", "starter": ""}, {"c": "funkcje", "n": "Filter", "lvl": 2, "d": "Użyj filter żeby wybrać parzyste z [1,2,3,4,5,6]. Wypisz.", "sol": "print(list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4, 5, 6])))", "a": "[2, 4, 6]", "hint": "filter(lambda x: x%2==0, lst)", "starter": ""}, {"c": "funkcje", "n": "Rekurencja NWD", "lvl": 2, "d": "Napisz rekurencyjną <code>nwd(a,b)</code>. Wypisz nwd(56, 98).", "sol": "def nwd(a, b):\n    if b == 0:\n        return a\n    return nwd(b, a % b)\nprint(nwd(56, 98))", "a": "14", "hint": "nwd(a,b) = nwd(b, a%b)", "starter": ""}, {"c": "funkcje", "n": "Fibonacci iter", "lvl": 2, "d": "Napisz iteracyjną <code>fib(n)</code> zwracającą n-ty Fibonacci. Wypisz fib(10).", "sol": "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\nprint(fib(10))", "a": "55", "hint": "a, b = b, a+b w pętli", "starter": ""}, {"c": "funkcje", "n": "is_prime", "lvl": 2, "d": "Napisz <code>is_prime(n)</code>. Wypisz liczby pierwsze 1-20.", "sol": "def is_prime(n):\n    if n < 2:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    return True\nfor i in range(1, 21):\n    if is_prime(i):\n        print(i)", "a": "2\n3\n5\n7\n11\n13\n17\n19", "hint": "Sprawdź dzielniki do sqrt(n)", "starter": ""}, {"c": "funkcje", "n": "Lista parzystych", "lvl": 2, "d": "Napisz <code>parzyste(n)</code> zwracającą parzyste od 2 do n. Wypisz parzyste(12).", "sol": "def parzyste(n):\n    return [x for x in range(2, n + 1, 2)]\nprint(parzyste(12))", "a": "[2, 4, 6, 8, 10, 12]", "hint": "[x for x in range(2, n+1, 2)]", "starter": ""}, {"c": "funkcje", "n": "Closure licznik", "lvl": 3, "d": "Napisz closure <code>make_counter()</code> zwracającą funkcję inkrementującą. Wywołaj 3 razy.", "sol": "def make_counter():\n    count = [0]\n    def inc():\n        count[0] += 1\n        return count[0]\n    return inc\nc = make_counter()\nprint(c())\nprint(c())\nprint(c())", "a": "1\n2\n3", "hint": "Closure pamięta zmienne zewnętrzne", "starter": ""}, {"c": "funkcje", "n": "Dekorator", "lvl": 3, "d": "Napisz dekorator <code>bold</code> owijający wynik w **...**. Udekoruj funkcję 'hello'. Wypisz.", "sol": "def bold(fn):\n    def wrapper():\n        return '**' + fn() + '**'\n    return wrapper\n@bold\ndef hello():\n    return 'hello'\nprint(hello())", "a": "**hello**", "hint": "Dekorator to funkcja zwracająca wrapper", "starter": ""}, {"c": "funkcje", "n": "Generator", "lvl": 3, "d": "Napisz generator <code>fib_gen(n)</code> yield-ujący n Fibonacciego. Wypisz 7 pierwszych.", "sol": "def fib_gen(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\nfor x in fib_gen(7):\n    print(x)", "a": "0\n1\n1\n2\n3\n5\n8", "hint": "yield zamiast return", "starter": ""}, {"c": "funkcje", "n": "Memoize Fibonacci", "lvl": 3, "d": "Napisz memoizowaną <code>fib(n)</code>. Wypisz fib(30).", "sol": "memo = {}\ndef fib(n):\n    if n in memo:\n        return memo[n]\n    if n <= 1:\n        return n\n    memo[n] = fib(n - 1) + fib(n - 2)\n    return memo[n]\nprint(fib(30))", "a": "832040", "hint": "Słownik memo cache'uje wyniki", "starter": ""}, {"c": "funkcje", "n": "Currying", "lvl": 3, "d": "Napisz <code>multiply(a)</code> zwracającą funkcję mnożącą przez a. Wypisz multiply(3)(5).", "sol": "def multiply(a):\n    def inner(b):\n        return a * b\n    return inner\nprint(multiply(3)(5))", "a": "15", "hint": "Funkcja zwraca funkcję", "starter": ""}, {"c": "funkcje", "n": "Walidator email", "lvl": 2, "d": "Napisz <code>valid_email(s)</code> sprawdzającą @ i . Wypisz dla 'a@b.com' i 'bad'.", "sol": "def valid_email(s):\n    return '@' in s and '.' in s\nprint(valid_email('a@b.com'))\nprint(valid_email('bad'))", "a": "True\nFalse", "hint": "'@' in s and '.' in s", "starter": ""}, {"c": "funkcje", "n": "Flatten rekurencja", "lvl": 3, "d": "Napisz rekurencyjną <code>flatten(lst)</code>. Spłaszcz [1,[2,[3,4],[5]],6].", "sol": "def flatten(lst):\n    result = []\n    for x in lst:\n        if isinstance(x, list):\n            result.extend(flatten(x))\n        else:\n            result.append(x)\n    return result\nprint(flatten([1, [2, [3, 4], [5]], 6]))", "a": "[1, 2, 3, 4, 5, 6]", "hint": "isinstance(x, list) → rekurencja", "starter": ""}, {"c": "funkcje", "n": "Maks z listy ręcznie", "lvl": 1, "d": "Napisz <code>maks(lst)</code> bez max(). Wypisz maks([3,7,2,9,1]).", "sol": "def maks(lst):\n    m = lst[0]\n    for x in lst:\n        if x > m:\n            m = x\n    return m\nprint(maks([3, 7, 2, 9, 1]))", "a": "9", "hint": "Porównuj z aktualnym max", "starter": ""}, {"c": "funkcje", "n": "Funkcja z **kwargs", "lvl": 2, "d": "Napisz <code>info(**kwargs)</code> wypisującą klucz=wartosc. Wywołaj z name='Jan', age=25.", "sol": "def info(**kwargs):\n    for k, v in kwargs.items():\n        print(f'{k}={v}')\ninfo(name='Jan', age=25)", "a": "name=Jan\nage=25", "hint": "**kwargs zbiera nazwane argumenty", "starter": ""}, {"c": "funkcje", "n": "Funkcja wewnętrzna", "lvl": 2, "d": "Napisz <code>policz()</code> z wewnętrzną f. sumującą 1+2+3. Wypisz wynik.", "sol": "def policz():\n    def sumuj(a, b, c):\n        return a + b + c\n    return sumuj(1, 2, 3)\nprint(policz())", "a": "6", "hint": "Funkcja wewnętrzna", "starter": ""}, {"c": "funkcje", "n": "Odwróć string rekurencyjnie", "lvl": 2, "d": "Napisz rekurencyjną <code>odwroc(s)</code>. Wypisz odwroc('python').", "sol": "def odwroc(s):\n    if len(s) <= 1:\n        return s\n    return odwroc(s[1:]) + s[0]\nprint(odwroc('python'))", "a": "nohtyp", "hint": "odwroc(s[1:]) + s[0]", "starter": ""}, {"c": "funkcje", "n": "Potęgowanie szybkie", "lvl": 3, "d": "Zaimplementuj szybkie potęgowanie. Oblicz pow(2, 20).", "sol": "def fast_pow(x, n):\n    result = 1\n    while n > 0:\n        if n % 2 == 1:\n            result *= x\n        x *= x\n        n //= 2\n    return result\nprint(fast_pow(2, 20))", "a": "1048576", "hint": "x*=x; n//=2; if n%2: result*=x", "starter": ""}, {"c": "funkcje", "n": "Sortowanie lambda", "lvl": 2, "d": "Posortuj <code>['banana','apple','cherry','date']</code> po ostatniej literze. Wypisz.", "sol": "print(sorted(['banana', 'apple', 'cherry', 'date'], key=lambda s: s[-1]))", "a": "['banana', 'apple', 'date', 'cherry']", "hint": "key=lambda s: s[-1]", "starter": ""}, {"c": "funkcje", "n": "Zlicz wywołania", "lvl": 3, "d": "Napisz dekorator <code>count_calls</code> zliczający wywołania. Wywołaj funkcję 3 razy, wypisz liczbę.", "sol": "def count_calls(fn):\n    def wrapper(*args):\n        wrapper.calls += 1\n        return fn(*args)\n    wrapper.calls = 0\n    return wrapper\n@count_calls\ndef hello():\n    pass\nhello()\nhello()\nhello()\nprint(hello.calls)", "a": "3", "hint": "wrapper.calls += 1", "starter": ""}, {"c": "funkcje", "n": "Suma nieskonczona", "lvl": 2, "d": "Napisz <code>dodawaj(*args)</code> zwracającą sumę. Wypisz dodawaj(1,2,3) i dodawaj(10,20).", "sol": "def dodawaj(*args):\n    return sum(args)\nprint(dodawaj(1, 2, 3))\nprint(dodawaj(10, 20))", "a": "6\n30", "hint": "*args + sum(args)", "starter": ""}, {"c": "funkcje", "n": "Funkcja czysta", "lvl": 1, "d": "Napisz <code>bezwzgl(n)</code> zwracającą |n| bez abs(). Wypisz dla -5 i 3.", "sol": "def bezwzgl(n):\n    return n if n >= 0 else -n\nprint(bezwzgl(-5))\nprint(bezwzgl(3))", "a": "5\n3", "hint": "n if n >= 0 else -n", "starter": ""}, {"c": "funkcje", "n": "Kompozycja funkcji", "lvl": 3, "d": "Napisz <code>compose(f, g)</code> zwracającą f(g(x)). Wypisz compose(str, len)('hello').", "sol": "def compose(f, g):\n    def h(x):\n        return f(g(x))\n    return h\nprint(compose(str, len)('hello'))", "a": "5", "hint": "return f(g(x))", "starter": ""}, {"c": "funkcje", "n": "Memoize dekorator", "lvl": 3, "d": "Napisz dekorator @memoize. Udekoruj fib. Wypisz fib(20).", "sol": "def memoize(fn):\n    cache = {}\n    def wrapper(n):\n        if n not in cache:\n            cache[n] = fn(n)\n        return cache[n]\n    return wrapper\n@memoize\ndef fib(n):\n    if n <= 1:\n        return n\n    return fib(n - 1) + fib(n - 2)\nprint(fib(20))", "a": "6765", "hint": "Dekorator z dict cache", "starter": ""}, {"c": "funkcje", "n": "Policz samogłoski", "lvl": 1, "d": "Napisz <code>samogloski(s)</code> zwracającą liczbę samogłosek. Wypisz dla 'programowanie'.", "sol": "def samogloski(s):\n    return sum(1 for c in s.lower() if c in 'aeiouy')\nprint(samogloski('programowanie'))", "a": "6", "hint": "c in 'aeiouy'", "starter": ""}, {"c": "funkcje", "n": "Sprawdź palindrom", "lvl": 1, "d": "Napisz <code>is_palindrome(s)</code>. Wypisz dla 'kajak' i 'python'.", "sol": "def is_palindrome(s):\n    return s == s[::-1]\nprint(is_palindrome('kajak'))\nprint(is_palindrome('python'))", "a": "True\nFalse", "hint": "s == s[::-1]", "starter": ""}, {"c": "funkcje", "n": "Cezar szyfrowanie", "lvl": 2, "d": "Napisz <code>cezar(s, n)</code>. Zaszyfruj 'abc' z przesunięciem 3. Wypisz.", "sol": "def cezar(s, n):\n    result = ''\n    for c in s:\n        if c.isalpha():\n            base = ord('a') if c.islower() else ord('A')\n            result += chr((ord(c) - base + n) % 26 + base)\n        else:\n            result += c\n    return result\nprint(cezar('abc', 3))", "a": "def", "hint": "(ord(c)-base+n)%26+base", "starter": ""}, {"c": "funkcje", "n": "Potęga rekurencyjna", "lvl": 2, "d": "Napisz rekurencyjną <code>potega(x, n)</code>. Wypisz potega(2, 10).", "sol": "def potega(x, n):\n    if n == 0:\n        return 1\n    return x * potega(x, n - 1)\nprint(potega(2, 10))", "a": "1024", "hint": "x * potega(x, n-1)", "starter": ""}, {"c": "funkcje", "n": "Walidator PESEL", "lvl": 2, "d": "Napisz <code>valid_pesel(s)</code> sprawdzającą 11 cyfr. Wypisz dla '12345678901' i 'abc'.", "sol": "def valid_pesel(s):\n    return len(s) == 11 and s.isdigit()\nprint(valid_pesel('12345678901'))\nprint(valid_pesel('abc'))", "a": "True\nFalse", "hint": "len(s)==11 and s.isdigit()", "starter": ""}, {"c": "funkcje", "n": "Reduce ręczne", "lvl": 2, "d": "Napisz <code>moj_reduce(fn, lst)</code>. Użyj do iloczynu [1,2,3,4,5].", "sol": "def moj_reduce(fn, lst):\n    result = lst[0]\n    for x in lst[1:]:\n        result = fn(result, x)\n    return result\nprint(moj_reduce(lambda a, b: a * b, [1, 2, 3, 4, 5]))", "a": "120", "hint": "result = fn(result, x) w pętli", "starter": ""}, {"c": "funkcje", "n": "Zamień na CamelCase", "lvl": 2, "d": "Napisz <code>to_camel(s)</code> z snake_case. Wypisz to_camel('hello_world_python').", "sol": "def to_camel(s):\n    parts = s.split('_')\n    return parts[0] + ''.join(w.capitalize() for w in parts[1:])\nprint(to_camel('hello_world_python'))", "a": "helloWorldPython", "hint": "split('_'), capitalize()", "starter": ""}, {"c": "funkcje", "n": "Funkcja jako argument", "lvl": 2, "d": "Napisz <code>zastosuj(fn, lst)</code> aplikującą fn do każdego. Wypisz z kwadratem [1,2,3].", "sol": "def zastosuj(fn, lst):\n    return [fn(x) for x in lst]\nprint(zastosuj(lambda x: x**2, [1, 2, 3]))", "a": "[1, 4, 9]", "hint": "[fn(x) for x in lst]", "starter": ""}, {"c": "funkcje", "n": "ROT13", "lvl": 2, "d": "Napisz <code>rot13(s)</code>. Wypisz rot13('hello').", "sol": "def rot13(s):\n    result = ''\n    for c in s:\n        if c.isalpha():\n            base = ord('a') if c.islower() else ord('A')\n            result += chr((ord(c) - base + 13) % 26 + base)\n        else:\n            result += c\n    return result\nprint(rot13('hello'))", "a": "uryyb", "hint": "(ord(c)-base+13)%26+base", "starter": ""}, {"c": "funkcje", "n": "Binary search", "lvl": 2, "d": "Napisz <code>bsearch(lst, target)</code>. Znajdź 7 w [1,3,5,7,9,11]. Wypisz indeks.", "sol": "def bsearch(lst, target):\n    lo, hi = 0, len(lst) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if lst[mid] == target:\n            return mid\n        elif lst[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\nprint(bsearch([1, 3, 5, 7, 9, 11], 7))", "a": "3", "hint": "lo, hi, mid = (lo+hi)//2", "starter": ""}, {"c": "funkcje", "n": "Policz słowa", "lvl": 1, "d": "Napisz <code>count_words(s)</code>. Wypisz dla 'Python jest super językiem'.", "sol": "def count_words(s):\n    return len(s.split())\nprint(count_words('Python jest super językiem'))", "a": "4", "hint": "len(s.split())", "starter": ""}, {"c": "funkcje", "n": "Zamień na tuple", "lvl": 1, "d": "Napisz <code>para(a, b)</code> zwracającą (a, b). Wypisz para(1, 2).", "sol": "def para(a, b):\n    return (a, b)\nprint(para(1, 2))", "a": "(1, 2)", "hint": "return (a, b)", "starter": ""}, {"c": "funkcje", "n": "Reverse words", "lvl": 2, "d": "Napisz <code>reverse_words(s)</code>. Wypisz dla 'Hello World Python'.", "sol": "def reverse_words(s):\n    return ' '.join(s.split()[::-1])\nprint(reverse_words('Hello World Python'))", "a": "Python World Hello", "hint": "' '.join(s.split()[::-1])", "starter": ""}, {"c": "funkcje", "n": "NWW", "lvl": 2, "d": "Napisz <code>nww(a, b)</code> = a*b/nwd. Wypisz nww(12, 18).", "sol": "def nwd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\ndef nww(a, b):\n    return a * b // nwd(a, b)\nprint(nww(12, 18))", "a": "36", "hint": "NWW = a*b // NWD(a,b)", "starter": ""}, {"c": "funkcje", "n": "Ciąg Collatza", "lvl": 2, "d": "Policz kroki Collatza dla n=27. Wypisz liczbę kroków.", "sol": "def collatz_steps(n):\n    steps = 0\n    while n != 1:\n        n = n // 2 if n % 2 == 0 else 3 * n + 1\n        steps += 1\n    return steps\nprint(collatz_steps(27))", "a": "111", "hint": "n//2 jeśli parzyste, 3*n+1 jeśli nie", "starter": ""}, {"c": "pliki_algorytmy", "n": "Bubble sort", "lvl": 2, "d": "Zaimplementuj bubble sort dla <code>[64,34,25,12,22,11,90]</code>. Wypisz posortowaną listę.", "sol": "lst = [64, 34, 25, 12, 22, 11, 90]\nn = len(lst)\nfor i in range(n):\n    for j in range(0, n - i - 1):\n        if lst[j] > lst[j + 1]:\n            lst[j], lst[j + 1] = lst[j + 1], lst[j]\nprint(lst)", "a": "[11, 12, 22, 25, 34, 64, 90]", "hint": "Porównuj sąsiednie, zamień", "starter": ""}, {"c": "pliki_algorytmy", "n": "Selection sort", "lvl": 2, "d": "Zaimplementuj selection sort dla <code>[29,10,14,37,13]</code>. Wypisz.", "sol": "lst = [29, 10, 14, 37, 13]\nfor i in range(len(lst)):\n    m = i\n    for j in range(i + 1, len(lst)):\n        if lst[j] < lst[m]:\n            m = j\n    lst[i], lst[m] = lst[m], lst[i]\nprint(lst)", "a": "[10, 13, 14, 29, 37]", "hint": "Znajdź min, zamień z lst[i]", "starter": ""}, {"c": "pliki_algorytmy", "n": "Insertion sort", "lvl": 2, "d": "Zaimplementuj insertion sort dla <code>[5,2,4,6,1,3]</code>. Wypisz.", "sol": "lst = [5, 2, 4, 6, 1, 3]\nfor i in range(1, len(lst)):\n    key = lst[i]\n    j = i - 1\n    while j >= 0 and lst[j] > key:\n        lst[j + 1] = lst[j]\n        j -= 1\n    lst[j + 1] = key\nprint(lst)", "a": "[1, 2, 3, 4, 5, 6]", "hint": "Wstaw na właściwe miejsce", "starter": ""}, {"c": "pliki_algorytmy", "n": "Sito Eratostenesa", "lvl": 2, "d": "Znajdź pierwsze do 30. Wypisz jako listę.", "sol": "n = 30\nsieve = [True] * (n + 1)\nsieve[0] = sieve[1] = False\nfor i in range(2, int(n**0.5) + 1):\n    if sieve[i]:\n        for j in range(i * i, n + 1, i):\n            sieve[j] = False\nprint([i for i in range(n + 1) if sieve[i]])", "a": "[2, 3, 5, 7, 11, 13, 17, 19, 23, 29]", "hint": "Wykreślaj wielokrotności", "starter": ""}, {"c": "pliki_algorytmy", "n": "System binarny", "lvl": 2, "d": "Zamień 42 na binarny (bez 0b). Wypisz.", "sol": "print(bin(42)[2:])", "a": "101010", "hint": "bin(n)[2:]", "starter": ""}, {"c": "pliki_algorytmy", "n": "Binarny ręcznie", "lvl": 2, "d": "Zamień 45 na binarny ręcznie. Wypisz string.", "sol": "n = 45\nbits = ''\nwhile n > 0:\n    bits = str(n % 2) + bits\n    n //= 2\nprint(bits)", "a": "101101", "hint": "n%2 daje bit, n//=2 przesuwa", "starter": ""}, {"c": "pliki_algorytmy", "n": "Hex konwersja", "lvl": 2, "d": "Zamień 255 na hex (małe, bez 0x). Wypisz.", "sol": "print(hex(255)[2:])", "a": "ff", "hint": "hex(n)[2:]", "starter": ""}, {"c": "pliki_algorytmy", "n": "Binarny→dziesiętny", "lvl": 2, "d": "Zamień binarny <code>'10110'</code> na dziesiętny BEZ int(). Wypisz.", "sol": "s = '10110'\nresult = 0\nfor c in s:\n    result = result * 2 + int(c)\nprint(result)", "a": "22", "hint": "result = result*2 + cyfra", "starter": ""}, {"c": "pliki_algorytmy", "n": "Rozkład na czynniki", "lvl": 2, "d": "Rozłóż 360 na czynniki pierwsze. Wypisz oddzielone spacjami.", "sol": "n = 360\nfactors = []\nd = 2\nwhile d * d <= n:\n    while n % d == 0:\n        factors.append(d)\n        n //= d\n    d += 1\nif n > 1:\n    factors.append(n)\nprint(' '.join(map(str, factors)))", "a": "2 2 2 3 3 5", "hint": "Dziel przez d dopóki się dzieli", "starter": ""}, {"c": "pliki_algorytmy", "n": "Palindrom liczbowy", "lvl": 2, "d": "Które z <code>[121,123,1331,12321,456]</code> to palindromy? Wypisz je.", "sol": "for n in [121, 123, 1331, 12321, 456]:\n    if str(n) == str(n)[::-1]:\n        print(n)", "a": "121\n1331\n12321", "hint": "str(n) == str(n)[::-1]", "starter": ""}, {"c": "pliki_algorytmy", "n": "Walidacja nawiasów", "lvl": 2, "d": "Sprawdź czy <code>'((())())'</code> ma poprawne nawiasy. Wypisz True/False.", "sol": "s = '((()))'\ncount = 0\nok = True\nfor c in '((())())':\n    if c == '(':\n        count += 1\n    elif c == ')':\n        count -= 1\n    if count < 0:\n        ok = False\n        break\nprint(ok and count == 0)", "a": "True", "hint": "Licz ( i ), <0 = błąd", "starter": ""}, {"c": "pliki_algorytmy", "n": "Stack nawiasy 3 typy", "lvl": 2, "d": "Sprawdź czy <code>'({[]})'</code> poprawne. Wypisz True/False.", "sol": "s = '({[]})'\nstack = []\npairs = {')': '(', ']': '[', '}': '{'}\nok = True\nfor c in s:\n    if c in '([{':\n        stack.append(c)\n    elif c in ')]}':\n        if not stack or stack[-1] != pairs[c]:\n            ok = False\n            break\n        stack.pop()\nprint(ok and len(stack) == 0)", "a": "True", "hint": "Stos: push otwierające, pop zamykające", "starter": ""}, {"c": "pliki_algorytmy", "n": "Szyfr Cezara", "lvl": 2, "d": "Zaszyfruj <code>'python'</code> przesunięciem 3. Wypisz.", "sol": "s = 'python'\nresult = ''\nfor c in s:\n    result += chr((ord(c) - ord('a') + 3) % 26 + ord('a'))\nprint(result)", "a": "sbwkrq", "hint": "(ord(c)-ord('a')+shift)%26+ord('a')", "starter": ""}, {"c": "pliki_algorytmy", "n": "Kompresja RLE", "lvl": 3, "d": "Skompresuj <code>'aaabbbccddddee'</code> metodą RLE. Wypisz.", "sol": "s = 'aaabbbccddddee'\nresult = ''\ni = 0\nwhile i < len(s):\n    c = s[i]\n    count = 0\n    while i < len(s) and s[i] == c:\n        count += 1\n        i += 1\n    result += c + str(count)\nprint(result)", "a": "a3b3c2d4e2", "hint": "Zlicz powtórzenia, dopisz znak+liczba", "starter": ""}, {"c": "pliki_algorytmy", "n": "Merge sorted", "lvl": 2, "d": "Połącz posortowane <code>[1,3,5,7]</code> i <code>[2,4,6,8]</code>. Wypisz.", "sol": "print(sorted([1, 3, 5, 7] + [2, 4, 6, 8]))", "a": "[1, 2, 3, 4, 5, 6, 7, 8]", "hint": "sorted(a + b)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Najdłuższy ciąg znaków", "lvl": 2, "d": "Najdłuższy ciąg tego samego znaku w <code>'aabbbccccddee'</code>. Wypisz długość.", "sol": "s = 'aabbbccccddee'\nmax_len = cur = 1\nfor i in range(1, len(s)):\n    if s[i] == s[i-1]:\n        cur += 1\n        max_len = max(max_len, cur)\n    else:\n        cur = 1\nprint(max_len)", "a": "4", "hint": "Zlicz powtórzenia, max", "starter": ""}, {"c": "pliki_algorytmy", "n": "Odległość Hamminga", "lvl": 2, "d": "Oblicz odległość Hamminga 'karolin' i 'kathrin'. Wypisz.", "sol": "print(sum(c1 != c2 for c1, c2 in zip('karolin', 'kathrin')))", "a": "3", "hint": "sum(c1!=c2 for c1,c2 in zip(a,b))", "starter": ""}, {"c": "pliki_algorytmy", "n": "Sprawdź anagram", "lvl": 2, "d": "Czy 'listen' i 'silent' to anagramy? Wypisz True/False.", "sol": "print(sorted('listen') == sorted('silent'))", "a": "True", "hint": "sorted(s1) == sorted(s2)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Prefiksy-sumy", "lvl": 2, "d": "Oblicz prefix-sumy <code>[3,1,4,1,5,9,2,6]</code>. Wypisz każdą.", "sol": "lst = [3, 1, 4, 1, 5, 9, 2, 6]\ns = 0\nfor x in lst:\n    s += x\n    print(s)", "a": "3\n4\n8\n9\n14\n23\n25\n31", "hint": "s += x; print(s)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Elementy unikalne w kolejności", "lvl": 2, "d": "Z <code>'5 3 1 3 5 7 1 9 5'</code> wypisz unikalne w kolejności pojawienia.", "sol": "seen = set()\nresult = []\nfor x in '5 3 1 3 5 7 1 9 5'.split():\n    if x not in seen:\n        result.append(x)\n        seen.add(x)\nprint(' '.join(result))", "a": "5 3 1 7 9", "hint": "set do śledzenia, lista na wynik", "starter": ""}, {"c": "pliki_algorytmy", "n": "Analiza danych string", "lvl": 2, "d": "Z <code>'5 4 3 5 2 4 5 3 4 5'</code> oblicz średnią. Wypisz zaokrąglone do 1.", "sol": "dane = list(map(int, '5 4 3 5 2 4 5 3 4 5'.split()))\nprint(round(sum(dane) / len(dane), 1))", "a": "4.0", "hint": "map(int, s.split()) + średnia", "starter": ""}, {"c": "pliki_algorytmy", "n": "Min/max z danych", "lvl": 2, "d": "Z <code>'12 7 15 3 22 8 11 30'</code> znajdź min i max. Wypisz.", "sol": "dane = list(map(int, '12 7 15 3 22 8 11 30'.split()))\nprint(min(dane))\nprint(max(dane))", "a": "3\n30", "hint": "min() i max()", "starter": ""}, {"c": "pliki_algorytmy", "n": "Sortuj dane", "lvl": 2, "d": "Posortuj <code>'5 2 8 1 9 3 7 4 6'</code> rosnąco. Wypisz w jednej linii.", "sol": "print(' '.join(map(str, sorted(map(int, '5 2 8 1 9 3 7 4 6'.split())))))", "a": "1 2 3 4 5 6 7 8 9", "hint": "sorted(map(int, s.split()))", "starter": ""}, {"c": "pliki_algorytmy", "n": "Mediana z danych", "lvl": 2, "d": "Oblicz medianę <code>'7 3 1 9 5 2 8'</code>. Wypisz.", "sol": "dane = sorted(map(int, '7 3 1 9 5 2 8'.split()))\nn = len(dane)\nif n % 2 == 1:\n    print(dane[n // 2])\nelse:\n    print((dane[n // 2 - 1] + dane[n // 2]) / 2)", "a": "5", "hint": "Posortuj, weź środkowy", "starter": ""}, {"c": "pliki_algorytmy", "n": "Dane CSV parse", "lvl": 2, "d": "Sparsuj CSV: <code>'Anna,25\\nJan,30\\nEwa,22'</code>. Wypisz imiona osób w wieku > 24.", "sol": "data = 'Anna,25\\nJan,30\\nEwa,22'\nfor line in data.split('\\n'):\n    name, age = line.split(',')\n    if int(age) > 24:\n        print(name)", "a": "Anna\nJan", "hint": "split(',') w każdej linii", "starter": ""}, {"c": "pliki_algorytmy", "n": "Zlicz powyżej średniej", "lvl": 2, "d": "Z <code>'3 7 2 8 5 1 9 4 6'</code> policz ile powyżej średniej.", "sol": "dane = list(map(int, '3 7 2 8 5 1 9 4 6'.split()))\nsr = sum(dane) / len(dane)\nprint(sum(1 for x in dane if x > sr))", "a": "4", "hint": "sum(1 for x if x > średnia)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Najdłuższe słowo", "lvl": 1, "d": "Najdłuższe słowo w <code>'python jest super jezykiem'</code>. Wypisz.", "sol": "print(max('python jest super jezykiem'.split(), key=len))", "a": "jezykiem", "hint": "max(s.split(), key=len)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Cyfry liczby od końca", "lvl": 1, "d": "Wypisz cyfry <code>314159</code> od końca, każdą w osobnej linii.", "sol": "n = 314159\nwhile n > 0:\n    print(n % 10)\n    n //= 10", "a": "9\n5\n1\n4\n1\n3", "hint": "n%10, n//=10", "starter": ""}, {"c": "pliki_algorytmy", "n": "Dzielniki", "lvl": 2, "d": "Wypisz dzielniki 36 oddzielone spacjami.", "sol": "print(' '.join(str(i) for i in range(1, 37) if 36 % i == 0))", "a": "1 2 3 4 6 9 12 18 36", "hint": "36 % i == 0", "starter": ""}, {"c": "pliki_algorytmy", "n": "Suma podzielna par", "lvl": 2, "d": "Z <code>[12,7,15,3,22,8]</code> policz pary (i<j) których suma podzielna przez 5.", "sol": "lst = [12, 7, 15, 3, 22, 8]\ncount = 0\nfor i in range(len(lst)):\n    for j in range(i + 1, len(lst)):\n        if (lst[i] + lst[j]) % 5 == 0:\n            count += 1\nprint(count)", "a": "6", "hint": "Dwie pętle, (a+b)%5==0", "starter": ""}, {"c": "pliki_algorytmy", "n": "Max różnica sąsiadów", "lvl": 2, "d": "Max bezwzgl. różnica sąsiadów w <code>[4,8,1,7,3,9,2]</code>.", "sol": "lst = [4, 8, 1, 7, 3, 9, 2]\nprint(max(abs(lst[i] - lst[i+1]) for i in range(len(lst) - 1)))", "a": "7", "hint": "max(abs(a-b) sąsiadów)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Zlicz samogłoski tekst", "lvl": 1, "d": "Policz samogłoski (aeiouy) w <code>'programowanie to sztuka'</code>.", "sol": "print(sum(1 for c in 'programowanie to sztuka' if c in 'aeiouy'))", "a": "9", "hint": "c in 'aeiouy'", "starter": ""}, {"c": "pliki_algorytmy", "n": "Dane wieloliniowe — max", "lvl": 2, "d": "Dane: <code>'10\\n25\\n7\\n18\\n31\\n12'</code>. Znajdź max. Wypisz.", "sol": "dane = '10\\n25\\n7\\n18\\n31\\n12'\nprint(max(int(x) for x in dane.split('\\n')))", "a": "31", "hint": "max(int(x) for x in lines)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Zlicz podzielne przez 3", "lvl": 2, "d": "Z <code>'1 2 3 4 5 6 7 8 9 10 11 12'</code> policz podzielne przez 3.", "sol": "dane = list(map(int, '1 2 3 4 5 6 7 8 9 10 11 12'.split()))\nprint(sum(1 for x in dane if x % 3 == 0))", "a": "4", "hint": "x % 3 == 0", "starter": ""}, {"c": "pliki_algorytmy", "n": "Histogram znaków", "lvl": 2, "d": "Wypisz histogram liter (posortowany) z <code>'hello'</code>.", "sol": "s = 'hello'\nd = {}\nfor c in s:\n    d[c] = d.get(c, 0) + 1\nfor k in sorted(d):\n    print(f'{k}: {\"#\" * d[k]}')", "a": "e: #\nh: #\nl: ##\no: #", "hint": "d[c] = d.get(c,0)+1; '#'*count", "starter": ""}, {"c": "pliki_algorytmy", "n": "Zamień cyfry na X", "lvl": 1, "d": "W <code>'tel: 123-456-789'</code> zamień cyfry na X. Wypisz.", "sol": "print(''.join('X' if c.isdigit() else c for c in 'tel: 123-456-789'))", "a": "tel: XXX-XXX-XXX", "hint": "'X' if c.isdigit() else c", "starter": ""}, {"c": "pliki_algorytmy", "n": "Posortuj po ostatniej cyfrze", "lvl": 2, "d": "Posortuj <code>[34, 21, 15, 48, 72, 69]</code> po ostatniej cyfrze. Wypisz.", "sol": "print(sorted([34, 21, 15, 48, 72, 69], key=lambda x: x % 10))", "a": "[21, 72, 34, 15, 48, 69]", "hint": "key=lambda x: x%10", "starter": ""}, {"c": "pliki_algorytmy", "n": "Liczby doskonałe do 1000", "lvl": 3, "d": "Znajdź liczby doskonałe do 1000. Wypisz.", "sol": "for n in range(2, 1001):\n    if sum(i for i in range(1, n) if n % i == 0) == n:\n        print(n)", "a": "6\n28\n496", "hint": "sum(dzielników właściwych) == n", "starter": ""}, {"c": "pliki_algorytmy", "n": "Zakoduj wielkie", "lvl": 2, "d": "W <code>'Hello World'</code> zamień wielkie na pozycję w alfabecie (A=1). Wypisz.", "sol": "s = 'Hello World'\nresult = ''\nfor c in s:\n    if c.isupper():\n        result += str(ord(c) - ord('A') + 1)\n    else:\n        result += c\nprint(result)", "a": "8ello 23orld", "hint": "ord(c)-ord('A')+1", "starter": ""}, {"c": "pliki_algorytmy", "n": "Najczęstszy bigram", "lvl": 3, "d": "Najczęstszy 2-gram w <code>'abcabcabc'</code>. Wypisz bigram i liczbę.", "sol": "s = 'abcabcabc'\nd = {}\nfor i in range(len(s) - 1):\n    bg = s[i:i+2]\n    d[bg] = d.get(bg, 0) + 1\nm = max(d, key=d.get)\nprint(m, d[m])", "a": "ab 3", "hint": "s[i:i+2] daje bigram", "starter": ""}, {"c": "pliki_algorytmy", "n": "Spiral print macierzy", "lvl": 3, "d": "Wypisz spiralnie <code>[[1,2,3],[4,5,6],[7,8,9]]</code>.", "sol": "m = [[1,2,3],[4,5,6],[7,8,9]]\nresult = []\nwhile m:\n    result += m.pop(0)\n    if m and m[0]:\n        for row in m:\n            result.append(row.pop())\n    if m:\n        result += m.pop()[::-1]\n    if m and m[0]:\n        for row in m[::-1]:\n            result.append(row.pop(0))\nprint(' '.join(map(str, result)))", "a": "1 2 3 6 9 8 7 4 5", "hint": "Pop: górny, prawy, dolny odwr., lewy", "starter": ""}, {"c": "pliki_algorytmy", "n": "Obróć macierz 90°", "lvl": 3, "d": "Obróć <code>[[1,2,3],[4,5,6],[7,8,9]]</code> o 90° w prawo. Wypisz wiersze.", "sol": "m = [[1,2,3],[4,5,6],[7,8,9]]\nfor r in zip(*m[::-1]):\n    print(list(r))", "a": "[7, 4, 1]\n[8, 5, 2]\n[9, 6, 3]", "hint": "zip(*m[::-1])", "starter": ""}, {"c": "pliki_algorytmy", "n": "Dekoduj Morse", "lvl": 2, "d": "Dekoduj <code>'.... . .-.. .-.. ---'</code>. Wypisz.", "sol": "morse = {'.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H','..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P','--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X','-.--':'Y','--..':'Z'}\nprint(''.join(morse.get(c, '?') for c in '.... . .-.. .-.. ---'.split()))", "a": "HELLO", "hint": "Słownik morse → join", "starter": ""}, {"c": "pliki_algorytmy", "n": "Statystyki tekstu", "lvl": 2, "d": "Dla <code>'Python jest super. Python jest szybki.'</code> wypisz: słowa, unikalne, zdania.", "sol": "t = 'Python jest super. Python jest szybki.'\nslowa = t.replace('.', '').split()\nprint(len(slowa))\nprint(len(set(w.lower() for w in slowa)))\nprint(t.count('.'))", "a": "6\n4\n2", "hint": "split() + set() + count('.')", "starter": ""}, {"c": "pliki_algorytmy", "n": "Macierz transponowana", "lvl": 2, "d": "Transponuj <code>[[1,2,3],[4,5,6],[7,8,9]]</code>. Wypisz wiersze.", "sol": "m = [[1,2,3],[4,5,6],[7,8,9]]\nfor r in zip(*m):\n    print(list(r))", "a": "[1, 4, 7]\n[2, 5, 8]\n[3, 6, 9]", "hint": "zip(*m)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Średnia ważona", "lvl": 2, "d": "Średnia ważona: oceny=[5,4,3], wagi=[3,2,1]. Wypisz zaokrąglone do 2.", "sol": "o = [5, 4, 3]\nw = [3, 2, 1]\nprint(round(sum(a * b for a, b in zip(o, w)) / sum(w), 2))", "a": "4.33", "hint": "sum(o*w)/sum(w)", "starter": ""}, {"c": "pliki_algorytmy", "n": "Mnożenie macierzy 2x2", "lvl": 3, "d": "Pomnóż A=[[1,2],[3,4]] i B=[[5,6],[7,8]]. Wypisz wiersze wyniku.", "sol": "A = [[1,2],[3,4]]\nB = [[5,6],[7,8]]\nfor i in range(2):\n    row = []\n    for j in range(2):\n        row.append(sum(A[i][k] * B[k][j] for k in range(2)))\n    print(row)", "a": "[19, 22]\n[43, 50]", "hint": "C[i][j] = sum(A[i][k]*B[k][j])", "starter": ""}, {"c": "pliki_algorytmy", "n": "Szyfr przestawieniowy", "lvl": 3, "d": "Zaszyfruj <code>'ABCDEF'</code> kluczem 3 (co 3. litera). Wypisz.", "sol": "s = 'ABCDEF'\nresult = ''\nfor start in range(3):\n    for i in range(start, len(s), 3):\n        result += s[i]\nprint(result)", "a": "ADBECF", "hint": "Co 3 litera od startu 0,1,2", "starter": ""}, {"c": "pliki_algorytmy", "n": "Dane z nagłówkiem", "lvl": 2, "d": "Parse: <code>'imie,wiek\\nAla,20\\nBob,25\\nCel,22'</code>. Wypisz imiona w wieku >= 22.", "sol": "data = 'imie,wiek\\nAla,20\\nBob,25\\nCel,22'\nlines = data.split('\\n')\nfor line in lines[1:]:\n    name, age = line.split(',')\n    if int(age) >= 22:\n        print(name)", "a": "Bob\nCel", "hint": "Pomiń nagłówek: lines[1:]", "starter": ""}, {"c": "pliki_algorytmy", "n": "Zlicz słowa powyżej n", "lvl": 2, "d": "W <code>'python jest super jezykiem do nauki'</code> policz słowa dłuższe niż 4 znaki.", "sol": "print(sum(1 for w in 'python jest super jezykiem do nauki'.split() if len(w) > 4))", "a": "4", "hint": "len(w) > 4", "starter": ""}, {"c": "pliki_algorytmy", "n": "Ciąg rosnąco-malejący", "lvl": 3, "d": "Najdłuższy ciąg rosnący w <code>[3,1,4,1,5,9,2,6,5,3,5]</code>. Wypisz długość.", "sol": "lst = [3,1,4,1,5,9,2,6,5,3,5]\nmax_len = cur = 1\nfor i in range(1, len(lst)):\n    if lst[i] > lst[i-1]:\n        cur += 1\n        max_len = max(max_len, cur)\n    else:\n        cur = 1\nprint(max_len)", "a": "3", "hint": "Zlicz rosnące; resetuj gdy spada", "starter": ""}, {"c": "pliki_algorytmy", "n": "Trójkowy na dziesiętny", "lvl": 2, "d": "Zamień trójkowy <code>'2101'</code> na dziesiętny. Wypisz.", "sol": "s = '2101'\nresult = 0\nfor c in s:\n    result = result * 3 + int(c)\nprint(result)", "a": "64", "hint": "result = result * baza + cyfra", "starter": ""}, {"c": "pliki_algorytmy", "n": "Analiza ocen klasy", "lvl": 3, "d": "Dane: <code>'5 4 3 5 2 4 5 3 4 5'</code>. Wypisz medianę, modę (najczęstszą) i ile powyżej średniej.", "sol": "dane = list(map(int, '5 4 3 5 2 4 5 3 4 5'.split()))\ndane_s = sorted(dane)\nn = len(dane_s)\nmediana = (dane_s[n//2-1] + dane_s[n//2]) / 2 if n % 2 == 0 else dane_s[n//2]\nprint(mediana)\nmoda = max(set(dane), key=dane.count)\nprint(moda)\nsr = sum(dane) / len(dane)\nprint(sum(1 for x in dane if x > sr))", "a": "4.0\n5\n4", "hint": "mediana, max(set, key=count), >średnia", "starter": ""}, {"c": "matura", "n": "Matura – suma podzielnych", "lvl": 2, "d": "Z <code>'12 7 15 3 22 8 11 30 6 18'</code> zsumuj podzielne przez 3. Wypisz.", "sol": "dane = list(map(int, '12 7 15 3 22 8 11 30 6 18'.split()))\nprint(sum(x for x in dane if x % 3 == 0))", "a": "84", "hint": "sum(x for x if x%3==0)", "starter": ""}, {"c": "matura", "n": "Matura – największa różnica", "lvl": 2, "d": "Max różnica między sąsiadami w <code>'4 8 1 7 3 9 2 6'</code>. Wypisz.", "sol": "dane = list(map(int, '4 8 1 7 3 9 2 6'.split()))\nprint(max(abs(dane[i] - dane[i+1]) for i in range(len(dane)-1)))", "a": "7", "hint": "max(abs(a[i]-a[i+1]))", "starter": ""}, {"c": "matura", "n": "Matura – ile powyżej średniej", "lvl": 2, "d": "Z <code>'3 7 2 8 5 1 9 4 6'</code> policz ile wyrazów > średnia.", "sol": "dane = list(map(int, '3 7 2 8 5 1 9 4 6'.split()))\nsr = sum(dane) / len(dane)\nprint(sum(1 for x in dane if x > sr))", "a": "4", "hint": "Oblicz średnią, policz x > sr", "starter": ""}, {"c": "matura", "n": "Matura – cyfry od końca", "lvl": 1, "d": "Wypisz cyfry <code>987654</code> od końca.", "sol": "n = 987654\nwhile n > 0:\n    print(n % 10)\n    n //= 10", "a": "4\n5\n6\n7\n8\n9", "hint": "n%10 daje cyfrę, n//=10 obcina", "starter": ""}, {"c": "matura", "n": "Matura – system binarny", "lvl": 2, "d": "Zamień <code>'10110'</code> na dziesiętny BEZ int(,2). Wypisz.", "sol": "s = '10110'\nresult = 0\nfor c in s:\n    result = result * 2 + int(c)\nprint(result)", "a": "22", "hint": "result = result*2 + cyfra", "starter": ""}, {"c": "matura", "n": "Matura – najdłuższe słowo", "lvl": 1, "d": "Najdłuższe słowo w <code>'matura z informatyki jest wazna'</code>. Wypisz.", "sol": "print(max('matura z informatyki jest wazna'.split(), key=len))", "a": "informatyki", "hint": "max(s.split(), key=len)", "starter": ""}, {"c": "matura", "n": "Matura – dzielniki", "lvl": 2, "d": "Wypisz dzielniki 60 oddzielone spacjami.", "sol": "print(' '.join(str(i) for i in range(1, 61) if 60 % i == 0))", "a": "1 2 3 4 5 6 10 12 15 20 30 60", "hint": "60 % i == 0", "starter": ""}, {"c": "matura", "n": "Matura – Hamming", "lvl": 2, "d": "Odległość Hamminga 'karolin' i 'kathrin'. Wypisz.", "sol": "print(sum(c1 != c2 for c1, c2 in zip('karolin', 'kathrin')))", "a": "3", "hint": "sum(c1!=c2 for c1,c2 in zip(a,b))", "starter": ""}, {"c": "matura", "n": "Matura – RLE kompresja", "lvl": 3, "d": "Skompresuj <code>'aaabbcccc'</code> metodą RLE.", "sol": "s = 'aaabbcccc'\nresult = ''\ni = 0\nwhile i < len(s):\n    c = s[i]\n    cnt = 0\n    while i < len(s) and s[i] == c:\n        cnt += 1\n        i += 1\n    result += c + str(cnt)\nprint(result)", "a": "a3b2c4", "hint": "Zlicz powtórzenia", "starter": ""}, {"c": "matura", "n": "Matura – anagram", "lvl": 2, "d": "Czy 'listen' i 'silent' to anagramy? Wypisz True/False.", "sol": "print(sorted('listen') == sorted('silent'))", "a": "True", "hint": "sorted(s1) == sorted(s2)", "starter": ""}, {"c": "matura", "n": "Matura – CamelCase", "lvl": 2, "d": "Zamień <code>'hello_world_python'</code> na camelCase. Wypisz.", "sol": "s = 'hello_world_python'\nparts = s.split('_')\nprint(parts[0] + ''.join(w.capitalize() for w in parts[1:]))", "a": "helloWorldPython", "hint": "split('_'), capitalize()", "starter": ""}, {"c": "matura", "n": "Matura – ciąg arytmetyczny", "lvl": 1, "d": "Wypisz 8 el. ciągu a1=2, r=5.", "sol": "a = 2\nfor _ in range(8):\n    print(a)\n    a += 5", "a": "2\n7\n12\n17\n22\n27\n32\n37", "hint": "a += r w pętli", "starter": ""}, {"c": "matura", "n": "Matura – LCM", "lvl": 2, "d": "Oblicz NWW(12, 18). Wypisz.", "sol": "a, b = 12, 18\nx, y = a, b\nwhile y:\n    x, y = y, x % y\nprint(a * b // x)", "a": "36", "hint": "NWW = a*b // NWD(a,b)", "starter": ""}, {"c": "matura", "n": "Matura – pary sumujące do 10", "lvl": 2, "d": "Z <code>[1,2,3,4,5,6,7,8,9]</code> wypisz pary (i<j) sumujące do 10.", "sol": "lst = [1,2,3,4,5,6,7,8,9]\nfor i in range(len(lst)):\n    for j in range(i+1, len(lst)):\n        if lst[i] + lst[j] == 10:\n            print(f'{lst[i]} + {lst[j]} = 10')", "a": "1 + 9 = 10\n2 + 8 = 10\n3 + 7 = 10\n4 + 6 = 10", "hint": "Dwie pętle, a+b==10", "starter": ""}, {"c": "matura", "n": "Matura – najczęstsza litera", "lvl": 2, "d": "Najczęstsza litera (mała) w <code>'Programowanie'</code>. Wypisz literę i liczbę.", "sol": "s = 'Programowanie'.lower()\nd = {}\nfor c in s:\n    if c.isalpha():\n        d[c] = d.get(c, 0) + 1\nm = max(d, key=d.get)\nprint(f'{m} {d[m]}')", "a": "r 2", "hint": "Zlicz litery, max(d, key=d.get)", "starter": ""}, {"c": "matura", "n": "Matura – odwróć liczbę", "lvl": 2, "d": "Odwróć 12345 bez konwersji na string. Wypisz.", "sol": "n = 12345\nrev = 0\nwhile n > 0:\n    rev = rev * 10 + n % 10\n    n //= 10\nprint(rev)", "a": "54321", "hint": "rev = rev*10 + n%10", "starter": ""}, {"c": "matura", "n": "Matura – dane CSV filtr", "lvl": 2, "d": "CSV: <code>'Jan,M,25\\nAla,K,30\\nBob,M,22\\nEwa,K,28'</code>. Wypisz imiona kobiet (K).", "sol": "data = 'Jan,M,25\\nAla,K,30\\nBob,M,22\\nEwa,K,28'\nfor line in data.split('\\n'):\n    parts = line.split(',')\n    if parts[1] == 'K':\n        print(parts[0])", "a": "Ala\nEwa", "hint": "parts[1] == 'K'", "starter": ""}, {"c": "matura", "n": "Matura – szyfr zamiany", "lvl": 2, "d": "Zaszyfruj <code>'abcd'</code>: a→z, b→y, c→x, d→w (odwróć alfabet). Wypisz.", "sol": "s = 'abcd'\nresult = ''\nfor c in s:\n    result += chr(ord('z') - (ord(c) - ord('a')))\nprint(result)", "a": "zyxw", "hint": "chr(ord('z') - (ord(c)-ord('a')))", "starter": ""}, {"c": "matura", "n": "Matura – ile podzielnych przez oba", "lvl": 2, "d": "Z 1-100 policz podzielne przez 3 i 5 jednocześnie.", "sol": "print(sum(1 for x in range(1, 101) if x % 3 == 0 and x % 5 == 0))", "a": "6", "hint": "x%3==0 and x%5==0", "starter": ""}, {"c": "matura", "n": "Matura – dane wieloliniowe max-min", "lvl": 2, "d": "Dane: <code>'15\\n8\\n23\\n4\\n17\\n31\\n12\\n6'</code>. Wypisz max-min.", "sol": "dane = [int(x) for x in '15\\n8\\n23\\n4\\n17\\n31\\n12\\n6'.split('\\n')]\nprint(max(dane) - min(dane))", "a": "27", "hint": "max(dane) - min(dane)", "starter": ""}, {"c": "matura", "n": "Matura – ciąg geometryczny", "lvl": 2, "d": "Wypisz 6 el. ciągu geometrycznego a1=3, q=2.", "sol": "a = 3\nfor _ in range(6):\n    print(a)\n    a *= 2", "a": "3\n6\n12\n24\n48\n96", "hint": "a *= q", "starter": ""}, {"c": "matura", "n": "Matura – grupuj po parzyste/nieparzyste", "lvl": 2, "d": "Z <code>'1 4 7 2 5 8 3 6 9'</code> wypisz parzyste i nieparzyste (2 linie).", "sol": "dane = list(map(int, '1 4 7 2 5 8 3 6 9'.split()))\nprint(' '.join(str(x) for x in dane if x % 2 == 0))\nprint(' '.join(str(x) for x in dane if x % 2 != 0))", "a": "4 2 8 6\n1 7 5 3 9", "hint": "Filtruj parzyste i nieparzyste osobno", "starter": ""}, {"c": "matura", "n": "Matura – liczby pierwsze do 50", "lvl": 2, "d": "Wypisz liczby pierwsze do 50 (każda w osobnej linii).", "sol": "for n in range(2, 51):\n    ok = True\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            ok = False\n            break\n    if ok:\n        print(n)", "a": "2\n3\n5\n7\n11\n13\n17\n19\n23\n29\n31\n37\n41\n43\n47", "hint": "Sprawdź dzielniki do sqrt(n)", "starter": ""}, {"c": "matura", "n": "Matura – pole trapezu", "lvl": 1, "d": "Oblicz pole trapezu: a=10, b=6, h=4. Wypisz.", "sol": "a, b, h = 10, 6, 4\nprint((a + b) * h / 2)", "a": "32.0", "hint": "P = (a+b)*h/2", "starter": ""}, {"c": "matura", "n": "Matura – wykres gwiazdkowy", "lvl": 2, "d": "Dane: <code>[3, 5, 2, 7, 4]</code>. Narysuj poziomy wykres gwiazdkowy.", "sol": "for x in [3, 5, 2, 7, 4]:\n    print('*' * x)", "a": "***\n*****\n**\n*******\n****", "hint": "'*' * x", "starter": ""}, {"c": "matura", "n": "Matura – konwersja 10→2 ręcznie", "lvl": 2, "d": "Zamień 100 na binarny ręcznie (bez bin()). Wypisz.", "sol": "n = 100\nbits = ''\nwhile n > 0:\n    bits = str(n % 2) + bits\n    n //= 2\nprint(bits)", "a": "1100100", "hint": "n%2 + n//=2", "starter": ""}, {"c": "matura", "n": "Matura – sortuj po sumie cyfr", "lvl": 2, "d": "Posortuj <code>[91, 23, 45, 12, 78]</code> po sumie cyfr. Wypisz.", "sol": "def sc(n):\n    return sum(int(c) for c in str(n))\nprint(sorted([91, 23, 45, 12, 78], key=sc))", "a": "[12, 23, 45, 91, 78]", "hint": "key=lambda: sum(int(c) for c in str(n))", "starter": ""}, {"c": "matura", "n": "Matura – zlicz wielkie/małe", "lvl": 1, "d": "W <code>'Hello World Python'</code> policz wielkie i małe litery. Wypisz.", "sol": "s = 'Hello World Python'\nprint(sum(1 for c in s if c.isupper()))\nprint(sum(1 for c in s if c.islower()))", "a": "3\n13", "hint": "isupper() i islower()", "starter": ""}, {"c": "matura", "n": "Matura – duplikaty w danych", "lvl": 2, "d": "Z <code>'5 3 7 3 5 8 1 7 5'</code> znajdź duplikaty (posortowane). Wypisz.", "sol": "dane = '5 3 7 3 5 8 1 7 5'.split()\nseen = set()\ndups = set()\nfor x in dane:\n    if x in seen:\n        dups.add(x)\n    seen.add(x)\nprint(' '.join(sorted(dups)))", "a": "3 5 7", "hint": "set do śledzenia, dups = powtórzone", "starter": ""}, {"c": "matura", "n": "Matura – suma diagonali macierzy", "lvl": 2, "d": "Sumy obu diagonali <code>[[1,2,3],[4,5,6],[7,8,9]]</code>. Wypisz obie.", "sol": "m = [[1,2,3],[4,5,6],[7,8,9]]\nn = len(m)\nprint(sum(m[i][i] for i in range(n)))\nprint(sum(m[i][n-1-i] for i in range(n)))", "a": "15\n15", "hint": "m[i][i] i m[i][n-1-i]", "starter": ""}, {"c": "matura", "n": "Matura – ROT13", "lvl": 2, "d": "Zaszyfruj <code>'hello'</code> ROT13. Wypisz.", "sol": "s = 'hello'\nresult = ''\nfor c in s:\n    if c.isalpha():\n        base = ord('a') if c.islower() else ord('A')\n        result += chr((ord(c) - base + 13) % 26 + base)\n    else:\n        result += c\nprint(result)", "a": "uryyb", "hint": "(ord(c)-base+13)%26+base", "starter": ""}, {"c": "matura", "n": "Matura – ile słów zaczyna na wielką", "lvl": 1, "d": "W <code>'Ala Ma Kota i Psa'</code> policz słowa zaczynające wielką literą.", "sol": "print(sum(1 for w in 'Ala Ma Kota i Psa'.split() if w[0].isupper()))", "a": "4", "hint": "w[0].isupper()", "starter": ""}, {"c": "matura", "n": "Matura – PESEL walidacja", "lvl": 2, "d": "Sprawdź czy <code>'12345678901'</code> ma 11 cyfr i <code>'123abc'</code> nie. Wypisz True/False.", "sol": "def valid(s):\n    return len(s) == 11 and s.isdigit()\nprint(valid('12345678901'))\nprint(valid('123abc'))", "a": "True\nFalse", "hint": "len(s)==11 and s.isdigit()", "starter": ""}, {"c": "matura", "n": "Matura – wspólne elementy", "lvl": 2, "d": "Wspólne elementy <code>'1 3 5 7 9'</code> i <code>'2 3 5 8 9'</code>. Wypisz posortowane.", "sol": "a = set('1 3 5 7 9'.split())\nb = set('2 3 5 8 9'.split())\nprint(' '.join(sorted(a & b)))", "a": "3 5 9", "hint": "set(a) & set(b)", "starter": ""}];
+
+// ═══════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════
+const CATS=['podstawy','listy','slowniki','funkcje','pliki_algorytmy','matura'];
+const CAT_LABELS={podstawy:'Podstawy',listy:'Listy',slowniki:'Słowniki',funkcje:'Funkcje',pliki_algorytmy:'Algorytmy',matura:'Matura'};
+const CAT_COLORS={podstawy:'#06b6d4',listy:'#a855f7',slowniki:'#f97316',funkcje:'#22c55e',pliki_algorytmy:'#3b82f6',matura:'#ffd43b'};
+
+const PY_KW=['def','return','if','elif','else','for','while','in','not','and','or','True','False','None','import','from','class','lambda','try','except','finally','raise','with','as','pass','break','continue','yield','del'];
+const PY_BI=['print(','input(','len(','range(','list(','dict(','set(','tuple(','str(','int(','float(','bool(','type(','sum(','min(','max(','sorted(','enumerate(','zip(','map(','filter(','abs(','round(','isinstance(','any(','all(','open(','reversed(','chr(','ord(','bin(','hex('];
+
+let cur=0, curFilter='all', outputBuf='', hasRun=false;
+let dn=new Set(JSON.parse(localStorage.getItem('py_done')||'[]'));
+let rp=new Set(JSON.parse(localStorage.getItem('py_repeat')||'[]'));
+
+// ═══════════════════════════════════════
+// SKULPT ENGINE
+// ═══════════════════════════════════════
+function builtinRead(x){
+  if(Sk.builtinFiles===undefined||Sk.builtinFiles["files"][x]===undefined)
+    throw "File not found: '"+x+"'";
+  return Sk.builtinFiles["files"][x];
+}
+
+function clearOutput(){document.getElementById('outContent').innerHTML='<span class="out-hint">// Wyjście programu pojawi się tutaj...</span>';}
+function appendOutput(text){
+  const el=document.getElementById('outContent');
+  if(el.querySelector('.out-hint')) el.innerHTML='';
+  const span=document.createElement('span');
+  span.className='out-text';
+  span.textContent=text;
+  el.appendChild(span);
+  el.scrollTop=el.scrollHeight;
+}
+function setStatus(txt,cls){
+  const el=document.getElementById('outStatus');
+  el.textContent=txt;el.className='out-status '+cls;
+}
+
+function runCode(){
+  const code=document.getElementById('ed').value;
+  if(!code.trim()) return;
+  document.getElementById('outContent').innerHTML='';
+  outputBuf='';hasRun=false;
+  document.getElementById('selfAssess').classList.remove('show');
+  document.getElementById('verdict').className='verdict';
+  setStatus('Uruchamianie...','run');
+  Sk.configure({output:function(text){appendOutput(text);outputBuf+=text;},read:builtinRead,__future__:Sk.python3});
+  Sk.misceval.asyncToPromise(()=>Sk.importMainWithBody('<stdin>',false,code,true))
+    .then(()=>{
+      setStatus('OK','ok');hasRun=true;
+      document.getElementById('selfAssess').classList.add('show');
+      document.getElementById('btnNext').style.display='inline-flex';
+      const got=(outputBuf||'').replace(/\r\n/g,'\n').trim();
+      const exp=(T[cur].a||'').replace(/\r\n/g,'\n').trim();
+      if(got===exp && exp!==''){
+        const v=document.getElementById('verdict');
+        v.className='verdict ok';
+        v.innerHTML='&#10003; Poprawnie! Output się zgadza.';
+        setStatus('Zaliczone!','ok');
+      }
+    })
+    .catch(e=>{
+      const el=document.getElementById('outContent');
+      const span=document.createElement('span');
+      span.className='out-err';
+      span.textContent=e.toString();
+      el.appendChild(span);
+      el.scrollTop=el.scrollHeight;
+      setStatus('Błąd','err');
+      document.getElementById('selfAssess').classList.add('show');
+      document.getElementById('btnNext').style.display='inline-flex';
+    });
+}
+
+// ═══════════════════════════════════════
+// KNOW / NOPE
+// ═══════════════════════════════════════
+function markKnow(){
+  dn.add(cur);rp.delete(cur);saveSets();
+  const v=document.getElementById('verdict');
+  v.className='verdict ok';v.innerHTML='&#10003; Zadanie zaliczone!';
+  document.getElementById('selfAssess').classList.remove('show');
+  const ti=document.querySelector('.ti[data-idx="'+cur+'"]');
+  if(ti){ti.classList.add('done');ti.classList.remove('repeat');}
+  updateStats();setTimeout(()=>nextTask(),700);
+}
+function markNope(){
+  rp.add(cur);dn.delete(cur);saveSets();
+  const v=document.getElementById('verdict');
+  v.className='verdict err';v.innerHTML='&#10007; Dodano do Powtórki. Wróć później!';
+  document.getElementById('selfAssess').classList.remove('show');
+  document.getElementById('ansWrap').classList.add('show');
+  document.getElementById('ansCode').textContent=T[cur].sol||T[cur].hint||'(brak)';
+  document.getElementById('ansExpected').textContent=T[cur].a||'';
+  const ti=document.querySelector('.ti[data-idx="'+cur+'"]');
+  if(ti){ti.classList.add('repeat');ti.classList.remove('done');}
+  updateStats();
+}
+function saveSets(){
+  localStorage.setItem('py_done',JSON.stringify([...dn]));
+  localStorage.setItem('py_repeat',JSON.stringify([...rp]));
+}
+
+// ═══════════════════════════════════════
+// TASK SELECTION
+// ═══════════════════════════════════════
+function sel(idx){
+  cur=idx;const t=T[idx];
+  const cc=CAT_COLORS[t.c]||'#888';
+  document.getElementById('taskTitle').innerHTML=`<span class="cat-badge cat-${t.c}" style="background:${cc}22;color:${cc}">${CAT_LABELS[t.c]||t.c}</span> ${esc(t.n)}`;
+  document.getElementById('taskDesc').innerHTML=t.d;
+  document.getElementById('hintBox').textContent=t.hint||'';
+  document.getElementById('hintBox').className='hint-box';
+  const lv=document.getElementById('lvlBadge');
+  lv.className='lvl '+(t.lvl===1?'lvl-e':t.lvl===2?'lvl-m':'lvl-h');
+  lv.textContent=t.lvl===1?'łatwe':t.lvl===2?'średnie':'trudne';
+  document.getElementById('ed').value=t.starter||'';
+  syncHL();updateLn();
+  document.getElementById('outContent').innerHTML='<span class="out-hint">// Wyjście programu pojawi się tutaj...</span>';
+  document.getElementById('outStatus').textContent='';
+  document.getElementById('outStatus').className='out-status';
+  document.getElementById('ansWrap').className='ans-wrap';
+  document.getElementById('ansCode').textContent='';
+  document.getElementById('ansExpected').textContent='';
+  document.getElementById('verdict').className='verdict';
+  document.getElementById('selfAssess').classList.remove('show');
+  document.getElementById('btnNext').style.display='none';
+  hasRun=false;
+  document.querySelectorAll('.ti').forEach(el=>el.classList.remove('on'));
+  const ti=document.querySelector(`.ti[data-idx="${idx}"]`);
+  if(ti){ti.classList.add('on');ti.scrollIntoView({block:'nearest'});}
+  updateStats();
+}
+
+function nextTask(){
+  if(curFilter==='powtorka'){
+    const arr=[...rp].filter(i=>i!==cur);
+    if(arr.length) sel(arr[0]); else setFilter('all',document.querySelector('.ftag[data-f="all"]'));
+    return;
+  }
+  let nx=cur+1;
+  while(nx<T.length && (dn.has(nx)||(curFilter!=='all'&&T[nx].c!==curFilter))) nx++;
+  if(nx<T.length) sel(nx); else sel(0);
+}
+
+function rnd(){
+  let pool;
+  if(curFilter==='powtorka') pool=[...rp];
+  else pool=T.map((_,i)=>i).filter(i=>!dn.has(i)&&(curFilter==='all'||T[i].c===curFilter));
+  if(!pool.length) pool=T.map((_,i)=>i);
+  sel(pool[Math.floor(Math.random()*pool.length)]);
+}
+
+function clearProgress(){
+  if(!confirm('Reset postępu?')) return;
+  dn.clear();rp.clear();
+  localStorage.removeItem('py_done');localStorage.removeItem('py_repeat');
+  buildList();updateStats();
+}
+
+function toggleAns(){
+  const w=document.getElementById('ansWrap');
+  if(w.classList.contains('show')){w.classList.remove('show');}
+  else{
+    w.classList.add('show');
+    document.getElementById('ansCode').textContent=T[cur].sol||T[cur].hint||'(brak rozwiązania)';
+    document.getElementById('ansExpected').textContent=T[cur].a||'(brak)';
+  }
+}
+function toggleHint(){document.getElementById('hintBox').classList.toggle('show');}
+function clearCode(){document.getElementById('ed').value=T[cur].starter||'';syncHL();}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ═══════════════════════════════════════
+// SYNTAX HIGHLIGHT
+// ═══════════════════════════════════════
+function pyHL(code){
+  let s=code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s=s.replace(/(#[^\n]*)/g,'<span class="cm">$1</span>');
+  s=s.replace(/("""[\s\S]*?"""|'''[\s\S]*?''')/g,'<span class="str">$1</span>');
+  s=s.replace(/("[^"]*"|'[^']*')/g,'<span class="str">$1</span>');
+  const kws=['def','return','if','elif','else','for','while','in','not','and','or','import','from','class','lambda','try','except','finally','raise','with','as','pass','break','continue','global','yield','del','assert','None','True','False'];
+  kws.forEach(k=>{s=s.replace(new RegExp('\\b('+k+')\\b','g'),'<span class="kw">$1</span>');});
+  s=s.replace(/\b(\d+\.?\d*)\b/g,'<span class="num">$1</span>');
+  const bis=['print','input','len','range','list','dict','set','tuple','str','int','float','bool','type','sum','min','max','sorted','reversed','enumerate','zip','map','filter','abs','round','open','any','all','isinstance','hasattr','getattr','chr','ord','bin','hex'];
+  bis.forEach(b=>{s=s.replace(new RegExp('\\b('+b+')\\b(?=\\s*\\()','g'),'<span class="bi">$1</span>');});
+  s=s.replace(/(@\w+)/g,'<span class="dec">$1</span>');
+  s=s.replace(/\bdef\s+(\w+)/g,'def <span class="fn">$1</span>');
+  s=s.replace(/([(){}\[\]])/g,'<span class="paren">$1</span>');
+  return s;
+}
+
+function syncHL(){
+  document.getElementById('hl').innerHTML=pyHL(document.getElementById('ed').value)+'\n';
+  updateLn();
+}
+function updateLn(){
+  const lines=document.getElementById('ed').value.split('\n').length;
+  document.getElementById('lnNums').innerHTML=Array.from({length:lines},(_,i)=>i+1).join('\n');
+}
+
+// ═══════════════════════════════════════
+// UI BUILD
+// ═══════════════════════════════════════
+function buildFilters(){
+  const bar=document.getElementById('filterBar');bar.innerHTML='';
+  function mk(f,label,extra){
+    const b=document.createElement('button');
+    b.className='ftag '+(extra||'');b.dataset.f=f;b.textContent=label;
+    if(f==='all') b.classList.add('on');
+    b.onclick=()=>setFilter(f,b);bar.appendChild(b);
+  }
+  mk('all','Wszystkie');
+  CATS.forEach(c=>mk(c,CAT_LABELS[c]));
+  mk('powtorka','Powtórka','ftag-repeat');
+}
+
+function setFilter(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.ftag').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  buildList();
+}
+
+function buildList(){
+  const lst=document.getElementById('taskList');lst.innerHTML='';
+  T.forEach((t,i)=>{
+    if(curFilter!=='all' && curFilter!=='powtorka' && t.c!==curFilter) return;
+    if(curFilter==='powtorka' && !rp.has(i)) return;
+    const div=document.createElement('div');
+    div.className='ti';div.dataset.idx=i;
+    if(dn.has(i)) div.classList.add('done');
+    if(rp.has(i)) div.classList.add('repeat');
+    if(i===cur) div.classList.add('on');
+    const dot=document.createElement('span');dot.className='dot';
+    const nm=document.createElement('span');nm.className='ti-n';nm.textContent=t.n;
+    if(rp.has(i)){const b=document.createElement('span');b.className='repeat-badge';b.textContent='POWT';nm.appendChild(b);}
+    const lv=document.createElement('span');
+    lv.className='lvl '+(t.lvl===1?'lvl-e':t.lvl===2?'lvl-m':'lvl-h');
+    lv.textContent=t.lvl===1?'E':t.lvl===2?'M':'H';
+    div.append(dot,nm,lv);
+    div.onclick=()=>sel(i);
+    lst.appendChild(div);
+  });
+  updateStats();
+}
+
+function buildPyBar(){
+  const bar=document.getElementById('pyBar');bar.innerHTML='';
+  [...PY_KW,...PY_BI].forEach(kw=>{
+    const b=document.createElement('button');
+    b.className='pyb';b.textContent=kw;
+    b.onclick=()=>{
+      const ed=document.getElementById('ed');
+      const s=ed.selectionStart;
+      const isFn=kw.endsWith('(');
+      ed.value=ed.value.substring(0,s)+kw+ed.value.substring(ed.selectionEnd);
+      ed.selectionStart=ed.selectionEnd=isFn?s+kw.length-1:s+kw.length;
+      ed.focus();syncHL();
+    };
+    bar.appendChild(b);
+  });
+}
+
+function updateStats(){
+  const total=T.length, done=dn.size, repeat=rp.size;
+  const pct=Math.round(done/total*100);
+  document.getElementById('doneCount').textContent=done;
+  document.getElementById('totalCount').textContent=total;
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  const rpBtn=document.querySelector('.ftag[data-f="powtorka"]');
+  if(rpBtn) rpBtn.textContent='Powtórka'+(repeat?' ('+repeat+')':'');
+  const footer=document.getElementById('sideFooter');footer.innerHTML='';
+  CATS.forEach(c=>{
+    const tc=T.filter(x=>x.c===c).length;
+    const dc=T.reduce((a,x,i)=>dn.has(i)&&x.c===c?a+1:a,0);
+    const s=document.createElement('span');s.className='side-stat';
+    s.innerHTML=`${CAT_LABELS[c]}: <b>${dc}/${tc}</b>`;
+    footer.appendChild(s);
+  });
+}
+
+// ═══════════════════════════════════════
+// DAILY PLAN
+// ═══════════════════════════════════════
+function getDailyPlan(){
+  const today=new Date().toISOString().slice(0,10);
+  const key='py_daily_'+today;
+  let stored=JSON.parse(localStorage.getItem(key)||'null');
+  if(!stored){
+    const plan=[];
+    CATS.forEach(c=>{
+      const idxs=T.map((_,i)=>i).filter(i=>T[i].c===c);
+      for(let i=idxs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idxs[i],idxs[j]]=[idxs[j],idxs[i]];}
+      plan.push(...idxs.slice(0,4));
+    });
+    [...rp].slice(0,3).forEach(i=>{if(!plan.includes(i)) plan.push(i);});
+    stored={date:today,plan};localStorage.setItem(key,JSON.stringify(stored));
+  }
+  return {plan:stored.plan,doneInPlan:new Set(stored.plan.filter(i=>dn.has(i)))};
+}
+
+function showDailyModal(){
+  const {plan,doneInPlan}=getDailyPlan();
+  const pct=plan.length?Math.round(doneInPlan.size/plan.length*100):0;
+  const byCat={};CATS.forEach(c=>byCat[c]=[]);
+  plan.forEach(i=>{if(T[i]) byCat[T[i].c].push(i);});
+  let rows='';
+  CATS.forEach(cat=>{
+    const items=byCat[cat];if(!items.length) return;
+    rows+=`<div style="margin-bottom:8px"><div style="font-size:.65rem;font-weight:700;color:${CAT_COLORS[cat]};margin-bottom:4px">${CAT_LABELS[cat]}</div>`;
+    items.forEach(i=>{
+      const done=doneInPlan.has(i);
+      rows+=`<div onclick="sel(${i});closeDM()" style="padding:4px 8px;margin-left:8px;background:${done?'rgba(34,197,94,.07)':'rgba(255,255,255,.03)'};border:1px solid ${done?'rgba(34,197,94,.2)':'rgba(255,255,255,.06)'};border-radius:5px;cursor:pointer;margin-bottom:2px;font-size:.67rem;color:${done?'#6b7280':'#d1d5db'};${done?'text-decoration:line-through':''}">
+        ${done?'✓':'○'} ${T[i].n}</div>`;
+    });
+    rows+='</div>';
+  });
+  document.body.insertAdjacentHTML('beforeend',`<div id="dailyOv" class="modal-ov" onclick="if(event.target.id==='dailyOv')closeDM()">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-size:.9rem;font-weight:700;color:var(--accent)">Plan dnia — ${doneInPlan.size}/${plan.length} (${pct}%)</div>
+      <button onclick="closeDM()" style="background:none;border:none;color:#6b7280;font-size:1.2rem;cursor:pointer">✕</button>
+    </div>
+    <div style="height:7px;background:#111318;border-radius:4px;overflow:hidden;margin-bottom:12px">
+      <div style="height:100%;background:linear-gradient(90deg,var(--accent),var(--orange));width:${pct}%"></div>
+    </div>
+    <div style="overflow-y:auto;max-height:55vh">${rows}</div>
+  </div></div>`);
+}
+function closeDM(){const el=document.getElementById('dailyOv');if(el)el.remove();}
+
+// ═══════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════
+const ed=document.getElementById('ed');
+ed.addEventListener('input',syncHL);
+ed.addEventListener('scroll',()=>{
+  const h=document.getElementById('hl');
+  h.scrollTop=ed.scrollTop;h.scrollLeft=ed.scrollLeft;
+  document.getElementById('lnNums').style.marginTop=-ed.scrollTop+'px';
+});
+ed.addEventListener('keydown',e=>{
+  if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();runCode();return;}
+  if(e.key==='Tab'){
+    e.preventDefault();
+    const s=ed.selectionStart;
+    ed.value=ed.value.substring(0,s)+'    '+ed.value.substring(ed.selectionEnd);
+    ed.selectionStart=ed.selectionEnd=s+4;
+    syncHL();
+  }
+});
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+buildFilters();buildList();buildPyBar();sel(0);updateStats();
+</script>
+</body>
+</html>
