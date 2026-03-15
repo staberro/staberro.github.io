@@ -1,0 +1,2590 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d0d12">
+<title>Access Trainer — Matura</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0d12;--card:#14141c;--el:#1c1c28;--el2:#252535;
+  --text:#f0f0f5;--text2:#a0a0b5;--muted:#606075;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --green:#22c55e;--red:#dc2626;--orange:#f97316;--gold:#eab308;
+  --purple:#a855f7;--blue:#3b82f6;--cyan:#06b6d4;
+  --acc:#ff8c42;--acc2:#e07030;--acc-dim:rgba(255,140,66,.12);--acc-glow:rgba(255,140,66,.2);
+  --kw:#569cd6;--fn:#dcdcaa;--str:#ce9178;--num:#b5cea8;--cm:#6a9955;--op:#c586c0;
+  --sq-select:#3b82f6;--sq-kwerenda:#f97316;--sq-ddl:#a855f7;--sq-iif:#06b6d4;
+  --sq-top:#22c55e;--sq-between:#eab308;--sq-like:#ec4899;--sq-func:#f59e0b;
+  --sq-dml:#dc2626;--sq-agg:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow:hidden;height:100vh}
+code{font-family:'Fira Code',monospace;background:var(--el);padding:2px 8px;border-radius:6px;font-size:.85em;color:var(--acc)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--el);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+button{cursor:pointer;font-family:inherit}
+
+/* LAYOUT */
+.app{display:grid;grid-template-rows:52px 1fr;height:100vh}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(13,13,18,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--acc),var(--purple));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:900}
+.t-badge{font-family:'Outfit';font-size:.7rem;padding:3px 10px;background:var(--acc-dim);color:var(--acc);border-radius:50px;margin-left:8px}
+.acc-diff{font-size:.65rem;padding:2px 8px;background:rgba(168,85,247,.1);color:#c084fc;border:1px solid rgba(168,85,247,.2);border-radius:4px;font-family:'Fira Code';margin-left:6px}
+.nav-r{display:flex;align-items:center;gap:8px}
+.nav-pill{padding:6px 14px;background:var(--el);border:1px solid var(--border);border-radius:50px;font-size:.8rem;color:var(--text2)}
+.nav-pill b{color:var(--acc)}
+.nbtn{padding:6px 14px;background:var(--el);border:1px solid var(--border);border-radius:50px;font-size:.8rem;color:var(--text2);transition:.3s}
+.nbtn:hover{border-color:var(--acc);color:var(--text)}
+.nbtn.danger:hover{border-color:var(--red);color:var(--red)}
+.schema-toggle{padding:6px 14px;background:var(--el);border:1px solid var(--border);border-radius:50px;font-size:.8rem;color:var(--text2);display:inline-flex;align-items:center;gap:4px;transition:.3s}
+.schema-toggle:hover{border-color:var(--acc);color:var(--acc)}
+
+/* MAIN */
+.main{display:flex;flex-direction:row;height:calc(100vh - 52px);overflow:hidden}
+.main.hide-schema .schema-panel{display:none!important}
+.main.hide-schema .schema-resize{display:none!important}
+
+/* SIDEBAR */
+.side{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;background:var(--card);width:280px;flex-shrink:0}
+.side-top{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:4px;flex-wrap:wrap}
+.ftag{padding:4px 10px;font-size:.7rem;font-weight:600;border:1px solid var(--border);border-radius:50px;background:none;color:var(--muted);transition:.2s;text-transform:uppercase;letter-spacing:.3px}
+.ftag:hover,.ftag.on{background:var(--el);color:var(--acc);border-color:rgba(255,140,66,.3)}
+.tlist{overflow-y:auto;flex:1}
+.ti{padding:8px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:.15s;border-left:3px solid transparent}
+.ti:hover{background:var(--el)}
+.ti.on{background:var(--el);border-left-color:var(--acc)}
+.ti.done .dot{background:var(--green)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--el2);flex-shrink:0}
+.ti-n{font-size:.8rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ti-c{font-size:.6rem;color:var(--muted);padding:2px 6px;background:var(--el2);border-radius:4px;font-family:'Fira Code'}
+.ti.on .ti-n{color:var(--acc);font-weight:600}
+.lvl{font-size:.5rem;font-weight:700;padding:1px 4px;border-radius:3px;flex-shrink:0;letter-spacing:.3px;text-transform:uppercase}
+.lvl-e{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.lvl-m{background:rgba(234,179,8,.15);color:#facc15;border:1px solid rgba(234,179,8,.3)}
+.lvl-h{background:rgba(249,115,22,.15);color:#fb923c;border:1px solid rgba(249,115,22,.3)}
+.lvl-a{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.3)}
+.repeat-badge{display:inline-block;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);border-radius:3px;font-size:.55rem;padding:1px 5px;margin-left:4px;vertical-align:middle}
+.ti.repeat .dot{background:#ef4444!important;box-shadow:0 0 4px #ef4444}
+
+/* CENTER */
+.center{display:flex;flex-direction:column;overflow:hidden;flex:1;min-width:0}
+
+/* TASK Q */
+.task-q{padding:14px 20px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0}
+.task-q-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.cat-badge{padding:3px 10px;border-radius:50px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.diff-badge{padding:3px 10px;border-radius:50px;font-size:.7rem;background:var(--el);color:var(--text2);border:1px solid var(--border)}
+.acc-only-badge{padding:2px 7px;border-radius:4px;font-size:.65rem;font-family:'Fira Code';font-weight:700;background:rgba(255,140,66,.1);color:var(--acc);border:1px solid rgba(255,140,66,.25)}
+.task-q h2{font-family:'Cinzel',serif;font-size:1.05rem;margin-bottom:5px;line-height:1.3}
+.task-q h2 span{color:var(--acc)}
+.task-q p{font-size:.88rem;color:var(--text2);line-height:1.6}
+.task-q p code{color:var(--acc)}
+
+/* SQL BUTTONS — Access keywords */
+.sqlbar{display:flex;flex-wrap:wrap;gap:3px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--border);max-height:80px;overflow-y:auto;flex-shrink:0}
+.sqb{padding:2px 8px;font-size:.65rem;font-family:'Fira Code';font-weight:600;border:1px solid transparent;border-radius:4px;background:rgba(255,255,255,0.04);transition:.15s;opacity:.88}
+.sqb:hover{opacity:1;transform:translateY(-1px);filter:brightness(1.15)}
+.sqb.c-select{color:var(--sq-select);border-color:rgba(59,130,246,.25);background:rgba(59,130,246,.08)}
+.sqb.c-kwerenda{color:var(--sq-kwerenda);border-color:rgba(249,115,22,.25);background:rgba(249,115,22,.08)}
+.sqb.c-ddl{color:var(--sq-ddl);border-color:rgba(168,85,247,.25);background:rgba(168,85,247,.08)}
+.sqb.c-iif{color:var(--sq-iif);border-color:rgba(6,182,212,.25);background:rgba(6,182,212,.08)}
+.sqb.c-top{color:var(--sq-top);border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.08)}
+.sqb.c-between{color:var(--sq-between);border-color:rgba(234,179,8,.25);background:rgba(234,179,8,.08)}
+.sqb.c-like{color:var(--sq-like);border-color:rgba(236,72,153,.25);background:rgba(236,72,153,.08)}
+.sqb.c-func{color:var(--sq-func);border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.08)}
+.sqb.c-dml{color:var(--sq-dml);border-color:rgba(220,38,38,.25);background:rgba(220,38,38,.08)}
+.sqb.c-agg{color:var(--sq-agg);border-color:rgba(148,163,184,.2);background:rgba(148,163,184,.06)}
+
+/* ANS + EXPLAIN */
+.ans-wrap{display:none;padding:8px 14px;background:rgba(34,197,94,.05);border-bottom:1px solid rgba(34,197,94,.1);max-height:120px;overflow:auto;flex-shrink:0}
+.ans-wrap.show{display:block}
+.ans-lbl{font-size:.6rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.ans-code{font-family:'Fira Code';font-size:.75rem;color:#55efc4;line-height:1.6;white-space:pre-wrap}
+.expl-box{padding:8px 14px;background:rgba(255,140,66,.05);border-bottom:1px solid rgba(255,140,66,.1);font-size:.78rem;color:var(--text2);line-height:1.5;flex-shrink:0}
+.expl-box b{color:var(--acc);font-size:.6rem;text-transform:uppercase;letter-spacing:.5px}
+/* ACC-DIFF note */
+.acc-note{padding:6px 14px;background:rgba(168,85,247,.06);border-bottom:1px solid rgba(168,85,247,.12);font-size:.77rem;color:#c084fc;line-height:1.5;flex-shrink:0;display:none}
+.acc-note.show{display:block}
+.acc-note b{font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+
+/* ACTION BAR */
+.actbar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0}
+.actbar-l{display:flex;gap:6px}
+.abtn{padding:6px 16px;border-radius:50px;font-size:.8rem;font-weight:600;border:none;transition:.3s}
+.abtn-run{background:linear-gradient(135deg,var(--acc2),var(--acc));color:#fff}
+.abtn-run:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--acc-glow)}
+.abtn-ans{background:var(--el);color:var(--text2);border:1px solid var(--border)}
+.abtn-ans:hover{border-color:var(--purple);color:var(--purple)}
+.abtn-clear{background:var(--el);color:var(--text2);border:1px solid var(--border)}
+.abtn-clear:hover{border-color:var(--red);color:var(--red)}
+.abtn-next{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;display:none}
+.abtn-next:hover{transform:translateY(-1px)}
+.abtn-next.show{display:inline-flex;align-items:center;gap:4px}
+.abtn-know{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;display:none;align-items:center;gap:4px}
+.abtn-know:hover{transform:translateY(-1px);filter:brightness(1.1)}
+.abtn-know.show{display:inline-flex}
+.abtn-nope{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none;display:none;align-items:center;gap:4px}
+.abtn-nope:hover{transform:translateY(-1px);filter:brightness(1.1)}
+.abtn-nope.show{display:inline-flex}
+
+/* CODE EDITOR */
+.code-box{flex:1;position:relative;min-height:120px;overflow:hidden;background:#1e1e1e;border-bottom:1px solid var(--border)}
+.code-hl,.code-ta{position:absolute;inset:0;padding:14px 16px;font-family:'Fira Code',monospace;font-size:.82rem;line-height:1.8;white-space:pre-wrap;word-wrap:break-word;overflow:auto;tab-size:4}
+.code-hl{pointer-events:none;z-index:1;color:#d4d4d4}
+.code-ta{background:transparent;border:none;outline:none;resize:none;z-index:2;color:transparent;caret-color:var(--acc);-webkit-text-fill-color:transparent}
+.code-hl .kw{color:#569cd6;font-weight:600}
+.code-hl .fn{color:#dcdcaa}.code-hl .str{color:#ce9178}.code-hl .num{color:#b5cea8}
+.code-hl .cm{color:#6a9955;font-style:italic}.code-hl .op{color:#c586c0}
+.code-hl .star{color:var(--orange)}.code-hl .paren{color:var(--gold)}
+.code-hl .acc-kw{color:#ff8c42;font-weight:700} /* Access-specific: IIF, TOP, MID, FORMAT */
+
+/* RESULTS */
+.results{flex:1;min-height:100px;overflow:auto;background:var(--card)}
+.res-bar{padding:6px 14px;background:var(--el);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.75rem;position:sticky;top:0;z-index:2}
+.res-bar .st-ok{color:var(--green)}.res-bar .st-err{color:var(--red)}
+.results table{width:100%;border-collapse:collapse;font-size:.78rem;font-family:'Fira Code'}
+.results th{padding:6px 12px;text-align:left;color:var(--acc);font-weight:600;background:var(--el);border-bottom:1px solid var(--border);position:sticky;top:28px;z-index:1}
+.results td{padding:5px 12px;border-bottom:1px solid var(--border)}
+.results tr:nth-child(even) td{background:rgba(255,255,255,.01)}
+.results tr:hover td{background:rgba(255,140,66,.04)}
+.rmsg{padding:12px 16px;font-size:.85rem;color:var(--text2)}.rmsg.err{color:var(--red);font-family:'Fira Code';font-size:.78rem}.rmsg.ok{color:var(--green)}
+.rmsg-empty{color:var(--muted);text-align:center;padding:40px}
+
+.schema-resize{width:5px;flex-shrink:0;cursor:col-resize;background:var(--border);transition:background .15s;position:relative;z-index:20}
+.schema-resize:hover,.schema-resize.active{background:var(--acc)}
+.schema-panel{display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;width:40%;min-width:220px;max-width:70vw;background:#1a1c24;border-left:2px solid #3d3d3d}
+/* Access titlebar */
+.schema-hdr{padding:0;background:#1f3a6e;border-bottom:2px solid #2d5499;display:flex;flex-direction:column;flex-shrink:0}
+.acc-titlebar{display:flex;align-items:center;gap:6px;padding:3px 8px;background:linear-gradient(180deg,#2a4f8e,#1a3870);border-bottom:1px solid #2d5499}
+.acc-titlebar .acc-tb-icon{font-size:.8rem}
+.acc-titlebar .acc-tb-title{font-size:.72rem;font-weight:700;color:#c8d8f8;font-family:'Fira Code';flex:1}
+.acc-titlebar .acc-tb-btns{display:flex;gap:2px}
+.acc-tb-btn{width:14px;height:14px;border-radius:2px;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.5rem;cursor:pointer;color:rgba(255,255,255,.6);background:rgba(255,255,255,.08);transition:.1s}
+.acc-tb-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+/* Access ribbon */
+.acc-ribbon{display:flex;align-items:center;gap:1px;padding:3px 6px;background:#f0f0f0;border-bottom:1px solid #b0b0b0;flex-shrink:0}
+.acc-ribbon-btn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:2px 6px;border-radius:3px;cursor:pointer;font-size:.55rem;color:#333;transition:.1s;border:1px solid transparent;min-width:30px}
+.acc-ribbon-btn:hover{background:#dce6f3;border-color:#93b3d8}
+.acc-ribbon-btn .rb-ico{font-size:.85rem;line-height:1}
+.acc-ribbon-sep{width:1px;height:22px;background:#c8c8c8;margin:0 3px;flex-shrink:0}
+/* Access object tabs */
+.acc-tabs{display:flex;background:#e8e8e8;border-bottom:1px solid #b0b0b0;flex-shrink:0}
+.acc-tab{padding:3px 12px;font-size:.65rem;font-weight:600;color:#555;cursor:pointer;border-right:1px solid #c0c0c0;border-bottom:2px solid transparent;transition:.1s;user-select:none;font-family:'Fira Code'}
+.acc-tab:hover{background:#d4e4f4;color:#1a3870}
+.acc-tab.on{background:#fff;color:#1a3870;border-bottom-color:#1a3870;font-weight:700}
+/* Search */
+.schema-search{padding:4px 6px;border-bottom:1px solid #2a2f3a;flex-shrink:0;background:#12141a;display:flex;align-items:center;gap:5px}
+.schema-search input{flex:1;padding:3px 6px;background:#0c0e13;border:1px solid #2a2f3a;border-radius:3px;color:#9ca3af;font-size:.63rem;font-family:'Fira Code';outline:none}
+.schema-search input:focus{border-color:var(--acc);color:#e5e7eb}
+.schema-search input::placeholder{color:#374151}
+/* Body */
+.schema-body{flex:1;overflow-y:auto;background:#1a1c24}
+.schema-body::-webkit-scrollbar{width:4px}
+.schema-body::-webkit-scrollbar-track{background:#12141a}
+.schema-body::-webkit-scrollbar-thumb{background:#2a2f3a;border-radius:2px}
+/* Navigation pane section */
+.acc-nav-section{background:#1e2030;border-bottom:1px solid #2a2f3a}
+.acc-nav-hdr{display:flex;align-items:center;background:linear-gradient(180deg,#2d3248,#252840);border-bottom:1px solid #3a4060;cursor:pointer;user-select:none}
+.acc-nav-hdr:hover{background:linear-gradient(180deg,#353a58,#2d3250)}
+.acc-nav-hdr .nav-arrow{width:18px;height:100%;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#8899cc;transition:transform .15s;flex-shrink:0;padding:5px 0}
+.acc-nav-hdr.open .nav-arrow{transform:rotate(90deg)}
+.acc-nav-hdr .nav-icon{font-size:.75rem;padding:0 4px;flex-shrink:0}
+.acc-nav-hdr .nav-name{flex:1;font-size:.72rem;font-weight:700;color:#c8d0f0;font-family:'Fira Code';padding:5px 4px}
+.acc-nav-hdr .nav-cnt{font-size:.58rem;color:#4b5580;padding:0 8px;font-family:'Fira Code'}
+/* Datasheet table */
+.acc-tbl-wrap{display:none;background:#1a1c24}
+.acc-nav-hdr.open + .acc-tbl-wrap{display:block}
+.acc-tbl{width:100%;border-collapse:collapse;font-size:.67rem;font-family:'Fira Code'}
+.acc-tbl thead tr{background:linear-gradient(180deg,#d0d8e8,#b8c4da);border-bottom:2px solid #8899aa}
+.acc-tbl th{padding:3px 8px;text-align:left;color:#1a2a4a;font-weight:700;font-size:.62rem;border-right:1px solid #9aabbc;cursor:pointer;user-select:none;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.acc-tbl th:hover{background:linear-gradient(180deg,#c0ccdc,#a8b8cc)}
+.acc-tbl td{padding:3px 8px;border-bottom:1px solid #242638;border-right:1px solid #242638;color:#c8d0e8;cursor:pointer;white-space:nowrap;overflow:hidden;max-width:140px;text-overflow:ellipsis}
+.acc-tbl tr:hover td{background:rgba(100,120,200,.15)}
+.acc-tbl tr.sel td{background:rgba(26,56,112,.5);color:#a0c4ff}
+.acc-tbl .col-pk{color:#f5c842;font-size:.58rem}
+.acc-tbl .col-fk{color:#a855f7;font-size:.58rem}
+.acc-tbl .col-type{color:#4b6080;font-size:.6rem}
+.acc-tbl .rnum{color:#4b5580;font-size:.58rem;text-align:right;padding:3px 5px;background:#12141a;border-right:2px solid #2a2f3a;user-select:none;min-width:22px}
+/* Access record nav bar */
+.acc-nav-bar{display:flex;align-items:center;gap:0;padding:2px 5px;background:linear-gradient(180deg,#e8ecf4,#d8dce8);border-top:1px solid #8899aa;flex-shrink:0;font-family:'Fira Code'}
+.acc-nav-bar .anb-btn{width:18px;height:16px;background:#d0d8e8;border:1px solid #8899aa;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:#1a2a4a;cursor:pointer;transition:.1s}
+.acc-nav-bar .anb-btn:hover{background:#b8c4da}
+.acc-nav-bar .anb-info{font-size:.6rem;color:#3a4a6a;padding:0 6px;background:#fff;border:1px solid #8899aa;height:16px;display:flex;align-items:center;min-width:50px;justify-content:center}
+.acc-nav-bar .anb-sep{width:1px;height:12px;background:#8899aa;margin:0 3px}
+.acc-nav-bar .anb-filter{margin-left:auto;font-size:.55rem;color:#666;padding:1px 5px;background:#e8ecf4;border:1px solid #8899aa;border-radius:2px;cursor:pointer}
+.acc-nav-bar .anb-filter:hover{background:#d0d8e8}
+/* Status bar */
+.acc-status{padding:2px 8px;background:#1e2030;border-top:1px solid #2a2f3a;font-size:.6rem;color:#4b5580;font-family:'Fira Code';display:flex;align-items:center;gap:10px;flex-shrink:0}
+.acc-status .as-ready{color:#5a7a5a}
+.schema-footer{padding:3px 8px;background:#12141a;border-top:1px solid #1e2030;font-size:.55rem;color:#2a3050;font-family:'Fira Code';flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+
+/* PROGRESS */
+#progBar{display:flex;align-items:center;gap:6px;font-size:.6rem;color:#6b7280}
+
+/* ACCESS DIFF LEGEND */
+.acc-legend{display:flex;flex-wrap:wrap;gap:3px;padding:4px 10px 2px;background:var(--card);border-bottom:1px solid rgba(255,255,255,.04);flex-shrink:0}
+.acc-leg{padding:1px 7px;font-size:.58rem;font-family:'Fira Code';font-weight:700;border-radius:3px;letter-spacing:.3px;text-transform:uppercase}
+.acc-leg.c-select{color:var(--sq-select);background:rgba(59,130,246,.1)}
+.acc-leg.c-kwerenda{color:var(--sq-kwerenda);background:rgba(249,115,22,.1)}
+.acc-leg.c-ddl{color:var(--sq-ddl);background:rgba(168,85,247,.1)}
+.acc-leg.c-iif{color:var(--sq-iif);background:rgba(6,182,212,.1)}
+.acc-leg.c-top{color:var(--sq-top);background:rgba(34,197,94,.1)}
+.acc-leg.c-func{color:var(--sq-func);background:rgba(245,158,11,.1)}
+.acc-leg.c-dml{color:var(--sq-dml);background:rgba(220,38,38,.1)}
+.acc-leg.c-agg{color:var(--sq-agg);background:rgba(148,163,184,.06)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- NAV -->
+<div class="nav">
+  <div class="logo">
+    <div class="logo-icon">🗂️</div>
+    <span>Access Trainer</span>
+    <span class="t-badge">MATURA</span>
+    <span class="acc-diff">ACCESS SQL</span>
+  </div>
+  <div class="nav-r">
+    <div id="progBar"></div>
+    <div class="nav-pill">Ukończone: <b id="statDone">0</b>/<span id="statTotal">0</span></div>
+    <button class="nbtn" id="btnDzisPlan" onclick="showDailyModal()">📅 Dziś 0/25</button>
+    <button class="nbtn" onclick="rnd()">🎲 Losowe</button>
+    <button class="schema-toggle" onclick="toggleSchema()">📋 Tabele</button>
+    <button class="nbtn danger" onclick="clearProgress()">🗑 Reset</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+
+  <!-- SIDEBAR -->
+  <div class="side">
+    <div class="side-top" id="filterBar"></div>
+    <div class="tlist" id="tlist"></div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- ACC DIFF LEGEND -->
+    <div class="acc-legend">
+      <span class="acc-leg c-select">SELECT</span>
+      <span class="acc-leg c-kwerenda">Kwerendy</span>
+      <span class="acc-leg c-ddl">DDL</span>
+      <span class="acc-leg c-iif">IIF/Switch</span>
+      <span class="acc-leg c-top">SELECT TOP</span>
+      <span class="acc-leg c-func">Funkcje</span>
+      <span class="acc-leg c-dml">DML</span>
+      <span class="acc-leg c-agg">Agregaty</span>
+    </div>
+
+    <!-- TASK -->
+    <div class="task-q" id="tq">
+      <h2>Wybierz <span>zadanie</span></h2>
+      <p>Access SQL różni się od standardowego SQL — <code>IIF()</code> zamiast CASE, <code>SELECT TOP n</code>, funkcje <code>Mid()</code>, <code>Format()</code>. Zacznij od kategorii po lewej.</p>
+    </div>
+
+    <!-- SQL KEYWORDS BAR -->
+    <div class="sqlbar" id="sqlbar"></div>
+
+    <!-- ACCESS NOTE (różnice vs standardowy SQL) -->
+    <div class="acc-note" id="accNote"></div>
+
+    <!-- ANS WRAP -->
+    <div class="ans-wrap" id="ansWrap">
+      <div class="ans-lbl">✓ Rozwiązanie Access SQL</div>
+      <div class="ans-code" id="ansCode"></div>
+    </div>
+
+    <!-- EXPLAIN -->
+    <div class="expl-box" id="explBox" style="display:none"></div>
+
+    <!-- ACTION BAR -->
+    <div class="actbar">
+      <div class="actbar-l">
+        <button class="abtn abtn-run" onclick="runQ()">▶ Uruchom</button>
+        <button class="abtn abtn-ans" id="btnAns" onclick="toggleAns()">💡 Rozwiązanie</button>
+        <button class="abtn abtn-clear" onclick="clrEd()">🧹 Wyczyść</button>
+        <button class="abtn abtn-next show" id="btnNext" onclick="goNext()" style="display:none">Dalej →</button>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="abtn abtn-know" id="btnKnow" onclick="know(true)">✓ Umiem</button>
+        <button class="abtn abtn-nope" id="btnNope" onclick="know(false)">✗ Powtórka</button>
+      </div>
+    </div>
+
+    <!-- CODE EDITOR -->
+    <div class="code-box">
+      <div class="code-hl" id="hl"></div>
+      <textarea class="code-ta" id="ed" spellcheck="false" autocomplete="off" placeholder="-- Wpisz zapytanie Access SQL..."></textarea>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="results">
+      <div class="res-bar"><span id="rst"><span class="rmsg-empty" style="font-size:.75rem">// Wyniki pojawią się tu...</span></span><span id="rtime" style="font-size:.7rem;color:var(--muted)"></span></div>
+      <div id="rbody"><div class="rmsg-empty">Wpisz kwerendę i kliknij ▶ Uruchom</div></div>
+    </div>
+  </div>
+
+  <!-- SCHEMA RESIZE -->
+  <div class="schema-resize" id="schemaResize"></div>
+
+  <!-- SCHEMA PANEL — Access Database Window -->
+  <div class="schema-panel" id="schemaPanel">
+    <!-- Title bar -->
+    <div class="schema-hdr">
+      <div class="acc-titlebar">
+        <span class="acc-tb-icon">🗂️</span>
+        <span class="acc-tb-title">Access Trainer — Database Window</span>
+        <div class="acc-tb-btns">
+          <span class="acc-tb-btn" title="Minimalizuj">─</span>
+          <span class="acc-tb-btn" title="Maksymalizuj">□</span>
+          <span class="acc-tb-btn" onclick="toggleSchema()" title="Zamknij">✕</span>
+        </div>
+      </div>
+      <!-- Access ribbon toolbar -->
+      <div class="acc-ribbon">
+        <div class="acc-ribbon-btn" onclick="renderSchema()"><div class="rb-ico">🔄</div>Odśwież</div>
+        <div class="acc-ribbon-sep"></div>
+        <div class="acc-ribbon-btn" onclick="document.getElementById('ed').value += '\n'"><div class="rb-ico">📋</div>Wstaw</div>
+        <div class="acc-ribbon-btn" onclick="clrEd()"><div class="rb-ico">🗑️</div>Wyczyść</div>
+        <div class="acc-ribbon-sep"></div>
+        <div class="acc-ribbon-btn" onclick="runQ()"><div class="rb-ico">▶</div>Uruchom</div>
+      </div>
+      <!-- Object type tabs -->
+      <div class="acc-tabs" id="accObjTabs">
+        <div class="acc-tab on" onclick="setAccTab(this,'tables')">📋 Tabele</div>
+        <div class="acc-tab" onclick="setAccTab(this,'queries')">🔍 Kwerendy</div>
+        <div class="acc-tab" onclick="setAccTab(this,'rels')">🔗 Relacje</div>
+      </div>
+    </div>
+    <!-- Search -->
+    <div class="schema-search">
+      <span class="search-ico">🔍</span>
+      <input type="text" id="schemaQ" placeholder="Szukaj tabeli / kolumny..." oninput="renderSchema()">
+    </div>
+    <!-- Tables body -->
+    <div class="schema-body" id="schemaBody"></div>
+    <!-- Status bar like Access -->
+    <div class="acc-status">
+      <span class="as-ready">● Gotowy</span>
+      <span id="schemaFoot">0 tabel</span>
+    </div>
+    <div class="schema-footer" id="schemaFootExtra">
+      <span>Microsoft Access Trainer DB</span>
+      <span>SQLite (Access-compatible)</span>
+    </div>
+  </div>
+
+</div>
+</div>
+<script>
+// ══════════════════════════════════════════════════════
+// DATABASE SCHEMA + DATA (Access-style naming)
+// ══════════════════════════════════════════════════════
+const SCHEMA = `
+CREATE TABLE Uczniowie(ID_Ucznia INT PRIMARY KEY,Imie TEXT,Nazwisko TEXT,Klasa TEXT,DataUrodzenia TEXT,Plec TEXT,Miejscowosc TEXT);
+CREATE TABLE Nauczyciele(ID_Nauczyciela INT PRIMARY KEY,Imie TEXT,Nazwisko TEXT,Przedmiot TEXT,DataZatrudnienia TEXT,Pensja REAL);
+CREATE TABLE Oceny(ID_Oceny INT PRIMARY KEY,ID_Ucznia INT REFERENCES Uczniowie(ID_Ucznia),ID_Nauczyciela INT REFERENCES Nauczyciele(ID_Nauczyciela),Przedmiot TEXT,Ocena INT,DataOceny TEXT);
+CREATE TABLE Ksiazki(ID_Ksiazki INT PRIMARY KEY,Tytul TEXT,Autor TEXT,RokWydania INT,Gatunek TEXT,Cena REAL,NaStanie INT);
+CREATE TABLE Wypozyczenia(ID_Wyp INT PRIMARY KEY,ID_Ucznia INT REFERENCES Uczniowie(ID_Ucznia),ID_Ksiazki INT REFERENCES Ksiazki(ID_Ksiazki),DataWyp TEXT,DataZwrotu TEXT);
+CREATE TABLE Produkty(ID_Produktu INT PRIMARY KEY,NazwaProduktu TEXT,Kategoria TEXT,Cena REAL,JednostkaMiary TEXT,Magazyn INT);
+CREATE TABLE Zamowienia(ID_Zamowienia INT PRIMARY KEY,ID_Klienta INT,DataZamowienia TEXT,WartoscCalkowita REAL,Status TEXT);
+CREATE TABLE PozycjeZamowienia(ID_Pozycji INT PRIMARY KEY,ID_Zamowienia INT REFERENCES Zamowienia(ID_Zamowienia),ID_Produktu INT REFERENCES Produkty(ID_Produktu),Ilosc INT,CenaJednostkowa REAL);
+CREATE TABLE Klienci(ID_Klienta INT PRIMARY KEY,Imie TEXT,Nazwisko TEXT,Miasto TEXT,Email TEXT,DataRejestracji TEXT);
+CREATE TABLE Egzaminy(ID_Egzaminu INT PRIMARY KEY,ID_Ucznia INT REFERENCES Uczniowie(ID_Ucznia),Przedmiot TEXT,Wynik INT,DataEgzaminu TEXT,CzyZdal INT);
+`;
+const DATA = `
+INSERT INTO Uczniowie VALUES(1,'Jan','Kowalski','3A','2006-05-12','M','Katowice'),(2,'Anna','Nowak','3A','2006-08-23','K','Kraków'),(3,'Piotr','Zieliński','3B','2006-01-15','M','Warszawa'),(4,'Maria','Wiśniewska','3A','2006-11-30','K','Katowice'),(5,'Tomasz','Lewandowski','3B','2006-04-07','M','Gdańsk'),(6,'Ewa','Dąbrowska','2A','2007-09-18','K','Wrocław'),(7,'Krzysztof','Wójcik','2A','2007-03-22','M','Kraków'),(8,'Katarzyna','Kamińska','3A','2006-07-14','K','Warszawa'),(9,'Marcin','Nowicki','2B','2007-06-05','M','Łódź'),(10,'Zofia','Kowal','2B','2007-12-01','K','Gdańsk'),(11,'Bartosz','Mazur','3B','2006-02-28','M','Wrocław'),(12,'Aleksandra','Piotrowska','3A','2006-09-19','K','Kraków');
+INSERT INTO Nauczyciele VALUES(1,'Adam','Kowal','Matematyka','2015-09-01',5800),(2,'Barbara','Nowacka','Informatyka','2018-09-01',5200),(3,'Cezary','Mazur','Fizyka','2012-09-01',5600),(4,'Dorota','Krawczyk','Polski','2010-09-01',5400),(5,'Edward','Wiśniewski','Biologia','2020-09-01',5000),(6,'Felicja','Dąbrowska','Chemia','2017-09-01',5300);
+INSERT INTO Oceny VALUES(1,1,1,'Matematyka',5,'2024-09-15'),(2,1,2,'Informatyka',6,'2024-09-16'),(3,1,3,'Fizyka',4,'2024-09-17'),(4,2,1,'Matematyka',6,'2024-09-15'),(5,2,2,'Informatyka',5,'2024-09-16'),(6,2,4,'Polski',5,'2024-09-18'),(7,3,1,'Matematyka',3,'2024-09-15'),(8,3,2,'Informatyka',4,'2024-09-16'),(9,4,1,'Matematyka',5,'2024-09-15'),(10,4,2,'Informatyka',6,'2024-09-16'),(11,4,3,'Fizyka',5,'2024-09-17'),(12,5,1,'Matematyka',2,'2024-09-15'),(13,5,3,'Fizyka',3,'2024-09-17'),(14,6,1,'Matematyka',4,'2024-09-15'),(15,6,4,'Polski',5,'2024-09-18'),(16,7,1,'Matematyka',3,'2024-09-15'),(17,7,2,'Informatyka',2,'2024-09-16'),(18,8,1,'Matematyka',5,'2024-09-15'),(19,8,2,'Informatyka',5,'2024-09-16'),(20,8,4,'Polski',6,'2024-09-18'),(21,1,4,'Polski',4,'2024-09-18'),(22,3,4,'Polski',2,'2024-09-18'),(23,5,2,'Informatyka',3,'2024-09-16'),(24,5,4,'Polski',2,'2024-09-18'),(25,9,1,'Matematyka',4,'2024-09-15'),(26,10,1,'Matematyka',5,'2024-09-15'),(27,11,2,'Informatyka',6,'2024-09-16'),(28,12,1,'Matematyka',4,'2024-09-15'),(29,12,4,'Polski',5,'2024-09-18'),(30,6,3,'Fizyka',3,'2024-10-01');
+INSERT INTO Ksiazki VALUES(1,'Lalka','Bolesław Prus',1890,'Powieść',29.90,8),(2,'Pan Tadeusz','Adam Mickiewicz',1834,'Epos',24.90,12),(3,'Solaris','Stanisław Lem',1961,'Sci-Fi',34.90,5),(4,'Ferdydurke','Witold Gombrowicz',1937,'Powieść',27.90,7),(5,'Wiedźmin','Andrzej Sapkowski',1993,'Fantasy',39.90,3),(6,'Harry Potter','J.K. Rowling',1997,'Fantasy',44.90,6),(7,'1984','George Orwell',1949,'Dystopia',32.90,9),(8,'Hobbit','J.R.R. Tolkien',1937,'Fantasy',38.90,4),(9,'Zbrodnia i kara','Fiodor Dostojewski',1866,'Powieść',30.90,10),(10,'Diuna','Frank Herbert',1965,'Sci-Fi',36.90,2),(11,'Chłopi','Władysław Reymont',1904,'Powieść',25.90,6),(12,'Potop','Henryk Sienkiewicz',1886,'Powieść',28.90,8);
+INSERT INTO Wypozyczenia VALUES(1,1,1,'2024-01-15','2024-02-15'),(2,3,1,'2024-02-20','2024-03-20'),(3,5,2,'2024-01-10','2024-02-10'),(4,7,2,'2024-03-01','2024-03-30'),(5,5,3,'2024-02-15','2024-03-15'),(6,8,3,'2024-04-01',NULL),(7,3,4,'2024-03-10','2024-04-10'),(8,1,4,'2024-04-15',NULL),(9,6,5,'2024-02-01','2024-03-01'),(10,9,5,'2024-04-01',NULL),(11,2,6,'2024-03-15','2024-04-15'),(12,4,7,'2024-04-01',NULL),(13,1,8,'2024-05-01',NULL),(14,10,9,'2024-05-10','2024-06-10'),(15,11,10,'2024-05-15',NULL);
+INSERT INTO Produkty VALUES(1,'Zeszyt A5','Artykuły szkolne',3.50,'szt',150),(2,'Długopis niebieski','Artykuły szkolne',2.20,'szt',300),(3,'Piórnik','Artykuły szkolne',18.90,'szt',45),(4,'Ruler 30cm','Artykuły szkolne',4.50,'szt',80),(5,'Laptop Dell 15','Elektronika',3499.00,'szt',8),(6,'Myszka Logitech','Elektronika',89.90,'szt',35),(7,'Monitor 24"','Elektronika',799.00,'szt',12),(8,'Klawiatura USB','Elektronika',129.00,'szt',25),(9,'Toner do drukarki','Materiały biurowe',89.90,'szt',20),(10,'Papier A4 500szt','Materiały biurowe',24.90,'ryza',60),(11,'Teczka kartonowa','Materiały biurowe',5.90,'szt',100),(12,'Marker czarny','Artykuły szkolne',3.80,'szt',120);
+INSERT INTO Klienci VALUES(1,'Jan','Kowalski','Warszawa','jan@mail.pl','2023-01-15'),(2,'Anna','Nowak','Kraków','anna@mail.pl','2023-03-20'),(3,'Piotr','Zieliński','Warszawa','piotr@mail.pl','2023-06-10'),(4,'Maria','Wiśniewska','Gdańsk','maria@mail.pl','2023-08-05'),(5,'Tomasz','Dąbrowski','Katowice','tomasz@mail.pl','2024-01-12'),(6,'Ewa','Kamińska','Warszawa','ewa@mail.pl','2024-02-01');
+INSERT INTO Zamowienia VALUES(1,1,'2024-01-20',350.00,'Zrealizowane'),(2,1,'2024-02-15',129.00,'Zrealizowane'),(3,2,'2024-01-25',3499.00,'Zrealizowane'),(4,3,'2024-02-01',800.00,'Wysłane'),(5,3,'2024-03-15',1200.00,'Zrealizowane'),(6,4,'2024-02-20',250.00,'Zrealizowane'),(7,5,'2024-03-01',89.90,'Zrealizowane'),(8,5,'2024-04-10',450.00,'Nowe'),(9,6,'2024-04-15',3628.00,'Wysłane'),(10,1,'2024-05-01',175.00,'Nowe');
+INSERT INTO PozycjeZamowienia VALUES(1,1,10,10,24.90),(2,1,2,50,2.20),(3,1,1,20,3.50),(4,2,8,1,129.00),(5,3,5,1,3499.00),(6,4,7,1,799.00),(7,5,6,1,89.90),(8,6,11,20,5.90),(9,6,9,2,89.90),(10,7,6,1,89.90),(11,8,3,5,18.90),(12,8,4,10,4.50),(13,9,5,1,3499.00),(14,9,6,1,89.90),(15,9,8,1,129.00),(16,10,10,5,24.90),(17,10,1,10,3.50);
+INSERT INTO Egzaminy VALUES(1,1,'Informatyka',82,'2024-05-15',1),(2,2,'Informatyka',91,'2024-05-15',1),(3,3,'Informatyka',45,'2024-05-15',0),(4,4,'Informatyka',76,'2024-05-15',1),(5,5,'Matematyka',38,'2024-05-10',0),(6,6,'Matematyka',72,'2024-05-10',1),(7,7,'Matematyka',55,'2024-05-10',1),(8,8,'Informatyka',88,'2024-05-15',1),(9,9,'Matematyka',41,'2024-05-10',0),(10,10,'Matematyka',93,'2024-05-10',1),(11,11,'Informatyka',68,'2024-05-15',1),(12,12,'Matematyka',77,'2024-05-10',1),(13,1,'Matematyka',79,'2024-05-10',1),(14,2,'Matematyka',95,'2024-05-10',1),(15,4,'Matematyka',82,'2024-05-10',1);
+`;
+
+const FK_MAP = {
+  Oceny:['ID_Ucznia','ID_Nauczyciela'],
+  Wypozyczenia:['ID_Ucznia','ID_Ksiazki'],
+  PozycjeZamowienia:['ID_Zamowienia','ID_Produktu'],
+  Zamowienia:['ID_Klienta'],
+  Egzaminy:['ID_Ucznia']
+};
+
+const SCHEMA_COLS = {
+  Uczniowie: [{n:'ID_Ucznia',t:'INT',pk:true},{n:'Imie',t:'TEXT'},{n:'Nazwisko',t:'TEXT'},{n:'Klasa',t:'TEXT'},{n:'DataUrodzenia',t:'TEXT'},{n:'Plec',t:'TEXT'},{n:'Miejscowosc',t:'TEXT'}],
+  Nauczyciele: [{n:'ID_Nauczyciela',t:'INT',pk:true},{n:'Imie',t:'TEXT'},{n:'Nazwisko',t:'TEXT'},{n:'Przedmiot',t:'TEXT'},{n:'DataZatrudnienia',t:'TEXT'},{n:'Pensja',t:'REAL'}],
+  Oceny: [{n:'ID_Oceny',t:'INT',pk:true},{n:'ID_Ucznia',t:'INT',fk:'Uczniowie'},{n:'ID_Nauczyciela',t:'INT',fk:'Nauczyciele'},{n:'Przedmiot',t:'TEXT'},{n:'Ocena',t:'INT'},{n:'DataOceny',t:'TEXT'}],
+  Ksiazki: [{n:'ID_Ksiazki',t:'INT',pk:true},{n:'Tytul',t:'TEXT'},{n:'Autor',t:'TEXT'},{n:'RokWydania',t:'INT'},{n:'Gatunek',t:'TEXT'},{n:'Cena',t:'REAL'},{n:'NaStanie',t:'INT'}],
+  Wypozyczenia: [{n:'ID_Wyp',t:'INT',pk:true},{n:'ID_Ucznia',t:'INT',fk:'Uczniowie'},{n:'ID_Ksiazki',t:'INT',fk:'Ksiazki'},{n:'DataWyp',t:'TEXT'},{n:'DataZwrotu',t:'TEXT'}],
+  Produkty: [{n:'ID_Produktu',t:'INT',pk:true},{n:'NazwaProduktu',t:'TEXT'},{n:'Kategoria',t:'TEXT'},{n:'Cena',t:'REAL'},{n:'JednostkaMiary',t:'TEXT'},{n:'Magazyn',t:'INT'}],
+  Zamowienia: [{n:'ID_Zamowienia',t:'INT',pk:true},{n:'ID_Klienta',t:'INT',fk:'Klienci'},{n:'DataZamowienia',t:'TEXT'},{n:'WartoscCalkowita',t:'REAL'},{n:'Status',t:'TEXT'}],
+  PozycjeZamowienia: [{n:'ID_Pozycji',t:'INT',pk:true},{n:'ID_Zamowienia',t:'INT',fk:'Zamowienia'},{n:'ID_Produktu',t:'INT',fk:'Produkty'},{n:'Ilosc',t:'INT'},{n:'CenaJednostkowa',t:'REAL'}],
+  Klienci: [{n:'ID_Klienta',t:'INT',pk:true},{n:'Imie',t:'TEXT'},{n:'Nazwisko',t:'TEXT'},{n:'Miasto',t:'TEXT'},{n:'Email',t:'TEXT'},{n:'DataRejestracji',t:'TEXT'}],
+  Egzaminy: [{n:'ID_Egzaminu',t:'INT',pk:true},{n:'ID_Ucznia',t:'INT',fk:'Uczniowie'},{n:'Przedmiot',t:'TEXT'},{n:'Wynik',t:'INT'},{n:'DataEgzaminu',t:'TEXT'},{n:'CzyZdal',t:'INT'}]
+};
+
+// ══════════════════════════════════════════════════════
+// TASK DATABASE — 120 Access SQL zadań
+// ══════════════════════════════════════════════════════
+// c = kategoria, n = nazwa, lvl = 1(E)/2(M)/3(H)/4(A)
+// d = treść, sol = rozwiązanie, hint = podpowiedź
+// acc = nota o różnicy Access vs standardowy SQL
+// ══════════════════════════════════════════════════════
+const T = [
+// ── SELECT (25) ────────────────────────────────────────
+{c:'SELECT',n:'SELECT * FROM tabeli',lvl:1,
+d:'Wyświetl <b>wszystkie dane</b> z tabeli <code>Uczniowie</code>.',
+sol:'SELECT * FROM Uczniowie;',
+hint:'SELECT * FROM NazwaTabeli;'},
+{c:'SELECT',n:'Wybrane kolumny',lvl:1,
+d:'Wyświetl <b>imię, nazwisko i klasę</b> wszystkich uczniów.',
+sol:'SELECT Imie, Nazwisko, Klasa FROM Uczniowie;',
+hint:'Wymień nazwy kolumn po SELECT, oddzielone przecinkami'},
+{c:'SELECT',n:'WHERE = wartość',lvl:1,
+d:'Wyświetl uczniów z klasy <code>3A</code> (wszystkie kolumny).',
+sol:"SELECT * FROM Uczniowie WHERE Klasa = '3A';",
+hint:"WHERE Klasa = '3A'"},
+{c:'SELECT',n:'WHERE z liczbą',lvl:1,
+d:'Wyświetl oceny <b>6</b> — tylko kolumny Przedmiot, Ocena, ID_Ucznia.',
+sol:'SELECT Przedmiot, Ocena, ID_Ucznia FROM Oceny WHERE Ocena = 6;',
+hint:'Liczby bez apostrofów: WHERE Ocena = 6'},
+{c:'SELECT',n:'ORDER BY ASC',lvl:1,
+d:'Wyświetl tytuł i cenę wszystkich książek — posortuj <b>rosnąco</b> wg ceny.',
+sol:'SELECT Tytul, Cena FROM Ksiazki ORDER BY Cena ASC;',
+hint:'ORDER BY Cena ASC — ASC można pominąć (domyślne)'},
+{c:'SELECT',n:'ORDER BY DESC',lvl:1,
+d:'Wyświetl nauczycieli posortowanych <b>malejąco</b> wg pensji. Pokaż imię, nazwisko i pensję.',
+sol:'SELECT Imie, Nazwisko, Pensja FROM Nauczyciele ORDER BY Pensja DESC;',
+hint:'ORDER BY Pensja DESC'},
+{c:'SELECT',n:'WHERE AND',lvl:1,
+d:'Wyświetl uczniów klasy <code>3A</code> płci żeńskiej (<code>K</code>).',
+sol:"SELECT * FROM Uczniowie WHERE Klasa = '3A' AND Plec = 'K';",
+hint:'Oba warunki muszą być spełnione: AND'},
+{c:'SELECT',n:'WHERE OR',lvl:1,
+d:'Wyświetl uczniów z Katowic <b>lub</b> z Krakowa.',
+sol:"SELECT * FROM Uczniowie WHERE Miejscowosc = 'Katowice' OR Miejscowosc = 'Kraków';",
+hint:"OR dla alternatywy"},
+{c:'SELECT',n:'WHERE NOT',lvl:2,
+d:'Wyświetl produkty <b>inne niż</b> z kategorii Elektronika. Pokaż nazwy i kategorie.',
+sol:"SELECT NazwaProduktu, Kategoria FROM Produkty WHERE NOT Kategoria = 'Elektronika';",
+hint:"W Access: WHERE NOT Kategoria = 'Elektronika' lub WHERE Kategoria <> 'Elektronika'",
+acc:"⚠️ Access: NOT może stać przed całym warunkiem, nie tylko wartością."},
+{c:'SELECT',n:'DISTINCT',lvl:1,
+d:'Wyświetl <b>unikalne</b> miejscowości uczniów (bez powtórzeń).',
+sol:'SELECT DISTINCT Miejscowosc FROM Uczniowie;',
+hint:'SELECT DISTINCT kolumna FROM tabela'},
+{c:'SELECT',n:'ORDER BY dwie kolumny',lvl:2,
+d:'Wyświetl uczniów posortowanych: najpierw wg klasy (A→Z), potem wg nazwiska (A→Z).',
+sol:'SELECT * FROM Uczniowie ORDER BY Klasa ASC, Nazwisko ASC;',
+hint:'ORDER BY Klasa, Nazwisko — po przecinku'},
+{c:'SELECT',n:'AS alias',lvl:2,
+d:'Wyświetl imię i nazwisko uczniów, ale kolumnę Imie nazwij <code>Imię ucznia</code>, a Nazwisko — <code>Nazwisko ucznia</code>.',
+sol:"SELECT Imie AS [Imię ucznia], Nazwisko AS [Nazwisko ucznia] FROM Uczniowie;",
+hint:'W Access nazwy z spacją w nawiasach kwadratowych: AS [Nazwa kolumny]',
+acc:'⚠️ ACCESS: spacje w aliasach → nawiasy kwadratowe [ ], nie cudzysłowy jak w MySQL'},
+{c:'SELECT',n:'Konkatenacja w Access',lvl:2,
+d:'Wyświetl uczniów jako jedną kolumnę <code>Uczen</code> w formacie: <code>Kowalski Jan</code>.',
+sol:"SELECT Nazwisko & ' ' & Imie AS Uczen FROM Uczniowie;",
+hint:"Access: konkatenacja przez & (ampersand), nie + ani ||",
+acc:'⚠️ ACCESS: konkatenacja stringów to & — nie + ani ||. Przykład: Nazwisko & " " & Imie'},
+{c:'SELECT',n:'WHERE z datą',lvl:2,
+d:'Wyświetl zamówienia złożone po 2024-03-01. Pokaż ID i datę.',
+sol:"SELECT ID_Zamowienia, DataZamowienia FROM Zamowienia WHERE DataZamowienia > '2024-03-01';",
+hint:"W Access daty w apostrofach lub #: WHERE DataZamowienia > #2024-03-01#",
+acc:'⚠️ ACCESS: daty można zapisywać jako #DD/MM/RRRR# lub \'RRRR-MM-DD\' — w standardzie maturalnym używaj apostrofów.'},
+{c:'SELECT',n:'IS NULL',lvl:2,
+d:'Wyświetl wypożyczenia <b>niezwrócone</b> (DataZwrotu jest pusta).',
+sol:'SELECT * FROM Wypozyczenia WHERE DataZwrotu IS NULL;',
+hint:'WHERE DataZwrotu IS NULL'},
+{c:'SELECT',n:'IS NOT NULL',lvl:2,
+d:'Wyświetl wypożyczenia <b>zwrócone</b> (DataZwrotu nie jest NULL). Pokaż ID, ID_Ucznia, DataWyp, DataZwrotu.',
+sol:'SELECT ID_Wyp, ID_Ucznia, DataWyp, DataZwrotu FROM Wypozyczenia WHERE DataZwrotu IS NOT NULL;',
+hint:'WHERE DataZwrotu IS NOT NULL'},
+{c:'SELECT',n:'IN (lista wartości)',lvl:2,
+d:'Wyświetl uczniów z Katowic, Krakowa i Gdańska.',
+sol:"SELECT * FROM Uczniowie WHERE Miejscowosc IN ('Katowice','Kraków','Gdańsk');",
+hint:"IN ('wartość1','wartość2','wartość3')"},
+{c:'SELECT',n:'NOT IN',lvl:2,
+d:'Wyświetl produkty które <b>NIE</b> należą do kategorii Elektronika ani Artykuły szkolne.',
+sol:"SELECT * FROM Produkty WHERE Kategoria NOT IN ('Elektronika','Artykuły szkolne');",
+hint:"NOT IN ('v1','v2')"},
+{c:'SELECT',n:'BETWEEN',lvl:2,
+d:'Wyświetl książki z ceną od 25 do 35 zł. Pokaż tytuł, autora, cenę.',
+sol:'SELECT Tytul, Autor, Cena FROM Ksiazki WHERE Cena BETWEEN 25 AND 35;',
+hint:'WHERE Cena BETWEEN 25 AND 35 — wartości graniczne włączone'},
+{c:'SELECT',n:'LIKE wzorzec',lvl:2,
+d:'Wyświetl nauczycieli których <b>nazwisko</b> zaczyna się na literę "K".',
+sol:"SELECT * FROM Nauczyciele WHERE Nazwisko LIKE 'K*';",
+hint:"W Access wildcard to * (gwiazdka), nie % jak w SQL! LIKE 'K*'",
+acc:"⚠️ ACCESS RÓŻNICA: wieloznacznik to * (gwiazdka), nie % jak w standardowym SQL! 'K*' to 'K...', '*ski' to '...ski'"},
+{c:'SELECT',n:'LIKE z ? (jeden znak)',lvl:2,
+d:'Wyświetl uczniów których imię ma dokładnie 3 znaki.',
+sol:"SELECT * FROM Uczniowie WHERE Imie LIKE '???';",
+hint:"W Access ? zastępuje JEDEN znak (jak _ w standardowym SQL). '???' = dokładnie 3 znaki",
+acc:"⚠️ ACCESS: ? zastępuje jeden dowolny znak (w standardowym SQL to _). Przykład: 'A?a' pasuje do 'Ana', 'Ala'."},
+{c:'SELECT',n:'Wyrażenie w SELECT',lvl:2,
+d:'Wyświetl pozycje zamówień — oblicz wartość każdej pozycji (<code>Ilosc * CenaJednostkowa</code>) jako <code>Wartosc</code>.',
+sol:'SELECT ID_Pozycji, ID_Zamowienia, Ilosc, CenaJednostkowa, Ilosc * CenaJednostkowa AS Wartosc FROM PozycjeZamowienia;',
+hint:'Nową kolumnę obliczoną możesz nazwać aliasem: Ilosc * CenaJednostkowa AS Wartosc'},
+{c:'SELECT',n:'WHERE na wyrażeniu',lvl:2,
+d:'Wyświetl pozycje zamówień gdzie wartość (Ilosc * CenaJednostkowa) przekracza 500 zł.',
+sol:'SELECT * FROM PozycjeZamowienia WHERE Ilosc * CenaJednostkowa > 500;',
+hint:'W WHERE możesz używać wyrażeń: WHERE Ilosc * CenaJednostkowa > 500'},
+{c:'SELECT',n:'LIKE końcówka',lvl:2,
+d:'Wyświetl książki których tytuł kończy się na <code>ska</code>.',
+sol:"SELECT Tytul, Autor FROM Ksiazki WHERE Tytul LIKE '*ska';",
+hint:"'*ska' — gwiazdka na początku = dowolnie wiele znaków przed 'ska'",
+acc:"⚠️ ACCESS: * to wieloznacznik (nie %). '*ski' oznacza 'cokolwiek + ski'."},
+{c:'SELECT',n:'Sortowanie i filtrowanie razem',lvl:2,
+d:'Wyświetl egzaminy które uczeń zdał (CzyZdal = 1), posortowane malejąco wg Wyniku.',
+sol:'SELECT * FROM Egzaminy WHERE CzyZdal = 1 ORDER BY Wynik DESC;',
+hint:'WHERE warunek ORDER BY kolumna DESC'},
+
+// ── SELECT TOP (15) ─────────────────────────────────
+{c:'TOP',n:'SELECT TOP n',lvl:1,
+d:'Wyświetl <b>3 najdroższe</b> produkty (nazwa i cena).',
+sol:'SELECT TOP 3 NazwaProduktu, Cena FROM Produkty ORDER BY Cena DESC;',
+hint:'SELECT TOP 3 ... ORDER BY Cena DESC',
+acc:'⚠️ ACCESS: SELECT TOP n — unikalna składnia Access. W MySQL to LIMIT n (na końcu).'},
+{c:'TOP',n:'SELECT TOP z ORDER BY ASC',lvl:1,
+d:'Wyświetl <b>5 najtańszych</b> książek — tytuł i cena.',
+sol:'SELECT TOP 5 Tytul, Cena FROM Ksiazki ORDER BY Cena ASC;',
+hint:'SELECT TOP 5 ... ORDER BY Cena ASC'},
+{c:'TOP',n:'SELECT TOP 1 (max/min)',lvl:2,
+d:'Wyświetl <b>najlepszy wynik egzaminacyjny</b> (1 wiersz z najwyższym Wynikiem).',
+sol:'SELECT TOP 1 * FROM Egzaminy ORDER BY Wynik DESC;',
+hint:'TOP 1 z ORDER BY DESC to odpowiednik MAX bez GROUP BY',
+acc:'⚠️ ACCESS: SELECT TOP 1 ORDER BY Wynik DESC to wygodny sposób na "rekord z maksimum" — bez podzapytania.'},
+{c:'TOP',n:'TOP PERCENT',lvl:2,
+d:'Wyświetl <b>10% najlepiej zarabiających</b> nauczycieli.',
+sol:'SELECT TOP 10 PERCENT * FROM Nauczyciele ORDER BY Pensja DESC;',
+hint:'TOP 10 PERCENT — procentowy limit wyników',
+acc:'⚠️ ACCESS: TOP n PERCENT to specjalność Access. W MySQL nie istnieje.'},
+{c:'TOP',n:'TOP z warunkiem WHERE',lvl:2,
+d:'Wyświetl <b>3 najlepszych uczniów</b> z egzaminu z Informatyki (Wynik DESC).',
+sol:"SELECT TOP 3 ID_Ucznia, Wynik FROM Egzaminy WHERE Przedmiot = 'Informatyka' ORDER BY Wynik DESC;",
+hint:'TOP z WHERE: najpierw WHERE filtruje, potem TOP bierze pierwsze n'},
+{c:'TOP',n:'TOP z JOIN',lvl:3,
+d:'Wyświetl imię, nazwisko i wynik <b>3 najlepszych uczniów</b> z egzaminu z Matematyki.',
+sol:"SELECT TOP 3 U.Imie, U.Nazwisko, E.Wynik FROM Egzaminy AS E INNER JOIN Uczniowie AS U ON E.ID_Ucznia = U.ID_Ucznia WHERE E.Przedmiot = 'Matematyka' ORDER BY E.Wynik DESC;",
+hint:'SELECT TOP 3 ... JOIN ... WHERE ... ORDER BY',
+acc:'⚠️ ACCESS: aliasy tabel używane tak samo jak w SQL — AS E, AS U. JOIN działa identycznie.'},
+{c:'TOP',n:'TOP suma zamówień',lvl:3,
+d:'Wyświetl <b>2 klientów z najwyższą wartością zamówień łącznie</b> — ID_Klienta i suma.',
+sol:'SELECT TOP 2 ID_Klienta, SUM(WartoscCalkowita) AS Suma FROM Zamowienia GROUP BY ID_Klienta ORDER BY Suma DESC;',
+hint:'GROUP BY → SUM → ORDER BY DESC → TOP 2'},
+
+// ── IIF / SWITCH (15) ───────────────────────────────
+{c:'IIF',n:'IIF podstawowe',lvl:2,
+d:'Wyświetl imię, nazwisko ucznia i kolumnę <code>Status</code>: jeśli Plec=\&apos;K\&apos; wypisz \&apos;Uczennica\&apos;, inaczej \&apos;Uczeń\&apos;.',
+sol:"SELECT Imie, Nazwisko, IIF(Plec='K','Uczennica','Uczeń') AS Status FROM Uczniowie;",
+hint:"IIF(warunek, wartość_true, wartość_false) — Access zamiast CASE WHEN",
+acc:"⚠️ ACCESS: IIF(warunek; jeśli_tak; jeśli_nie) to odpowiednik CASE WHEN... THEN... ELSE... END. Separatory to przecinki (nie średniki jak w Excelu!)."},
+{c:'IIF',n:'IIF z liczbami',lvl:2,
+d:'Wyświetl tytuł książki i kolumnę <code>Dostepnosc</code>: jeśli NaStanie > 5 wypisz \&apos;Dostępna\&apos;, inaczej \&apos;Mało sztuk\&apos;.',
+sol:"SELECT Tytul, IIF(NaStanie > 5,'Dostępna','Mało sztuk') AS Dostepnosc FROM Ksiazki;",
+hint:'IIF(NaStanie > 5, wartość_true, wartość_false)'},
+{c:'IIF',n:'IIF zagnieżdżone (3 opcje)',lvl:3,
+d:'Wyświetl uczniów z oceną słowną: ocena 6→\&apos;Celujący\&apos;, 5→\&apos;Bardzo dobry\&apos;, reszta→\&apos;Inne\&apos;. Kolumny: ID_Ucznia, Ocena, OcenaSłowna.',
+sol:"SELECT ID_Ucznia, Ocena, IIF(Ocena=6,'Celujący',IIF(Ocena=5,'Bardzo dobry','Inne')) AS OcenaSłowna FROM Oceny;",
+hint:'Zagnieżdżone IIF: IIF(war, t, IIF(war2, t2, f2))',
+acc:'⚠️ ACCESS: IIF można zagnieżdżać dla wielu opcji. Alternatywnie użyj Switch() — czystsze dla wielu wartości.'},
+{c:'IIF',n:'Switch() — wiele opcji',lvl:3,
+d:'Wyświetl oceny z kolumną <code>Słownie</code>: 6→Celujący, 5→Bardzo dobry, 4→Dobry, 3→Dostateczny, 2→Dopuszczający, reszta→Niedostateczny.',
+sol:"SELECT ID_Ucznia, Ocena, Switch(Ocena=6,'Celujący',Ocena=5,'Bardzo dobry',Ocena=4,'Dobry',Ocena=3,'Dostateczny',Ocena=2,'Dopuszczający',True,'Niedostateczny') AS Słownie FROM Oceny;",
+hint:'Switch(warunek1,wynik1, warunek2,wynik2, ..., True,domyślny)',
+acc:'⚠️ ACCESS: Switch(w1,v1, w2,v2, ...) — Access-only. Znacznie czytelniejsze niż zagnieżdżone IIF dla wielu opcji.'},
+{c:'IIF',n:'IIF w WHERE',lvl:3,
+d:'Wyświetl książki fantastyczne — filtruj tam gdzie gatunek to \&apos;Fantasy\&apos; lub \&apos;Sci-Fi\&apos;. Użyj IIF w SELECT żeby oznaczyć typ: \&apos;Fantastyka\&apos; lub \&apos;Sci-Fi\&apos;.',
+sol:"SELECT Tytul, Gatunek, IIF(Gatunek='Fantasy','Fantastyka','Sci-Fi') AS Typ FROM Ksiazki WHERE Gatunek IN ('Fantasy','Sci-Fi');",
+hint:"WHERE IN ('Fantasy','Sci-Fi') + IIF w SELECT"},
+{c:'IIF',n:'IIF obliczenia warunkowe',lvl:3,
+d:'Wyświetl wyniki egzaminów z kolumną <code>CzyZdalSłownie</code>: jeśli Wynik >= 50 wypisz \&apos;Zdał\&apos;, inaczej \&apos;Nie zdał\&apos;.',
+sol:"SELECT ID_Ucznia, Przedmiot, Wynik, IIF(Wynik >= 50,'Zdał','Nie zdał') AS CzyZdalSłownie FROM Egzaminy;",
+hint:'IIF(Wynik >= 50, ...)'},
+{c:'IIF',n:'IIF z NULL',lvl:3,
+d:'Wyświetl wypożyczenia z kolumną <code>Zwrot</code>: jeśli DataZwrotu IS NULL wypisz \&apos;Niezwrócona\&apos;, inaczej wypisz DataZwrotu.',
+sol:"SELECT ID_Wyp, ID_Ucznia, DataWyp, IIF(DataZwrotu IS NULL,'Niezwrócona',DataZwrotu) AS Zwrot FROM Wypozyczenia;",
+hint:"IIF(DataZwrotu IS NULL, 'Niezwrócona', DataZwrotu)"},
+
+// ── FUNKCJE ACCESS (20) ──────────────────────────────
+{c:'Funkcje',n:'Mid() — wycinanie tekstu',lvl:2,
+d:'Wyświetl uczniów z kolumną <code>Inicjały</code>: pierwsza litera imienia + pierwsza litera nazwiska (np. "JK").',
+sol:'SELECT Imie, Nazwisko, Mid(Imie,1,1) & Mid(Nazwisko,1,1) AS Inicjały FROM Uczniowie;',
+hint:'Mid(tekst, start, długość) — Access. Pozycje liczone od 1. Mid("Jan",1,1) = "J"',
+acc:'⚠️ ACCESS: Mid(tekst; start; długość) — odpowiednik SUBSTRING w MySQL. W Access separatory to przecinki.'},
+{c:'Funkcje',n:'Left() i Right()',lvl:2,
+d:'Wyświetl tytuły książek z pierwszymi 10 znakami jako <code>Skrót</code> i ostatnimi 3 jako <code>Koniec</code>.',
+sol:'SELECT Tytul, Left(Tytul, 10) AS Skrót, Right(Tytul, 3) AS Koniec FROM Ksiazki;',
+hint:'Left(tekst, n) — pierwsze n znaków. Right(tekst, n) — ostatnie n znaków.',
+acc:'⚠️ ACCESS: Left() i Right() to funkcje textu. MySQL: LEFT(), RIGHT() też działa, ale Mid() to specjalność Access.'},
+{c:'Funkcje',n:'Len() — długość tekstu',lvl:2,
+d:'Wyświetl nauczycieli z długością ich nazwiska jako kolumna <code>DlNazwiska</code>. Posortuj malejąco.',
+sol:'SELECT Nazwisko, Len(Nazwisko) AS DlNazwiska FROM Nauczyciele ORDER BY DlNazwiska DESC;',
+hint:'Len(tekst) = liczba znaków. W MySQL to LENGTH().',
+acc:'⚠️ ACCESS: Len() — w MySQL to LENGTH(). Access nie ma LENGTH().'},
+{c:'Funkcje',n:'UCase() i LCase()',lvl:2,
+d:'Wyświetl imiona uczniów w wielkich literach jako <code>ImieDuze</code> i małych jako <code>ImieMale</code>.',
+sol:'SELECT Imie, UCase(Imie) AS ImieDuze, LCase(Imie) AS ImieMale FROM Uczniowie;',
+hint:'UCase() = UPPER(), LCase() = LOWER() w MySQL',
+acc:'⚠️ ACCESS: UCase() zamiast UPPER(), LCase() zamiast LOWER() — inne nazwy niż w standardowym SQL.'},
+{c:'Funkcje',n:'Format() — formatowanie liczb',lvl:3,
+d:'Wyświetl ceny produktów sformatowane jako waluta z 2 miejscami po przecinku — kolumna <code>Cena_PLN</code>.',
+sol:"SELECT NazwaProduktu, Format(Cena, '0.00') AS Cena_PLN FROM Produkty;",
+hint:"Format(wartość, 'format') — Access. '0.00' = dwie cyfry po przecinku",
+acc:"⚠️ ACCESS: Format(wartość, 'wzorzec') — bardzo potężna funkcja. '0.00' = liczba, '0%' = procent, 'dd/mm/yyyy' = data."},
+{c:'Funkcje',n:'Format() — formatowanie daty',lvl:3,
+d:'Wyświetl zamówienia z datą w formacie <code>DD/MM/RRRR</code> jako <code>DataFormatowana</code>.',
+sol:"SELECT ID_Zamowienia, Format(DataZamowienia,'dd/mm/yyyy') AS DataFormatowana FROM Zamowienia;",
+hint:"Format(data, 'dd/mm/yyyy')",
+acc:"⚠️ ACCESS: Format(data,'dd/mm/yyyy') — bardzo popularne na maturze. MySQL: DATE_FORMAT()."},
+{c:'Funkcje',n:'Year() i Month()',lvl:2,
+d:'Wyświetl wypożyczenia z rokiem i miesiącem wypożyczenia w osobnych kolumnach: <code>Rok</code> i <code>Miesiac</code>.',
+sol:'SELECT ID_Wyp, DataWyp, Year(DataWyp) AS Rok, Month(DataWyp) AS Miesiac FROM Wypozyczenia;',
+hint:'Year(data) i Month(data) — Access. MySQL: YEAR(), MONTH()',
+acc:'⚠️ ACCESS: Year(), Month(), Day() — nazwy inne niż w MySQL (YEAR(), MONTH(), DAY()). W Access — wielka litera!'},
+{c:'Funkcje',n:'Date() — dzisiejsza data',lvl:2,
+d:'Wyświetl zamówienia złożone w 2024 roku. Użyj Year() do filtrowania.',
+sol:'SELECT * FROM Zamowienia WHERE Year(DataZamowienia) = 2024;',
+hint:'WHERE Year(DataZamowienia) = 2024',
+acc:'⚠️ ACCESS: Date() zwraca dzisiejszą datę (jak NOW() lub CURDATE() w MySQL). Year(Date()) = bieżący rok.'},
+{c:'Funkcje',n:'Trim() i oczyszczanie',lvl:2,
+d:'Wyświetl imiona i nazwiska uczniów ze scaleniem — <code>Trim(Imie & " " & Nazwisko)</code> jako <code>PelneImie</code>.',
+sol:"SELECT Trim(Imie & ' ' & Nazwisko) AS PelneImie FROM Uczniowie;",
+hint:'Trim() usuwa spacje z boków. & scalanie. Wynik: "Jan Kowalski"',
+acc:'⚠️ ACCESS: Trim() działa tak samo jak TRIM() w MySQL — usuwa spacje na początku i końcu.'},
+{c:'Funkcje',n:'Round() — zaokrąglanie',lvl:2,
+d:'Oblicz wartość każdego zamówienia (Ilosc * CenaJednostkowa) zaokrągloną do 2 miejsc. Wyświetl z ID_Pozycji.',
+sol:'SELECT ID_Pozycji, Round(Ilosc * CenaJednostkowa, 2) AS Wartosc FROM PozycjeZamowienia;',
+hint:'Round(wyrażenie, miejsca_po_przecinku)',
+acc:'⚠️ ACCESS: Round(liczba, cyfry) — identyczne z MySQL ROUND().'},
+{c:'Funkcje',n:'InStr() — szukanie w tekście',lvl:3,
+d:'Wyświetl książki których autor zawiera spację (czyli ma imię i nazwisko). Użyj InStr().',
+sol:"SELECT Tytul, Autor FROM Ksiazki WHERE InStr(Autor,' ') > 0;",
+hint:"InStr(tekst, szukany) — zwraca pozycję (1-based) lub 0 gdy nie znaleziono",
+acc:'⚠️ ACCESS: InStr(tekst, wzorzec) = pozycja pierwszego wystąpienia. MySQL: INSTR() lub LOCATE().'},
+{c:'Funkcje',n:'Now() — czas',lvl:2,
+d:'Wyświetl bieżącą datę i czas jako kolumna <code>CzasTeraz</code> wraz z ID_Zamowienia ze wszystkich zamówień.',
+sol:'SELECT ID_Zamowienia, Now() AS CzasTeraz FROM Zamowienia;',
+hint:'Now() zwraca aktualną datę i czas',
+acc:'⚠️ ACCESS: Now() = data + czas (jak DATETIME w MySQL NOW()). Date() = tylko data.'},
+{c:'Funkcje',n:'Abs() i Sqr()',lvl:2,
+d:'Wyświetl kolumnę <code>Wynik</code> z egzaminów i kolumnę <code>SurRootWyniku</code> = pierwiastek kwadratowy z wyniku.',
+sol:'SELECT Wynik, Sqr(Wynik) AS SurRootWyniku FROM Egzaminy;',
+hint:'Sqr(liczba) = pierwiastek kwadratowy. Abs() = wartość bezwzględna.',
+acc:'⚠️ ACCESS: Sqr() zamiast SQRT() w MySQL. Abs() — identyczne.'},
+{c:'Funkcje',n:'Nz() — zamiana NULL',lvl:3,
+d:'Wyświetl wypożyczenia z DataZwrotu — jeśli NULL, wypisz tekst <code>W obiegu</code>. Użyj Nz().',
+sol:"SELECT ID_Wyp, ID_Ucznia, Nz(DataZwrotu,'W obiegu') AS Zwrot FROM Wypozyczenia;",
+hint:"Nz(pole, wartość_gdy_null) — Access-only zastępnik NULL",
+acc:"⚠️ ACCESS: Nz(pole, zamiennik) to odpowiednik COALESCE(pole, zamiennik) lub IFNULL() w MySQL. Nz = Null to Zero/nic."},
+{c:'Funkcje',n:'Int() i Fix()',lvl:2,
+d:'Wyświetl ceny książek zaokrąglone w dół do liczby całkowitej jako <code>CenaInt</code>.',
+sol:'SELECT Tytul, Cena, Int(Cena) AS CenaInt FROM Ksiazki;',
+hint:'Int(liczba) zaokrągla w dół (floor). Fix() obcina część dziesiętną (trunc).',
+acc:'⚠️ ACCESS: Int() = FLOOR() w MySQL. Fix() = TRUNCATE() — różnica dla liczb ujemnych.'},
+{c:'Funkcje',n:'Choose() — wybór wartości',lvl:3,
+d:'Wyświetl egzaminy z kolumną <code>Poziom</code>: Wynik 0-49=Choose(1...)=\&apos;Słaby\&apos;, 50-74=\&apos;Średni\&apos;, 75+=\&apos;Dobry\&apos;. Użyj IIF zagnieżdżonego lub Switch.',
+sol:"SELECT ID_Ucznia, Wynik, Switch(Wynik < 50,'Słaby', Wynik < 75,'Średni', True,'Dobry') AS Poziom FROM Egzaminy;",
+hint:"Switch() z progami: Wynik < 50, Wynik < 75, True (domyślny)",
+acc:'⚠️ ACCESS: Switch() sprawdza warunki po kolei — pierwsze True wygrywa. Jak elseif.'},
+{c:'Funkcje',n:'StrComp() — porównanie',lvl:3,
+d:'Wyświetl produkty gdzie NazwaProduktu jest dłuższa niż 10 znaków. Pokaż nazwę i jej długość.',
+sol:'SELECT NazwaProduktu, Len(NazwaProduktu) AS Dlugosc FROM Produkty WHERE Len(NazwaProduktu) > 10;',
+hint:'WHERE Len(NazwaProduktu) > 10'},
+{c:'Funkcje',n:'Month() + Year() w WHERE',lvl:3,
+d:'Wyświetl zamówienia złożone w marcu 2024.',
+sol:'SELECT * FROM Zamowienia WHERE Year(DataZamowienia) = 2024 AND Month(DataZamowienia) = 3;',
+hint:'WHERE Year(...) = 2024 AND Month(...) = 3'},
+
+// ── KWERENDY / JOIN (20) ────────────────────────────
+{c:'Kwerendy',n:'INNER JOIN podstawowy',lvl:2,
+d:'Wyświetl imię i nazwisko ucznia oraz jego oceny (Przedmiot, Ocena). Połącz Uczniowie z Oceny.',
+sol:'SELECT U.Imie, U.Nazwisko, O.Przedmiot, O.Ocena FROM Uczniowie AS U INNER JOIN Oceny AS O ON U.ID_Ucznia = O.ID_Ucznia;',
+hint:'FROM TabelaA AS A INNER JOIN TabelaB AS B ON A.ID = B.ID',
+acc:'⚠️ ACCESS: używa INNER JOIN tak samo jak SQL. Aliasy tabel przez AS lub bez (Access pozwala też bez AS).'},
+{c:'Kwerendy',n:'JOIN z WHERE',lvl:2,
+d:'Wyświetl uczniów klasy 3A z ich ocenami z Informatyki.',
+sol:"SELECT U.Imie, U.Nazwisko, O.Ocena FROM Uczniowie AS U INNER JOIN Oceny AS O ON U.ID_Ucznia = O.ID_Ucznia WHERE U.Klasa = '3A' AND O.Przedmiot = 'Informatyka';",
+hint:'JOIN + WHERE Klasa=... AND Przedmiot=...'},
+{c:'Kwerendy',n:'LEFT JOIN (wszystkie + NULL)',lvl:2,
+d:'Wyświetl wszystkich uczniów i ich wypożyczenia — nawet tych którzy nic nie wypożyczyli.',
+sol:'SELECT U.Imie, U.Nazwisko, W.ID_Wyp, W.DataWyp FROM Uczniowie AS U LEFT JOIN Wypozyczenia AS W ON U.ID_Ucznia = W.ID_Ucznia;',
+hint:'LEFT JOIN zwraca wszystkich z lewej tabeli; NULL gdzie brak dopasowania',
+acc:'⚠️ ACCESS: LEFT JOIN = LEFT OUTER JOIN. Access obsługuje LEFT JOIN identycznie jak SQL.'},
+{c:'Kwerendy',n:'JOIN 3 tabel',lvl:3,
+d:'Wyświetl imię ucznia, tytuł książki i datę wypożyczenia. Połącz Uczniowie → Wypozyczenia → Ksiazki.',
+sol:'SELECT U.Imie, U.Nazwisko, K.Tytul, W.DataWyp FROM (Uczniowie AS U INNER JOIN Wypozyczenia AS W ON U.ID_Ucznia = W.ID_Ucznia) INNER JOIN Ksiazki AS K ON W.ID_Ksiazki = K.ID_Ksiazki;',
+hint:'W Access przy 3 tabelach MUSISZ użyć nawiasów: (A JOIN B ...) JOIN C ...',
+acc:'⚠️ ACCESS WAŻNE: przy więcej niż 2 tabelach JOIN trzeba użyć nawiasów: (T1 INNER JOIN T2 ON ...) INNER JOIN T3 ON ... Jest to obowiązkowe w Access!'},
+{c:'Kwerendy',n:'JOIN z ORDER BY',lvl:2,
+d:'Wyświetl imię, nazwisko ucznia i tytuł wypożyczonej książki — posortuj wg nazwiska.',
+sol:'SELECT U.Imie, U.Nazwisko, K.Tytul FROM (Uczniowie AS U INNER JOIN Wypozyczenia AS W ON U.ID_Ucznia = W.ID_Ucznia) INNER JOIN Ksiazki AS K ON W.ID_Ksiazki = K.ID_Ksiazki ORDER BY U.Nazwisko;',
+hint:'3 tabele z nawiasami + ORDER BY U.Nazwisko'},
+{c:'Kwerendy',n:'GROUP BY + COUNT',lvl:2,
+d:'Policz ile ocen wystawił każdy nauczyciel. Wyświetl ID_Nauczyciela i LiczbaOcen.',
+sol:'SELECT ID_Nauczyciela, COUNT(*) AS LiczbaOcen FROM Oceny GROUP BY ID_Nauczyciela ORDER BY LiczbaOcen DESC;',
+hint:'GROUP BY ID_Nauczyciela, COUNT(*) AS LiczbaOcen'},
+{c:'Kwerendy',n:'GROUP BY + AVG',lvl:2,
+d:'Oblicz średnią ocenę dla każdego przedmiotu. Pokaż Przedmiot i Srednia.',
+sol:'SELECT Przedmiot, AVG(Ocena) AS Srednia FROM Oceny GROUP BY Przedmiot ORDER BY Srednia DESC;',
+hint:'AVG(Ocena) — funkcja agregująca. GROUP BY Przedmiot'},
+{c:'Kwerendy',n:'HAVING',lvl:3,
+d:'Wyświetl nauczycieli którzy wystawili powyżej 4 ocen (ID_Nauczyciela + liczba).',
+sol:'SELECT ID_Nauczyciela, COUNT(*) AS Liczba FROM Oceny GROUP BY ID_Nauczyciela HAVING COUNT(*) > 4;',
+hint:'HAVING filtruje wyniki GROUP BY — nie WHERE!'},
+{c:'Kwerendy',n:'JOIN + GROUP BY + AVG',lvl:3,
+d:'Wyświetl imię, nazwisko nauczyciela i średnią wystawionych ocen.',
+sol:'SELECT N.Imie, N.Nazwisko, AVG(O.Ocena) AS Srednia FROM Nauczyciele AS N INNER JOIN Oceny AS O ON N.ID_Nauczyciela = O.ID_Nauczyciela GROUP BY N.Imie, N.Nazwisko ORDER BY Srednia DESC;',
+hint:'GROUP BY musi zawierać wszystkie niezagregowane kolumny SELECT'},
+{c:'Kwerendy',n:'Podzapytanie w WHERE',lvl:3,
+d:'Wyświetl uczniów których średnia ocen jest wyższa niż 4.',
+sol:'SELECT U.Imie, U.Nazwisko FROM Uczniowie AS U WHERE (SELECT AVG(Ocena) FROM Oceny WHERE ID_Ucznia = U.ID_Ucznia) > 4;',
+hint:'Podzapytanie skorelowane: WHERE (SELECT AVG... WHERE ID = U.ID) > 4'},
+{c:'Kwerendy',n:'Podzapytanie IN',lvl:3,
+d:'Wyświetl uczniów którzy mają jakąś ocenę 6.',
+sol:'SELECT * FROM Uczniowie WHERE ID_Ucznia IN (SELECT ID_Ucznia FROM Oceny WHERE Ocena = 6);',
+hint:'WHERE ID IN (SELECT ID FROM ... WHERE warunek)'},
+{c:'Kwerendy',n:'UNION (łączenie wyników)',lvl:4,
+d:'Wyświetl imiona i nazwiska <b>wszystkich osób</b> w bazie (uczniów i nauczycieli) w jednym zapytaniu.',
+sol:'SELECT Imie, Nazwisko FROM Uczniowie UNION SELECT Imie, Nazwisko FROM Nauczyciele;',
+hint:'UNION łączy wyniki dwóch SELECT — kolumny muszą się zgadzać',
+acc:'⚠️ ACCESS: UNION działa tak samo jak w standardowym SQL. UNION ALL zachowuje duplikaty.'},
+{c:'Kwerendy',n:'Kwerenda tworząca tabelę',lvl:4,
+d:'Utwórz tabelę <code>Najlepsi</code> zawierającą uczniów z wynikiem egzaminu >= 80 (SELECT INTO).',
+sol:'SELECT ID_Ucznia, Wynik INTO Najlepsi FROM Egzaminy WHERE Wynik >= 80;',
+hint:'SELECT ... INTO NowaTabel FROM ... WHERE ... — Access-only!',
+acc:'⚠️ ACCESS: SELECT ... INTO NowaTabela FROM ... tworzy nową tabelę! W SQL standardowym: CREATE TABLE ... AS SELECT...'},
+{c:'Kwerendy',n:'Kwerenda dołączająca',lvl:4,
+d:'Dołącz do tabeli <code>Egzaminy</code> nowy rekord: uczeń 12, Matematyka, wynik 88, data 2024-06-01, zdał (1). Użyj INSERT INTO ... SELECT.',
+sol:"INSERT INTO Egzaminy(ID_Egzaminu, ID_Ucznia, Przedmiot, Wynik, DataEgzaminu, CzyZdal) SELECT 16, 12, 'Matematyka', 88, '2024-06-01', 1;",
+hint:"INSERT INTO tabela (kolumny) SELECT wartości...",
+acc:'⚠️ ACCESS: INSERT INTO ... SELECT ... bez FROM to Access-specifics. Pozwala wstawiać wartości bez FROM (w MySQL musisz FROM dual lub pominąć).'},
+{c:'Kwerendy',n:'GROUP BY + COUNT + HAVING + JOIN',lvl:4,
+d:'Wyświetl uczniów którzy wypożyczyli <b>więcej niż 1</b> książkę — imię, nazwisko, liczba wypożyczeń.',
+sol:'SELECT U.Imie, U.Nazwisko, COUNT(*) AS LiczbaWyp FROM Uczniowie AS U INNER JOIN Wypozyczenia AS W ON U.ID_Ucznia = W.ID_Ucznia GROUP BY U.Imie, U.Nazwisko HAVING COUNT(*) > 1;',
+hint:'INNER JOIN + GROUP BY U.Imie, U.Nazwisko + HAVING COUNT(*) > 1'},
+
+// ── DDL (15) ─────────────────────────────────────────
+{c:'DDL',n:'CREATE TABLE',lvl:2,
+d:'Utwórz tabelę <code>Koła</code> z polami: ID_Koła (INT, klucz główny), NazwaKoła (TEXT), SalaLekcyjna (TEXT), ID_Nauczyciela (INT).',
+sol:'CREATE TABLE Koła (ID_Koła INT PRIMARY KEY, NazwaKoła TEXT, SalaLekcyjna TEXT, ID_Nauczyciela INT);',
+hint:'CREATE TABLE Nazwa (pole TYP ograniczenia, ...)',
+acc:'⚠️ ACCESS: TEXT zamiast VARCHAR — w Access główny typ tekstowy to TEXT (lub SHORT TEXT w nowych wersjach). W SQLite/MySQL to VARCHAR.'},
+{c:'DDL',n:'CREATE TABLE z typami',lvl:2,
+d:'Utwórz tabelę <code>Nagrody</code>: ID_Nagrody INT PK, ID_Ucznia INT, Opis TEXT, DataPrzyznania TEXT, Kwota REAL.',
+sol:'CREATE TABLE Nagrody (ID_Nagrody INT PRIMARY KEY, ID_Ucznia INT, Opis TEXT, DataPrzyznania TEXT, Kwota REAL);',
+hint:'INT, TEXT, REAL — podstawowe typy Access. Nie DATE!',
+acc:'⚠️ ACCESS typy: NUMBER (liczba), TEXT/SHORT TEXT (tekst do 255 znaków), MEMO/LONG TEXT (długi), DATE/TIME, CURRENCY (pieniądze), YES/NO (bool). Na maturze: INT, TEXT, REAL wystarczą.'},
+{c:'DDL',n:'ALTER TABLE ADD COLUMN',lvl:2,
+d:'Dodaj do tabeli <code>Uczniowie</code> kolumnę <code>Email</code> typu TEXT.',
+sol:'ALTER TABLE Uczniowie ADD COLUMN Email TEXT;',
+hint:'ALTER TABLE NazwaTabeli ADD COLUMN NazwaKolumny TYP',
+acc:'⚠️ ACCESS: ALTER TABLE ... ADD COLUMN ... — słowo COLUMN jest wymagane w Access (w MySQL opcjonalne).'},
+{c:'DDL',n:'ALTER TABLE DROP COLUMN',lvl:2,
+d:'Usuń kolumnę <code>Email</code> z tabeli <code>Uczniowie</code>.',
+sol:'ALTER TABLE Uczniowie DROP COLUMN Email;',
+hint:'ALTER TABLE NazwaTabeli DROP COLUMN NazwaKolumny',
+acc:'⚠️ ACCESS: ALTER TABLE ... DROP COLUMN — usuwa kolumnę. W SQLite DROP COLUMN nie jest obsługiwany, ale w Access i MySQL tak.'},
+{c:'DDL',n:'INSERT INTO',lvl:1,
+d:'Wstaw nowego klienta do tabeli <code>Klienci</code>: ID=7, imię Jan, nazwisko Testowy, miasto Katowice, email test@mail.pl, data 2024-06-01.',
+sol:"INSERT INTO Klienci VALUES (7,'Jan','Testowy','Katowice','test@mail.pl','2024-06-01');",
+hint:"INSERT INTO tabela VALUES (w1, w2, ...) — kolejność wg definicji tabeli"},
+{c:'DDL',n:'INSERT z kolumnami',lvl:1,
+d:'Wstaw do tabeli <code>Produkty</code> nowy produkt: ID=13, Zeszyt A4, Artykuły szkolne, cena 4.20, szt, 200 szt w magazynie.',
+sol:"INSERT INTO Produkty (ID_Produktu, NazwaProduktu, Kategoria, Cena, JednostkaMiary, Magazyn) VALUES (13, 'Zeszyt A4', 'Artykuły szkolne', 4.20, 'szt', 200);",
+hint:'INSERT INTO tabela (kol1, kol2, ...) VALUES (w1, w2, ...)'},
+{c:'DDL',n:'UPDATE',lvl:2,
+d:'Zmień pensję nauczyciela o ID=1 na 6500.',
+sol:'UPDATE Nauczyciele SET Pensja = 6500 WHERE ID_Nauczyciela = 1;',
+hint:'UPDATE tabela SET kolumna = wartość WHERE warunek',
+acc:'⚠️ ACCESS: UPDATE ... SET ... WHERE — identyczne z SQL. UWAGA: bez WHERE zmodyfikuje WSZYSTKIE rekordy!'},
+{c:'DDL',n:'UPDATE wielu pól',lvl:2,
+d:'Zmień status zamówienia ID=1 na \&apos;Anulowane\&apos; i wartość całkowitą na 0.',
+sol:"UPDATE Zamowienia SET Status = 'Anulowane', WartoscCalkowita = 0 WHERE ID_Zamowienia = 1;",
+hint:'SET kol1 = w1, kol2 = w2 — przecinkiem'},
+{c:'DDL',n:'DELETE',lvl:2,
+d:'Usuń klienta o ID = 7 z tabeli Klienci (którego właśnie dodałeś).',
+sol:'DELETE FROM Klienci WHERE ID_Klienta = 7;',
+hint:'DELETE FROM tabela WHERE warunek — ZAWSZE z WHERE!',
+acc:'⚠️ ACCESS: DELETE FROM tabela WHERE warunek. Bez WHERE usunie WSZYSTKIE rekordy — uwaga na egzaminie!'},
+{c:'DDL',n:'UPDATE z wyrażeniem',lvl:3,
+d:'Zwiększ o 5% pensję wszystkich nauczycieli zatrudnionych przed 2016 rokiem.',
+sol:"UPDATE Nauczyciele SET Pensja = Pensja * 1.05 WHERE Year(DataZatrudnienia) < 2016;",
+hint:'SET Pensja = Pensja * 1.05 WHERE Year(DataZatrudnienia) < 2016'},
+{c:'DDL',n:'DELETE z podzapytaniem',lvl:4,
+d:'Usuń z tabeli Egzaminy wszystkie rekordy uczniów z klasy 2A.',
+sol:'DELETE FROM Egzaminy WHERE ID_Ucznia IN (SELECT ID_Ucznia FROM Uczniowie WHERE Klasa = \'2A\');',
+hint:"DELETE WHERE ID IN (SELECT ID FROM ... WHERE ...)"},
+
+// ── AGREGATY (10) ────────────────────────────────────
+{c:'Agregaty',n:'COUNT(*)',lvl:1,
+d:'Policz liczbę wszystkich uczniów. Kolumna: <code>LiczbaUczniow</code>.',
+sol:'SELECT COUNT(*) AS LiczbaUczniow FROM Uczniowie;',
+hint:'COUNT(*) zlicza wiersze'},
+{c:'Agregaty',n:'SUM()',lvl:1,
+d:'Oblicz łączną wartość wszystkich zamówień. Kolumna: <code>ŁącznaWartość</code>.',
+sol:'SELECT SUM(WartoscCalkowita) AS ŁącznaWartość FROM Zamowienia;',
+hint:'SUM(kolumna) sumuje wartości'},
+{c:'Agregaty',n:'AVG()',lvl:1,
+d:'Oblicz średnią wszystkich ocen. Kolumna: <code>Srednia</code>.',
+sol:'SELECT AVG(Ocena) AS Srednia FROM Oceny;',
+hint:'AVG() = średnia arytmetyczna'},
+{c:'Agregaty',n:'MIN() i MAX()',lvl:1,
+d:'Wyświetl minimalną i maksymalną pensję nauczycieli.',
+sol:'SELECT MIN(Pensja) AS NajmniejszaPensja, MAX(Pensja) AS NajwiększaPensja FROM Nauczyciele;',
+hint:'MIN() i MAX() jako osobne kolumny'},
+{c:'Agregaty',n:'COUNT DISTINCT',lvl:2,
+d:'Policz ile różnych przedmiotów pojawia się w tabeli Oceny.',
+sol:'SELECT COUNT(DISTINCT Przedmiot) AS LiczbaPrzedmiotow FROM Oceny;',
+hint:'COUNT(DISTINCT kolumna)'},
+{c:'Agregaty',n:'GROUP BY + SUM + HAVING',lvl:3,
+d:'Wyświetl kategorie produktów z łączną wartością w magazynie (Cena * Magazyn) powyżej 1000 zł.',
+sol:'SELECT Kategoria, SUM(Cena * Magazyn) AS WartoscMagazynu FROM Produkty GROUP BY Kategoria HAVING SUM(Cena * Magazyn) > 1000;',
+hint:'GROUP BY Kategoria, SUM(Cena * Magazyn), HAVING > 1000'},
+{c:'Agregaty',n:'AVG z JOIN i GROUP BY',lvl:3,
+d:'Wyświetl średni wynik egzaminacyjny dla każdej klasy (połącz Egzaminy z Uczniowie).',
+sol:'SELECT U.Klasa, AVG(E.Wynik) AS SredniWynik FROM Uczniowie AS U INNER JOIN Egzaminy AS E ON U.ID_Ucznia = E.ID_Ucznia GROUP BY U.Klasa ORDER BY SredniWynik DESC;',
+hint:'JOIN + GROUP BY U.Klasa + AVG(E.Wynik)'},
+{c:'Agregaty',n:'COUNT z GROUP BY + JOIN',lvl:3,
+d:'Dla każdego ucznia wyświetl imię, nazwisko i liczbę wypożyczonych książek.',
+sol:'SELECT U.Imie, U.Nazwisko, COUNT(W.ID_Wyp) AS LiczbaWyp FROM Uczniowie AS U LEFT JOIN Wypozyczenia AS W ON U.ID_Ucznia = W.ID_Ucznia GROUP BY U.Imie, U.Nazwisko;',
+hint:'LEFT JOIN żeby pokazać też tych bez wypożyczeń. COUNT(W.ID_Wyp) = 0 dla NULL'},
+{c:'Agregaty',n:'SUM warunkowe z IIF',lvl:4,
+d:'Policz ile uczniów zdało a ile nie zdało egzaminów. Użyj IIF + SUM.',
+sol:"SELECT SUM(IIF(CzyZdal=1,1,0)) AS Zdali, SUM(IIF(CzyZdal=0,1,0)) AS NieZdali FROM Egzaminy;",
+hint:'SUM(IIF(warunek, 1, 0)) to Access-sposób na COUNT warunkowy',
+acc:'⚠️ ACCESS: SUM(IIF(warunek,1,0)) to klasyczny Access trick do sumowania warunkowego — odpowiednik COUNTIF z Excela lub SUM(CASE WHEN... w SQL.'},
+{c:'Agregaty',n:'AVG + FORMAT + JOIN',lvl:4,
+d:'Wyświetl nauczycieli (imię, nazwisko) ze średnią ich ocen sformatowaną do 1 miejsca po przecinku.',
+sol:"SELECT N.Imie, N.Nazwisko, Format(AVG(O.Ocena),'0.0') AS Srednia FROM Nauczyciele AS N INNER JOIN Oceny AS O ON N.ID_Nauczyciela = O.ID_Nauczyciela GROUP BY N.Imie, N.Nazwisko;",
+hint:"Format(AVG(Ocena),'0.0') AS Srednia w SELECT"},
+
+// ── SELECT rozszerzone (30) ──────────────────────────────────────────
+{c:'SELECT',n:'WHERE z operatorem <>',lvl:1,
+d:'Wyświetl wszystkich uczniów <b>innych niż</b> z klasy 3A (Klasa &lt;&gt; &apos;3A&apos;). Pokaż imię, nazwisko, klasę.',
+sol:"SELECT Imie, Nazwisko, Klasa FROM Uczniowie WHERE Klasa <> '3A';",
+hint:"<> to 'różne od' (można też != w SQL)"},
+{c:'SELECT',n:'ORDER BY kilka kolumn',lvl:2,
+d:'Wyświetl produkty posortowane: kategoria A→Z, w ramach kategorii cena Z→A.',
+sol:'SELECT NazwaProduktu, Kategoria, Cena FROM Produkty ORDER BY Kategoria ASC, Cena DESC;',
+hint:'ORDER BY Kategoria ASC, Cena DESC — dwie kolumny'},
+{c:'SELECT',n:'BETWEEN z datami',lvl:2,
+d:'Wyświetl zamówienia złożone między 2024-02-01 a 2024-03-31.',
+sol:"SELECT * FROM Zamowienia WHERE DataZamowienia BETWEEN '2024-02-01' AND '2024-03-31';",
+hint:"BETWEEN '2024-02-01' AND '2024-03-31'",
+acc:"⚠️ ACCESS: daty jako 'RRRR-MM-DD' w apostrofach. Alternatywnie: #01/02/2024# AND #31/03/2024#"},
+{c:'SELECT',n:'LIKE z # (cyfra)',lvl:2,
+d:'Wyświetl uczniów których ID_Ucznia zaczyna się od cyfry 1 (ID jak 1, 10, 11, 12...). Użyj warunku na ID.',
+sol:'SELECT * FROM Uczniowie WHERE ID_Ucznia >= 1 AND ID_Ucznia <= 12;',
+hint:'W Access # w LIKE zastępuje jedną cyfrę. Dla liczb lepiej użyć BETWEEN/>=.',
+acc:"⚠️ ACCESS: # zastępuje jedną cyfrę w tekście. LIKE '#0' pasuje do '10','20' itp."},
+{c:'SELECT',n:'LIKE środek słowa',lvl:2,
+d:'Wyświetl produkty które w nazwie mają słowo <code>usz</code>.',
+sol:"SELECT NazwaProduktu FROM Produkty WHERE NazwaProduktu LIKE '*usz*';",
+hint:"LIKE '*usz*' — gwiazdki z obu stron = zawiera"},
+{c:'SELECT',n:'NULL w wyrażeniu',lvl:2,
+d:'Wyświetl liczbę niezwróconych książek (DataZwrotu IS NULL) jako jedną liczbę.',
+sol:'SELECT COUNT(*) AS NiezwroconeBooksCount FROM Wypozyczenia WHERE DataZwrotu IS NULL;',
+hint:'COUNT(*) WHERE DataZwrotu IS NULL'},
+{c:'SELECT',n:'Alias tabeli bez AS',lvl:2,
+d:'Wyświetl imię i nazwisko ucznia oraz jego oceny używając aliasów U i O (bez słowa AS).',
+sol:'SELECT U.Imie, U.Nazwisko, O.Ocena FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia = O.ID_Ucznia;',
+hint:'W Access aliasy można pisać bez AS: FROM Uczniowie U',
+acc:'⚠️ ACCESS: AS jest opcjonalne przy aliasach tabeli. FROM Uczniowie U działa tak samo jak FROM Uczniowie AS U.'},
+{c:'SELECT',n:'SELECT z warunkiem na agregacie (podzapytanie)',lvl:3,
+d:'Wyświetl produkty droższe od średniej ceny wszystkich produktów.',
+sol:'SELECT NazwaProduktu, Cena FROM Produkty WHERE Cena > (SELECT AVG(Cena) FROM Produkty);',
+hint:'WHERE Cena > (SELECT AVG(Cena) FROM Produkty)'},
+{c:'SELECT',n:'NOT BETWEEN',lvl:2,
+d:'Wyświetl egzaminy z wynikiem poza przedziałem 50-80 (zbyt niskie lub zbyt wysokie).',
+sol:'SELECT * FROM Egzaminy WHERE Wynik NOT BETWEEN 50 AND 80;',
+hint:'NOT BETWEEN 50 AND 80'},
+{c:'SELECT',n:'DISTINCT z kilkoma kolumnami',lvl:2,
+d:'Wyświetl unikalne kombinacje Klasa + Plec wśród uczniów.',
+sol:'SELECT DISTINCT Klasa, Plec FROM Uczniowie ORDER BY Klasa;',
+hint:'SELECT DISTINCT kol1, kol2 — unikalne pary'},
+{c:'SELECT',n:'Wyrażenie tekstowe &',lvl:2,
+d:'Wyświetl kolumnę <code>NauczycielPrzedmiot</code> w formacie: "Kowal — Matematyka".',
+sol:"SELECT Imie & ' ' & Nazwisko & ' — ' & Przedmiot AS NauczycielPrzedmiot FROM Nauczyciele;",
+hint:"& łączy stringi. ' — ' to separator.",
+acc:"⚠️ ACCESS: & zamiast + do konkatenacji. Użycie + może dać błąd przy NULL."},
+{c:'SELECT',n:'WHERE porównanie kolumn',lvl:2,
+d:'Wyświetl pozycje zamówień gdzie cena jednostkowa przekracza średnią cenę wszystkich produktów.',
+sol:'SELECT * FROM PozycjeZamowienia WHERE CenaJednostkowa > (SELECT AVG(Cena) FROM Produkty);',
+hint:'Podzapytanie: (SELECT AVG(Cena) FROM Produkty)'},
+{c:'SELECT',n:'IN z podzapytaniem',lvl:3,
+d:'Wyświetl książki które były wypożyczone przez uczniów klasy 3A.',
+sol:"SELECT K.Tytul FROM Ksiazki K WHERE K.ID_Ksiazki IN (SELECT W.ID_Ksiazki FROM Wypozyczenia W INNER JOIN Uczniowie U ON W.ID_Ucznia = U.ID_Ucznia WHERE U.Klasa = '3A');",
+hint:'WHERE ID IN (SELECT ID FROM ... JOIN ... WHERE Klasa=3A)'},
+{c:'SELECT',n:'Warunek na tekście — wielkość liter',lvl:2,
+d:'Wyświetl uczniów płci żeńskiej (Plec = &apos;K&apos;). Ile jest takich uczennic łącznie? Wypisz COUNT.',
+sol:"SELECT COUNT(*) AS LiczbaUczennic FROM Uczniowie WHERE Plec = 'K';",
+hint:"WHERE Plec = 'K' — Access nie rozróżnia wielkości liter w warunkach tekstowych",
+acc:"⚠️ ACCESS: porównania tekstowe domyślnie NIE rozróżniają wielkości liter (case-insensitive). 'k' = 'K' w Access."},
+{c:'SELECT',n:'WHERE z funkcją Year()',lvl:2,
+d:'Wyświetl wszystkie egzaminy przeprowadzone w maju (Month = 5).',
+sol:'SELECT * FROM Egzaminy WHERE Month(DataEgzaminu) = 5;',
+hint:'WHERE Month(DataEgzaminu) = 5'},
+{c:'SELECT',n:'Łączenie warunków OR + AND',lvl:2,
+d:'Wyświetl uczniów z Krakowa lub Gdańska którzy są w klasie 3A lub 3B.',
+sol:"SELECT * FROM Uczniowie WHERE (Miejscowosc = 'Kraków' OR Miejscowosc = 'Gdańsk') AND (Klasa = '3A' OR Klasa = '3B');",
+hint:'Użyj nawiasów! (A OR B) AND (C OR D)'},
+{c:'SELECT',n:'WHERE NOT IN',lvl:2,
+d:'Wyświetl nauczycieli którzy NIE uczą Matematyki ani Fizyki.',
+sol:"SELECT * FROM Nauczyciele WHERE Przedmiot NOT IN ('Matematyka','Fizyka');",
+hint:"NOT IN ('v1','v2','v3')"},
+{c:'SELECT',n:'Podzapytanie EXISTS',lvl:4,
+d:'Wyświetl uczniów którzy mają przynajmniej jedno wypożyczenie (użyj EXISTS).',
+sol:'SELECT * FROM Uczniowie U WHERE EXISTS (SELECT 1 FROM Wypozyczenia W WHERE W.ID_Ucznia = U.ID_Ucznia);',
+hint:'WHERE EXISTS (SELECT 1 FROM ... WHERE ID = U.ID)',
+acc:'⚠️ ACCESS: EXISTS działa tak samo jak w standardowym SQL — sprawdza czy podzapytanie zwróci jakikolwiek wiersz.'},
+{c:'SELECT',n:'Arytmetyka w SELECT',lvl:2,
+d:'Wyświetl nauczycieli z kolumną <code>PensjaRoczna</code> = Pensja * 12.',
+sol:'SELECT Imie, Nazwisko, Pensja, Pensja * 12 AS PensjaRoczna FROM Nauczyciele;',
+hint:'Pensja * 12 AS PensjaRoczna'},
+{c:'SELECT',n:'Mnożenie i procent',lvl:2,
+d:'Wyświetl ceny produktów z VAT 23% jako <code>CenaBrutto</code> zaokrągloną do 2 miejsc.',
+sol:'SELECT NazwaProduktu, Cena, Round(Cena * 1.23, 2) AS CenaBrutto FROM Produkty;',
+hint:'Round(Cena * 1.23, 2) AS CenaBrutto'},
+{c:'SELECT',n:'Kategoria z IN i ORDER',lvl:1,
+d:'Wyświetl produkty kategorii Elektronika lub Materiały biurowe, posortowane wg ceny rosnąco.',
+sol:"SELECT NazwaProduktu, Kategoria, Cena FROM Produkty WHERE Kategoria IN ('Elektronika','Materiały biurowe') ORDER BY Cena;",
+hint:"IN ('Elektronika','Materiały biurowe') ORDER BY Cena"},
+{c:'SELECT',n:'Top wyniki bez duplikatów',lvl:2,
+d:'Wyświetl 5 unikalnych miejscowości uczniów (posortowanych alfabetycznie).',
+sol:'SELECT DISTINCT TOP 5 Miejscowosc FROM Uczniowie ORDER BY Miejscowosc;',
+hint:'SELECT DISTINCT TOP 5 ... ORDER BY',
+acc:'⚠️ ACCESS: SELECT DISTINCT TOP n — można łączyć. Kolejność: SELECT DISTINCT TOP n kolumna.'},
+{c:'SELECT',n:'WHERE na obliczonej wartości',lvl:3,
+d:'Wyświetl zamówienia z wartością całkowitą powyżej 500 i statusem Zrealizowane.',
+sol:"SELECT * FROM Zamowienia WHERE WartoscCalkowita > 500 AND Status = 'Zrealizowane';",
+hint:"AND Status = 'Zrealizowane'"},
+{c:'SELECT',n:'Filtr na NULL i wartości',lvl:2,
+d:'Wyświetl wypożyczenia które są niezwrócone (NULL) LUB zwrócone po 2024-03-01.',
+sol:"SELECT * FROM Wypozyczenia WHERE DataZwrotu IS NULL OR DataZwrotu > '2024-03-01';",
+hint:'IS NULL OR DataZwrotu > ...'},
+{c:'SELECT',n:'Wynik jako tak/nie',lvl:2,
+d:'Wyświetl egzaminy z kolumną <code>WynikOpis</code>: wynik >= 50 → "Zaliczony", inaczej → "Niezaliczony". Użyj IIF.',
+sol:"SELECT ID_Ucznia, Przedmiot, Wynik, IIF(Wynik >= 50,'Zaliczony','Niezaliczony') AS WynikOpis FROM Egzaminy;",
+hint:'IIF(Wynik >= 50, "Zaliczony", "Niezaliczony")'},
+{c:'SELECT',n:'Filtrowanie po długości tekstu',lvl:2,
+d:'Wyświetl produkty których nazwa ma więcej niż 15 znaków.',
+sol:'SELECT NazwaProduktu, Len(NazwaProduktu) AS Dlugosc FROM Produkty WHERE Len(NazwaProduktu) > 15;',
+hint:'WHERE Len(NazwaProduktu) > 15'},
+{c:'SELECT',n:'Suma pól numerycznych',lvl:2,
+d:'Wyświetl pozycje zamówień z kolumną <code>Wartość</code> = Ilosc * CenaJednostkowa, tylko gdzie wartość > 100.',
+sol:'SELECT ID_Pozycji, Ilosc, CenaJednostkowa, Ilosc * CenaJednostkowa AS Wartosc FROM PozycjeZamowienia WHERE Ilosc * CenaJednostkowa > 100;',
+hint:'WHERE Ilosc * CenaJednostkowa > 100'},
+{c:'SELECT',n:'Zawiera określony znak',lvl:2,
+d:'Wyświetl emaile klientów zawierające domenę gmail (LIKE "*gmail*").',
+sol:"SELECT Imie, Nazwisko, Email FROM Klienci WHERE Email LIKE '*gmail*';",
+hint:"LIKE '*gmail*' — zawiera słowo gmail"},
+{c:'SELECT',n:'Pole null lub wartość',lvl:3,
+d:'Wyświetl wszystkich uczniów z kolumną <code>DataZwrotu</code> — tych którzy coś wypożyczyli (LEFT JOIN), lub napis "Brak wypożyczeń".',
+sol:"SELECT U.Imie, U.Nazwisko, Nz(W.DataWyp,'Brak wypożyczeń') AS InfoWyp FROM Uczniowie U LEFT JOIN Wypozyczenia W ON U.ID_Ucznia = W.ID_Ucznia;",
+hint:'LEFT JOIN + Nz(pole, zamiennik_null)',
+acc:"⚠️ ACCESS: Nz(pole, wartość_gdy_null) zastępuje NULL podaną wartością."},
+{c:'SELECT',n:'WHERE + Year + Month',lvl:2,
+d:'Wyświetl wypożyczenia z kwietnia 2024 (miesiąc=4, rok=2024).',
+sol:'SELECT * FROM Wypozyczenia WHERE Year(DataWyp) = 2024 AND Month(DataWyp) = 4;',
+hint:'WHERE Year(DataWyp) = 2024 AND Month(DataWyp) = 4'},
+
+// ── SELECT TOP rozszerzone (15) ──────────────────────────────────────
+{c:'TOP',n:'TOP z GROUP BY',lvl:3,
+d:'Wyświetl 3 nauczycieli z największą średnią pensją względem liczby ocen.',
+sol:'SELECT TOP 3 ID_Nauczyciela, COUNT(*) AS Ocen, AVG(Ocena) AS Srednia FROM Oceny GROUP BY ID_Nauczyciela ORDER BY Srednia DESC;',
+hint:'TOP 3 ... GROUP BY ... ORDER BY Srednia DESC'},
+{c:'TOP',n:'TOP najnowsze zamówienia',lvl:2,
+d:'Wyświetl 5 ostatnich zamówień (po dacie malejąco).',
+sol:'SELECT TOP 5 * FROM Zamowienia ORDER BY DataZamowienia DESC;',
+hint:'ORDER BY DataZamowienia DESC — najnowsze pierwsze'},
+{c:'TOP',n:'TOP 20 PERCENT',lvl:2,
+d:'Wyświetl 20% produktów z najwyższą ceną (kolumny: nazwa, cena).',
+sol:'SELECT TOP 20 PERCENT NazwaProduktu, Cena FROM Produkty ORDER BY Cena DESC;',
+hint:'SELECT TOP 20 PERCENT ... ORDER BY Cena DESC',
+acc:'⚠️ ACCESS: TOP n PERCENT to specjalność Access — nie istnieje w MySQL ani SQLite.'},
+{c:'TOP',n:'TOP 1 minimalny wynik',lvl:2,
+d:'Wyświetl ucznia z najniższym wynikiem egzaminu (1 wiersz).',
+sol:'SELECT TOP 1 * FROM Egzaminy ORDER BY Wynik ASC;',
+hint:'TOP 1 ORDER BY Wynik ASC — najniższy'},
+{c:'TOP',n:'TOP z WHERE i JOIN',lvl:3,
+d:'Wyświetl tytuł i cenę 3 najdroższych książek gatunku Fantasy.',
+sol:"SELECT TOP 3 Tytul, Cena FROM Ksiazki WHERE Gatunek = 'Fantasy' ORDER BY Cena DESC;",
+hint:"WHERE Gatunek = 'Fantasy' + TOP 3 ORDER BY Cena DESC"},
+{c:'TOP',n:'TOP z datą — najbliższe',lvl:3,
+d:'Wyświetl 3 najnowsze wypożyczenia które nie zostały jeszcze zwrócone.',
+sol:'SELECT TOP 3 * FROM Wypozyczenia WHERE DataZwrotu IS NULL ORDER BY DataWyp DESC;',
+hint:'WHERE DataZwrotu IS NULL ORDER BY DataWyp DESC'},
+{c:'TOP',n:'TOP klienci wg zamówień',lvl:3,
+d:'Wyświetl 3 klientów którzy złożyli najwięcej zamówień (ID_Klienta + liczba).',
+sol:'SELECT TOP 3 ID_Klienta, COUNT(*) AS Zamowien FROM Zamowienia GROUP BY ID_Klienta ORDER BY Zamowien DESC;',
+hint:'GROUP BY + COUNT + TOP 3 ORDER BY DESC'},
+{c:'TOP',n:'TOP z podzapytaniem',lvl:4,
+d:'Wyświetl dane ucznia który ma najwyższą średnią ocen (imię, nazwisko, średnia).',
+sol:'SELECT TOP 1 U.Imie, U.Nazwisko, AVG(O.Ocena) AS Srednia FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia = O.ID_Ucznia GROUP BY U.Imie, U.Nazwisko ORDER BY Srednia DESC;',
+hint:'TOP 1 + JOIN + GROUP BY + ORDER BY Srednia DESC'},
+{c:'TOP',n:'TOP produkty w magazynie',lvl:2,
+d:'Wyświetl 5 produktów z największą ilością w magazynie.',
+sol:'SELECT TOP 5 NazwaProduktu, Magazyn FROM Produkty ORDER BY Magazyn DESC;',
+hint:'ORDER BY Magazyn DESC, TOP 5'},
+{c:'TOP',n:'TOP unikalne klasy',lvl:2,
+d:'Wyświetl 2 pierwsze klasy (alfabetycznie) które mają uczniów.',
+sol:'SELECT DISTINCT TOP 2 Klasa FROM Uczniowie ORDER BY Klasa;',
+hint:'SELECT DISTINCT TOP 2 Klasa ORDER BY Klasa'},
+
+// ── IIF i Switch rozszerzone (20) ────────────────────────────────────
+{c:'IIF',n:'IIF w ORDER BY',lvl:3,
+d:'Wyświetl uczniów posortowanych tak że kobiety (K) są pierwsze, potem mężczyźni. Użyj IIF w ORDER BY.',
+sol:"SELECT Imie, Nazwisko, Plec FROM Uczniowie ORDER BY IIF(Plec='K',0,1);",
+hint:"ORDER BY IIF(Plec='K',0,1) — kobiety=0 są przed mężczyznami=1",
+acc:"⚠️ ACCESS: IIF można używać w klauzuli ORDER BY do niestandardowego sortowania!"},
+{c:'IIF',n:'IIF — kategoria wiekowa',lvl:2,
+d:'Wyświetl uczniów z kolumną <code>Rocznik</code>: jeśli urodzeni w 2006 wypisz "Rocznik 2006", inaczej "Inny rocznik".',
+sol:"SELECT Imie, Nazwisko, IIF(Year(DataUrodzenia)=2006,'Rocznik 2006','Inny rocznik') AS Rocznik FROM Uczniowie;",
+hint:"IIF(Year(DataUrodzenia)=2006, 'Rocznik 2006', 'Inny rocznik')"},
+{c:'IIF',n:'IIF — stan magazynu',lvl:2,
+d:'Wyświetl produkty z kolumną <code>StanOpis</code>: Magazyn > 50 → "Wysoki stan", Magazyn > 10 → "Normalny", reszta → "Niski stan".',
+sol:"SELECT NazwaProduktu, Magazyn, IIF(Magazyn>50,'Wysoki stan',IIF(Magazyn>10,'Normalny','Niski stan')) AS StanOpis FROM Produkty;",
+hint:'IIF(Magazyn>50, "Wysoki", IIF(Magazyn>10, "Normalny", "Niski"))'},
+{c:'IIF',n:'Switch — ocena z klasy',lvl:3,
+d:'Wyświetl uczniów z kolumną <code>KlasaOpis</code>: 3A→"Matura 3A", 3B→"Matura 3B", 2A→"Przygotowanie 2A", 2B→"Przygotowanie 2B".',
+sol:"SELECT Imie, Nazwisko, Klasa, Switch(Klasa='3A','Matura 3A',Klasa='3B','Matura 3B',Klasa='2A','Przygotowanie 2A',Klasa='2B','Przygotowanie 2B',True,'Nieznana') AS KlasaOpis FROM Uczniowie;",
+hint:"Switch(Klasa='3A','Matura 3A', ..., True,'domyślna')"},
+{c:'IIF',n:'IIF z datą — aktualność',lvl:3,
+d:'Wyświetl egzaminy z kolumną <code>Aktualnosc</code>: jeśli DataEgzaminu > 2024-05-01 → "Nowy", inaczej → "Archiwalny".',
+sol:"SELECT ID_Ucznia, Przedmiot, DataEgzaminu, IIF(DataEgzaminu>'2024-05-01','Nowy','Archiwalny') AS Aktualnosc FROM Egzaminy;",
+hint:"IIF(DataEgzaminu > '2024-05-01', 'Nowy', 'Archiwalny')"},
+{c:'IIF',n:'IIF w GROUP BY SELECT',lvl:4,
+d:'Policz ilu uczniów zdało a ilu nie zdało (CzyZdal=1 vs 0). Wynik w dwóch kolumnach.',
+sol:"SELECT SUM(IIF(CzyZdal=1,1,0)) AS Zdalo, SUM(IIF(CzyZdal=0,1,0)) AS NieZdalo FROM Egzaminy;",
+hint:'SUM(IIF(CzyZdal=1,1,0)) — sumowanie warunkowe Access-style'},
+{c:'IIF',n:'Nz z obliczeniami',lvl:3,
+d:'Oblicz wartość każdej pozycji zamówienia (Ilosc * CenaJednostkowa). Jeśli wynik NULL → 0. Wypisz z ID.',
+sol:'SELECT ID_Pozycji, Nz(Ilosc * CenaJednostkowa, 0) AS Wartosc FROM PozycjeZamowienia;',
+hint:'Nz(wyrażenie, 0) zastąpi NULL zerem',
+acc:'⚠️ ACCESS: Nz() jest wyjątkowo przydatne przy obliczeniach gdzie może wystąpić NULL.'},
+{c:'IIF',n:'Switch — status zamówienia',lvl:3,
+d:'Wyświetl zamówienia z kolumną <code>StatusKod</code>: Zrealizowane→1, Wysłane→2, Nowe→3, reszta→0.',
+sol:"SELECT ID_Zamowienia, Status, Switch(Status='Zrealizowane',1,Status='Wysłane',2,Status='Nowe',3,True,0) AS StatusKod FROM Zamowienia;",
+hint:"Switch(Status='Zrealizowane',1, Status='Wysłane',2, ...)"},
+{c:'IIF',n:'IIF — premia warunkowa',lvl:3,
+d:'Nauczycielom z pensją poniżej 5200 daj premię 500 zł, inaczej 200 zł. Wyświetl imię, pensję, premię i łącznie.',
+sol:'SELECT Imie, Nazwisko, Pensja, IIF(Pensja<5200,500,200) AS Premia, Pensja + IIF(Pensja<5200,500,200) AS Lacznie FROM Nauczyciele;',
+hint:'IIF(Pensja<5200, 500, 200) AS Premia oraz Pensja + IIF(...) AS Lacznie'},
+{c:'IIF',n:'IIF z LIKE',lvl:3,
+d:'Wyświetl produkty z kolumną <code>Typ</code>: jeśli nazwa zawiera "USB" lub "Logitech" → "Akcesoria", inaczej → "Inne".',
+sol:"SELECT NazwaProduktu, IIF(NazwaProduktu LIKE '*USB*' OR NazwaProduktu LIKE '*Logitech*','Akcesoria','Inne') AS Typ FROM Produkty;",
+hint:"IIF(NazwaProduktu LIKE '*USB*' OR ... LIKE ..., 'Akcesoria', 'Inne')"},
+{c:'IIF',n:'Switch z wiekiem',lvl:3,
+d:'Wyświetl uczniów z kategoria wiekową na podstawie roku urodzenia: 2007+ → "Młodszy", 2006 → "Rocznik maturalny", wcześniej → "Starszy".',
+sol:"SELECT Imie, Nazwisko, Year(DataUrodzenia) AS Rok, Switch(Year(DataUrodzenia)>=2007,'Młodszy',Year(DataUrodzenia)=2006,'Rocznik maturalny',True,'Starszy') AS Kategoria FROM Uczniowie;",
+hint:"Switch(Year(DataUrodzenia)>=2007, 'Młodszy', ...)"},
+{c:'IIF',n:'IIF w WHERE (filtr warunkowy)',lvl:4,
+d:'Wyświetl zamówienia o wartości > 500 zł z kolumną <code>Priorytet</code>: > 2000 → "Wysoki", inaczej → "Normalny".',
+sol:"SELECT ID_Zamowienia, WartoscCalkowita, IIF(WartoscCalkowita>2000,'Wysoki','Normalny') AS Priorytet FROM Zamowienia WHERE WartoscCalkowita > 500;",
+hint:"WHERE WartoscCalkowita > 500, IIF w SELECT"},
+{c:'IIF',n:'Nz do sumowania',lvl:3,
+d:'Oblicz łączną wartość każdego zamówienia (SUM pozycji), zamieniając NULL na 0 przez Nz.',
+sol:'SELECT ID_Zamowienia, SUM(Nz(Ilosc * CenaJednostkowa, 0)) AS Wartosc FROM PozycjeZamowienia GROUP BY ID_Zamowienia;',
+hint:'SUM(Nz(Ilosc * CenaJednostkowa, 0)) GROUP BY ID_Zamowienia'},
+{c:'IIF',n:'Switch — skala ocen maturalnych',lvl:4,
+d:'Wyświetl wyniki egzaminów ze skalą: >=90→"Celujący", >=75→"B.dobry", >=60→"Dobry", >=50→"Dostateczny", reszta→"Niedostateczny".',
+sol:"SELECT ID_Ucznia, Wynik, Switch(Wynik>=90,'Celujący',Wynik>=75,'Bardzo dobry',Wynik>=60,'Dobry',Wynik>=50,'Dostateczny',True,'Niedostateczny') AS Ocena FROM Egzaminy;",
+hint:'Switch sprawdza warunki po kolei — pierwsze True wygrywa'},
+{c:'IIF',n:'Różnica dat przez IIF',lvl:4,
+d:'Wyświetl wypożyczenia z informacją czy przekroczono 30 dni (DataZwrotu - DataWyp > 30). Użyj IIF i porównaj daty tekstowo.',
+sol:"SELECT ID_Wyp, DataWyp, DataZwrotu, IIF(DataZwrotu IS NULL,'Niezwrócona', IIF(DataZwrotu > DateAdd('d',30,DataWyp),'Przekroczono','W terminie')) AS Status FROM Wypozyczenia;",
+hint:"DateAdd('d', 30, DataWyp) dodaje 30 dni. IIF zagnieżdżone dla NULL i przekroczenia.",
+acc:"⚠️ ACCESS: DateAdd('d', n, data) dodaje n dni do daty. 'd'=dni, 'm'=miesiące, 'yyyy'=lata."},
+
+// ── Funkcje Access rozszerzone (25) ─────────────────────────────────
+{c:'Funkcje',n:'DateAdd — dodawanie dni',lvl:3,
+d:'Wyświetl wszystkie wypożyczenia z datą oczekiwanego zwrotu = DataWyp + 30 dni.',
+sol:"SELECT ID_Wyp, DataWyp, DateAdd('d',30,DataWyp) AS OczekiwanyZwrot FROM Wypozyczenia;",
+hint:"DateAdd('d', 30, DataWyp)",
+acc:"⚠️ ACCESS: DateAdd(interwał, liczba, data). 'd'=dni, 'm'=miesiące, 'yyyy'=lata. Nie ma tego w MySQL!"},
+{c:'Funkcje',n:'DateDiff — różnica dat',lvl:3,
+d:'Wyświetl zwrócone wypożyczenia z liczbą dni trwania wypożyczenia.',
+sol:"SELECT ID_Wyp, DataWyp, DataZwrotu, DateDiff('d', DataWyp, DataZwrotu) AS LiczbaDni FROM Wypozyczenia WHERE DataZwrotu IS NOT NULL;",
+hint:"DateDiff('d', DataPoczatku, DataKonca)",
+acc:"⚠️ ACCESS: DateDiff(interwał, data1, data2). Zwraca różnicę w podanych jednostkach. MySQL: DATEDIFF()."},
+{c:'Funkcje',n:'DatePart — część daty',lvl:3,
+d:'Wyświetl numer tygodnia (week) dla każdego zamówienia.',
+sol:"SELECT ID_Zamowienia, DataZamowienia, DatePart('ww',DataZamowienia) AS NumerTygodnia FROM Zamowienia;",
+hint:"DatePart('ww', data) — numer tygodnia w roku",
+acc:"⚠️ ACCESS: DatePart(interwał, data). 'ww'=tydzień, 'q'=kwartał, 'd'=dzień, 'm'=miesiąc."},
+{c:'Funkcje',n:'CDate — konwersja na datę',lvl:3,
+d:'Wyświetl zamówienia, dla każdego oblicz Year(CDate(DataZamowienia)) jako rok.',
+sol:'SELECT ID_Zamowienia, DataZamowienia, Year(CDate(DataZamowienia)) AS Rok FROM Zamowienia;',
+hint:'CDate(tekst) zamienia string na datę. Year() pobiera rok.',
+acc:'⚠️ ACCESS: CDate() konwertuje string lub liczbę na typ Date. MySQL: STR_TO_DATE().'},
+{c:'Funkcje',n:'CInt i CDbl — konwersja liczb',lvl:2,
+d:'Wyświetl produkty z ceną skonwertowaną do liczby całkowitej (CInt) i zaokrągloną.',
+sol:'SELECT NazwaProduktu, Cena, CInt(Cena) AS CenaInt FROM Produkty;',
+hint:'CInt(liczba) konwertuje na Integer (zaokrągla)',
+acc:'⚠️ ACCESS: CInt(), CDbl(), CStr(), CBool() to funkcje konwersji typów. MySQL: CAST().'},
+{c:'Funkcje',n:'CStr — konwersja na tekst',lvl:2,
+d:'Wyświetl uczniów z kolumną <code>Info</code> = ID_Ucznia (jako tekst) + ". " + Imie + " " + Nazwisko.',
+sol:"SELECT CStr(ID_Ucznia) & '. ' & Imie & ' ' & Nazwisko AS Info FROM Uczniowie;",
+hint:'CStr(ID) konwertuje liczbę na string. Potem & łączy.',
+acc:'⚠️ ACCESS: CStr() zamienia liczbę na string. Potrzebne bo & z liczbą może dać błąd.'},
+{c:'Funkcje',n:'IsNull — sprawdzenie NULL',lvl:2,
+d:'Wyświetl wypożyczenia z kolumną <code>Status</code>: IsNull(DataZwrotu) → "Aktywne", inaczej → "Zakończone".',
+sol:"SELECT ID_Wyp, IIF(IsNull(DataZwrotu),'Aktywne','Zakończone') AS Status FROM Wypozyczenia;",
+hint:'IsNull(pole) zwraca True/False — alternatywa dla IS NULL w wyrażeniach',
+acc:'⚠️ ACCESS: IsNull(wyrażenie) → True/False. Można używać w IIF() i Switch().'},
+{c:'Funkcje',n:'IsNumeric — walidacja',lvl:3,
+d:'Wyświetl produkty których ID to liczba (zawsze true tutaj, ale pokaż użycie IsNumeric).',
+sol:'SELECT NazwaProduktu, ID_Produktu, IsNumeric(ID_Produktu) AS CzyLiczba FROM Produkty;',
+hint:'IsNumeric(wartość) zwraca True (−1) lub False (0)',
+acc:'⚠️ ACCESS: IsNumeric() → True/False jako -1/0. Przydatne do walidacji danych importowanych.'},
+{c:'Funkcje',n:'Format daty dd/mm/yyyy',lvl:2,
+d:'Wyświetl egzaminy z datą w polskim formacie DD/MM/RRRR.',
+sol:"SELECT ID_Ucznia, Przedmiot, Format(DataEgzaminu,'dd/mm/yyyy') AS DataPL FROM Egzaminy;",
+hint:"Format(DataEgzaminu,'dd/mm/yyyy')"},
+{c:'Funkcje',n:'Format liczby z symbolem',lvl:2,
+d:'Wyświetl pensje nauczycieli w formacie z symbolem PLN: "5 800,00 PLN".',
+sol:"SELECT Imie, Nazwisko, Format(Pensja,'# ##0.00') & ' PLN' AS PensjaFormatowana FROM Nauczyciele;",
+hint:"Format(Pensja,'# ##0.00') & ' PLN'",
+acc:"⚠️ ACCESS: Format() obsługuje custom wzorce: '# ##0.00' = separator tysięcy i 2 miejsca."},
+{c:'Funkcje',n:'Mid do ekstrakcji',lvl:2,
+d:'Wyświetl uczniów z inicjałem imienia (pierwsza litera) + "." + pełne nazwisko.',
+sol:"SELECT Mid(Imie,1,1) & '.' & Nazwisko AS Skrot FROM Uczniowie;",
+hint:"Mid(Imie,1,1) & '.' & Nazwisko"},
+{c:'Funkcje',n:'Replace — zamiana tekstu',lvl:3,
+d:'Wyświetl emaile klientów z domeną zamienioną z "mail.pl" na "virallo.edu".',
+sol:"SELECT Imie, Email, Replace(Email,'mail.pl','virallo.edu') AS NowyEmail FROM Klienci;",
+hint:"Replace(tekst, stare, nowe)",
+acc:"⚠️ ACCESS: Replace(tekst, stare, nowe) — identyczne z MySQL REPLACE()."},
+{c:'Funkcje',n:'Weekday — dzień tygodnia',lvl:3,
+d:'Wyświetl zamówienia z dniem tygodnia (1=Niedziela, 2=Poniedziałek,...) jako kolumna <code>DzienTygodnia</code>.',
+sol:'SELECT ID_Zamowienia, DataZamowienia, Weekday(DataZamowienia) AS DzienTygodnia FROM Zamowienia;',
+hint:'Weekday(data) — 1=Niedziela, 2=Poniedziałek, ... 7=Sobota',
+acc:'⚠️ ACCESS: Weekday() zwraca 1-7 gdzie 1=Niedziela. MySQL: DAYOFWEEK() — identyczne.'},
+{c:'Funkcje',n:'Day() — dzień miesiąca',lvl:2,
+d:'Wyświetl egzaminy przeprowadzone w dniach 10-20 miesiąca.',
+sol:'SELECT * FROM Egzaminy WHERE Day(DataEgzaminu) BETWEEN 10 AND 20;',
+hint:'WHERE Day(DataEgzaminu) BETWEEN 10 AND 20'},
+{c:'Funkcje',n:'String i liczba razem',lvl:3,
+d:'Wyświetl uczniów w formacie: "Nr 1: Jan Kowalski (3A)".',
+sol:"SELECT 'Nr ' & CStr(ID_Ucznia) & ': ' & Imie & ' ' & Nazwisko & ' (' & Klasa & ')' AS Opis FROM Uczniowie;",
+hint:"'Nr ' & CStr(ID) & ': ' & Imie & ' ' & Nazwisko & ' (' & Klasa & ')'"},
+{c:'Funkcje',n:'Abs i Round razem',lvl:2,
+d:'Wyświetl różnicę między ceną produktu a średnią ceną (jako wartość bezwzględną), zaokrągloną do 1 miejsca.',
+sol:'SELECT NazwaProduktu, Cena, Round(Abs(Cena - (SELECT AVG(Cena) FROM Produkty)), 1) AS OdchylenieOdSredniej FROM Produkty;',
+hint:'Abs(Cena - (SELECT AVG(Cena) FROM Produkty))'},
+{c:'Funkcje',n:'StrConv — konwersja wielkości',lvl:3,
+d:'Wyświetl nazwiska nauczycieli z pierwszą wielką literą (ProperCase).',
+sol:'SELECT StrConv(Nazwisko, 3) AS NazwiskoWlasciwe FROM Nauczyciele;',
+hint:'StrConv(tekst, 3) = vbProperCase = pierwsza wielka litera każdego słowa',
+acc:'⚠️ ACCESS: StrConv(tekst, 1)=WIELKIE, StrConv(tekst,2)=małe, StrConv(tekst,3)=Właściwe. MySQL: UPPER(), LOWER().'},
+{c:'Funkcje',n:'Space() — wypełnienie spacjami',lvl:2,
+d:'Wyświetl imiona uczniów wyrównane do 15 znaków (dodaj spacje przez &Space()).',
+sol:"SELECT Imie & Space(15 - Len(Imie)) & Nazwisko AS WyrownanyWynik FROM Uczniowie;",
+hint:'Space(n) tworzy n spacji. Len(Imie) to długość.',
+acc:'⚠️ ACCESS: Space(n) tworzy ciąg n spacji. MySQL: RPAD() lub SPACE().'},
+{c:'Funkcje',n:'Val() — konwersja string na liczbę',lvl:2,
+d:'Wyświetl pierwszą cyfrę z ID_Ucznia jako liczbę przy pomocy Val(Left(CStr(ID_Ucznia),1)).',
+sol:'SELECT ID_Ucznia, Val(Left(CStr(ID_Ucznia),1)) AS PierwszaCyfra FROM Uczniowie;',
+hint:'CStr() → Left() → Val() — potokowe przetwarzanie',
+acc:'⚠️ ACCESS: Val(tekst) konwertuje tekst zaczynający się od cyfr na liczbę. "123abc"→123.'},
+{c:'Funkcje',n:'InStr z pozycją startową',lvl:3,
+d:'Wyświetl autorów których nazwisko zaczyna się po spacji (imię + nazwisko) — znajdź pozycję spacji.',
+sol:"SELECT Autor, InStr(Autor,' ') AS PozycjaSpacji, Mid(Autor, InStr(Autor,' ')+1) AS SamoNazwisko FROM Ksiazki;",
+hint:"InStr(Autor,' ') + Mid(Autor, pozycja+1)"},
+{c:'Funkcje',n:'Format z warunkiem',lvl:3,
+d:'Wyświetl ceny produktów: w formacie "ZŁ: 3,50" dla tanich (<100) lub "PLN: 3499,00" dla drogich.',
+sol:"SELECT NazwaProduktu, IIF(Cena<100, 'ZŁ: ' & Format(Cena,'0.00'), 'PLN: ' & Format(Cena,'0.00')) AS CenaFormatowana FROM Produkty;",
+hint:"IIF(Cena<100, 'ZŁ: ', 'PLN: ') & Format(Cena,'0.00')"},
+{c:'Funkcje',n:'Now minus dni',lvl:3,
+d:'Wyświetl wypożyczenia które trwają już ponad 30 dni (DataZwrotu NULL i DataWyp < Date()-30).',
+sol:"SELECT * FROM Wypozyczenia WHERE DataZwrotu IS NULL AND DataWyp < Date()-30;",
+hint:'Date()-30 to data sprzed 30 dni. Porównaj DataWyp.',
+acc:'⚠️ ACCESS: Date()-30 odejmuje 30 dni od dzisiejszej daty. MySQL: DATE_SUB(NOW(), INTERVAL 30 DAY).'},
+{c:'Funkcje',n:'LTrim i RTrim',lvl:2,
+d:'Wyświetl emaile klientów oczyszczone ze spacji z lewej (LTrim) i prawej (RTrim) strony.',
+sol:'SELECT ID_Klienta, LTrim(RTrim(Email)) AS EmailOczyszczony FROM Klienci;',
+hint:'LTrim(RTrim(tekst)) = Trim(tekst)',
+acc:'⚠️ ACCESS: LTrim() usuwa spacje z lewej, RTrim() z prawej. Trim() robi oba. MySQL: TRIM().'},
+{c:'Funkcje',n:'Asc i Chr — kody ASCII',lvl:3,
+d:'Wyświetl kod ASCII pierwszej litery każdego nazwiska ucznia.',
+sol:'SELECT Nazwisko, Asc(Left(Nazwisko,1)) AS KodASCII FROM Uczniowie;',
+hint:'Asc(znak) zwraca kod ASCII. Left(Nazwisko,1) = pierwsza litera.',
+acc:'⚠️ ACCESS: Asc(tekst) → kod ASCII. Chr(kod) → znak. MySQL: ORD() i CHAR().'},
+
+// ── Kwerendy/JOIN rozszerzone (25) ──────────────────────────────────
+{c:'Kwerendy',n:'SELF JOIN (ta sama tabela)',lvl:4,
+d:'Wyświetl pary uczniów z tej samej klasy (A.ID < B.ID aby unikać duplikatów).',
+sol:'SELECT A.Imie & " " & A.Nazwisko AS Uczen1, B.Imie & " " & B.Nazwisko AS Uczen2, A.Klasa FROM Uczniowie A INNER JOIN Uczniowie B ON A.Klasa = B.Klasa AND A.ID_Ucznia < B.ID_Ucznia;',
+hint:'FROM Uczniowie A INNER JOIN Uczniowie B ON A.Klasa=B.Klasa AND A.ID<B.ID',
+acc:'⚠️ ACCESS: self-join = tabela dołączona do siebie z różnymi aliasami. W Access wymaga nawiasów przy 3+ tabelach.'},
+{c:'Kwerendy',n:'JOIN z agregacją i HAVING',lvl:3,
+d:'Wyświetl klasy w których średnia ocen ze wszystkich przedmiotów przekracza 4.',
+sol:'SELECT U.Klasa, AVG(O.Ocena) AS Srednia FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia = O.ID_Ucznia GROUP BY U.Klasa HAVING AVG(O.Ocena) > 4 ORDER BY Srednia DESC;',
+hint:'GROUP BY U.Klasa, HAVING AVG(O.Ocena) > 4'},
+{c:'Kwerendy',n:'LEFT JOIN — brak ocen',lvl:3,
+d:'Wyświetl uczniów którzy nie mają żadnej oceny z Informatyki.',
+sol:"SELECT U.Imie, U.Nazwisko FROM Uczniowie U LEFT JOIN Oceny O ON U.ID_Ucznia = O.ID_Ucznia AND O.Przedmiot = 'Informatyka' WHERE O.ID_Oceny IS NULL;",
+hint:"LEFT JOIN z warunkiem AND O.Przedmiot='Informatyka' + WHERE IS NULL"},
+{c:'Kwerendy',n:'Podzapytanie w SELECT',lvl:4,
+d:'Wyświetl każdego ucznia z jego średnią ocen jako podzapytanie w SELECT.',
+sol:'SELECT U.Imie, U.Nazwisko, (SELECT AVG(O.Ocena) FROM Oceny O WHERE O.ID_Ucznia = U.ID_Ucznia) AS SredniaOcen FROM Uczniowie U;',
+hint:'(SELECT AVG(Ocena) FROM Oceny WHERE ID_Ucznia = U.ID_Ucznia) w SELECT'},
+{c:'Kwerendy',n:'UNION ALL z duplikatami',lvl:4,
+d:'Wyświetl listę wszystkich osób (uczniów i nauczycieli) z oznaczeniem roli, łącznie z duplikatami imion.',
+sol:"SELECT Imie, Nazwisko, 'Uczen' AS Rola FROM Uczniowie UNION ALL SELECT Imie, Nazwisko, 'Nauczyciel' AS Rola FROM Nauczyciele;",
+hint:"UNION ALL zachowuje duplikaty. Dodaj kolumnę 'Uczen'/'Nauczyciel'",
+acc:'⚠️ ACCESS: UNION ALL zachowuje duplikaty, UNION je usuwa. Kolumny muszą się zgadzać typem.'},
+{c:'Kwerendy',n:'COUNT z DISTINCT w GROUP',lvl:3,
+d:'Policz ile różnych przedmiotów jest w ocenach każdego ucznia.',
+sol:'SELECT ID_Ucznia, COUNT(DISTINCT Przedmiot) AS LiczbaPrzedmiotow FROM Oceny GROUP BY ID_Ucznia;',
+hint:'COUNT(DISTINCT Przedmiot) GROUP BY ID_Ucznia'},
+{c:'Kwerendy',n:'MAX i MIN w jednym zapytaniu',lvl:2,
+d:'Wyświetl dla każdego ucznia najwyższą i najniższą ocenę.',
+sol:'SELECT ID_Ucznia, MAX(Ocena) AS Najwyzsza, MIN(Ocena) AS Najnizsza FROM Oceny GROUP BY ID_Ucznia;',
+hint:'SELECT ID_Ucznia, MAX(Ocena), MIN(Ocena) GROUP BY ID_Ucznia'},
+{c:'Kwerendy',n:'JOIN 4 tabele',lvl:4,
+d:'Wyświetl imię ucznia, tytuł książki, datę wypożyczenia i cenę książki. Połącz 3 tabele.',
+sol:'SELECT U.Imie, U.Nazwisko, K.Tytul, K.Cena, W.DataWyp FROM (Uczniowie U INNER JOIN Wypozyczenia W ON U.ID_Ucznia = W.ID_Ucznia) INNER JOIN Ksiazki K ON W.ID_Ksiazki = K.ID_Ksiazki ORDER BY W.DataWyp DESC;',
+hint:'(Uczniowie JOIN Wypozyczenia) JOIN Ksiazki — nawiasy obowiązkowe w Access!',
+acc:'⚠️ ACCESS: przy 3+ tabelach MUSISZ użyć nawiasów: (T1 JOIN T2 ON ...) JOIN T3 ON ...'},
+{c:'Kwerendy',n:'SUM warunkowy z JOIN',lvl:4,
+d:'Wyświetl każdego klienta z łączną wartością jego zamówień.',
+sol:'SELECT K.Imie, K.Nazwisko, SUM(Z.WartoscCalkowita) AS Lacznie FROM Klienci K INNER JOIN Zamowienia Z ON K.ID_Klienta = Z.ID_Klienta GROUP BY K.Imie, K.Nazwisko ORDER BY Lacznie DESC;',
+hint:'JOIN Klienci + Zamowienia, GROUP BY K.Imie K.Nazwisko, SUM(WartoscCalkowita)'},
+{c:'Kwerendy',n:'Podzapytanie NOT EXISTS',lvl:4,
+d:'Wyświetl uczniów którzy nie zdali żadnego egzaminu (CzyZdal = 0 dla wszystkich).',
+sol:'SELECT * FROM Uczniowie U WHERE NOT EXISTS (SELECT 1 FROM Egzaminy E WHERE E.ID_Ucznia = U.ID_Ucznia AND E.CzyZdal = 1);',
+hint:'WHERE NOT EXISTS (SELECT 1 FROM Egzaminy WHERE ID = U.ID AND CzyZdal = 1)'},
+{c:'Kwerendy',n:'GROUP BY z COUNT DISTINCT',lvl:3,
+d:'Dla każdej klasy policz ilu różnych uczniów jest w tabeli Oceny.',
+sol:'SELECT U.Klasa, COUNT(DISTINCT O.ID_Ucznia) AS Uczniow FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia = O.ID_Ucznia GROUP BY U.Klasa;',
+hint:'COUNT(DISTINCT O.ID_Ucznia) GROUP BY U.Klasa'},
+{c:'Kwerendy',n:'Kwerenda aktualizująca z JOIN',lvl:4,
+d:'Ustaw Status=&apos;Archiwalny&apos; dla wszystkich zamówień klientów z Warszawy.',
+sol:"UPDATE Zamowienia INNER JOIN Klienci ON Zamowienia.ID_Klienta = Klienci.ID_Klienta SET Zamowienia.Status = 'Archiwalny' WHERE Klienci.Miasto = 'Warszawa';",
+hint:'UPDATE Zamowienia INNER JOIN Klienci ON ... SET ... WHERE',
+acc:'⚠️ ACCESS: UPDATE z JOIN — składnia specyficzna dla Access. MySQL: UPDATE ... JOIN ... SET ...'},
+{c:'Kwerendy',n:'DELETE z JOIN',lvl:4,
+d:'Usuń z tabeli Egzaminy wszystkie rekordy uczniów klasy 2B.',
+sol:"DELETE Egzaminy.* FROM Egzaminy INNER JOIN Uczniowie ON Egzaminy.ID_Ucznia = Uczniowie.ID_Ucznia WHERE Uczniowie.Klasa = '2B';",
+hint:'DELETE tabela.* FROM tabela INNER JOIN ... WHERE',
+acc:'⚠️ ACCESS: DELETE z JOIN wymaga DELETE Tabela.* FROM Tabela JOIN ... — specyficzna składnia Access!'},
+{c:'Kwerendy',n:'Kwerenda krzyżowa (TRANSFORM)',lvl:4,
+d:'Użyj TRANSFORM/PIVOT żeby pokazać liczbę ocen per uczeń per przedmiot (kolumny = przedmioty).',
+sol:"TRANSFORM COUNT(Ocena) SELECT ID_Ucznia FROM Oceny GROUP BY ID_Ucznia PIVOT Przedmiot;",
+hint:'TRANSFORM COUNT(pole) SELECT ... GROUP BY ... PIVOT kolumna',
+acc:'⚠️ ACCESS: TRANSFORM/PIVOT to kwerenda krzyżowa — unikalna dla Access! Tworzy macierz. MySQL nie ma tego odpowiednika.'},
+{c:'Kwerendy',n:'Podzapytanie w HAVING',lvl:4,
+d:'Wyświetl nauczycieli którzy wystawili więcej ocen niż przeciętny nauczyciel.',
+sol:'SELECT ID_Nauczyciela, COUNT(*) AS Ocen FROM Oceny GROUP BY ID_Nauczyciela HAVING COUNT(*) > (SELECT AVG(cnt) FROM (SELECT COUNT(*) AS cnt FROM Oceny GROUP BY ID_Nauczyciela) AS sub);',
+hint:'HAVING COUNT(*) > (SELECT AVG(cnt) FROM (SELECT COUNT(*) ... GROUP BY ...) ...)'},
+{c:'Kwerendy',n:'RIGHT JOIN',lvl:3,
+d:'Wyświetl wszystkie książki — nawet te które nie były nigdy wypożyczone (RIGHT JOIN Ksiazki).',
+sol:'SELECT K.Tytul, W.ID_Wyp, W.DataWyp FROM Wypozyczenia W RIGHT JOIN Ksiazki K ON W.ID_Ksiazki = K.ID_Ksiazki;',
+hint:'RIGHT JOIN — wszystkie z prawej tabeli + dopasowane z lewej',
+acc:'⚠️ ACCESS: RIGHT JOIN = RIGHT OUTER JOIN. Wszystkie wiersze z prawej tabeli, NULL po lewej gdzie brak dopasowania.'},
+{c:'Kwerendy',n:'Kwerenda z parametrem',lvl:4,
+d:'Napisz kwerendę która pyta o klasę (Access dialog parametrowy) i wyświetla uczniów tej klasy.',
+sol:'SELECT * FROM Uczniowie WHERE Klasa = [Podaj klasę:];',
+hint:'WHERE Klasa = [Podaj klasę:] — tekst w [] to parametr wyświetlany jako dialog w Access',
+acc:'⚠️ ACCESS: [Tekst w nawiasach kwadratowych] to parametr — Access wyświetla okno dialogowe z pytaniem. MySQL nie ma tej funkcji!'},
+{c:'Kwerendy',n:'GROUP BY z SUM i COUNT',lvl:3,
+d:'Dla każdego zamówienia wyświetl liczbę pozycji i łączną wartość.',
+sol:'SELECT ID_Zamowienia, COUNT(*) AS LiczbaPozycji, SUM(Ilosc * CenaJednostkowa) AS Wartosc FROM PozycjeZamowienia GROUP BY ID_Zamowienia;',
+hint:'GROUP BY ID_Zamowienia, COUNT(*), SUM(Ilosc*CenaJednostkowa)'},
+{c:'Kwerendy',n:'Podzapytanie skorelowane w SELECT',lvl:4,
+d:'Dla każdego nauczyciela wyświetl jego najwyższą wystawioną ocenę.',
+sol:'SELECT N.Imie, N.Nazwisko, (SELECT MAX(O.Ocena) FROM Oceny O WHERE O.ID_Nauczyciela = N.ID_Nauczyciela) AS NajlepszeOcena FROM Nauczyciele N;',
+hint:'(SELECT MAX(Ocena) FROM Oceny WHERE ID_Nauczyciela = N.ID_Nauczyciela) w SELECT'},
+{c:'Kwerendy',n:'UNION z ORDER BY',lvl:4,
+d:'Wyświetl 5 najtańszych produktów i 5 najdroższych w jednym zestawie. Oznacz typ: "Tani" / "Drogi".',
+sol:"SELECT TOP 5 NazwaProduktu, Cena, 'Tani' AS Typ FROM Produkty ORDER BY Cena ASC UNION SELECT TOP 5 NazwaProduktu, Cena, 'Drogi' AS Typ FROM Produkty ORDER BY Cena DESC;",
+hint:"TOP 5 ... ORDER BY Cena ASC UNION TOP 5 ... ORDER BY Cena DESC"},
+{c:'Kwerendy',n:'Kwerenda usuwająca duplikaty',lvl:4,
+d:'Wyświetl unikalne pary ID_Ucznia + Przedmiot z tabeli Oceny (każda para tylko raz).',
+sol:'SELECT DISTINCT ID_Ucznia, Przedmiot FROM Oceny ORDER BY ID_Ucznia;',
+hint:'SELECT DISTINCT ID_Ucznia, Przedmiot FROM Oceny'},
+{c:'Kwerendy',n:'AVG + HAVING z JOIN',lvl:3,
+d:'Wyświetl gatunki książek których średnia cena przekracza 30 zł.',
+sol:'SELECT Gatunek, AVG(Cena) AS SredniaCena FROM Ksiazki GROUP BY Gatunek HAVING AVG(Cena) > 30 ORDER BY SredniaCena DESC;',
+hint:'GROUP BY Gatunek HAVING AVG(Cena) > 30'},
+
+// ── DDL rozszerzone (20) ─────────────────────────────────────────────
+{c:'DDL',n:'CREATE TABLE z DEFAULT',lvl:3,
+d:'Utwórz tabelę <code>Absencje</code>: ID_Absencji INT PK, ID_Ucznia INT, DataAbsencji TEXT, Usprawiedliwiona BOOLEAN DEFAULT FALSE, Powod TEXT.',
+sol:'CREATE TABLE Absencje (ID_Absencji INT PRIMARY KEY, ID_Ucznia INT, DataAbsencji TEXT, Usprawiedliwiona INT DEFAULT 0, Powod TEXT);',
+hint:'DEFAULT wartość po typie. BOOLEAN w Access/SQLite = INT (0/1).',
+acc:'⚠️ ACCESS: DEFAULT w CREATE TABLE — pole ma wartość domyślną gdy nie podano. BOOLEAN = YES/NO = INT 0/-1.'},
+{c:'DDL',n:'CREATE TABLE z NOT NULL',lvl:2,
+d:'Utwórz tabelę <code>Oceny_koncowe</code>: ID INT PK, ID_Ucznia INT NOT NULL, Przedmiot TEXT NOT NULL, Ocena INT NOT NULL, DataWystawienia TEXT.',
+sol:'CREATE TABLE Oceny_koncowe (ID INT PRIMARY KEY, ID_Ucznia INT NOT NULL, Przedmiot TEXT NOT NULL, Ocena INT NOT NULL, DataWystawienia TEXT);',
+hint:'NOT NULL po typie kolumny'},
+{c:'DDL',n:'ALTER TABLE — zmiana typu',lvl:3,
+d:'Zmień typ kolumny Pensja w tabeli Nauczyciele na REAL (w SQLite — MODIFY).',
+sol:'/* W Access: ALTER TABLE Nauczyciele MODIFY Pensja REAL; */ SELECT * FROM Nauczyciele;',
+hint:'ALTER TABLE NazwaTabeli ALTER COLUMN NazwaKolumny NowTyp (w Access)',
+acc:'⚠️ ACCESS: ALTER TABLE ... ALTER COLUMN ... — zmiana typu. SQLite ma ograniczone wsparcie ALTER.'},
+{c:'DDL',n:'INSERT z podzapytaniem',lvl:4,
+d:'Wstaw do tabeli Oceny nową ocenę 5 z Informatyki dla wszystkich uczniów klasy 3A (każdy dostaje INSERT).',
+sol:"INSERT INTO Oceny (ID_Oceny, ID_Ucznia, ID_Nauczyciela, Przedmiot, Ocena, DataOceny) SELECT 100 + ID_Ucznia, ID_Ucznia, 2, 'Informatyka', 5, '2024-06-01' FROM Uczniowie WHERE Klasa = '3A';",
+hint:"INSERT INTO ... SELECT ... FROM Uczniowie WHERE Klasa='3A'",
+acc:"⚠️ ACCESS: INSERT INTO ... SELECT ... — kwerenda dołączająca. Wstawia wiele rekordów naraz."},
+{c:'DDL',n:'UPDATE wszystkich rekordów',lvl:2,
+d:'Powiększ wszystkie ceny produktów o 10% (wszystkie rekordy).',
+sol:'UPDATE Produkty SET Cena = Round(Cena * 1.10, 2);',
+hint:'UPDATE bez WHERE zmienia WSZYSTKIE rekordy. Round dla 2 miejsc.'},
+{c:'DDL',n:'UPDATE z warunkiem tekstowym',lvl:2,
+d:'Zmień kategorię wszystkich produktów "Artykuły szkolne" na "Szkolne".',
+sol:"UPDATE Produkty SET Kategoria = 'Szkolne' WHERE Kategoria = 'Artykuły szkolne';",
+hint:"SET Kategoria = 'Szkolne' WHERE Kategoria = 'Artykuły szkolne'"},
+{c:'DDL',n:'UPDATE z podzapytaniem',lvl:4,
+d:'Ustaw pole CzyZdal=1 dla uczniów którzy mają Wynik >= 50 (UPDATE gdzie pole jest już w tabeli).',
+sol:'UPDATE Egzaminy SET CzyZdal = 1 WHERE Wynik >= 50;',
+hint:'UPDATE Egzaminy SET CzyZdal = 1 WHERE Wynik >= 50'},
+{c:'DDL',n:'DELETE z warunkiem daty',lvl:3,
+d:'Usuń wszystkie zamówienia ze statusem Nowe złożone przed 2024-03-01.',
+sol:"DELETE FROM Zamowienia WHERE Status = 'Nowe' AND DataZamowienia < '2024-03-01';",
+hint:"WHERE Status='Nowe' AND DataZamowienia < '2024-03-01'"},
+{c:'DDL',n:'INSERT — kopiuj z innej tabeli',lvl:4,
+d:'Skopiuj do tabeli Egzaminy wszystkich uczniów którzy jeszcze nie mają wpisu (ID 9-12 przykładowo). Wstaw egzamin z Polskiego, wynik 0.',
+sol:"INSERT INTO Egzaminy (ID_Egzaminu, ID_Ucznia, Przedmiot, Wynik, DataEgzaminu, CzyZdal) SELECT 50+ID_Ucznia, ID_Ucznia, 'Polski', 0, '2024-06-15', 0 FROM Uczniowie WHERE ID_Ucznia NOT IN (SELECT ID_Ucznia FROM Egzaminy WHERE Przedmiot='Polski');",
+hint:"INSERT INTO ... SELECT ... WHERE ID NOT IN (SELECT ID FROM Egzaminy WHERE ...)"},
+{c:'DDL',n:'CREATE TABLE z FK inline',lvl:3,
+d:'Utwórz tabelę <code>Plany</code>: ID_Planu INT PK, ID_Nauczyciela INT REFERENCES Nauczyciele(ID_Nauczyciela), Dzien TEXT, Godzina TEXT, Sala TEXT.',
+sol:'CREATE TABLE Plany (ID_Planu INT PRIMARY KEY, ID_Nauczyciela INT REFERENCES Nauczyciele(ID_Nauczyciela), Dzien TEXT, Godzina TEXT, Sala TEXT);',
+hint:'REFERENCES NazwaTabeli(KolumnaKlucza) — klucz obcy inline'},
+{c:'DDL',n:'ALTER TABLE ADD kilka kolumn',lvl:3,
+d:'Do tabeli Uczniowie dodaj kolumny: Telefon TEXT i NumerPESEL TEXT.',
+sol:'ALTER TABLE Uczniowie ADD COLUMN Telefon TEXT; ALTER TABLE Uczniowie ADD COLUMN NumerPESEL TEXT;',
+hint:'Dwa osobne ALTER TABLE ADD COLUMN — każda kolumna osobno w Access',
+acc:'⚠️ ACCESS: każdą kolumnę dodaje się osobnym poleceniem ALTER TABLE ADD COLUMN. MySQL pozwala na dodanie wielu naraz.'},
+{c:'DDL',n:'UPDATE z funkcją',lvl:3,
+d:'Zaktualizuj DataZamowienia dodając 7 dni (symulacja przesunięcia terminów) dla zamówień ze statusem Nowe.',
+sol:"UPDATE Zamowienia SET DataZamowienia = DateAdd('d',7,DataZamowienia) WHERE Status = 'Nowe';",
+hint:"DateAdd('d', 7, DataZamowienia) w SET",
+acc:"⚠️ ACCESS: DateAdd w UPDATE — można używać funkcji Access w klauzuli SET."},
+{c:'DDL',n:'DELETE kaskadowy (symulacja)',lvl:4,
+d:'Usuń wypożyczenia ucznia o ID=3, a potem usuń jego oceny.',
+sol:'DELETE FROM Wypozyczenia WHERE ID_Ucznia = 3; DELETE FROM Oceny WHERE ID_Ucznia = 3;',
+hint:'Dwa osobne DELETE — najpierw tabele zależne, potem główna'},
+{c:'DDL',n:'INSERT z datą bieżącą',lvl:3,
+d:'Wstaw nowe zamówienie dla klienta ID=1: status Nowe, wartość 0, data = dzisiaj (Date()).',
+sol:"INSERT INTO Zamowienia (ID_Zamowienia, ID_Klienta, DataZamowienia, WartoscCalkowita, Status) VALUES (11, 1, Date(), 0, 'Nowe');",
+hint:"Date() jako wartość dla pola daty",
+acc:'⚠️ ACCESS: Date() i Now() można używać w INSERT VALUES jako aktualną datę/czas.'},
+{c:'DDL',n:'UPDATE warunkowy z IIF',lvl:4,
+d:'Ustaw w tabeli Egzaminy pole CzyZdal automatycznie na podstawie Wyniku (>=50=1, <50=0) dla wszystkich rekordów.',
+sol:'UPDATE Egzaminy SET CzyZdal = IIF(Wynik >= 50, 1, 0);',
+hint:'UPDATE SET CzyZdal = IIF(Wynik >= 50, 1, 0) — bez WHERE = wszystkie rekordy',
+acc:'⚠️ ACCESS: IIF() można używać w SET przy UPDATE — bardzo przydatne przy masowych aktualizacjach.'},
+
+// ── Agregaty rozszerzone (15) ────────────────────────────────────────
+{c:'Agregaty',n:'COUNT z GROUP BY i ORDER',lvl:2,
+d:'Policz liczbę uczniów w każdej klasie, posortuj malejąco.',
+sol:'SELECT Klasa, COUNT(*) AS LiczbaUczniow FROM Uczniowie GROUP BY Klasa ORDER BY LiczbaUczniow DESC;',
+hint:'GROUP BY Klasa, COUNT(*), ORDER BY DESC'},
+{c:'Agregaty',n:'SUM z GROUP BY i JOIN',lvl:3,
+d:'Oblicz łączną wartość zamówień dla każdego klienta (JOIN Klienci + Zamowienia).',
+sol:'SELECT K.Imie, K.Nazwisko, SUM(Z.WartoscCalkowita) AS SumaZamowien FROM Klienci K INNER JOIN Zamowienia Z ON K.ID_Klienta = Z.ID_Klienta GROUP BY K.Imie, K.Nazwisko;',
+hint:'JOIN + GROUP BY K.Imie, K.Nazwisko + SUM(WartoscCalkowita)'},
+{c:'Agregaty',n:'MIN/MAX z GROUP BY',lvl:2,
+d:'Wyświetl najniższą i najwyższą cenę w każdej kategorii produktów.',
+sol:'SELECT Kategoria, MIN(Cena) AS Najtanszy, MAX(Cena) AS Najdrozszy FROM Produkty GROUP BY Kategoria;',
+hint:'GROUP BY Kategoria, MIN(Cena), MAX(Cena)'},
+{c:'Agregaty',n:'HAVING z AVG i warunek',lvl:3,
+d:'Wyświetl klasy gdzie średnia ocen wszystkich uczniów z Matematyki jest powyżej 3.5.',
+sol:"SELECT U.Klasa, AVG(O.Ocena) AS Srednia FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia = O.ID_Ucznia WHERE O.Przedmiot = 'Matematyka' GROUP BY U.Klasa HAVING AVG(O.Ocena) > 3.5;",
+hint:"WHERE Przedmiot='Matematyka' + GROUP BY + HAVING AVG > 3.5"},
+{c:'Agregaty',n:'COUNT warunkowy IIF',lvl:4,
+d:'Dla każdego przedmiotu policz ile ocen 5 i 6 wystawiono łącznie.',
+sol:"SELECT Przedmiot, SUM(IIF(Ocena>=5,1,0)) AS OcenyCelujace, COUNT(*) AS Wszystkie FROM Oceny GROUP BY Przedmiot;",
+hint:'SUM(IIF(Ocena>=5,1,0)) AS OcenyCelujace GROUP BY Przedmiot'},
+{c:'Agregaty',n:'AVG z HAVING i TOP',lvl:4,
+d:'Wyświetl 3 uczniów z najwyższą średnią ocen (używając TOP w GROUP BY).',
+sol:'SELECT TOP 3 ID_Ucznia, AVG(Ocena) AS Srednia FROM Oceny GROUP BY ID_Ucznia ORDER BY Srednia DESC;',
+hint:'TOP 3 + GROUP BY ID_Ucznia + ORDER BY Srednia DESC'},
+{c:'Agregaty',n:'SUM z COUNT w jednym',lvl:3,
+d:'Dla każdej kategorii produktów wyświetl: liczbę produktów, sumę cen i średnią cenę.',
+sol:'SELECT Kategoria, COUNT(*) AS Liczba, SUM(Cena) AS SumaCen, Round(AVG(Cena),2) AS SredniaCena FROM Produkty GROUP BY Kategoria;',
+hint:'COUNT(*), SUM(Cena), AVG(Cena) GROUP BY Kategoria'},
+{c:'Agregaty',n:'HAVING z COUNT i JOIN',lvl:4,
+d:'Wyświetl autorów którzy mają więcej niż 1 książkę w bazie.',
+sol:'SELECT Autor, COUNT(*) AS LiczbaKsiazek FROM Ksiazki GROUP BY Autor HAVING COUNT(*) > 1;',
+hint:'GROUP BY Autor HAVING COUNT(*) > 1'},
+{c:'Agregaty',n:'SUM produkt — wartość magazynu',lvl:3,
+d:'Oblicz łączną wartość każdej kategorii w magazynie (Cena * Magazyn). Posortuj malejąco.',
+sol:'SELECT Kategoria, SUM(Cena * Magazyn) AS WartoscMagazynu FROM Produkty GROUP BY Kategoria ORDER BY WartoscMagazynu DESC;',
+hint:'SUM(Cena * Magazyn) GROUP BY Kategoria'},
+{c:'Agregaty',n:'Procent od sumy',lvl:4,
+d:'Wyświetl każdą kategorię z procentowym udziałem w łącznej liczbie produktów.',
+sol:'SELECT Kategoria, COUNT(*) AS Liczba, Round(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Produkty), 1) AS Procent FROM Produkty GROUP BY Kategoria;',
+hint:'COUNT(*)*100.0/(SELECT COUNT(*) FROM Produkty) AS Procent'},
+{c:'Agregaty',n:'Ranking z Row_Number (symulacja)',lvl:4,
+d:'Wyświetl uczniów z ich średnią ocen i numerem porządkowym (posortowane malejąco wg średniej). Użyj TOP + ORDER.',
+sol:'SELECT TOP 100 ID_Ucznia, AVG(Ocena) AS Srednia FROM Oceny GROUP BY ID_Ucznia ORDER BY Srednia DESC;',
+hint:'TOP 100 + GROUP BY + ORDER BY — Access nie ma ROW_NUMBER(), TOP to obejście',
+acc:'⚠️ ACCESS: brak ROW_NUMBER(). Ranking osiągamy przez TOP + ORDER BY. MySQL 8+: ROW_NUMBER() OVER (ORDER BY ...).'},
+{c:'Agregaty',n:'COUNT * vs COUNT(kolumna)',lvl:2,
+d:'Porównaj liczbę wszystkich wypożyczeń vs liczbę tych które mają DataZwrotu (nie NULL).',
+sol:'SELECT COUNT(*) AS Wszystkie, COUNT(DataZwrotu) AS ZwroconeBooksCount FROM Wypozyczenia;',
+hint:'COUNT(*) liczy wszystkie wiersze, COUNT(kolumna) pomija NULL',
+acc:'⚠️ ACCESS: COUNT(*) = wszystkie wiersze. COUNT(kolumna) = wiersze gdzie kolumna IS NOT NULL. Ważna różnica!'},
+{c:'Agregaty',n:'HAVING z NOT EXISTS',lvl:4,
+d:'Wyświetl klasy które mają uczniów ale żaden z nich nie zdał egzaminu.',
+sol:'SELECT U.Klasa, COUNT(*) AS Uczniow FROM Uczniowie U WHERE NOT EXISTS (SELECT 1 FROM Egzaminy E INNER JOIN Uczniowie U2 ON E.ID_Ucznia = U2.ID_Ucznia WHERE U2.Klasa = U.Klasa AND E.CzyZdal = 1) GROUP BY U.Klasa;',
+hint:'GROUP BY Klasa WHERE NOT EXISTS (... CzyZdal=1)'},
+{c:'Agregaty',n:'Suma skumulowana (Access)',lvl:4,
+d:'Wyświetl zamówienia posortowane chronologicznie z sumą skumulowaną wartości (podzapytanie).',
+sol:'SELECT Z1.ID_Zamowienia, Z1.DataZamowienia, Z1.WartoscCalkowita, (SELECT SUM(Z2.WartoscCalkowita) FROM Zamowienia Z2 WHERE Z2.DataZamowienia <= Z1.DataZamowienia) AS SumaSkumulowana FROM Zamowienia Z1 ORDER BY Z1.DataZamowienia;',
+hint:'Podzapytanie: SUM WHERE DataZamowienia <= Z1.DataZamowienia',
+acc:'⚠️ ACCESS: suma skumulowana przez podzapytanie skorelowane. MySQL 8+: SUM() OVER (ORDER BY ...).'},
+{c:'Agregaty',n:'Dominanta (moda) — najczęstsza ocena',lvl:4,
+d:'Znajdź najczęściej wystawianą ocenę z całej tabeli Oceny.',
+sol:'SELECT TOP 1 Ocena, COUNT(*) AS Czestotliwosc FROM Oceny GROUP BY Ocena ORDER BY Czestotliwosc DESC;',
+hint:'TOP 1 + GROUP BY Ocena + ORDER BY COUNT(*) DESC'},
+
+
+// ── SELECT zaawansowane maturalne (30) ──────────────────────────────
+{c:'SELECT',n:'Matura — wybierz kolumny z warunkiem',lvl:1,
+d:'Wyświetl imię i nazwisko uczniów urodzonych po 2006-06-01. Posortuj wg nazwiska.',
+sol:"SELECT Imie, Nazwisko FROM Uczniowie WHERE DataUrodzenia > '2006-06-01' ORDER BY Nazwisko;",
+hint:"WHERE DataUrodzenia > '2006-06-01' ORDER BY Nazwisko"},
+{c:'SELECT',n:'Matura — filtruj po NULL i wartości',lvl:2,
+d:'Wyświetl tytuł i autora książek które są na stanie (NaStanie > 0) i nie są gatunku Fantasy.',
+sol:"SELECT Tytul, Autor FROM Ksiazki WHERE NaStanie > 0 AND Gatunek <> 'Fantasy';",
+hint:"NaStanie > 0 AND Gatunek <> 'Fantasy'"},
+{c:'SELECT',n:'Matura — konkatenacja pól',lvl:2,
+d:'Wyświetl jedną kolumnę <code>Autor_Tytul</code> = "Autor: " + Autor + " — " + Tytul dla wszystkich książek.',
+sol:"SELECT 'Autor: ' & Autor & ' — ' & Tytul AS Autor_Tytul FROM Ksiazki;",
+hint:"'Autor: ' & Autor & ' — ' & Tytul"},
+{c:'SELECT',n:'Matura — procent',lvl:2,
+d:'Wyświetl produkty z kolumną <code>ProcentCeny</code> = cena produktu / suma wszystkich cen * 100 (2 miejsca).',
+sol:'SELECT NazwaProduktu, Cena, Round(Cena / (SELECT SUM(Cena) FROM Produkty) * 100, 2) AS ProcentCeny FROM Produkty ORDER BY ProcentCeny DESC;',
+hint:'Cena/(SELECT SUM(Cena) FROM Produkty)*100'},
+{c:'SELECT',n:'Matura — pierwsza litera',lvl:2,
+d:'Wyświetl uczniów których imię zaczyna się na literę A lub K.',
+sol:"SELECT * FROM Uczniowie WHERE Imie LIKE 'A*' OR Imie LIKE 'K*' ORDER BY Imie;",
+hint:"LIKE 'A*' OR LIKE 'K*'",
+acc:"⚠️ ACCESS: * to wieloznacznik (nie %). 'A*' = zaczyna się na A."},
+{c:'SELECT',n:'Matura — wynik jako stopień',lvl:2,
+d:'Wyświetl egzaminy z Matematyki z oceną słowną przez Switch (skala: >=90/75/60/50/reszta).',
+sol:"SELECT ID_Ucznia, Wynik, Switch(Wynik>=90,'Celujący',Wynik>=75,'Bardzo dobry',Wynik>=60,'Dobry',Wynik>=50,'Dostateczny',True,'Niedostateczny') AS Ocena FROM Egzaminy WHERE Przedmiot='Matematyka';",
+hint:"Switch + WHERE Przedmiot='Matematyka'"},
+{c:'SELECT',n:'Matura — sumuj z warunkiem',lvl:3,
+d:'Wyświetl łączną wartość produktów w każdej kategorii (Cena * Magazyn) jako <code>WartoscKategorii</code>.',
+sol:'SELECT Kategoria, SUM(Cena * Magazyn) AS WartoscKategorii FROM Produkty GROUP BY Kategoria ORDER BY WartoscKategorii DESC;',
+hint:'SUM(Cena * Magazyn) GROUP BY Kategoria'},
+{c:'SELECT',n:'Matura — 3 tabele + filtr',lvl:3,
+d:'Wyświetl imię ucznia, tytuł książki i datę wypożyczenia dla wypożyczeń niezwróconych.',
+sol:'SELECT U.Imie, U.Nazwisko, K.Tytul, W.DataWyp FROM (Uczniowie U INNER JOIN Wypozyczenia W ON U.ID_Ucznia = W.ID_Ucznia) INNER JOIN Ksiazki K ON W.ID_Ksiazki = K.ID_Ksiazki WHERE W.DataZwrotu IS NULL;',
+hint:'3 tabele z nawiasami + WHERE DataZwrotu IS NULL',
+acc:'⚠️ ACCESS: 3+ tabele wymagają nawiasów: (T1 JOIN T2) JOIN T3'},
+{c:'SELECT',n:'Matura — ranking uczniów',lvl:3,
+d:'Wyświetl TOP 5 uczniów z najlepszymi wynikami egzaminów (wszystkich przedmiotów łącznie - suma wyników).',
+sol:'SELECT TOP 5 ID_Ucznia, SUM(Wynik) AS SumaWynikow FROM Egzaminy GROUP BY ID_Ucznia ORDER BY SumaWynikow DESC;',
+hint:'TOP 5 + SUM(Wynik) + GROUP BY + ORDER BY DESC'},
+{c:'SELECT',n:'Matura — bestsellery',lvl:3,
+d:'Wyświetl tytuły i autorów 3 najczęściej wypożyczanych książek.',
+sol:'SELECT TOP 3 K.Tytul, K.Autor, COUNT(W.ID_Wyp) AS LiczbaWypoz FROM Ksiazki K INNER JOIN Wypozyczenia W ON K.ID_Ksiazki = W.ID_Ksiazki GROUP BY K.Tytul, K.Autor ORDER BY LiczbaWypoz DESC;',
+hint:'JOIN + GROUP BY + COUNT + TOP 3 ORDER BY DESC'},
+{c:'SELECT',n:'Matura — sprzedaż per kategoria',lvl:3,
+d:'Wyświetl kategorie produktów z łączną sprzedaną ilością (SUM Ilosc z PozycjeZamowienia).',
+sol:'SELECT P.Kategoria, SUM(PZ.Ilosc) AS SprzedanaIlosc FROM Produkty P INNER JOIN PozycjeZamowienia PZ ON P.ID_Produktu = PZ.ID_Produktu GROUP BY P.Kategoria ORDER BY SprzedanaIlosc DESC;',
+hint:'JOIN Produkty + PozycjeZamowienia, GROUP BY Kategoria, SUM(Ilosc)'},
+{c:'SELECT',n:'Matura — klienci z Warszawy',lvl:2,
+d:'Wyświetl imię, nazwisko i łączną wartość zamówień klientów z Warszawy.',
+sol:"SELECT K.Imie, K.Nazwisko, SUM(Z.WartoscCalkowita) AS Wartosc FROM Klienci K INNER JOIN Zamowienia Z ON K.ID_Klienta = Z.ID_Klienta WHERE K.Miasto = 'Warszawa' GROUP BY K.Imie, K.Nazwisko;",
+hint:"WHERE K.Miasto='Warszawa' + GROUP BY + SUM"},
+{c:'SELECT',n:'Matura — nieaktywni klienci',lvl:3,
+d:'Wyświetl klientów którzy nie złożyli żadnego zamówienia.',
+sol:'SELECT K.Imie, K.Nazwisko FROM Klienci K LEFT JOIN Zamowienia Z ON K.ID_Klienta = Z.ID_Klienta WHERE Z.ID_Zamowienia IS NULL;',
+hint:'LEFT JOIN + WHERE IS NULL'},
+{c:'SELECT',n:'Matura — liczba dni od rejestracji',lvl:3,
+d:'Wyświetl klientów z liczbą dni od rejestracji do dziś.',
+sol:"SELECT Imie, Nazwisko, DataRejestracji, DateDiff('d', DataRejestracji, Date()) AS DniOdRejestracji FROM Klienci ORDER BY DniOdRejestracji DESC;",
+hint:"DateDiff('d', DataRejestracji, Date())",
+acc:"⚠️ ACCESS: DateDiff('d', data1, data2) = liczba dni między datami."},
+{c:'SELECT',n:'Matura — produkty poniżej progu',lvl:2,
+d:'Wyświetl produkty których stan w magazynie jest poniżej 10 sztuk. Posortuj wg stanu rosnąco.',
+sol:'SELECT NazwaProduktu, Kategoria, Magazyn FROM Produkty WHERE Magazyn < 10 ORDER BY Magazyn ASC;',
+hint:'WHERE Magazyn < 10 ORDER BY Magazyn ASC'},
+{c:'SELECT',n:'Matura — historia konkretnego ucznia',lvl:3,
+d:'Wyświetl tytuły książek wypożyczonych przez ucznia Jan Kowalski (ID=1) z datami.',
+sol:'SELECT K.Tytul, W.DataWyp, W.DataZwrotu FROM Wypozyczenia W INNER JOIN Ksiazki K ON W.ID_Ksiazki = K.ID_Ksiazki WHERE W.ID_Ucznia = 1 ORDER BY W.DataWyp;',
+hint:'WHERE W.ID_Ucznia = 1 + JOIN Ksiazki'},
+{c:'SELECT',n:'Matura — unikalne gatunki posortowane',lvl:1,
+d:'Wyświetl unikalne gatunki książek posortowane alfabetycznie.',
+sol:'SELECT DISTINCT Gatunek FROM Ksiazki ORDER BY Gatunek;',
+hint:'SELECT DISTINCT Gatunek ORDER BY Gatunek'},
+{c:'SELECT',n:'Matura — produkty z niskim magazynem + cena',lvl:2,
+d:'Wyświetl produkty Elektronika z ceną powyżej 500 zł i stanem magazynu poniżej 15. Posortuj wg ceny.',
+sol:"SELECT NazwaProduktu, Cena, Magazyn FROM Produkty WHERE Kategoria='Elektronika' AND Cena > 500 AND Magazyn < 15 ORDER BY Cena DESC;",
+hint:"WHERE Kategoria='Elektronika' AND Cena > 500 AND Magazyn < 15"},
+{c:'SELECT',n:'Matura — zlicz płeć na klasę',lvl:3,
+d:'Dla każdej klasy wyświetl liczbę kobiet (K) i mężczyzn (M).',
+sol:"SELECT Klasa, SUM(IIF(Plec='K',1,0)) AS Kobiety, SUM(IIF(Plec='M',1,0)) AS Mezczyzni FROM Uczniowie GROUP BY Klasa ORDER BY Klasa;",
+hint:"SUM(IIF(Plec='K',1,0)), SUM(IIF(Plec='M',1,0)) GROUP BY Klasa"},
+{c:'SELECT',n:'Matura — kwerenda z TOP 10 PERCENT',lvl:2,
+d:'Wyświetl 10% najdroższych produktów z ich ceną i kategorią.',
+sol:'SELECT TOP 10 PERCENT NazwaProduktu, Kategoria, Cena FROM Produkty ORDER BY Cena DESC;',
+hint:'TOP 10 PERCENT + ORDER BY Cena DESC',
+acc:'⚠️ ACCESS: TOP n PERCENT — unikalne dla Access!'},
+{c:'SELECT',n:'Matura — sprawdź czy zdali wszyscy',lvl:4,
+d:'Wyświetl uczniów którzy zdali WSZYSTKIE swoje egzaminy (brak CzyZdal=0 w ich rekordach).',
+sol:'SELECT U.Imie, U.Nazwisko FROM Uczniowie U WHERE U.ID_Ucznia IN (SELECT ID_Ucznia FROM Egzaminy GROUP BY ID_Ucznia HAVING SUM(IIF(CzyZdal=0,1,0)) = 0);',
+hint:'IN (SELECT ID FROM Egzaminy GROUP BY ID HAVING SUM(IIF(CzyZdal=0,1,0))=0)'},
+{c:'SELECT',n:'Matura — najstarsze wypożyczenie',lvl:2,
+d:'Wyświetl najstarsze aktywne (niezwrócone) wypożyczenie.',
+sol:'SELECT TOP 1 * FROM Wypozyczenia WHERE DataZwrotu IS NULL ORDER BY DataWyp ASC;',
+hint:'TOP 1 WHERE DataZwrotu IS NULL ORDER BY DataWyp ASC'},
+{c:'SELECT',n:'Matura — porównanie 2 lat',lvl:4,
+d:'Porównaj liczbę zamówień złożonych w różnych miesiącach — wypisz miesiąc i liczbę.',
+sol:'SELECT Month(DataZamowienia) AS Miesiac, COUNT(*) AS LiczbaZam FROM Zamowienia GROUP BY Month(DataZamowienia) ORDER BY Miesiac;',
+hint:'GROUP BY Month(DataZamowienia), COUNT(*)'},
+{c:'SELECT',n:'Matura — złożone filtrowanie',lvl:3,
+d:'Wyświetl uczniów klasy 3A lub 3B których nie ma w tabeli Egzaminy (nie podeszli do egzaminu).',
+sol:"SELECT U.Imie, U.Nazwisko, U.Klasa FROM Uczniowie U WHERE U.Klasa IN ('3A','3B') AND U.ID_Ucznia NOT IN (SELECT ID_Ucznia FROM Egzaminy);",
+hint:"WHERE Klasa IN ('3A','3B') AND ID NOT IN (SELECT ID FROM Egzaminy)"},
+{c:'SELECT',n:'Matura — relacja wiele-do-wielu',lvl:4,
+d:'Wyświetl wszystkich uczniów z liczbą książek które aktualnie trzymają (DataZwrotu IS NULL).',
+sol:'SELECT U.Imie, U.Nazwisko, COUNT(W.ID_Wyp) AS AktualneWypozyczenia FROM Uczniowie U LEFT JOIN Wypozyczenia W ON U.ID_Ucznia = W.ID_Ucznia AND W.DataZwrotu IS NULL GROUP BY U.Imie, U.Nazwisko ORDER BY AktualneWypozyczenia DESC;',
+hint:'LEFT JOIN z warunkiem AND W.DataZwrotu IS NULL w ON, GROUP BY'},
+{c:'SELECT',n:'Matura — agregat z IIF per wiersz',lvl:4,
+d:'Wyświetl każdego nauczyciela z liczbą ocen 5 i 6 które wystawił oraz z procentem "dobrych ocen".',
+sol:"SELECT N.Imie, N.Nazwisko, COUNT(O.ID_Oceny) AS Wszystkie, SUM(IIF(O.Ocena>=5,1,0)) AS Dobre, Round(SUM(IIF(O.Ocena>=5,1,0))*100.0/COUNT(*),1) AS ProcentDobr FROM Nauczyciele N INNER JOIN Oceny O ON N.ID_Nauczyciela=O.ID_Nauczyciela GROUP BY N.Imie, N.Nazwisko;",
+hint:'COUNT(*), SUM(IIF), Round(SUM*100/COUNT,1) GROUP BY imię+nazwisko'},
+{c:'SELECT',n:'Matura — ostatnie zdarzenie per uczeń',lvl:4,
+d:'Wyświetl każdego ucznia z datą jego ostatniego wypożyczenia.',
+sol:'SELECT U.Imie, U.Nazwisko, MAX(W.DataWyp) AS OstatnieWypozyczenie FROM Uczniowie U LEFT JOIN Wypozyczenia W ON U.ID_Ucznia = W.ID_Ucznia GROUP BY U.Imie, U.Nazwisko;',
+hint:'LEFT JOIN + MAX(DataWyp) GROUP BY uczeń'},
+{c:'SELECT',n:'Matura — pełne dane zamówienia',lvl:4,
+d:'Wyświetl ID zamówienia, imię klienta, nazwę produktu, ilość i wartość pozycji dla wszystkich zamówień.',
+sol:'SELECT Z.ID_Zamowienia, K.Imie & " " & K.Nazwisko AS Klient, P.NazwaProduktu, PZ.Ilosc, PZ.Ilosc*PZ.CenaJednostkowa AS Wartosc FROM ((Zamowienia Z INNER JOIN Klienci K ON Z.ID_Klienta=K.ID_Klienta) INNER JOIN PozycjeZamowienia PZ ON Z.ID_Zamowienia=PZ.ID_Zamowienia) INNER JOIN Produkty P ON PZ.ID_Produktu=P.ID_Produktu;',
+hint:'4 tabele — ((Z JOIN K) JOIN PZ) JOIN P z nawiasami',
+acc:'⚠️ ACCESS: 4 tabele = 3 zagnieżdżone JOIN z nawiasami!'},
+{c:'SELECT',n:'Matura — zamówienia tego miesiąca',lvl:3,
+d:'Wyświetl zamówienia złożone w tym samym miesiącu co pierwsze zamówienie w bazie.',
+sol:'SELECT * FROM Zamowienia WHERE Month(DataZamowienia) = Month((SELECT MIN(DataZamowienia) FROM Zamowienia));',
+hint:'WHERE Month(Data) = Month((SELECT MIN(Data) FROM ...))'},
+{c:'SELECT',n:'Matura — wiek uczniów',lvl:3,
+d:'Wyświetl uczniów z obliczonym wiekiem w latach (DateDiff od DataUrodzenia do Date()).',
+sol:"SELECT Imie, Nazwisko, DataUrodzenia, DateDiff('yyyy', DataUrodzenia, Date()) AS Wiek FROM Uczniowie ORDER BY Wiek DESC;",
+hint:"DateDiff('yyyy', DataUrodzenia, Date()) AS Wiek",
+acc:"⚠️ ACCESS: DateDiff('yyyy', data1, data2) liczy pełne lata."},
+
+// ── IIF/Funkcje maturalne (20) ───────────────────────────────────────
+{c:'IIF',n:'Matura — status dostawy',lvl:2,
+d:'Wyświetl zamówienia z kolumną <code>StatusOpis</code>: Zrealizowane→"✓ Odebrane", Wysłane→"📦 W drodze", Nowe→"⏳ Oczekuje".',
+sol:"SELECT ID_Zamowienia, Status, Switch(Status='Zrealizowane','✓ Odebrane',Status='Wysłane','📦 W drodze',Status='Nowe','⏳ Oczekuje',True,'?') AS StatusOpis FROM Zamowienia;",
+hint:"Switch(Status='Zrealizowane','✓ Odebrane', ...)"},
+{c:'IIF',n:'Matura — próg zdawalności',lvl:2,
+d:'Wyświetl wszystkich uczniów z egzaminów z kolumną: Wynik >= 50 i CzyZdal=1 → "OK", wynik < 50 i CzyZdal=0 → "FAIL", inne → "BŁĄD DANYCH".',
+sol:"SELECT ID_Ucznia, Wynik, CzyZdal, Switch(Wynik>=50 AND CzyZdal=1,'OK',Wynik<50 AND CzyZdal=0,'FAIL',True,'BŁĄD DANYCH') AS Weryfikacja FROM Egzaminy;",
+hint:"Switch(Wynik>=50 AND CzyZdal=1,'OK', ...)"},
+{c:'IIF',n:'Matura — formatuj numer',lvl:3,
+d:'Wyświetl uczniów z numerem ucznia w formacie "UCZ/001", "UCZ/002" itd. używając Format i CStr.',
+sol:"SELECT Imie, Nazwisko, 'UCZ/' & Format(ID_Ucznia,'000') AS NumerUcznia FROM Uczniowie;",
+hint:"'UCZ/' & Format(ID, '000') — '000' dodaje zera wiodące",
+acc:"⚠️ ACCESS: Format(liczba,'000') = zero-padded: 1→'001', 12→'012'."},
+{c:'IIF',n:'Matura — różnica cen',lvl:3,
+d:'Wyświetl produkty z informacją czy są droższe od średniej: IIF Cena > AVG → "Drogi", inaczej → "Tani".',
+sol:"SELECT NazwaProduktu, Cena, IIF(Cena > (SELECT AVG(Cena) FROM Produkty),'Drogi','Tani') AS KategoriaC FROM Produkty ORDER BY Cena DESC;",
+hint:'IIF(Cena > (SELECT AVG(Cena) FROM Produkty), ...)'},
+{c:'IIF',n:'Matura — ocena przybliżona',lvl:3,
+d:'Wyświetl każdą ocenę z adnotacją: 6→"Celujący!", 5→"Bardzo dobry", 4→"Dobry", 3→"Dostateczny", 2→"Dopuszczający", 1→"Niedostateczny".',
+sol:"SELECT ID_Ucznia, Przedmiot, Ocena, Choose(Ocena,'Niedostateczny','Dopuszczający','Dostateczny','Dobry','Bardzo dobry','Celujący!') AS Slownie FROM Oceny;",
+hint:'Choose(Ocena, wartość1, wartość2, ...) — indeksowane od 1',
+acc:'⚠️ ACCESS: Choose(indeks, v1, v2, v3, ...) zwraca wartość na pozycji indeks (1-bazowane). Przydatne gdy indeks = 1,2,3,4...'},
+{c:'IIF',n:'Matura — data ostateczna',lvl:3,
+d:'Wyświetl wypożyczenia z datą oczekiwanego zwrotu (DataWyp + 14 dni) i statusem: jeśli DataZwrotu > oczekiwana → "Spóźniony", jeśli zwrócony w terminie → "W terminie", jeśli niezwrócony → "Aktywne".',
+sol:"SELECT ID_Wyp, DataWyp, DateAdd('d',14,DataWyp) AS Termin, IIF(DataZwrotu IS NULL,'Aktywne',IIF(DataZwrotu > DateAdd('d',14,DataWyp),'Spóźniony','W terminie')) AS Status FROM Wypozyczenia;",
+hint:"DateAdd('d',14,DataWyp) + IIF(IS NULL, ..., IIF(DataZwrotu > Termin,...))"},
+{c:'IIF',n:'Matura — warunkowe zaokrąglenie',lvl:3,
+d:'Wyświetl ceny produktów: jeśli cena > 100 zaokrąglij do 0 miejsc, inaczej do 2 miejsc.',
+sol:'SELECT NazwaProduktu, Cena, IIF(Cena > 100, Round(Cena, 0), Round(Cena, 2)) AS CenaOkr FROM Produkty;',
+hint:'IIF(Cena>100, Round(Cena,0), Round(Cena,2))'},
+{c:'IIF',n:'Matura — miesięczny raport',lvl:4,
+d:'Policz ile zamówień było w każdym kwartale 2024 (DatePart q).',
+sol:"SELECT DatePart('q', DataZamowienia) AS Kwartal, COUNT(*) AS Zamowien FROM Zamowienia WHERE Year(DataZamowienia) = 2024 GROUP BY DatePart('q', DataZamowienia) ORDER BY Kwartal;",
+hint:"GROUP BY DatePart('q', DataZamowienia)",
+acc:"⚠️ ACCESS: DatePart('q', data) = numer kwartału (1-4)."},
+{c:'IIF',n:'Matura — przelicznik walutowy',lvl:3,
+d:'Wyświetl ceny produktów w EUR (kurs 4.25 PLN/EUR), zaokrąglone do 2 miejsc, jako <code>CenaEUR</code>.',
+sol:'SELECT NazwaProduktu, Cena, Round(Cena / 4.25, 2) AS CenaEUR FROM Produkty ORDER BY CenaEUR DESC;',
+hint:'Round(Cena / 4.25, 2) AS CenaEUR'},
+{c:'IIF',n:'Matura — etykiety wielkości',lvl:2,
+d:'Wyświetl książki z etykietą NaStanie: >=10 → "Dużo", 5-9 → "Średnio", 1-4 → "Mało", 0 → "Brak".',
+sol:"SELECT Tytul, NaStanie, Switch(NaStanie>=10,'Dużo',NaStanie>=5,'Średnio',NaStanie>=1,'Mało',True,'Brak') AS Stan FROM Ksiazki ORDER BY NaStanie DESC;",
+hint:"Switch(NaStanie>=10,'Dużo', NaStanie>=5,'Średnio', ...)"},
+
+// ── DDL maturalne (15) ──────────────────────────────────────────────
+{c:'DDL',n:'Matura — CREATE powiązana tabela',lvl:3,
+d:'Utwórz tabelę <code>Przerwy_w_nauce</code>: ID INT PK, ID_Ucznia INT FK→Uczniowie, DataOd TEXT, DataDo TEXT, Powod TEXT.',
+sol:'CREATE TABLE Przerwy_w_nauce (ID INT PRIMARY KEY, ID_Ucznia INT REFERENCES Uczniowie(ID_Ucznia), DataOd TEXT, DataDo TEXT, Powod TEXT);',
+hint:'REFERENCES Uczniowie(ID_Ucznia) — klucz obcy'},
+{c:'DDL',n:'Matura — INSERT wielu rekordów',lvl:2,
+d:'Wstaw do tabeli Egzaminy 2 nowe rekordy: uczeń 6, Fizyka, wynik 72, 2024-06-10, zdał; uczeń 7, Fizyka, wynik 48, 2024-06-10, nie zdał.',
+sol:"INSERT INTO Egzaminy (ID_Egzaminu,ID_Ucznia,Przedmiot,Wynik,DataEgzaminu,CzyZdal) VALUES (20, 6, 'Fizyka', 72, '2024-06-10', 1); INSERT INTO Egzaminy (ID_Egzaminu,ID_Ucznia,Przedmiot,Wynik,DataEgzaminu,CzyZdal) VALUES (21, 7, 'Fizyka', 48, '2024-06-10', 0);",
+hint:'Dwa osobne INSERT INTO VALUES'},
+{c:'DDL',n:'Matura — UPDATE z funkcją daty',lvl:3,
+d:'Dla wszystkich zamówień ze statusem Wysłane ustaw DataZamowienia na dzisiaj (Date()).',
+sol:"UPDATE Zamowienia SET DataZamowienia = Date() WHERE Status = 'Wysłane';",
+hint:"UPDATE SET DataZamowienia = Date() WHERE Status = 'Wysłane'",
+acc:'⚠️ ACCESS: Date() zwraca bieżącą datę — można używać w UPDATE.'},
+{c:'DDL',n:'Matura — DELETE tylko stare',lvl:3,
+d:'Usuń z tabeli Wypozyczenia wszystkie wypożyczenia zwrócone przed 2024-03-01.',
+sol:"DELETE FROM Wypozyczenia WHERE DataZwrotu < '2024-03-01' AND DataZwrotu IS NOT NULL;",
+hint:"WHERE DataZwrotu < '2024-03-01' AND IS NOT NULL"},
+{c:'DDL',n:'Matura — dodaj i zaktualizuj',lvl:3,
+d:'Dodaj kolumnę <code>Aktywny</code> (INT DEFAULT 1) do tabeli Klienci, potem zaktualizuj ją na 0 dla klientów z Gdańska.',
+sol:"ALTER TABLE Klienci ADD COLUMN Aktywny INT DEFAULT 1; UPDATE Klienci SET Aktywny = 0 WHERE Miasto = 'Gdańsk';",
+hint:'ALTER TABLE ADD COLUMN + UPDATE SET WHERE'},
+{c:'DDL',n:'Matura — kopiowanie tabeli',lvl:4,
+d:'Utwórz kopię struktury i danych uczniów klasy 3A jako nową tabelę <code>Uczniowie_3A</code> (SELECT INTO).',
+sol:"SELECT * INTO Uczniowie_3A FROM Uczniowie WHERE Klasa = '3A';",
+hint:"SELECT * INTO Uczniowie_3A FROM Uczniowie WHERE Klasa='3A'",
+acc:"⚠️ ACCESS: SELECT * INTO NowaTabela FROM ... tworzy nową tabelę z danymi — kwerenda tworząca!"},
+{c:'DDL',n:'Matura — usuń duplikaty przez tabelę',lvl:4,
+d:'Utwórz tabelę UnikatowePrzedmioty z unikalnymi przedmiotami z tabeli Oceny (SELECT DISTINCT INTO).',
+sol:'SELECT DISTINCT Przedmiot INTO UnikatowePrzedmioty FROM Oceny;',
+hint:'SELECT DISTINCT ... INTO NowaTabel FROM ...',
+acc:'⚠️ ACCESS: SELECT DISTINCT ... INTO ... = kopiowanie unikalnych wartości do nowej tabeli.'},
+{c:'DDL',n:'Matura — aktualizacja masowa',lvl:3,
+d:'Podnieś cenę wszystkich produktów z kategorii Elektronika o 15%.',
+sol:"UPDATE Produkty SET Cena = Round(Cena * 1.15, 2) WHERE Kategoria = 'Elektronika';",
+hint:"UPDATE SET Cena = Round(Cena * 1.15, 2) WHERE Kategoria = 'Elektronika'"},
+{c:'DDL',n:'Matura — DROP TABLE',lvl:2,
+d:'Usuń tabelę Uczniowie_3A (którą wcześniej utworzyłeś SELECT INTO).',
+sol:'DROP TABLE Uczniowie_3A;',
+hint:'DROP TABLE NazwaTabeli — usuwa całą tabelę',
+acc:'⚠️ ACCESS: DROP TABLE usuwa tabelę permanentnie. W Access GUI: kliknij prawym → Usuń.'},
+{c:'DDL',n:'Matura — walidacja przez UPDATE',lvl:4,
+d:'Ustaw CzyZdal = 1 dla wszystkich egzaminów gdzie Wynik >= 50 i CzyZdal = 0 (korekta błędnych danych).',
+sol:'UPDATE Egzaminy SET CzyZdal = 1 WHERE Wynik >= 50 AND CzyZdal = 0;',
+hint:'WHERE Wynik >= 50 AND CzyZdal = 0'},
+
+// ── Agregaty maturalne (15) ──────────────────────────────────────────
+{c:'Agregaty',n:'Matura — statystyki egzaminów',lvl:3,
+d:'Wyświetl per przedmiot: liczbę przystępujących, zdanych, średni wynik i zdawalność w %.',
+sol:"SELECT Przedmiot, COUNT(*) AS Przystapilo, SUM(CzyZdal) AS Zdalo, Round(AVG(Wynik),1) AS SredniWynik, Round(SUM(CzyZdal)*100.0/COUNT(*),1) AS Zdawalnosc FROM Egzaminy GROUP BY Przedmiot;",
+hint:'COUNT, SUM(CzyZdal), AVG(Wynik), SUM*100/COUNT GROUP BY Przedmiot'},
+{c:'Agregaty',n:'Matura — TOP klas wg wyników',lvl:3,
+d:'Wyświetl klasy posortowane wg średniego wyniku egzaminów (JOIN + GROUP BY + AVG).',
+sol:'SELECT U.Klasa, Round(AVG(E.Wynik),1) AS SredniWynik FROM Uczniowie U INNER JOIN Egzaminy E ON U.ID_Ucznia = E.ID_Ucznia GROUP BY U.Klasa ORDER BY SredniWynik DESC;',
+hint:'JOIN + GROUP BY U.Klasa + AVG(E.Wynik)'},
+{c:'Agregaty',n:'Matura — najlepszy przedmiot',lvl:3,
+d:'Wyświetl przedmiot z najwyższą średnią ocen (TOP 1 + GROUP BY).',
+sol:'SELECT TOP 1 Przedmiot, AVG(Ocena) AS Srednia FROM Oceny GROUP BY Przedmiot ORDER BY Srednia DESC;',
+hint:'TOP 1 + GROUP BY Przedmiot + ORDER BY Srednia DESC'},
+{c:'Agregaty',n:'Matura — wypożyczenia per miesiąc',lvl:3,
+d:'Policz liczbę wypożyczeń w każdym miesiącu 2024.',
+sol:'SELECT Month(DataWyp) AS Miesiac, COUNT(*) AS Wypoz FROM Wypozyczenia WHERE Year(DataWyp) = 2024 GROUP BY Month(DataWyp) ORDER BY Miesiac;',
+hint:'GROUP BY Month(DataWyp) WHERE Year=2024'},
+{c:'Agregaty',n:'Matura — wartość koszyka',lvl:3,
+d:'Wyświetl ID zamówienia i łączną wartość każdego koszyka (SUM Ilosc*Cena z pozycji).',
+sol:'SELECT ID_Zamowienia, SUM(Ilosc * CenaJednostkowa) AS WartoscKoszyka FROM PozycjeZamowienia GROUP BY ID_Zamowienia ORDER BY WartoscKoszyka DESC;',
+hint:'SUM(Ilosc*CenaJednostkowa) GROUP BY ID_Zamowienia'},
+{c:'Agregaty',n:'Matura — pensje per staz',lvl:3,
+d:'Wyświetl nauczycieli podzielonych wg roku zatrudnienia z ich średnią pensją.',
+sol:'SELECT Year(DataZatrudnienia) AS RokZatrudnienia, COUNT(*) AS Liczba, Round(AVG(Pensja),0) AS SredniaPensja FROM Nauczyciele GROUP BY Year(DataZatrudnienia) ORDER BY RokZatrudnienia;',
+hint:'GROUP BY Year(DataZatrudnienia), COUNT, AVG(Pensja)'},
+{c:'Agregaty',n:'Matura — summary raport',lvl:4,
+d:'Jeden raport: liczba uczniów, liczba książek, liczba aktywnych wypożyczeń, liczba zamówień w tym roku.',
+sol:"SELECT (SELECT COUNT(*) FROM Uczniowie) AS Uczniowie, (SELECT COUNT(*) FROM Ksiazki) AS Ksiazki, (SELECT COUNT(*) FROM Wypozyczenia WHERE DataZwrotu IS NULL) AS AktywneWyp, (SELECT COUNT(*) FROM Zamowienia WHERE Year(DataZamowienia)=2024) AS Zamowienia2024;",
+hint:'Kilka podzapytań jako kolumny w jednym SELECT'},
+{c:'Agregaty',n:'Matura — percentyl',lvl:4,
+d:'Wyświetl uczniów z wynikiem egzaminu powyżej mediany wszystkich wyników (podzapytanie).',
+sol:'SELECT * FROM Egzaminy WHERE Wynik > (SELECT AVG(Wynik) FROM (SELECT TOP 50 PERCENT Wynik FROM Egzaminy ORDER BY Wynik) AS sub);',
+hint:'Mediana przez TOP 50 PERCENT ORDER BY',
+acc:'⚠️ ACCESS: mediana = podzapytanie z TOP 50 PERCENT ORDER BY. MySQL 8+: PERCENTILE_CONT().'},
+{c:'Agregaty',n:'Matura — odchylenie od średniej',lvl:4,
+d:'Wyświetl produkty z odchyleniem ceny od średniej kategorii.',
+sol:'SELECT P.NazwaProduktu, P.Kategoria, P.Cena, Round(P.Cena - AVG_K.SredniaCena, 2) AS Odchylenie FROM Produkty P INNER JOIN (SELECT Kategoria, AVG(Cena) AS SredniaCena FROM Produkty GROUP BY Kategoria) AS AVG_K ON P.Kategoria = AVG_K.Kategoria ORDER BY Abs(Odchylenie) DESC;',
+hint:'JOIN z podzapytaniem zagregowanym (inline view)'},
+{c:'Agregaty',n:'Matura — statystyki ucznia',lvl:3,
+d:'Wyświetl każdego ucznia z: liczbą ocen, sumą, średnią i najlepszą oceną.',
+sol:'SELECT ID_Ucznia, COUNT(*) AS LiczbaOcen, SUM(Ocena) AS Suma, Round(AVG(Ocena),2) AS Srednia, MAX(Ocena) AS Najlepsza FROM Oceny GROUP BY ID_Ucznia ORDER BY Srednia DESC;',
+hint:'COUNT(*), SUM, AVG, MAX GROUP BY ID_Ucznia'},
+
+// ── Praktyczne zadania maturalne mixed (66) ─────────────────────────
+{c:'SELECT',n:'Praktyka — adres email validacja',lvl:2,
+d:'Wyświetl klientów których email zawiera znak "@" (poprawny format). Użyj InStr.',
+sol:"SELECT Imie, Nazwisko, Email FROM Klienci WHERE InStr(Email,'@') > 0;",
+hint:"InStr(Email,'@') > 0 — @ musi być gdzieś w stringu"},
+{c:'SELECT',n:'Praktyka — brak danych osobowych',lvl:2,
+d:'Wyświetl wszystkie zamówienia ale zamiast danych klienta pokaż tylko ID, zamaskowane jako "KLIENT-" + ID.',
+sol:"SELECT ID_Zamowienia, 'KLIENT-' & CStr(ID_Klienta) AS KlientID, DataZamowienia, WartoscCalkowita FROM Zamowienia;",
+hint:"'KLIENT-' & CStr(ID_Klienta)"},
+{c:'Kwerendy',n:'Praktyka — sprzedaż per produkt per miesiąc',lvl:4,
+d:'Wyświetl produkt, miesiąc zamówienia i łączną sprzedaną ilość. Posortuj wg produktu i miesiąca.',
+sol:'SELECT P.NazwaProduktu, Month(Z.DataZamowienia) AS Miesiac, SUM(PZ.Ilosc) AS Ilosc FROM ((Produkty P INNER JOIN PozycjeZamowienia PZ ON P.ID_Produktu=PZ.ID_Produktu) INNER JOIN Zamowienia Z ON PZ.ID_Zamowienia=Z.ID_Zamowienia) GROUP BY P.NazwaProduktu, Month(Z.DataZamowienia) ORDER BY P.NazwaProduktu, Miesiac;',
+hint:'3 tabele JOIN z nawiasami + GROUP BY produkt, miesiąc'},
+{c:'Agregaty',n:'Praktyka — rozkład ocen',lvl:3,
+d:'Wyświetl ile jest ocen każdego rodzaju (1-6) w całej tabeli Oceny.',
+sol:'SELECT Ocena, COUNT(*) AS Ilosc FROM Oceny GROUP BY Ocena ORDER BY Ocena;',
+hint:'GROUP BY Ocena, COUNT(*)'},
+{c:'IIF',n:'Praktyka — przedział ocen',lvl:3,
+d:'Wyświetl uczniów z kolumną <code>WynikKoncowy</code>: średnia >= 5 → "Wyróżnienie", >= 4 → "Zaliczone", < 4 → "Warunkowy".',
+sol:"SELECT U.Imie, U.Nazwisko, Round(AVG(O.Ocena),2) AS Srednia, Switch(AVG(O.Ocena)>=5,'Wyróżnienie',AVG(O.Ocena)>=4,'Zaliczone',True,'Warunkowy') AS WynikKoncowy FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia=O.ID_Ucznia GROUP BY U.Imie, U.Nazwisko HAVING COUNT(O.ID_Oceny) > 0;",
+hint:'JOIN + GROUP BY + Switch na AVG(Ocena)'},
+{c:'SELECT',n:'Praktyka — produkty do uzupełnienia',lvl:2,
+d:'Wyświetl produkty gdzie ilość w magazynie jest poniżej 10% maksymalnego stanu w tej kategorii.',
+sol:'SELECT P.NazwaProduktu, P.Magazyn FROM Produkty P WHERE P.Magazyn < (SELECT MAX(Magazyn)*0.1 FROM Produkty WHERE Kategoria = P.Kategoria);',
+hint:'WHERE Magazyn < (SELECT MAX(Magazyn)*0.1 FROM Produkty WHERE Kategoria = P.Kategoria)'},
+{c:'DDL',n:'Praktyka — archiwizacja',lvl:4,
+d:'Przenieś zamówienia ze statusem Zrealizowane do tabeli <code>Archiwum_Zamowien</code> (SELECT INTO).',
+sol:"SELECT * INTO Archiwum_Zamowien FROM Zamowienia WHERE Status = 'Zrealizowane';",
+hint:"SELECT * INTO Archiwum FROM ... WHERE Status='Zrealizowane'",
+acc:'⚠️ ACCESS: SELECT INTO tworzy nową tabelę z danymi — kwerenda tworząca!'},
+{c:'Kwerendy',n:'Praktyka — pełny raport ucznia',lvl:4,
+d:'Wyświetl: imię, nazwisko, klasa, liczba ocen, średnia, liczba wypożyczeń, liczba egzaminów zdanych.',
+sol:"SELECT U.Imie, U.Nazwisko, U.Klasa, COUNT(DISTINCT O.ID_Oceny) AS LiczbaOcen, Round(AVG(O.Ocena),2) AS Srednia, COUNT(DISTINCT W.ID_Wyp) AS Wypozyczenia, SUM(IIF(E.CzyZdal=1,1,0)) AS ZdaneEgzaminy FROM ((Uczniowie U LEFT JOIN Oceny O ON U.ID_Ucznia=O.ID_Ucznia) LEFT JOIN Wypozyczenia W ON U.ID_Ucznia=W.ID_Ucznia) LEFT JOIN Egzaminy E ON U.ID_Ucznia=E.ID_Ucznia GROUP BY U.Imie, U.Nazwisko, U.Klasa;",
+hint:'4x LEFT JOIN + GROUP BY + COUNT DISTINCT + SUM IIF'},
+{c:'Funkcje',n:'Praktyka — numer tygodnia',lvl:3,
+d:'Wyświetl zamówienia z numerem kwartału i tygodnia.',
+sol:"SELECT ID_Zamowienia, DataZamowienia, DatePart('q',DataZamowienia) AS Kwartal, DatePart('ww',DataZamowienia) AS Tydzien FROM Zamowienia ORDER BY DataZamowienia;",
+hint:"DatePart('q',...) kwartał, DatePart('ww',...) tydzień"},
+{c:'TOP',n:'Praktyka — TOP klientów',lvl:3,
+d:'Wyświetl 3 klientów którzy wydali najwięcej łącznie (imię, nazwisko, suma).',
+sol:'SELECT TOP 3 K.Imie, K.Nazwisko, SUM(Z.WartoscCalkowita) AS Wydano FROM Klienci K INNER JOIN Zamowienia Z ON K.ID_Klienta=Z.ID_Klienta GROUP BY K.Imie, K.Nazwisko ORDER BY Wydano DESC;',
+hint:'TOP 3 + JOIN + GROUP BY + ORDER BY DESC'},
+{c:'SELECT',n:'Praktyka — znajdź pary',lvl:4,
+d:'Znajdź uczniów którzy wypożyczyli te same książki (A i B wypożyczyli tę samą, A.ID < B.ID).',
+sol:'SELECT DISTINCT W1.ID_Ucznia AS Uczen1, W2.ID_Ucznia AS Uczen2, W1.ID_Ksiazki FROM Wypozyczenia W1 INNER JOIN Wypozyczenia W2 ON W1.ID_Ksiazki=W2.ID_Ksiazki AND W1.ID_Ucznia < W2.ID_Ucznia;',
+hint:'Self-join na Wypozyczenia przez ID_Ksiazki, W1.ID < W2.ID'},
+{c:'SELECT',n:'Praktyka — zamówienia vs plan',lvl:3,
+d:'Wyświetl klientów którzy złożyli więcej niż 2 zamówienia.',
+sol:'SELECT ID_Klienta, COUNT(*) AS LiczbaZam FROM Zamowienia GROUP BY ID_Klienta HAVING COUNT(*) > 2;',
+hint:'GROUP BY ID_Klienta HAVING COUNT(*) > 2'},
+{c:'Funkcje',n:'Praktyka — czas do końca roku',lvl:3,
+d:'Wyświetl dla każdego zamówienia ile dni pozostało do końca roku 2024.',
+sol:"SELECT ID_Zamowienia, DataZamowienia, DateDiff('d', DataZamowienia, '2024-12-31') AS DniDoKonca FROM Zamowienia WHERE Year(DataZamowienia) = 2024;",
+hint:"DateDiff('d', DataZamowienia, '2024-12-31')"},
+{c:'DDL',n:'Praktyka — korekta danych',lvl:3,
+d:'Zmień wszystkie wartości NULL w kolumnie DataZwrotu na "2024-12-31" (za pomocą Nz lub UPDATE).',
+sol:"UPDATE Wypozyczenia SET DataZwrotu = '2024-12-31' WHERE DataZwrotu IS NULL;",
+hint:"UPDATE SET DataZwrotu = '2024-12-31' WHERE DataZwrotu IS NULL"},
+{c:'Kwerendy',n:'Praktyka — bilans kategории',lvl:4,
+d:'Dla każdej kategorii produktów: łączna wartość zamówionych sztuk (SUM Ilosc*CenaJednostkowa z PZ i P).',
+sol:'SELECT P.Kategoria, SUM(PZ.Ilosc * PZ.CenaJednostkowa) AS WartoscSprzedazy FROM Produkty P INNER JOIN PozycjeZamowienia PZ ON P.ID_Produktu=PZ.ID_Produktu GROUP BY P.Kategoria ORDER BY WartoscSprzedazy DESC;',
+hint:'JOIN Produkty + PozycjeZamowienia + GROUP BY Kategoria + SUM'},
+{c:'IIF',n:'Praktyka — alert magazynowy',lvl:3,
+d:'Wyświetl produkty z alertem: Magazyn = 0 → "BRAK!", 1-5 → "KRYTYCZNY", 6-20 → "NISKI", >20 → "OK".',
+sol:"SELECT NazwaProduktu, Magazyn, Switch(Magazyn=0,'BRAK!',Magazyn<=5,'KRYTYCZNY',Magazyn<=20,'NISKI',True,'OK') AS Alert FROM Produkty ORDER BY Magazyn;",
+hint:"Switch(Magazyn=0,'BRAK!', Magazyn<=5,'KRYTYCZNY', ...)"},
+{c:'SELECT',n:'Praktyka — wyszukiwanie fonetyczne',lvl:2,
+d:'Wyświetl wszystkie osoby (uczniów) z nazwiskiem zaczynającym od "Kow" lub "Kow".',
+sol:"SELECT Imie, Nazwisko FROM Uczniowie WHERE Nazwisko LIKE 'Kow*' ORDER BY Nazwisko;",
+hint:"LIKE 'Kow*'"},
+{c:'Kwerendy',n:'Praktyka — porównanie lat',lvl:4,
+d:'Porównaj liczbę zamówień i ich wartość złożonych przez klientów z Warszawy vs reszta.',
+sol:"SELECT IIF(K.Miasto='Warszawa','Warszawa','Inne') AS Region, COUNT(*) AS Zamowien, SUM(Z.WartoscCalkowita) AS Wartosc FROM Klienci K INNER JOIN Zamowienia Z ON K.ID_Klienta=Z.ID_Klienta GROUP BY IIF(K.Miasto='Warszawa','Warszawa','Inne');",
+hint:"IIF(Miasto='Warszawa','Warszawa','Inne') w GROUP BY"},
+{c:'TOP',n:'Praktyka — bottom 3',lvl:2,
+d:'Wyświetl 3 najgorzej sprzedające się produkty (najmniejsza łączna ilość).',
+sol:'SELECT TOP 3 P.NazwaProduktu, SUM(PZ.Ilosc) AS Sprzedano FROM Produkty P INNER JOIN PozycjeZamowienia PZ ON P.ID_Produktu=PZ.ID_Produktu GROUP BY P.NazwaProduktu ORDER BY Sprzedano ASC;',
+hint:'TOP 3 + JOIN + GROUP BY + ORDER BY ASC'},
+{c:'Agregaty',n:'Praktyka — średnia krocząca (okno 3)',lvl:4,
+d:'Dla każdego egzaminu wyświetl jego wynik i średnią z 3 kolejnych wyników (podzapytanie).',
+sol:'SELECT E1.ID_Egzaminu, E1.Wynik, Round((SELECT AVG(E2.Wynik) FROM Egzaminy E2 WHERE E2.ID_Egzaminu BETWEEN E1.ID_Egzaminu-1 AND E1.ID_Egzaminu+1),1) AS SredKrocz FROM Egzaminy E1 ORDER BY E1.ID_Egzaminu;',
+hint:'Podzapytanie: AVG WHERE ID BETWEEN E1.ID-1 AND E1.ID+1'},
+{c:'SELECT',n:'Praktyka — lista słów kluczowych',lvl:2,
+d:'Wyświetl różne statusy zamówień bez duplikatów.',
+sol:'SELECT DISTINCT Status FROM Zamowienia ORDER BY Status;',
+hint:'SELECT DISTINCT Status ORDER BY Status'},
+{c:'Funkcje',n:'Praktyka — formatuj datę po polsku',lvl:2,
+d:'Wyświetl zamówienia z datą w formacie "DD miesiąc RRRR" (np. "20 styczeń 2024").',
+sol:"SELECT ID_Zamowienia, Day(DataZamowienia) & ' ' & Choose(Month(DataZamowienia),'styczeń','luty','marzec','kwiecień','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień') & ' ' & Year(DataZamowienia) AS DataPL FROM Zamowienia;",
+hint:"Day() & ' ' & Choose(Month(),'styczeń','luty',...) & ' ' & Year()",
+acc:'⚠️ ACCESS: Choose(indeks,v1,v2,...) — Month() zwraca 1-12, Choose zamienia na nazwę miesiąca.'},
+{c:'DDL',n:'Praktyka — tabela tymczasowa',lvl:4,
+d:'Utwórz zestawienie "Uczniowie najlepsi" (SELECT INTO) — uczniowie ze średnią ocen > 4.5.',
+sol:'SELECT U.Imie, U.Nazwisko, U.Klasa, Round(AVG(O.Ocena),2) AS Srednia INTO Uczniowie_Najlepsi FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia=O.ID_Ucznia GROUP BY U.Imie, U.Nazwisko, U.Klasa HAVING AVG(O.Ocena) > 4.5;',
+hint:'SELECT ... INTO NowaTabel FROM ... JOIN ... GROUP BY ... HAVING',
+acc:'⚠️ ACCESS: SELECT INTO z JOIN i GROUP BY — tworzy tabelę z zagregowanymi danymi!'},
+{c:'Kwerendy',n:'Praktyka — analiza wypożyczeń',lvl:4,
+d:'Wyświetl dla każdej książki: tytuł, ile razy wypożyczona, ile razy zwrócona, ile aktywnych.',
+sol:'SELECT K.Tytul, COUNT(W.ID_Wyp) AS Razem, COUNT(W.DataZwrotu) AS Zwrocono, COUNT(W.ID_Wyp)-COUNT(W.DataZwrotu) AS Aktywne FROM Ksiazki K LEFT JOIN Wypozyczenia W ON K.ID_Ksiazki=W.ID_Ksiazki GROUP BY K.Tytul ORDER BY Razem DESC;',
+hint:'COUNT(*) vs COUNT(DataZwrotu) — drugi pomija NULL'},
+{c:'IIF',n:'Praktyka — kategoria wiekowa uczniów',lvl:2,
+d:'Wyświetl uczniów podzielonych na: urodzeni 2006 → "Maturzyści", 2007 → "Juniorzy".',
+sol:"SELECT Imie, Nazwisko, Year(DataUrodzenia) AS Rocznik, IIF(Year(DataUrodzenia)=2006,'Maturzyści','Juniorzy') AS Kategoria FROM Uczniowie ORDER BY Rocznik;",
+hint:"IIF(Year(DataUrodzenia)=2006,'Maturzyści','Juniorzy')"},
+{c:'SELECT',n:'Praktyka — cross-check',lvl:4,
+d:'Wyświetl nauczycieli którzy wystawili ocenę 6 co najmniej raz z Informatyki i co najmniej raz z Matematyki.',
+sol:"SELECT DISTINCT N.Imie, N.Nazwisko FROM Nauczyciele N WHERE EXISTS (SELECT 1 FROM Oceny O1 WHERE O1.ID_Nauczyciela=N.ID_Nauczyciela AND O1.Przedmiot='Informatyka' AND O1.Ocena=6) AND EXISTS (SELECT 1 FROM Oceny O2 WHERE O2.ID_Nauczyciela=N.ID_Nauczyciela AND O2.Przedmiot='Matematyka' AND O2.Ocena=6);",
+hint:'WHERE EXISTS ... AND EXISTS ... — dwa warunki EXISTS'},
+{c:'Kwerendy',n:'Praktyka — aktywni klienci',lvl:3,
+d:'Wyświetl klientów którzy złożyli zamówienie w 2024 roku (co najmniej jedno). Pokaż imię, nazwisko, ostatnią datę zamówienia.',
+sol:'SELECT K.Imie, K.Nazwisko, MAX(Z.DataZamowienia) AS OstatnieZamowienie FROM Klienci K INNER JOIN Zamowienia Z ON K.ID_Klienta=Z.ID_Klienta WHERE Year(Z.DataZamowienia)=2024 GROUP BY K.Imie, K.Nazwisko;',
+hint:'WHERE Year(Z.DataZamowienia)=2024 + GROUP BY + MAX(DataZamowienia)'},
+{c:'Funkcje',n:'Praktyka — zaokrąglenie do 5 groszy',lvl:3,
+d:'Wyświetl ceny produktów zaokrąglone do najbliższych 0.05 (do 5 groszy).',
+sol:'SELECT NazwaProduktu, Cena, Round(Cena / 0.05, 0) * 0.05 AS CenaZaokr FROM Produkty;',
+hint:'Round(Cena/0.05, 0)*0.05 — zaokrąglenie do wielokrotności 0.05'},
+{c:'TOP',n:'Praktyka — nowi klienci',lvl:2,
+d:'Wyświetl 3 ostatnio zarejestrowanych klientów.',
+sol:'SELECT TOP 3 * FROM Klienci ORDER BY DataRejestracji DESC;',
+hint:'ORDER BY DataRejestracji DESC, TOP 3'},
+{c:'Agregaty',n:'Praktyka — analiza zdawalności per klasa',lvl:4,
+d:'Wyświetl klasy z liczbą uczniów, liczbą zdanych egzaminów i zdawalnością procentową.',
+sol:"SELECT U.Klasa, COUNT(DISTINCT U.ID_Ucznia) AS Uczniow, SUM(IIF(E.CzyZdal=1,1,0)) AS Zdalo, Round(SUM(IIF(E.CzyZdal=1,1,0))*100.0/COUNT(E.ID_Egzaminu),1) AS Zdawalnosc FROM Uczniowie U LEFT JOIN Egzaminy E ON U.ID_Ucznia=E.ID_Ucznia GROUP BY U.Klasa;",
+hint:'LEFT JOIN + GROUP BY Klasa + COUNT DISTINCT + SUM IIF + procent'},
+{c:'SELECT',n:'Praktyka — filtr wielokryterialny',lvl:3,
+d:'Wyświetl produkty: elektronika lub droższe niż 1000 zł, posortuj wg kategorii i ceny.',
+sol:"SELECT * FROM Produkty WHERE Kategoria='Elektronika' OR Cena > 1000 ORDER BY Kategoria, Cena DESC;",
+hint:"WHERE Kategoria='Elektronika' OR Cena > 1000 ORDER BY Kategoria, Cena DESC"},
+{c:'DDL',n:'Praktyka — aktualizacja rang',lvl:4,
+d:'Ustaw CzyZdal na podstawie Wyniku dla WSZYSTKICH rekordów Egzaminy jednym UPDATE z IIF.',
+sol:'UPDATE Egzaminy SET CzyZdal = IIF(Wynik >= 50, 1, 0);',
+hint:'UPDATE SET CzyZdal = IIF(Wynik>=50,1,0) — bez WHERE = wszystkie',
+acc:'⚠️ ACCESS: IIF w UPDATE SET to potężne narzędzie do masowej aktualizacji warunkowej.'},
+{c:'Kwerendy',n:'Praktyka — duplikaty emaili',lvl:4,
+d:'Sprawdź czy w tabeli Klienci są duplikaty emaili (email pojawia się więcej niż raz).',
+sol:'SELECT Email, COUNT(*) AS Ile FROM Klienci GROUP BY Email HAVING COUNT(*) > 1;',
+hint:'GROUP BY Email HAVING COUNT(*) > 1'},
+{c:'SELECT',n:'Praktyka — produkty nigdy nie zamówione',lvl:3,
+d:'Wyświetl produkty które nie pojawił się nigdy w żadnym zamówieniu.',
+sol:'SELECT NazwaProduktu FROM Produkty WHERE ID_Produktu NOT IN (SELECT DISTINCT ID_Produktu FROM PozycjeZamowienia);',
+hint:'WHERE ID NOT IN (SELECT DISTINCT ID FROM PozycjeZamowienia)'},
+{c:'Funkcje',n:'Praktyka — maskowanie danych',lvl:3,
+d:'Wyświetl emaile klientów z zamaskowaną lokalną częścią: zamień wszystko przed @ na "****".',
+sol:"SELECT Imie, '****' & Mid(Email, InStr(Email,'@')) AS EmailMaskowany FROM Klienci;",
+hint:"'****' & Mid(Email, InStr(Email,'@')) — Mid od pozycji @"},
+{c:'Kwerendy',n:'Praktyka — join i formatowanie',lvl:3,
+d:'Wyświetl imię, nazwisko nauczyciela, jego przedmiot i liczbę uczniów którym wystawił oceny.',
+sol:'SELECT N.Imie, N.Nazwisko, N.Przedmiot, COUNT(DISTINCT O.ID_Ucznia) AS LiczbaUczniow FROM Nauczyciele N INNER JOIN Oceny O ON N.ID_Nauczyciela=O.ID_Nauczyciela GROUP BY N.Imie, N.Nazwisko, N.Przedmiot ORDER BY LiczbaUczniow DESC;',
+hint:'GROUP BY N.Imie, N.Nazwisko, N.Przedmiot + COUNT DISTINCT ID_Ucznia'},
+{c:'Agregaty',n:'Praktyka — suma skumulowana uproszczona',lvl:4,
+d:'Wyświetl wyniki egzaminów z Matematyki posortowane z biegącą sumą wyników.',
+sol:"SELECT E1.ID_Egzaminu, E1.Wynik, (SELECT SUM(E2.Wynik) FROM Egzaminy E2 WHERE E2.Przedmiot='Matematyka' AND E2.ID_Egzaminu <= E1.ID_Egzaminu) AS SumaKumulatywna FROM Egzaminy E1 WHERE E1.Przedmiot='Matematyka' ORDER BY E1.ID_Egzaminu;",
+hint:'Podzapytanie: SUM WHERE Przedmiot=X AND ID <= E1.ID'},
+{c:'SELECT',n:'Praktyka — sprawdź kompletność',lvl:3,
+d:'Wyświetl uczniów którzy mają oceny ze wszystkich 4 przedmiotów (Matematyka, Informatyka, Fizyka, Polski).',
+sol:"SELECT ID_Ucznia FROM Oceny WHERE Przedmiot IN ('Matematyka','Informatyka','Fizyka','Polski') GROUP BY ID_Ucznia HAVING COUNT(DISTINCT Przedmiot) = 4;",
+hint:"WHERE Przedmiot IN (...) GROUP BY HAVING COUNT(DISTINCT Przedmiot) = 4"},
+{c:'IIF',n:'Praktyka — skróć opis',lvl:3,
+d:'Wyświetl nazwy produktów: jeśli dłuższe niż 12 znaków skróć do 12 i dodaj "...", inaczej pokaż całość.',
+sol:"SELECT NazwaProduktu, IIF(Len(NazwaProduktu)>12, Left(NazwaProduktu,12) & '...', NazwaProduktu) AS NazwaSkrocona FROM Produkty;",
+hint:"IIF(Len>12, Left(n,12) & '...', n)"},
+{c:'Kwerendy',n:'Praktyka — top produkty per kategoria',lvl:4,
+d:'Wyświetl najdroższy produkt z każdej kategorii (Top 1 per grupa przez podzapytanie).',
+sol:'SELECT P.NazwaProduktu, P.Kategoria, P.Cena FROM Produkty P WHERE P.Cena = (SELECT MAX(P2.Cena) FROM Produkty P2 WHERE P2.Kategoria = P.Kategoria);',
+hint:'WHERE Cena = (SELECT MAX(Cena) FROM Produkty WHERE Kategoria = P.Kategoria)'},
+{c:'Funkcje',n:'Praktyka — ID z zerem wiodącym',lvl:2,
+d:'Wyświetl uczniów z ID w formacie "S-001", "S-012" itd.',
+sol:"SELECT 'S-' & Format(ID_Ucznia,'000') AS KodUcznia, Imie, Nazwisko FROM Uczniowie;",
+hint:"'S-' & Format(ID,'000') — Format dodaje zera wiodące",
+acc:"⚠️ ACCESS: Format(liczba,'000') = '001','012','123' — zero-padded string."},
+{c:'DDL',n:'Praktyka — tabela log operacji',lvl:4,
+d:'Utwórz tabelę <code>Log_Operacji</code>: ID INT PK, Operacja TEXT, Tabela TEXT, DataOperacji TEXT DEFAULT Date(), Uzytkownik TEXT DEFAULT "admin".',
+sol:"CREATE TABLE Log_Operacji (ID INT PRIMARY KEY, Operacja TEXT, Tabela TEXT, DataOperacji TEXT DEFAULT Date(), Uzytkownik TEXT DEFAULT 'admin');",
+hint:'DEFAULT wartość domyślna — Date() i "admin"',
+acc:'⚠️ ACCESS: DEFAULT może być wyrażeniem np. Date() — aktualną datą lub stałą wartością.'},
+{c:'SELECT',n:'Praktyka — kontrola integralności',lvl:4,
+d:'Znajdź rekordy w Wypozyczenia gdzie ID_Ucznia nie istnieje w tabeli Uczniowie (orphaned records).',
+sol:'SELECT W.* FROM Wypozyczenia W WHERE W.ID_Ucznia NOT IN (SELECT U.ID_Ucznia FROM Uczniowie U);',
+hint:'WHERE ID NOT IN (SELECT ID FROM Uczniowie)'},
+{c:'Kwerendy',n:'Praktyka — analiza zamówień dziennych',lvl:3,
+d:'Wyświetl daty gdzie złożono więcej niż 1 zamówienie i liczbę zamówień tego dnia.',
+sol:'SELECT DataZamowienia, COUNT(*) AS Zamowien FROM Zamowienia GROUP BY DataZamowienia HAVING COUNT(*) > 1 ORDER BY DataZamowienia;',
+hint:'GROUP BY DataZamowienia HAVING COUNT(*) > 1'},
+{c:'Funkcje',n:'Praktyka — porównanie stringów',lvl:3,
+d:'Wyświetl uczniów posortowanych tak że nazwisko "Kowalski" jest pierwsze (StrComp z wzorcem).',
+sol:"SELECT Imie, Nazwisko FROM Uczniowie ORDER BY IIF(Nazwisko='Kowalski',0,1), Nazwisko;",
+hint:"ORDER BY IIF(Nazwisko='Kowalski',0,1), Nazwisko — priorytet dla konkretnego nazwiska"},
+{c:'Agregaty',n:'Praktyka — Top N per group',lvl:4,
+d:'Wyświetl TOP 1 najlepszy wynik egzaminu dla każdego przedmiotu.',
+sol:'SELECT E.Przedmiot, MAX(E.Wynik) AS NajlepszyWynik, (SELECT TOP 1 ID_Ucznia FROM Egzaminy WHERE Przedmiot=E.Przedmiot ORDER BY Wynik DESC) AS NajlepszyUczen FROM Egzaminy E GROUP BY E.Przedmiot;',
+hint:'GROUP BY Przedmiot + MAX(Wynik) + podzapytanie TOP 1'},
+{c:'SELECT',n:'Praktyka — wyróżnij outstandingowych',lvl:3,
+d:'Wyświetl uczniów którzy mają co najmniej jedną 6 i żadnej 2.',
+sol:"SELECT ID_Ucznia FROM Oceny GROUP BY ID_Ucznia HAVING MAX(Ocena)=6 AND MIN(Ocena)>2;",
+hint:'GROUP BY ID_Ucznia HAVING MAX=6 AND MIN>2'},
+{c:'DDL',n:'Praktyka — SELECT INTO z transformacją',lvl:4,
+d:'Utwórz tabelę <code>Podsumowanie_Klientow</code>: imię, nazwisko, miasto, liczba zamówień, suma wydana.',
+sol:'SELECT K.Imie, K.Nazwisko, K.Miasto, COUNT(Z.ID_Zamowienia) AS LiczbaZam, SUM(Z.WartoscCalkowita) AS Wydano INTO Podsumowanie_Klientow FROM Klienci K LEFT JOIN Zamowienia Z ON K.ID_Klienta=Z.ID_Klienta GROUP BY K.Imie, K.Nazwisko, K.Miasto;',
+hint:'SELECT ... INTO ... FROM ... LEFT JOIN ... GROUP BY',
+acc:'⚠️ ACCESS: SELECT INTO + JOIN + GROUP BY — tworzenie tabeli wynikowej z zagregowanymi danymi!'},
+{c:'Kwerendy',n:'Praktyka — raport miesięczny sprzedaży',lvl:4,
+d:'Wyświetl miesiąc, łączną sprzedaż (wartość zamówień) i liczbę zamówień per miesiąc w 2024.',
+sol:'SELECT Month(DataZamowienia) AS Miesiac, COUNT(*) AS LiczbaZam, SUM(WartoscCalkowita) AS Sprzedaz FROM Zamowienia WHERE Year(DataZamowienia)=2024 GROUP BY Month(DataZamowienia) ORDER BY Miesiac;',
+hint:'GROUP BY Month(DataZamowienia) WHERE Year=2024'},
+{c:'IIF',n:'Praktyka — rabat wg wartości',lvl:3,
+d:'Wyświetl zamówienia z rabatową: > 3000 → 10%, > 1000 → 5%, reszta → 0%. Kolumna <code>Rabat</code> i <code>PoRabacie</code>.',
+sol:'SELECT ID_Zamowienia, WartoscCalkowita, Switch(WartoscCalkowita>3000,0.10,WartoscCalkowita>1000,0.05,True,0)*100 AS RabatPct, Round(WartoscCalkowita*(1-Switch(WartoscCalkowita>3000,0.10,WartoscCalkowita>1000,0.05,True,0)),2) AS PoRabacie FROM Zamowienia;',
+hint:"Switch(>3000,0.10, >1000,0.05, True,0) jako rabat, Wartosc*(1-rabat) jako końcowa"},
+{c:'SELECT',n:'Praktyka — multi-level sort',lvl:2,
+d:'Wyświetl oceny posortowane: po przedmiocie (A→Z), potem po ocenie (malejąco), potem po ID ucznia (rosnąco).',
+sol:'SELECT * FROM Oceny ORDER BY Przedmiot ASC, Ocena DESC, ID_Ucznia ASC;',
+hint:'ORDER BY Przedmiot ASC, Ocena DESC, ID_Ucznia ASC — 3 kryteria'},
+{c:'Kwerendy',n:'Praktyka — uczniowie vs norma',lvl:4,
+d:'Wyświetl uczniów z ich średnią i różnicą od średniej klasy (subquery per klasa).',
+sol:'SELECT U.Imie, U.Nazwisko, U.Klasa, Round(AVG(O.Ocena),2) AS SredUcznia, Round(AVG(O.Ocena) - (SELECT AVG(O2.Ocena) FROM Oceny O2 INNER JOIN Uczniowie U2 ON O2.ID_Ucznia=U2.ID_Ucznia WHERE U2.Klasa=U.Klasa), 2) AS OdchylenieOdKlasy FROM Uczniowie U INNER JOIN Oceny O ON U.ID_Ucznia=O.ID_Ucznia GROUP BY U.Imie, U.Nazwisko, U.Klasa;',
+hint:'Różnica: AVG(uczeń) - (SELECT AVG FROM ... WHERE Klasa = U.Klasa)'},
+{c:'Funkcje',n:'Praktyka — wyodrębnij domenę email',lvl:3,
+d:'Wyświetl klientów z wyodrębnioną domeną emaila (część po @).',
+sol:"SELECT Imie, Email, Mid(Email, InStr(Email,'@')+1) AS Domena FROM Klienci;",
+hint:"Mid(Email, InStr(Email,'@')+1) — od pozycji po @"},
+{c:'Agregaty',n:'Praktyka — analiza sezonowa',lvl:3,
+d:'Policz wypożyczenia per kwartał 2024.',
+sol:"SELECT DatePart('q',DataWyp) AS Kwartal, COUNT(*) AS Wypozyczen FROM Wypozyczenia WHERE Year(DataWyp)=2024 GROUP BY DatePart('q',DataWyp) ORDER BY Kwartal;",
+hint:"DatePart('q', DataWyp) + GROUP BY + WHERE Year=2024"},
+{c:'DDL',n:'Praktyka — masowe czyszczenie',lvl:3,
+d:'Usuń ze wszystkich tabel dane ucznia ID=9 (Egzaminy, Oceny, Wypozyczenia — w odpowiedniej kolejności).',
+sol:'DELETE FROM Egzaminy WHERE ID_Ucznia = 9; DELETE FROM Oceny WHERE ID_Ucznia = 9; DELETE FROM Wypozyczenia WHERE ID_Ucznia = 9;',
+hint:'Kolejność ważna: najpierw tabele zależne (Egzaminy, Oceny, Wypozyczenia), potem można usunąć z Uczniowie'},
+{c:'Kwerendy',n:'Praktyka — zestawienie zbiorcze',lvl:4,
+d:'Wyświetl zestawienie: kategoria produktu, liczba produktów, średnia cena, łączna wartość w magazynie, najdroższy.',
+sol:'SELECT Kategoria, COUNT(*) AS Produktow, Round(AVG(Cena),2) AS SredniaCena, Round(SUM(Cena*Magazyn),2) AS WartoscMag, MAX(Cena) AS Najdrozszy FROM Produkty GROUP BY Kategoria ORDER BY WartoscMag DESC;',
+hint:'GROUP BY Kategoria + COUNT, AVG, SUM(Cena*Magazyn), MAX'},
+{c:'SELECT',n:'Praktyka — spójność danych',lvl:4,
+d:'Znajdź egzaminy gdzie CzyZdal nie odpowiada Wynikowi (CzyZdal=1 gdy Wynik<50 lub CzyZdal=0 gdy Wynik>=50).',
+sol:'SELECT * FROM Egzaminy WHERE (CzyZdal=1 AND Wynik<50) OR (CzyZdal=0 AND Wynik>=50);',
+hint:'WHERE (CzyZdal=1 AND Wynik<50) OR (CzyZdal=0 AND Wynik>=50)'},
+];
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let db, cur = -1, dn = new Set(), rp = new Set(), flt = 'all', ansOpen = false;
+const SK = 'access_trainer_v1', RP_KEY = 'access_repeat_v1';
+
+// Access-keyword categories → CSS class
+const CAT_COLOR = {
+  SELECT:'var(--sq-select)', TOP:'var(--sq-top)', IIF:'var(--sq-iif)',
+  Funkcje:'var(--sq-func)', Kwerendy:'var(--sq-kwerenda)', DDL:'var(--sq-ddl)', Agregaty:'var(--sq-agg)'
+};
+const CAT_CATS = ['SELECT','TOP','IIF','Funkcje','Kwerendy','DDL','Agregaty'];
+
+// Access SQL keywords by category for button bar
+const KWORDS = [
+  {t:'SELECT',c:'c-select'},{t:'FROM',c:'c-select'},{t:'WHERE',c:'c-select'},
+  {t:'ORDER BY',c:'c-select'},{t:'AS',c:'c-select'},{t:'DISTINCT',c:'c-select'},
+  {t:'AND',c:'c-select'},{t:'OR',c:'c-select'},{t:'NOT',c:'c-select'},
+  {t:'BETWEEN',c:'c-between'},{t:'IN',c:'c-between'},{t:'LIKE',c:'c-like'},
+  {t:'IS NULL',c:'c-between'},{t:'IS NOT NULL',c:'c-between'},
+  {t:'SELECT TOP',c:'c-top'},{t:'TOP PERCENT',c:'c-top'},
+  {t:'IIF',c:'c-iif'},{t:'Switch',c:'c-iif'},{t:'Nz',c:'c-iif'},
+  {t:'INNER JOIN',c:'c-kwerenda'},{t:'LEFT JOIN',c:'c-kwerenda'},{t:'ON',c:'c-kwerenda'},
+  {t:'GROUP BY',c:'c-kwerenda'},{t:'HAVING',c:'c-kwerenda'},{t:'UNION',c:'c-kwerenda'},
+  {t:'CREATE TABLE',c:'c-ddl'},{t:'INSERT INTO',c:'c-ddl'},{t:'UPDATE',c:'c-ddl'},
+  {t:'DELETE FROM',c:'c-ddl'},{t:'ALTER TABLE',c:'c-ddl'},{t:'ADD COLUMN',c:'c-ddl'},
+  {t:'DROP COLUMN',c:'c-ddl'},{t:'SELECT INTO',c:'c-ddl'},
+  {t:'Mid()',c:'c-func'},{t:'Left()',c:'c-func'},{t:'Right()',c:'c-func'},
+  {t:'Len()',c:'c-func'},{t:'UCase()',c:'c-func'},{t:'LCase()',c:'c-func'},
+  {t:'Format()',c:'c-func'},{t:'Year()',c:'c-func'},{t:'Month()',c:'c-func'},
+  {t:'Date()',c:'c-func'},{t:'Now()',c:'c-func'},{t:'Trim()',c:'c-func'},
+  {t:'Round()',c:'c-func'},{t:'InStr()',c:'c-func'},{t:'Int()',c:'c-func'},
+  {t:'COUNT(*)',c:'c-agg'},{t:'SUM()',c:'c-agg'},{t:'AVG()',c:'c-agg'},
+  {t:'MAX()',c:'c-agg'},{t:'MIN()',c:'c-agg'},
+];
+
+// ══════════════════════════════════════════════════════
+// DB INIT
+// ══════════════════════════════════════════════════════
+async function initDB() {
+  const SQL = await initSqlJs({locateFile:f=>`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}`});
+  db = new SQL.Database();
+  resetDB();
+}
+
+function resetDB() {
+  SCHEMA.trim().split(';').filter(s=>s.trim()).forEach(s=>{try{db.run(s+';');}catch(e){}});
+  DATA.trim().split(';').filter(s=>s.trim()).forEach(s=>{try{db.run(s+';');}catch(e){}});
+}
+
+function isDML(i){ return ['DDL','UPDATE','DELETE','INSERT'].some(c=>T[i]?.c===c)||(T[i]?.c==='DDL'); }
+
+// ══════════════════════════════════════════════════════
+// SYNTAX HIGHLIGHT (Access SQL)
+// ══════════════════════════════════════════════════════
+function syncHL() {
+  const ta = document.getElementById('ed');
+  const hl = document.getElementById('hl');
+  hl.scrollTop = ta.scrollTop;
+  hl.scrollLeft = ta.scrollLeft;
+  hl.innerHTML = hlAcc(ta.value);
+}
+
+function hlAcc(s) {
+  const esc = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return esc
+    .replace(/(--[^\n]*)/g,'<span class="cm">$1</span>')
+    .replace(/('[^']*'|"[^"]*")/g,'<span class="str">$1</span>')
+    .replace(/\b(\d+\.?\d*)\b/g,'<span class="num">$1</span>')
+    // Access-specific keywords (orange)
+    .replace(/\b(IIF|Switch|Nz|Mid|Left|Right|Len|UCase|LCase|Format|Year|Month|Day|Date|Now|Trim|Round|InStr|Int|Fix|Abs|Sqr|Choose|StrComp|TOP PERCENT|SELECT INTO)\b/g,'<span class="acc-kw">$1</span>')
+    // Standard SQL keywords
+    .replace(/\b(SELECT|FROM|WHERE|ORDER BY|GROUP BY|HAVING|INNER JOIN|LEFT JOIN|RIGHT JOIN|ON|AS|DISTINCT|TOP|AND|OR|NOT|IN|BETWEEN|LIKE|IS NULL|IS NOT NULL|UNION|CREATE TABLE|INSERT INTO|UPDATE|DELETE FROM|ALTER TABLE|ADD COLUMN|DROP COLUMN|SET|VALUES|INTO|REFERENCES|PRIMARY KEY|FOREIGN KEY|BY|ASC|DESC|NULL|TRUE|FALSE)\b/gi,
+      w=>'<span class="kw">'+w+'</span>')
+    // Aggregate functions
+    .replace(/\b(COUNT|SUM|AVG|MAX|MIN)\s*(?=\()/g,'<span class="fn">$1</span>')
+    .replace(/\*/g,'<span class="star">*</span>');
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR — FILTERS + TASKS
+// ══════════════════════════════════════════════════════
+function buildFilters() {
+  const el = document.getElementById('filterBar');
+  // "Dziś" badge z licznikiem
+  const todayDone = _dailyCache ? [..._dailyCache.plan].filter(i=>_dailyCache.doneInPlan.has(i)||dn.has(i)).length : 0;
+  const todayTotal = _dailyCache ? _dailyCache.plan.length : 25;
+  const filters = [
+    ['all','Wszystkie'],
+    ['today', `📅 Dziś ${todayDone}/${todayTotal}`],
+    ['repeat','🔴 Powtórka'],
+    ...CAT_CATS.map(c=>[c,c])
+  ];
+  el.innerHTML = filters.map(([v,l])=>
+    `<button class="ftag${flt===v?' on':''}" onclick="setF('${v}')">${l}</button>`
+  ).join('');
+}
+
+function setF(f) {
+  flt = f;
+  buildFilters();
+  buildList();
+}
+
+function buildList() {
+  const el = document.getElementById('tlist');
+  const todayPlan = (_dailyCache && _dailyCache.plan) || [];
+  const tasks = flt === 'all' ? T
+    : flt === 'today' ? T.filter((_,i)=>todayPlan.includes(i))
+    : flt === 'repeat' ? T.filter((_,i)=>rp.has(i))
+    : T.filter(t=>t.c===flt);
+  el.innerHTML = '';
+  tasks.forEach((t, tIdx) => {
+    const i = T.indexOf(t);
+    const div = document.createElement('div');
+    const lvlMap = ['','lvl-e','lvl-m','lvl-h','lvl-a'];
+    div.className = `ti${i===cur?' on':''}${dn.has(i)?' done':''}${rp.has(i)?' repeat':''}`;
+    div.dataset.idx = i;
+    div.onclick = () => sel(i);
+    div.innerHTML = `
+      <div class="dot${dn.has(i)?' done':''}"></div>
+      <div class="ti-n">${t.n}${rp.has(i)?'<span class="repeat-badge">Powtórka</span>':''}</div>
+      <span class="lvl ${lvlMap[t.lvl]}">${['','E','M','H','A'][t.lvl]}</span>
+    `;
+    el.appendChild(div);
+  });
+  // update counts
+  document.getElementById('statDone').textContent = dn.size;
+  document.getElementById('statTotal').textContent = T.length;
+  showProgressBar();
+}
+
+// ══════════════════════════════════════════════════════
+// SELECT TASK
+// ══════════════════════════════════════════════════════
+function sel(i) {
+  if(i < 0 || i >= T.length) return;
+  cur = i;
+  const t = T[i];
+  ansOpen = false;
+  document.getElementById('ansWrap').classList.remove('show');
+  document.getElementById('explBox').style.display = 'none';
+  document.getElementById('accNote').classList.remove('show');
+  document.getElementById('btnNext').classList.remove('show');
+  document.getElementById('btnKnow').classList.remove('show');
+  document.getElementById('btnNope').classList.remove('show');
+
+  // reset DB for DML tasks
+  if(t.c === 'DDL') resetDB();
+
+  // task q
+  const cc = CAT_COLOR[t.c] || 'var(--acc)';
+  const lvlMap = {1:'Łatwe',2:'Średnie',3:'Trudne',4:'Zaawansowane'};
+  document.getElementById('tq').innerHTML = `
+    <div class="task-q-top">
+      <span class="cat-badge" style="background:${cc}20;color:${cc};border:1px solid ${cc}40">${t.c}</span>
+      <span class="diff-badge">${lvlMap[t.lvl]||''}</span>
+      ${t.acc?'<span class="acc-only-badge">⚠️ ACCESS SPECIFIC</span>':''}
+    </div>
+    <h2>${t.n}</h2>
+    <p>${t.d}</p>
+  `;
+
+  // keywords bar
+  buildBtns();
+
+  // acc note
+  if(t.acc) {
+    document.getElementById('accNote').innerHTML = `<b>ACCESS ≠ SQL:</b> ${t.acc}`;
+    document.getElementById('accNote').classList.add('show');
+  }
+
+  // editor - clear or keep
+  const ed = document.getElementById('ed');
+  if(!ed.value.trim()) ed.value = '';
+  syncHL();
+
+  // clear results
+  document.getElementById('rbody').innerHTML = '<div class="rmsg-empty">Wpisz kwerendę i kliknij ▶ Uruchom</div>';
+  document.getElementById('rst').innerHTML = '';
+  document.getElementById('rtime').textContent = '';
+
+  // sidebar highlight
+  buildList();
+  const ti = document.querySelector(`.ti[data-idx="${i}"]`);
+  if(ti) ti.scrollIntoView({block:'nearest',behavior:'smooth'});
+
+  // focus editor
+  setTimeout(()=>ed.focus(),50);
+}
+
+function rnd() {
+  const todayPlan = (_dailyCache && _dailyCache.plan) || [];
+  const pool = flt==='all' ? T.map((_,i)=>i)
+    : flt==='today' ? todayPlan
+    : flt==='repeat' ? [...rp]
+    : T.map((_,i)=>i).filter(i=>T[i].c===flt);
+  if(!pool.length) return;
+  sel(pool[Math.floor(Math.random()*pool.length)]);
+}
+
+function goNext() {
+  document.getElementById('btnNext').classList.remove('show');
+  const todayPlan = (_dailyCache && _dailyCache.plan) || [];
+  for(let i=cur+1;i<T.length;i++){
+    if(flt==='today' && !todayPlan.includes(i)) continue;
+    if(flt==='repeat' && !rp.has(i)) continue;
+    if(flt!=='all'&&flt!=='today'&&flt!=='repeat'&&T[i].c!==flt) continue;
+    sel(i); return;
+  }
+  rnd();
+}
+
+// ══════════════════════════════════════════════════════
+// KEYWORDS BAR
+// ══════════════════════════════════════════════════════
+function buildBtns() {
+  const el = document.getElementById('sqlbar');
+  el.innerHTML = KWORDS.map(k =>
+    `<button class="sqb ${k.c}" onclick="insKw('${k.t}')">${k.t}</button>`
+  ).join('');
+}
+
+function insKw(kw) {
+  const ed = document.getElementById('ed');
+  const s = ed.selectionStart;
+  ed.value = ed.value.substring(0,s) + kw + ' ' + ed.value.substring(ed.selectionEnd);
+  ed.selectionStart = ed.selectionEnd = s + kw.length + 1;
+  ed.focus();
+  syncHL();
+}
+
+// ══════════════════════════════════════════════════════
+// RUN QUERY
+// ══════════════════════════════════════════════════════
+function runQ() {
+  const sql = document.getElementById('ed').value.trim();
+  if(!sql) return;
+  const t0 = performance.now();
+  try {
+    const stmts = sql.split(';').map(s=>s.trim()).filter(s=>s);
+    let lastRes = null;
+    for(const stmt of stmts) {
+      const r = db.exec(stmt+';');
+      if(r.length) lastRes = r;
+    }
+    const ms = (performance.now()-t0).toFixed(1);
+    document.getElementById('rtime').textContent = `${ms}ms`;
+    if(!lastRes) {
+      sr('✓ Wykonano pomyślnie.','ok');
+      showKnow();
+      return;
+    }
+    let h = '<table><tr>' + lastRes[0].columns.map(c=>'<th>'+c+'</th>').join('') + '</tr>';
+    lastRes[0].values.forEach(row => {
+      h += '<tr>' + row.map(v=>'<td>'+(v===null?'<span style="color:var(--muted);font-style:italic">NULL</span>':v)+'</td>').join('') + '</tr>';
+    });
+    h += '</table>';
+    document.getElementById('rbody').innerHTML = h;
+    const n = lastRes[0].values.length;
+    document.getElementById('rst').innerHTML = `<span class="st-ok">${n} ${n===1?'wiersz':n<5?'wiersze':'wierszy'}</span>`;
+    showKnow();
+  } catch(e) {
+    sr('✗ '+e.message,'err');
+  }
+}
+
+function sr(m,c) {
+  document.getElementById('rbody').innerHTML = `<div class="rmsg ${c}">${m}</div>`;
+  document.getElementById('rst').innerHTML = c==='ok'?'<span class="st-ok">OK</span>':'<span class="st-err">BŁĄD</span>';
+}
+
+function showKnow() {
+  document.getElementById('btnKnow').classList.add('show');
+  document.getElementById('btnNope').classList.add('show');
+  document.getElementById('btnNext').classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════
+// ANSWER / EXPLAIN
+// ══════════════════════════════════════════════════════
+function toggleAns() {
+  const t = T[cur]; if(!t) return;
+  const w = document.getElementById('ansWrap');
+  const ex = document.getElementById('explBox');
+  ansOpen = !ansOpen;
+  if(ansOpen) {
+    document.getElementById('ansCode').textContent = t.sol || '';
+    w.classList.add('show');
+    if(t.hint) {
+      ex.style.display = 'block';
+      ex.innerHTML = `<b>💡 Wskazówka:</b> ${t.hint}`;
+    }
+  } else {
+    w.classList.remove('show');
+    ex.style.display = 'none';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// KNOW / NOPE (samocena)
+// ══════════════════════════════════════════════════════
+function know(v) {
+  if(cur<0) return;
+  if(v) {
+    dn.add(cur); rp.delete(cur);
+  } else {
+    rp.add(cur);
+  }
+  saveProgress(); saveRepeat();
+  buildList();
+  // Auto-next — po 380ms przejdź do kolejnego w aktualnej kategorii
+  setTimeout(() => goNext(), 380);
+}
+
+function clrEd() {
+  document.getElementById('ed').value = '';
+  document.getElementById('hl').innerHTML = '';
+  document.getElementById('rbody').innerHTML = '<div class="rmsg-empty">Wpisz kwerendę i kliknij ▶ Uruchom</div>';
+  document.getElementById('rst').innerHTML = '';
+  document.getElementById('rtime').textContent = '';
+  document.getElementById('ed').focus();
+}
+
+// ══════════════════════════════════════════════════════
+// SCHEMA PANEL
+// ══════════════════════════════════════════════════════
+let accActiveTab = 'tables';
+let accSelTable = '';
+
+function setAccTab(el, tab) {
+  accActiveTab = tab;
+  document.querySelectorAll('.acc-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  renderSchema();
+}
+
+function renderSchema() {
+  const q = (document.getElementById('schemaQ').value||'').toLowerCase();
+  const el = document.getElementById('schemaBody');
+  el.innerHTML = '';
+  let tblCount = 0, colCount = 0;
+
+  if(accActiveTab === 'queries') {
+    el.innerHTML = `<div style="padding:20px 12px;text-align:center;color:#4b5580;font-size:.7rem;font-family:'Fira Code'">
+      <div style="font-size:1.5rem;margin-bottom:8px">🔍</div>
+      <div>Zapisane kwerendy pojawią się tutaj.</div>
+      <div style="margin-top:6px;color:#374151">Uruchom zapytanie aby zobaczyć wyniki.</div>
+    </div>`;
+    document.getElementById('schemaFoot').textContent = '0 kwerend';
+    return;
+  }
+
+  if(accActiveTab === 'rels') {
+    // Show simple relationship map
+    let rhtml = '<div style="padding:8px 6px">';
+    Object.entries(FK_MAP).forEach(([tbl, fks]) => {
+      fks.forEach(fk => {
+        const refTbl = Object.entries(SCHEMA_COLS).find(([t,cols])=>cols.find(c=>c.pk && fk.toLowerCase().includes(c.n.toLowerCase().replace('id_',''))));
+        rhtml += `<div style="display:flex;align-items:center;gap:6px;padding:3px 6px;border-bottom:1px solid #1e2030;font-size:.65rem;font-family:'Fira Code'">
+          <span style="color:#f5c842">🔑</span>
+          <span style="color:#c8d0f0">${tbl}</span>
+          <span style="color:#4b5580">→</span>
+          <span style="color:#a855f7">${fk}</span>
+        </div>`;
+      });
+    });
+    rhtml += '</div>';
+    el.innerHTML = rhtml;
+    document.getElementById('schemaFoot').textContent = Object.keys(FK_MAP).length + ' relacji';
+    return;
+  }
+
+  // TABLES view — Access Datasheet style
+  Object.entries(SCHEMA_COLS).forEach(([tbl, cols]) => {
+    if(q && !tbl.toLowerCase().includes(q) && !cols.some(c=>c.n.toLowerCase().includes(q))) return;
+    tblCount++; colCount += cols.length;
+
+    // Try to get actual data from DB
+    let rows = [], dataCount = 0;
+    try {
+      const r = db.exec(`SELECT * FROM ${tbl} LIMIT 8`);
+      if(r.length) { rows = r[0].values; dataCount = r[0].values.length; }
+      const cnt = db.exec(`SELECT COUNT(*) FROM ${tbl}`);
+      if(cnt.length) dataCount = cnt[0].values[0][0];
+    } catch(e) {}
+
+    const isOpen = (accSelTable === tbl);
+    const section = document.createElement('div');
+    section.className = 'acc-nav-section';
+
+    // Navigation pane header
+    const hdrDiv = document.createElement('div');
+    hdrDiv.className = 'acc-nav-hdr' + (isOpen?' open':'');
+    hdrDiv.innerHTML = `
+      <div class="nav-arrow">▶</div>
+      <div class="nav-icon">🗃</div>
+      <div class="nav-name">${tbl}</div>
+      <div class="nav-cnt">${dataCount} rek.</div>`;
+    hdrDiv.onclick = () => {
+      hdrDiv.classList.toggle('open');
+      accSelTable = hdrDiv.classList.contains('open') ? tbl : '';
+    };
+    section.appendChild(hdrDiv);
+
+    // Datasheet wrap
+    const wrap = document.createElement('div');
+    wrap.className = 'acc-tbl-wrap';
+
+    // Build datasheet table
+    let tblHtml = '<table class="acc-tbl"><thead><tr><th class="rnum"></th>';
+    cols.forEach(c => {
+      tblHtml += `<th onclick="insCol('${tbl}.${c.n}')" title="Kliknij aby wstawić">`;
+      if(c.pk) tblHtml += '<span class="col-pk">🔑 </span>';
+      else if(c.fk) tblHtml += '<span class="col-fk">🔗 </span>';
+      tblHtml += `${c.n} <span class="col-type">${c.t}</span></th>`;
+    });
+    tblHtml += '</tr></thead><tbody>';
+
+    if(rows.length) {
+      rows.forEach((row, ri) => {
+        tblHtml += `<tr><td class="rnum">${ri+1}</td>`;
+        row.forEach((v, ci) => {
+          const val = v === null ? '<span style="color:#2a3050;font-style:italic">NULL</span>' : String(v).substring(0,20)+(String(v).length>20?'…':'');
+          tblHtml += `<td onclick="insCol('${tbl}.${cols[ci]?.n||''}')" title="${v===null?'NULL':v}">${val}</td>`;
+        });
+        tblHtml += '</tr>';
+      });
+    } else {
+      tblHtml += `<tr><td class="rnum">*</td><td colspan="${cols.length}" style="color:#2a3050;font-style:italic;padding:6px 8px;">(brak danych)</td></tr>`;
+    }
+
+    tblHtml += '</tbody></table>';
+
+    // Record navigator bar
+    tblHtml += `<div class="acc-nav-bar">
+      <button class="anb-btn" title="Pierwszy" onclick="event.stopPropagation()">|◀</button>
+      <button class="anb-btn" title="Poprzedni" onclick="event.stopPropagation()">◀</button>
+      <div class="anb-info">1 / ${dataCount}</div>
+      <button class="anb-btn" title="Następny" onclick="event.stopPropagation()">▶</button>
+      <button class="anb-btn" title="Ostatni" onclick="event.stopPropagation()">▶|</button>
+      <button class="anb-btn" title="Nowy rekord" onclick="event.stopPropagation()">▶*</button>
+      <div class="anb-sep"></div>
+      <div class="anb-info" style="min-width:70px;font-size:.55rem">${cols.length} kolumn</div>
+      <button class="anb-filter" onclick="insCol('${tbl}')">Wstaw tabelę</button>
+    </div>`;
+
+    wrap.innerHTML = tblHtml;
+    section.appendChild(wrap);
+    el.appendChild(section);
+  });
+
+  document.getElementById('schemaFoot').textContent = `${tblCount} tabel · ${colCount} kolumn`;
+}
+
+function insCol(col) {
+  const ed = document.getElementById('ed');
+  const s = ed.selectionStart;
+  const insert = col.includes('.') ? col : col;
+  ed.value = ed.value.substring(0,s) + insert + ed.value.substring(ed.selectionEnd);
+  ed.selectionStart = ed.selectionEnd = s + insert.length;
+  ed.focus(); syncHL();
+}
+
+function toggleSchema() {
+  document.getElementById('main').classList.toggle('hide-schema');
+  const b = document.querySelector('.schema-toggle');
+  b.textContent = b.textContent.includes('Tabele') ? '📋 Ukryj' : '📋 Tabele';
+  renderSchema();
+}
+
+// ══════════════════════════════════════════════════════
+// PROGRESS
+// ══════════════════════════════════════════════════════
+const IDB_NAME='AccessTrainer', IDB_STORE='progress';
+let _idb=null;
+function openIDB(){return new Promise((res,rej)=>{if(_idb){res(_idb);return;}const r=indexedDB.open(IDB_NAME,1);r.onupgradeneeded=e=>e.target.result.createObjectStore(IDB_STORE);r.onsuccess=e=>{_idb=e.target.result;res(_idb);};r.onerror=()=>rej(r.error);});}
+function idbSet(k,v){return openIDB().then(d=>new Promise((res,rej)=>{const tx=d.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);}));}
+function idbGet(k){return openIDB().then(d=>new Promise((res,rej)=>{const tx=d.transaction(IDB_STORE,'readonly');const r=tx.objectStore(IDB_STORE).get(k);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);}));}
+function idbDel(k){return openIDB().then(d=>new Promise((res,rej)=>{const tx=d.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).delete(k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);}));}
+
+function saveProgress(){const d=JSON.stringify({done:[...dn],cur});idbSet(SK,d).catch(()=>{try{localStorage.setItem(SK,d);}catch(e){}});}
+function saveRepeat(){const d=JSON.stringify([...rp]);idbSet(RP_KEY,d).catch(()=>{try{localStorage.setItem(RP_KEY,d);}catch(e){}});}
+function loadRepeat(){idbGet(RP_KEY).then(r=>{try{if(r)JSON.parse(r).forEach(i=>rp.add(parseInt(i)));}catch(e){}}).catch(()=>{try{const r=localStorage.getItem(RP_KEY);if(r)JSON.parse(r).forEach(i=>rp.add(parseInt(i)));}catch(e){}});}
+
+function loadProgress(){
+  idbGet(SK).then(raw=>{
+    if(!raw) try{raw=localStorage.getItem(SK);}catch(e){}
+    if(!raw) return;
+    try{const d=JSON.parse(raw);if(d.done)d.done.forEach(i=>dn.add(parseInt(i)));if(typeof d.cur==='number'&&d.cur>=0)cur=d.cur;}catch(e){}
+    buildList();
+    if(cur>=0) sel(cur);
+    showProgressBar();
+  }).catch(()=>{try{const raw=localStorage.getItem(SK);if(!raw)return;const d=JSON.parse(raw);if(d.done)d.done.forEach(i=>dn.add(parseInt(i)));if(typeof d.cur==='number')cur=d.cur;buildList();if(cur>=0)sel(cur);showProgressBar();}catch(e){}});
+}
+
+function clearProgress(){
+  idbDel(SK).catch(()=>{});idbDel(RP_KEY).catch(()=>{});
+  try{localStorage.removeItem(SK);localStorage.removeItem(RP_KEY);}catch(e){}
+  dn.clear();rp.clear();cur=-1;buildList();
+  document.getElementById('tq').innerHTML='<h2>Postęp wyczyszczony. <span>Zacznij od nowa!</span></h2><p>Wybierz zadanie z lewego panelu.</p>';
+  showProgressBar();
+}
+
+function showProgressBar(){
+  const pct=Math.round(dn.size/T.length*100);
+  let bar=document.getElementById('progBar');
+  if(!bar.innerHTML){
+    bar.innerHTML=`<div style="width:80px;height:4px;background:#1e2228;border-radius:2px"><div id="progFill" style="height:100%;background:linear-gradient(90deg,var(--acc2),var(--acc));border-radius:2px;transition:width .3s"></div></div><span id="progPct">0%</span>`;
+  }
+  const f=document.getElementById('progFill'),p=document.getElementById('progPct');
+  if(f) f.style.width=pct+'%';
+  if(p) p.textContent=pct+'%';
+}
+
+// ══════════════════════════════════════════════════════
+// DAILY PLAN (25 zadań — po 3-4 z każdej kategorii)
+// ══════════════════════════════════════════════════════
+const DAILY_KEY='access_daily_v1';
+let _dailyCache=null;
+const DAILY_DIST={SELECT:4,TOP:3,IIF:3,Funkcje:3,Kwerendy:5,DDL:4,Agregaty:3};
+
+function seededShuffle(arr,seed){const a=[...arr];for(let i=a.length-1;i>0;i--){seed=(seed*1664525+1013904223)&0x7fffffff;const j=seed%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function dateSeed(d){return d.split('-').reduce((a,b)=>a*100+parseInt(b),0);}
+
+function buildDailyPlan(dateStr){
+  const seed=dateSeed(dateStr);
+  const plan=[];
+  Object.entries(DAILY_DIST).forEach(([cat,n],ci)=>{
+    const idxs=T.map((_,i)=>i).filter(i=>T[i].c===cat);
+    seededShuffle(idxs,seed+ci*997).slice(0,n).forEach(i=>plan.push(i));
+  });
+  return seededShuffle(plan,seed+12345);
+}
+
+function getDailyPlan(){
+  return new Promise(res=>{
+    const today=new Date().toISOString().split('T')[0];
+    if(_dailyCache&&_dailyCache.date===today){res(_dailyCache);return;}
+    idbGet(DAILY_KEY).then(raw=>{
+      let obj=null;try{obj=JSON.parse(raw||'null');}catch(e){}
+      if(obj&&obj.date===today){obj.doneInPlan=new Set(obj.doneInPlan||[]);_dailyCache=obj;res(obj);}
+      else{const plan=buildDailyPlan(today);obj={date:today,plan,doneInPlan:new Set()};_dailyCache=obj;saveDailyPlan();res(obj);}
+    }).catch(()=>{const plan=buildDailyPlan(today);const obj={date:today,plan,doneInPlan:new Set()};_dailyCache=obj;res(obj);});
+  });
+}
+
+function saveDailyPlan(){if(!_dailyCache)return;const s={..._dailyCache,doneInPlan:[..._dailyCache.doneInPlan]};idbSet(DAILY_KEY,JSON.stringify(s)).catch(()=>{});}
+
+function updateDailyBadge(){
+  if(!_dailyCache)return;
+  const b=document.getElementById('btnDzisPlan');
+  if(b)b.textContent=`📅 Dziś ${_dailyCache.doneInPlan.size}/${_dailyCache.plan.length}`;
+}
+
+function showDailyModal(){
+  getDailyPlan().then(obj=>{
+    const {date,plan,doneInPlan}=obj;
+    const rows=plan.map(i=>{
+      const t=T[i];const done=doneInPlan.has(i)||dn.has(i);
+      const cc=CAT_COLOR[t.c]||'var(--acc)';
+      return `<div onclick="sel(${i});closeDM()" style="display:flex;align-items:center;gap:8px;padding:6px 8px;margin-bottom:3px;background:${done?'rgba(34,197,94,.07)':'rgba(255,255,255,.03)'};border:1px solid ${done?'rgba(34,197,94,.2)':'rgba(255,255,255,.06)'};border-radius:5px;cursor:pointer">
+        <span style="color:${done?'#4ade80':'#4b5563'};font-size:.75rem">${done?'✓':'○'}</span>
+        <span style="font-size:.65rem;padding:1px 5px;border-radius:3px;background:${cc}20;color:${cc}">${t.c}</span>
+        <span style="font-size:.67rem;color:${done?'#6b7280':'#d1d5db'};flex:1;${done?'text-decoration:line-through':''}">${t.n}</span>
+        <span style="font-size:.55rem;color:#374151">${['','E','M','H','A'][t.lvl]}</span>
+      </div>`;
+    }).join('');
+    const pct=Math.round([...plan].filter(i=>doneInPlan.has(i)||dn.has(i)).length/plan.length*100);
+    document.body.insertAdjacentHTML('beforeend',`<div id="dailyMO" onclick="if(event.target===this)closeDM()" style="position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:flex;align-items:center;justify-content:center">
+      <div style="background:#1a1d27;border:1px solid #2d3139;border-radius:14px;padding:20px 22px;max-width:460px;width:92%;max-height:85vh;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div><div style="font-size:.85rem;font-weight:700;color:var(--acc)">📅 Plan na dziś</div><div style="font-size:.6rem;color:#4b5563;margin-top:1px">${date} · ${pct}% ukończone</div></div>
+          <button onclick="closeDM()" style="background:none;border:none;color:#6b7280;font-size:1.2rem;cursor:pointer">✕</button>
+        </div>
+        <div style="height:5px;background:#111318;border-radius:3px;overflow:hidden;margin-bottom:12px"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--acc2),var(--acc));border-radius:3px;transition:.4s"></div></div>
+        <div style="overflow-y:auto;flex:1">${rows}</div>
+        <div style="margin-top:10px;display:flex;gap:6px">
+          <button onclick="startFirstUndone()" style="flex:2;padding:7px;background:rgba(255,140,66,.12);border:1px solid rgba(255,140,66,.3);border-radius:7px;color:var(--acc);font-size:.67rem;cursor:pointer;font-weight:600">▶ Zacznij od pierwszego</button>
+          <button onclick="clearProgress();closeDM()" style="flex:1;padding:7px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:7px;color:#f87171;font-size:.62rem;cursor:pointer">🗑 Reset</button>
+        </div>
+      </div>
+    </div>`);
+  });
+}
+
+function closeDM(){const el=document.getElementById('dailyMO');if(el)el.remove();}
+function startFirstUndone(){if(!_dailyCache)return;const f=_dailyCache.plan.find(i=>!_dailyCache.doneInPlan.has(i)&&!dn.has(i));if(f!==undefined)sel(f);closeDM();}
+
+// ══════════════════════════════════════════════════════
+// SCHEMA RESIZE
+// ══════════════════════════════════════════════════════
+(function(){
+  const h=document.getElementById('schemaResize'), panel=document.getElementById('schemaPanel');
+  let drag=false,sx=0,sw=300;
+  h.addEventListener('mousedown',e=>{drag=true;sx=e.clientX;sw=panel.offsetWidth;h.classList.add('active');e.preventDefault();document.body.style.cursor='col-resize';document.body.style.userSelect='none';});
+  document.addEventListener('mousemove',e=>{if(!drag)return;panel.style.width=Math.max(160,Math.min(700,sw-(e.clientX-sx)))+'px';});
+  document.addEventListener('mouseup',()=>{drag=false;h.classList.remove('active');document.body.style.cursor='';document.body.style.userSelect='';});
+})();
+
+// ══════════════════════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════════════════════
+const ed = document.getElementById('ed');
+ed.addEventListener('input', syncHL);
+ed.addEventListener('scroll', ()=>{const h=document.getElementById('hl');h.scrollTop=ed.scrollTop;h.scrollLeft=ed.scrollLeft;});
+ed.addEventListener('keydown', e=>{
+  if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();runQ();}
+  if(e.key==='Tab'){e.preventDefault();const s=ed.selectionStart;ed.value=ed.value.substring(0,s)+'    '+ed.value.substring(ed.selectionEnd);ed.selectionStart=ed.selectionEnd=s+4;syncHL();}
+});
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+buildFilters();
+buildBtns();
+renderSchema();
+initDB().then(()=>{
+  buildList();
+  rnd(); sel(0);
+  loadProgress(); loadRepeat();
+  getDailyPlan().then(()=>{updateDailyBadge();buildFilters();});
+  // Refresh schema after DB init so real data is visible
+  setTimeout(renderSchema, 800);
+});
+</script>
+</body>
+</html>
