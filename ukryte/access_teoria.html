@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c14">
+<title>Access • Teoria i Składnia | ViralloEdu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c14;--card:#0e1520;--elevated:#141e2e;--panel:#1a2438;
+  --text:#eef2f8;--text2:#8899bb;--muted:#445577;
+  --acc:#ff8c42;--acc2:#cc6a28;--acc3:#7a3a10;
+  --green:#10d48e;--red:#ff4466;--gold:#f5c842;
+  --purple:#a855f7;--blue:#3b82f6;--cyan:#06d6ff;--teal:#00b4aa;
+  --border:rgba(255,140,66,0.08);--border2:rgba(255,140,66,0.2);
+  --glow:0 0 60px rgba(255,140,66,0.12);--glow2:0 0 30px rgba(255,140,66,0.22);
+}
+html{scroll-behavior:smooth}
+body{font-family:"Outfit",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+code{font-family:"Fira Code",monospace;background:rgba(255,140,66,0.09);border:1px solid rgba(255,140,66,0.18);padding:2px 8px;border-radius:5px;font-size:0.83em;color:var(--acc)}
+pre{font-family:"Fira Code",monospace;background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:20px;overflow-x:auto;font-size:0.88rem;line-height:1.8;color:#b8d0f0;position:relative}
+pre code{background:transparent;border:none;padding:0;font-size:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--acc3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--acc2)}
+body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,20,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:"Cinzel",serif;font-size:1rem;letter-spacing:.05em}
+.nav-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--acc),var(--acc2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:var(--glow2);flex-shrink:0}
+.nav-links{display:flex;gap:2px;flex-wrap:nowrap}
+.nav-links a{padding:6px 11px;border-radius:7px;font-size:.78rem;color:var(--text2);transition:.25s;white-space:nowrap}
+.nav-links a:hover{background:var(--elevated);color:var(--acc)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:2px}
+.nav-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--gold),var(--green));transition:width .2s}
+@media(max-width:900px){.nav-links{display:none}}
+/* CONTAINER */
+.container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(255,140,66,.07) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,140,66,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,140,66,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(255,140,66,.08);border:1px solid rgba(255,140,66,.22);border-radius:50px;font-size:.85rem;color:var(--acc);margin-bottom:28px;animation:fadeUp .8s ease both}
+.hero h1{font-family:"Cinzel",serif;font-size:clamp(2.8rem,9vw,5.5rem);font-weight:700;line-height:1.05;margin-bottom:18px;animation:fadeUp .8s .1s ease both}
+.hero h1 .accent{background:linear-gradient(135deg,var(--acc),var(--gold),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:640px;color:var(--text2);font-size:1.1rem;margin-bottom:36px;line-height:1.7;animation:fadeUp .8s .2s ease both}
+.hero-modules{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;animation:fadeUp .8s .3s ease both}
+.hero-mod{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 20px;min-width:130px;transition:.3s;cursor:pointer}
+.hero-mod:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:var(--glow2)}
+.hero-mod .mnum{font-size:.75rem;color:var(--acc);font-weight:600;margin-bottom:3px;font-family:"Fira Code",monospace}
+.hero-mod .mname{font-size:.88rem;color:var(--text);font-weight:500}
+.hero-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#080c14;font-weight:700;border-radius:50px;font-size:1rem;transition:.3s;border:none;cursor:pointer;font-family:inherit;animation:fadeUp .8s .4s ease both}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(255,140,66,.3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* SECTIONS */
+section{padding:80px 0;position:relative;z-index:1}
+.section-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(255,140,66,.07);border:1px solid rgba(255,140,66,.2);border-radius:50px;font-size:.8rem;color:var(--acc);font-family:"Fira Code",monospace;margin-bottom:14px}
+.section-title{font-family:"Cinzel",serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:600px;margin:0 auto 48px;font-size:.95rem}
+.text-center{text-align:center}
+/* ROADMAPA */
+#roadmapa{background:var(--card)}
+.roadmap-grid{display:grid;gap:20px;max-width:1000px;margin:0 auto}
+.roadmap-item{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px 28px;display:grid;grid-template-columns:80px 1fr auto;gap:20px;align-items:start;transition:.3s}
+.roadmap-item:hover{border-color:rgba(255,140,66,.3);box-shadow:0 4px 30px rgba(255,140,66,.07)}
+@media(max-width:700px){.roadmap-item{grid-template-columns:1fr}}
+.rm-num{background:linear-gradient(135deg,var(--acc),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:"Cinzel",serif;font-size:2.4rem;font-weight:700;line-height:1}
+.rm-sub{font-size:.7rem;color:var(--muted);font-family:"Fira Code",monospace}
+.rm-title{font-size:1rem;font-weight:600;margin-bottom:6px;color:var(--text)}
+.rm-desc{color:var(--text2);font-size:.88rem;margin-bottom:12px}
+.rm-tags{display:flex;flex-wrap:wrap;gap:6px}
+.rm-tag{padding:4px 10px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:.75rem;color:var(--text2);font-family:"Fira Code",monospace}
+.rm-checks{display:flex;flex-direction:column;gap:7px}
+.rm-check{display:flex;align-items:center;gap:10px;padding:7px 12px;background:var(--card);border-radius:10px;font-size:.83rem;color:var(--text2);cursor:pointer;transition:.2s}
+.rm-check:hover{background:rgba(255,140,66,.06);color:var(--text)}
+.rm-check input{accent-color:var(--green);width:16px;height:16px;flex-shrink:0}
+.rm-check.done{color:var(--green)}
+/* SLOWNIK */
+#slownik{background:var(--bg)}
+.slownik-search{display:flex;gap:10px;max-width:500px;margin:0 auto 28px;flex-wrap:wrap;justify-content:center}
+.slownik-input{flex:1;min-width:220px;padding:12px 18px;background:var(--card);border:1px solid var(--border2);border-radius:50px;color:var(--text);font-family:inherit;font-size:.9rem;outline:none;transition:.3s}
+.slownik-input:focus{border-color:var(--acc)}
+.slownik-filter{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:24px}
+.sf-btn{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:.78rem;cursor:pointer;font-family:"Fira Code",monospace;transition:.2s}
+.sf-btn:hover,.sf-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(255,140,66,.07)}
+.slownik-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.sk-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.3s;cursor:pointer}
+.sk-card:hover{border-color:rgba(255,140,66,.3)}
+.sk-card.open{border-color:var(--green)}
+.sk-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sk-name{font-family:"Fira Code",monospace;font-size:.95rem;font-weight:600;color:var(--acc)}
+.sk-badge{font-size:.7rem;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+.badge-klauzula{background:rgba(255,140,66,.15);color:var(--acc)}
+.badge-funkcja{background:rgba(168,85,247,.15);color:#c084fc}
+.badge-dml{background:rgba(16,212,142,.12);color:var(--green)}
+.badge-ddl{background:rgba(245,200,66,.12);color:var(--gold)}
+.badge-operator{background:rgba(59,130,246,.15);color:#60a5fa}
+.badge-access{background:rgba(255,140,66,.2);color:var(--acc)}
+.badge-data{background:rgba(6,214,255,.12);color:var(--cyan)}
+.sk-short{padding:0 16px 10px;font-size:.84rem;color:var(--text2)}
+.sk-body{padding:0 16px 14px;display:none;border-top:1px solid var(--border)}
+.sk-card.open .sk-body{display:block}
+.sk-body-inner{padding-top:12px;font-size:.88rem;color:var(--text2);line-height:1.65}
+.sk-body pre{margin-top:10px;font-size:.8rem;padding:14px}
+.sk-tip{margin-top:10px;padding:10px 14px;background:rgba(245,200,66,.07);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;font-size:.82rem;color:var(--gold)}
+/* MODULY */
+#moduly{background:var(--card)}
+.module-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
+.mod-tab{padding:10px 20px;background:var(--elevated);border:1px solid var(--border);border-radius:50px;color:var(--text2);cursor:pointer;font-family:inherit;font-size:.85rem;transition:.3s;font-weight:500}
+.mod-tab:hover{border-color:rgba(255,140,66,.3)}
+.mod-tab.active{background:linear-gradient(135deg,rgba(255,140,66,.15),rgba(204,106,40,.12));border-color:var(--acc);color:var(--acc)}
+.mod-content{display:none;max-width:920px;margin:0 auto;animation:fadeIn .3s ease}
+.mod-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mod-card{background:var(--elevated);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:18px}
+.mod-card h4{color:var(--acc);font-size:1rem;font-family:"Fira Code",monospace;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mod-card p{color:var(--text2);font-size:.92rem;margin-bottom:14px;line-height:1.65}
+.mod-card ul{color:var(--text2);font-size:.9rem;padding-left:20px}
+.mod-card li{margin-bottom:5px}
+.mod-card li b{color:var(--acc)}
+.wtopa{background:rgba(255,68,102,.07);border:1px solid rgba(255,68,102,.2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.wtopa h5{color:var(--red);margin-bottom:6px;font-size:.85rem;display:flex;align-items:center;gap:6px}
+.wtopa p{color:var(--text2);font-size:.85rem;margin:0}
+.tip-box{background:rgba(16,212,142,.06);border:1px solid rgba(16,212,142,.2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.tip-box h5{color:var(--green);margin-bottom:6px;font-size:.85rem;display:flex;align-items:center;gap:6px}
+.tip-box p{color:var(--text2);font-size:.85rem;margin:0}
+.acc-diff{background:rgba(255,140,66,.07);border:1px solid rgba(255,140,66,.25);border-radius:12px;padding:14px 16px;margin-top:14px}
+.acc-diff h5{color:var(--acc);margin-bottom:8px;font-size:.85rem;display:flex;align-items:center;gap:6px}
+.acc-diff p,.acc-diff li{color:var(--text2);font-size:.85rem;margin:0}
+.acc-diff ul{padding-left:18px}
+.diff-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.diff-panel{background:var(--card);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+.diff-panel h6{font-size:.75rem;font-weight:700;margin-bottom:8px;font-family:"Fira Code",monospace}
+.diff-panel.sql-panel h6{color:#00d4ff}
+.diff-panel.acc-panel h6{color:var(--acc)}
+.diff-panel pre{font-size:.78rem;padding:10px;margin:0}
+.order-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,140,66,.08);border:1px solid rgba(255,140,66,.15);border-radius:8px;padding:4px 10px;font-size:.78rem;color:var(--acc);font-family:"Fira Code",monospace;margin:2px}
+/* ACCESS syntax highlight colors */
+.a-kw{color:#ff8c42;font-weight:700}
+.a-fn{color:#f5c842;font-weight:600}
+.a-str{color:#10d48e}
+.a-num{color:#b5cea8}
+.a-cm{color:#4b6080;font-style:italic}
+.a-op{color:#c084fc}
+/* BUILDER */
+#builder{background:var(--bg)}
+.builder-wrap{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:800px){.builder-wrap{grid-template-columns:1fr}}
+.builder-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px}
+.builder-panel h4{font-family:"Cinzel",serif;font-size:1rem;margin-bottom:16px;color:var(--acc)}
+.builder-group{margin-bottom:14px}
+.builder-group label{display:block;font-size:.8rem;color:var(--text2);margin-bottom:6px;font-family:"Fira Code",monospace}
+.builder-select,.builder-input{width:100%;padding:10px 14px;background:var(--elevated);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:"Fira Code",monospace;font-size:.85rem;transition:.2s}
+.builder-select:focus,.builder-input:focus{outline:none;border-color:var(--acc)}
+.builder-btns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.builder-btn{padding:10px 20px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;font-size:.88rem;transition:.3s}
+.builder-btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#080c14}
+.builder-btn.secondary{background:var(--elevated);color:var(--text);border:1px solid var(--border)}
+.builder-btn:hover{transform:translateY(-2px)}
+.query-output{background:var(--bg);border-radius:12px;padding:16px;min-height:160px;font-family:"Fira Code",monospace;font-size:.88rem;color:#b8d0f0;white-space:pre-wrap;border:1px solid var(--border);line-height:1.8}
+.query-note{margin-top:10px;font-size:.8rem;color:var(--muted);font-style:italic}
+/* QUIZ */
+#quiz{background:var(--card)}
+.quiz-wrap{max-width:760px;margin:0 auto}
+.quiz-box{background:var(--elevated);border:1px solid var(--border);border-radius:24px;padding:32px}
+.quiz-progress{display:flex;gap:4px;margin-bottom:24px}
+.q-dot{flex:1;height:3px;background:var(--card);border-radius:2px;transition:.3s}
+.q-dot.done{background:var(--green)}
+.q-dot.current{background:var(--acc)}
+.quiz-num{font-family:"Fira Code",monospace;font-size:.8rem;color:var(--acc);margin-bottom:10px}
+.quiz-q{font-family:"Cinzel",serif;font-size:1.2rem;margin-bottom:8px;line-height:1.4;color:var(--text)}
+.quiz-hint{font-family:"Fira Code",monospace;font-size:.85rem;color:var(--muted);margin-bottom:20px;padding:10px 14px;background:var(--card);border-radius:8px}
+.quiz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.q-opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--card);border:2px solid transparent;border-radius:14px;cursor:pointer;transition:.25s;font-size:.92rem}
+.q-opt:hover{border-color:rgba(255,140,66,.3)}
+.q-opt.selected{border-color:var(--gold);background:rgba(245,200,66,.07)}
+.q-opt.correct{border-color:var(--green);background:rgba(16,212,142,.07)}
+.q-opt.wrong{border-color:var(--red);background:rgba(255,68,102,.07)}
+.q-letter{width:32px;height:32px;background:var(--elevated);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;font-family:"Fira Code",monospace}
+.q-opt.selected .q-letter{background:var(--gold);color:#080c14}
+.q-opt.correct .q-letter{background:var(--green);color:#080c14}
+.q-opt.wrong .q-letter{background:var(--red);color:#fff}
+.quiz-feedback{padding:14px 16px;border-radius:12px;margin-bottom:18px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(16,212,142,.07);border:1px solid rgba(16,212,142,.25)}
+.quiz-feedback.bad{background:rgba(255,68,102,.07);border:1px solid rgba(255,68,102,.25)}
+.quiz-feedback h5{margin-bottom:6px;font-size:.88rem}
+.quiz-feedback.ok h5{color:var(--green)}
+.quiz-feedback.bad h5{color:var(--red)}
+.quiz-feedback p{color:var(--text2);font-size:.85rem;line-height:1.5}
+.quiz-btns{display:flex;justify-content:space-between;gap:12px}
+.qbtn{padding:12px 24px;border-radius:50px;font-weight:600;cursor:pointer;border:none;font-family:inherit;font-size:.9rem;transition:.3s}
+.qbtn-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.qbtn-next{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#080c14}
+.qbtn:disabled{opacity:.4;cursor:not-allowed}
+.qbtn:not(:disabled):hover{transform:translateY(-2px)}
+.quiz-result{text-align:center;padding:36px 20px}
+.result-score{font-family:"Cinzel",serif;font-size:4.5rem;color:var(--gold);line-height:1}
+.result-max{font-size:1.2rem;color:var(--text2);margin-bottom:16px}
+.result-btn{padding:14px 32px;background:linear-gradient(135deg,var(--acc),var(--acc2));color:#080c14;font-weight:700;border-radius:50px;border:none;cursor:pointer;font-family:inherit;font-size:.95rem;transition:.3s}
+.result-btn:hover{transform:translateY(-2px)}
+/* FISZKI */
+#fiszki{background:var(--bg)}
+.flash-wrap{max-width:660px;margin:0 auto}
+.flash-filter{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.ff-btn{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:.78rem;cursor:pointer;font-family:"Fira Code",monospace;transition:.2s}
+.ff-btn:hover,.ff-btn.active{border-color:var(--acc);color:var(--acc);background:rgba(255,140,66,.07)}
+.flashcard{height:280px;perspective:1200px;cursor:pointer;margin-bottom:18px}
+.flash-inner{width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d;position:relative}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:30px;text-align:center;border:2px solid}
+.flash-front{background:var(--elevated);border-color:rgba(255,140,66,.3)}
+.flash-back{background:var(--elevated);border-color:rgba(16,212,142,.4);transform:rotateY(180deg)}
+.flash-tag{font-family:"Fira Code",monospace;font-size:.72rem;color:var(--acc);margin-bottom:10px;opacity:.7}
+.flash-q{font-family:"Cinzel",serif;font-size:1.25rem;line-height:1.4;color:var(--text);margin-bottom:8px}
+.flash-hint{color:var(--muted);font-size:.8rem}
+.flash-a{font-size:.95rem;color:var(--text2);line-height:1.6;max-width:100%}
+.flash-a pre{font-size:.82rem;padding:10px 14px;margin-top:8px;text-align:left}
+.flash-nav{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.flash-btn{padding:10px 18px;background:var(--card);border:1px solid var(--border);border-radius:50px;color:var(--text);font-weight:500;cursor:pointer;font-family:inherit;font-size:.85rem;transition:.25s}
+.flash-btn:hover{border-color:var(--acc);color:var(--acc)}
+.flash-btn.master{background:rgba(16,212,142,.08);border-color:var(--green);color:var(--green)}
+.flash-count{text-align:center;margin-top:12px;font-size:.85rem;color:var(--text2);font-family:"Fira Code",monospace}
+.flash-mastered{color:var(--green);font-size:.78rem;margin-left:8px}
+/* TYPING */
+#typing{background:var(--card)}
+.typing-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;max-width:980px;margin:0 auto}
+@media(max-width:800px){.typing-wrap{grid-template-columns:1fr}}
+.typing-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:24px}
+.typing-panel h4{font-family:"Cinzel",serif;font-size:.95rem;margin-bottom:14px;color:var(--acc)}
+.typing-prompt{font-family:"Cinzel",serif;font-size:1.05rem;margin-bottom:8px;min-height:48px;line-height:1.4;color:var(--text)}
+.typing-hint{color:var(--muted);font-size:.82rem;margin-bottom:14px;font-family:"Fira Code",monospace}
+.typing-input{width:100%;padding:12px 16px;background:var(--card);border:2px solid var(--border);border-radius:12px;color:var(--text);font-family:"Fira Code",monospace;font-size:.95rem;transition:.3s;resize:none}
+.typing-input:focus{outline:none;border-color:var(--acc)}
+.typing-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.typing-btn{padding:10px 18px;border-radius:50px;border:none;font-family:inherit;font-weight:600;cursor:pointer;font-size:.85rem;transition:.3s}
+.typing-btn.check{background:linear-gradient(135deg,var(--green),var(--teal));color:#080c14}
+.typing-btn.secondary{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.typing-btn:hover{transform:translateY(-2px)}
+.typing-feedback{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:.88rem;line-height:1.5}
+.typing-feedback.ok{background:rgba(16,212,142,.08);color:var(--green);border:1px solid rgba(16,212,142,.2)}
+.typing-feedback.bad{background:rgba(255,68,102,.07);color:var(--red);border:1px solid rgba(255,68,102,.2)}
+.typing-feedback.show2{background:rgba(245,200,66,.07);color:var(--gold);border:1px solid rgba(245,200,66,.2)}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-box{background:var(--card);border-radius:14px;padding:14px;text-align:center;border:1px solid var(--border)}
+.stat-label{font-size:.75rem;color:var(--muted);margin-bottom:4px}
+.stat-val{font-size:1.6rem;font-weight:700;font-family:"Cinzel",serif}
+.stat-val.ok{color:var(--green)}.stat-val.bad{color:var(--red)}.stat-val.streak{color:var(--gold)}
+.typing-progress{margin-top:16px}
+.typing-progress-bar{height:4px;background:var(--card);border-radius:2px;overflow:hidden;margin-top:6px}
+.typing-progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--green));border-radius:2px;transition:width .4s}
+/* FOKUS */
+#fokus{background:var(--bg)}
+.fokus-wrap{max-width:820px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:28px}
+.fokus-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.fokus-info{font-family:"Fira Code",monospace;font-size:.82rem;color:var(--text2)}
+.fokus-info span{color:var(--acc)}
+.fokus-controls{display:flex;gap:8px;flex-wrap:wrap}
+.fokus-btn{padding:9px 16px;border-radius:50px;border:1px solid var(--border);background:var(--elevated);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:.82rem;transition:.25s}
+.fokus-btn:hover{border-color:var(--acc)}
+.fokus-btn.start{background:linear-gradient(135deg,var(--green),var(--teal));color:#080c14;border:none}
+.fokus-card{background:var(--elevated);border-radius:18px;padding:26px;min-height:160px;margin-bottom:18px;border:1px solid var(--border)}
+.fokus-q{font-family:"Cinzel",serif;font-size:1.15rem;color:var(--text);line-height:1.4;margin-bottom:10px}
+.fokus-a{color:var(--text2);display:none;font-size:.92rem;line-height:1.6;padding-top:12px;border-top:1px solid var(--border)}
+.fokus-a.show{display:block}
+.fokus-a pre{margin-top:8px;font-size:.82rem}
+.fokus-bar-wrap{height:6px;background:var(--bg);border-radius:50px;overflow:hidden}
+.fokus-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--acc),var(--gold),var(--green));transition:width .3s}
+.kbd{font-family:"Fira Code",monospace;font-size:.72rem;padding:3px 7px;background:var(--elevated);border:1px solid var(--border);border-radius:5px;color:var(--text2)}
+/* NOTATNIK */
+#notatnik{background:var(--card)}
+.nb-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.nb-wrap{grid-template-columns:1fr}}
+.nb-panel{background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:22px}
+.nb-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.nb-head h4{font-family:"Cinzel",serif;font-size:.95rem;color:var(--acc)}
+.nb-count{font-size:.78rem;color:var(--text2);font-family:"Fira Code",monospace}
+.nb-items{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto}
+.nb-item{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;transition:.2s;cursor:pointer}
+.nb-item:hover{border-color:rgba(255,140,66,.25)}
+.nb-item input[type=checkbox]{accent-color:var(--green);width:16px;height:16px;margin-top:3px;flex-shrink:0}
+.nb-item .nb-txt{flex:1;font-size:.85rem;color:var(--text2);line-height:1.5}
+.nb-item .nb-tag{font-size:.72rem;color:var(--muted);font-family:"Fira Code",monospace;margin-top:3px}
+.nb-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.nb-btn{padding:9px 14px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:600;cursor:pointer;font-family:inherit;font-size:.8rem;transition:.25s}
+.nb-btn:hover{border-color:var(--acc)}
+.nb-btn.primary{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#080c14;border:none}
+.nb-btn.danger:hover{border-color:var(--red)}
+.nb-list{display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto}
+.nb-list-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--card);border-radius:10px;padding:10px 12px;border:1px solid var(--border)}
+.nb-list-item .nb-txt{flex:1;font-size:.85rem;color:var(--text2);line-height:1.5}
+.nb-list-item .nb-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 4px;transition:.2s}
+.nb-list-item .nb-del:hover{color:var(--red)}
+footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-logo{font-family:"Cinzel",serif;font-size:1.1rem;margin-bottom:10px;color:var(--acc)}
+.footer-copy{color:var(--muted);font-size:.88rem}
+.footer-copy a{color:var(--text2);border-bottom:1px solid rgba(255,255,255,.1);transition:.2s}
+.footer-copy a:hover{color:var(--acc)}
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--elevated);border:1px solid var(--border2);border-radius:14px;padding:14px 20px;min-width:220px;box-shadow:var(--glow);transform:translateY(100px);opacity:0;transition:.3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast b{display:block;margin-bottom:3px;color:var(--acc)}
+.toast span{font-size:.85rem;color:var(--text2)}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="nav">
+  <a href="viralloedu.html" class="nav-logo">
+    <div class="nav-icon">🗂️</div>
+    <span>Access • Teoria</span>
+  </a>
+  <div class="nav-links">
+    <a href="#roadmapa">Roadmapa</a>
+    <a href="#slownik">Słownik</a>
+    <a href="#moduly">Moduły</a>
+    <a href="#builder">Builder</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#fiszki">Fiszki</a>
+    <a href="#typing">Typing</a>
+    <a href="#fokus">Fokus</a>
+    <a href="#notatnik">Notatnik</a>
+    <a href="access_trainer.html" style="color:var(--acc);font-weight:600">⚡ 341 Zadań</a>
+  </div>
+  <div class="nav-progress"><div class="nav-bar" id="navBar"></div></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">🗂️ Kompletna teoria Microsoft Access • Matura Informatyczna</div>
+  <h1>Access od <span class="accent">SELECT TOP</span><br>do <span class="accent">MISTRZA</span></h1>
+  <p class="hero-desc">SELECT TOP, IIF(), Switch(), Mid(), Format(), DateAdd() — wszystkie różnice między Access a standardowym SQL wyjaśnione. Teoria + Quiz + Fiszki + Typing Sprint.</p>
+  <div class="hero-modules">
+    <div class="hero-mod" onclick="location.href='#roadmapa'"><div class="mnum">01</div><div class="mname">SELECT & TOP</div></div>
+    <div class="hero-mod" onclick="location.href='#roadmapa'"><div class="mnum">02</div><div class="mname">IIF & Switch</div></div>
+    <div class="hero-mod" onclick="location.href='#roadmapa'"><div class="mnum">03</div><div class="mname">Funkcje tekstu</div></div>
+    <div class="hero-mod" onclick="location.href='#roadmapa'"><div class="mnum">04</div><div class="mname">Daty & czas</div></div>
+    <div class="hero-mod" onclick="location.href='#roadmapa'"><div class="mnum">05</div><div class="mname">JOIN & DDL</div></div>
+    <div class="hero-mod" onclick="location.href='#roadmapa'"><div class="mnum">06</div><div class="mname">Access vs SQL</div></div>
+  </div>
+  <a href="#roadmapa" class="hero-btn">Zaczynam naukę →</a>
+</section>
+
+<!-- ROADMAPA -->
+<section id="roadmapa">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📍 ROADMAPA</div>
+  <h2 class="section-title">Ścieżka nauki Access SQL</h2>
+  <p class="section-desc">Odhaczaj tematy w miarę postępów. Każdy poziom buduje na poprzednim.</p>
+</div>
+<div class="roadmap-grid">
+
+<div class="roadmap-item">
+  <div><div class="rm-num">01</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">SELECT i podstawy kwerend</div>
+    <div class="rm-desc">SELECT, FROM, WHERE, ORDER BY, AS, DISTINCT, BETWEEN, IN, LIKE z gwiazdką, konkatenacja &amp;.</div>
+    <div class="rm-tags"><span class="rm-tag">SELECT</span><span class="rm-tag">FROM</span><span class="rm-tag">WHERE</span><span class="rm-tag">ORDER BY</span><span class="rm-tag">AS [ ]</span><span class="rm-tag">LIKE *</span></div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="acc_1_select">Składnia SELECT i FROM</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_1_where">WHERE + operatory (&lt;&gt; NOT)</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_1_like">LIKE z * zamiast % — różnica!</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_1_alias">Aliasy z [ ] dla nazw ze spacją</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">02</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">SELECT TOP — Access zamiast LIMIT</div>
+    <div class="rm-desc">SELECT TOP n, SELECT TOP n PERCENT — unikalne dla Access. Brak LIMIT w Access!</div>
+    <div class="rm-tags"><span class="rm-tag">SELECT TOP n</span><span class="rm-tag">TOP PERCENT</span><span class="rm-tag">ORDER BY</span></div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="acc_2_top">SELECT TOP n — składnia i użycie</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_2_pct">SELECT TOP n PERCENT</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_2_combo">TOP + ORDER BY + WHERE razem</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">03</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">IIF() i Switch() — warunkowe wyrażenia</div>
+    <div class="rm-desc">IIF(warunek, tak, nie), Switch(w1,v1, w2,v2, ..., True,domyślny), Nz() dla NULL.</div>
+    <div class="rm-tags"><span class="rm-tag">IIF()</span><span class="rm-tag">Switch()</span><span class="rm-tag">Choose()</span><span class="rm-tag">Nz()</span></div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="acc_3_iif">IIF() — Access zamiast CASE WHEN</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_3_switch">Switch() — wiele warunków</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_3_nz">Nz() — obsługa NULL</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_3_nest">Zagnieżdżone IIF()</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">04</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">Funkcje tekstowe i liczbowe</div>
+    <div class="rm-desc">Mid(), Left(), Right(), Len(), UCase(), LCase(), Format(), Replace(), InStr(), Round().</div>
+    <div class="rm-tags"><span class="rm-tag">Mid()</span><span class="rm-tag">Left/Right()</span><span class="rm-tag">Len()</span><span class="rm-tag">Format()</span><span class="rm-tag">InStr()</span></div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="acc_4_mid">Mid() — wycinanie tekstu (nie SUBSTR)</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_4_format">Format() — formatowanie liczb i dat</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_4_instr">InStr() — szukanie w tekście</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_4_ucase">UCase()/LCase() zamiast UPPER/LOWER</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">05</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">Daty i czas — funkcje Access</div>
+    <div class="rm-desc">Date(), Now(), Year(), Month(), Day(), DateAdd(), DateDiff(), DatePart(), Format() dat.</div>
+    <div class="rm-tags"><span class="rm-tag">Date()</span><span class="rm-tag">DateAdd()</span><span class="rm-tag">DateDiff()</span><span class="rm-tag">Year/Month/Day()</span></div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="acc_5_date">Date() i Now() — bieżąca data/czas</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_5_dateadd">DateAdd(interval, n, data)</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_5_datediff">DateDiff(interval, d1, d2)</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_5_format">Format(data, "dd/mm/yyyy")</label>
+  </div>
+</div>
+
+<div class="roadmap-item">
+  <div><div class="rm-num">06</div><div class="rm-sub">POZIOM</div></div>
+  <div>
+    <div class="rm-title">JOIN, DDL i kwerendy specjalne</div>
+    <div class="rm-desc">INNER JOIN z nawiasami dla 3+ tabel, SELECT INTO, kwerenda parametryczna [ ], TRANSFORM/PIVOT.</div>
+    <div class="rm-tags"><span class="rm-tag">JOIN ()</span><span class="rm-tag">SELECT INTO</span><span class="rm-tag">[Parametr]</span><span class="rm-tag">TRANSFORM</span></div>
+  </div>
+  <div class="rm-checks">
+    <label class="rm-check"><input type="checkbox" data-k="acc_6_join">JOIN 3+ tabel z nawiasami!</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_6_into">SELECT INTO — kwerenda tworząca</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_6_param">Kwerenda parametryczna [Podaj:]</label>
+    <label class="rm-check"><input type="checkbox" data-k="acc_6_transform">TRANSFORM/PIVOT — kwerenda krzyżowa</label>
+  </div>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- SŁOWNIK -->
+<section id="slownik">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📖 SŁOWNIK</div>
+  <h2 class="section-title">Słownik Access SQL</h2>
+  <p class="section-desc">Kliknij kartę aby rozwinąć opis z przykładem i tipem maturalnym. Filtruj po kategorii.</p>
+</div>
+<div class="slownik-search">
+  <input class="slownik-input" id="slownikSearch" placeholder="🔍 szukaj (np. IIF, Mid, TOP)..." oninput="filterSlownik()">
+</div>
+<div class="slownik-filter" id="slownikFilter"></div>
+<div class="slownik-grid" id="slownikGrid"></div>
+</div>
+</section>
+
+<!-- MODUŁY -->
+<section id="moduly">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📚 MODUŁY</div>
+  <h2 class="section-title">Moduły teorii</h2>
+  <p class="section-desc">Pełna teoria z porównaniami Access vs SQL, przykładami i wskazówkami maturalnymi.</p>
+</div>
+<div class="module-tabs" id="modTabs"></div>
+<div id="modContents"></div>
+</div>
+</section>
+
+<!-- BUILDER -->
+<section id="builder">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🔨 BUILDER</div>
+  <h2 class="section-title">Query Builder Access</h2>
+  <p class="section-desc">Zbuduj kwerendę Access krok po kroku — wybierz typ i patrz jak Access-SQL się składa.</p>
+</div>
+<div class="builder-wrap">
+<div class="builder-panel">
+  <h4>⚙️ Konfiguracja kwerendy</h4>
+  <div class="builder-group">
+    <label>Typ kwerendy</label>
+    <select class="builder-select" id="bType" onchange="buildQuery()">
+      <option value="select">SELECT (pobieranie)</option>
+      <option value="top">SELECT TOP n</option>
+      <option value="iif">SELECT + IIF()</option>
+      <option value="join">SELECT + JOIN (Access)</option>
+      <option value="group">SELECT + GROUP BY</option>
+      <option value="insert">INSERT INTO</option>
+      <option value="update">UPDATE</option>
+      <option value="delete">DELETE</option>
+      <option value="selectinto">SELECT INTO (kwerenda tworząca)</option>
+    </select>
+  </div>
+  <div class="builder-group">
+    <label>Tabela główna</label>
+    <select class="builder-select" id="bTable" onchange="buildQuery()">
+      <option value="Uczniowie">Uczniowie</option>
+      <option value="Oceny">Oceny</option>
+      <option value="Nauczyciele">Nauczyciele</option>
+      <option value="Produkty">Produkty</option>
+      <option value="Zamowienia">Zamowienia</option>
+      <option value="Ksiazki">Ksiazki</option>
+    </select>
+  </div>
+  <div class="builder-group">
+    <label>Liczba rekordów (TOP n)</label>
+    <select class="builder-select" id="bTop" onchange="buildQuery()">
+      <option value="">— wszystkie —</option>
+      <option value="1">TOP 1</option>
+      <option value="3">TOP 3</option>
+      <option value="5">TOP 5</option>
+      <option value="10">TOP 10</option>
+      <option value="10 PERCENT">TOP 10 PERCENT</option>
+    </select>
+  </div>
+  <div class="builder-group">
+    <label>Warunek WHERE</label>
+    <input class="builder-input" id="bWhere" placeholder='np. Klasa = "3A"' oninput="buildQuery()">
+  </div>
+  <div class="builder-group">
+    <label>GROUP BY (opcjonalnie)</label>
+    <input class="builder-input" id="bGroup" placeholder="np. Klasa" oninput="buildQuery()">
+  </div>
+  <div class="builder-group">
+    <label>ORDER BY</label>
+    <select class="builder-select" id="bOrder" onchange="buildQuery()">
+      <option value="">— brak —</option>
+      <option value="ASC">pierwsza kolumna ASC</option>
+      <option value="DESC">pierwsza kolumna DESC</option>
+    </select>
+  </div>
+  <div class="builder-btns">
+    <button class="builder-btn primary" onclick="buildQuery()">🔨 Buduj</button>
+    <button class="builder-btn secondary" onclick="copyQuery()">📋 Kopiuj</button>
+    <button class="builder-btn secondary" onclick="resetBuilder()">Reset</button>
+  </div>
+</div>
+<div class="builder-panel">
+  <h4>📄 Wygenerowana kwerenda Access</h4>
+  <div class="query-output" id="queryOut"></div>
+  <div class="query-note" id="queryNote"></div>
+  <h4 style="margin-top:20px;font-size:.85rem;color:var(--text2)">⚠️ Kluczowe różnice Access vs SQL:</h4>
+  <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--text2)">
+    <div><span class="order-badge">SELECT TOP n</span> zamiast <code>LIMIT n</code></div>
+    <div><span class="order-badge">IIF(w,t,f)</span> zamiast <code>CASE WHEN</code></div>
+    <div><span class="order-badge">Mid(t,s,l)</span> zamiast <code>SUBSTR()</code></div>
+    <div><span class="order-badge">LIKE "A*"</span> zamiast <code>LIKE 'A%'</code></div>
+    <div><span class="order-badge">A & B</span> zamiast <code>A || B</code></div>
+    <div><span class="order-badge">(T1 JOIN T2) JOIN T3</span> nawiasy przy 3+ tabelach</div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🎯 QUIZ</div>
+  <h2 class="section-title">Quiz Access — teoria</h2>
+  <p class="section-desc">25 pytań z wyjaśnieniami — od podstaw do typowych pułapek maturalnych.</p>
+</div>
+<div class="quiz-wrap">
+<div class="quiz-box" id="quizBox">
+  <div class="quiz-progress" id="qProgress"></div>
+  <div class="quiz-num">Pytanie <span id="qNum">1</span> z <span id="qTotal">25</span></div>
+  <h3 class="quiz-q" id="qText"></h3>
+  <div class="quiz-hint" id="qHint"></div>
+  <div class="quiz-opts" id="qOpts"></div>
+  <div class="quiz-feedback" id="qFeedback"><h5 id="qFbTitle"></h5><p id="qFbText"></p></div>
+  <div class="quiz-btns">
+    <button class="qbtn qbtn-prev" id="qPrev" onclick="prevQ()">← Poprzednie</button>
+    <button class="qbtn qbtn-next" id="qNext" onclick="nextQ()">Następne →</button>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FISZKI -->
+<section id="fiszki">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🧠 FISZKI</div>
+  <h2 class="section-title">Fiszki Access</h2>
+  <p class="section-desc">Kliknij kartę aby odwrócić. ✓ Umiem = pomiń w kolejnych rundach.</p>
+</div>
+<div class="flash-wrap">
+  <div class="flash-filter" id="flashFilter"></div>
+  <div class="flashcard" id="flashcard" onclick="flipCard()">
+    <div class="flash-inner">
+      <div class="flash-front"><div class="flash-tag" id="flashTag"></div><h3 class="flash-q" id="flashQ"></h3><p class="flash-hint">Kliknij aby zobaczyć odpowiedź</p></div>
+      <div class="flash-back"><div class="flash-a" id="flashA"></div></div>
+    </div>
+  </div>
+  <div class="flash-nav">
+    <button class="flash-btn" onclick="prevCard()">← Poprzednia</button>
+    <button class="flash-btn" onclick="speakCard()">🔊</button>
+    <button class="flash-btn master" onclick="markMastered()">✓ Umiem</button>
+    <button class="flash-btn" onclick="nextCard()">Następna →</button>
+    <button class="flash-btn" onclick="shuffleCards()">🔀 Losuj</button>
+  </div>
+  <div class="flash-count"><span id="flashNum">1</span> z <span id="flashTotal">30</span><span class="flash-mastered" id="flashMastered"></span></div>
+</div>
+</div>
+</section>
+
+<!-- TYPING -->
+<section id="typing">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">⌨️ TYPING</div>
+  <h2 class="section-title">Typing Sprint: Access SQL</h2>
+  <p class="section-desc">Wpisz poprawną kwerendę Access. Enter = sprawdź. Trenuj pamięć składni.</p>
+</div>
+<div class="typing-wrap">
+<div class="typing-panel">
+  <h4>Zadanie kwerendy</h4>
+  <div class="typing-prompt" id="typingPrompt">Kliknij "Następne" aby zacząć</div>
+  <div class="typing-hint" id="typingHint">Wpisz poprawną składnię Access SQL</div>
+  <textarea class="typing-input" id="typingInput" rows="3" placeholder="Twoja odpowiedź..." autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+  <div class="typing-btns">
+    <button class="typing-btn check" onclick="checkTyping()">Sprawdź ✓</button>
+    <button class="typing-btn secondary" onclick="showTypingAnswer()">👁 Pokaż</button>
+    <button class="typing-btn secondary" onclick="nextTyping()">Następne →</button>
+    <button class="typing-btn secondary" onclick="resetTyping()">Reset</button>
+  </div>
+  <div class="typing-feedback" id="typingFeedback"></div>
+  <div class="typing-progress">
+    <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--text2)"><span>Postęp</span><span id="typingProg">0 / 0</span></div>
+    <div class="typing-progress-bar"><div class="typing-progress-fill" id="typingFill"></div></div>
+  </div>
+</div>
+<div class="typing-panel">
+  <h4>📊 Statystyki</h4>
+  <div class="stat-grid">
+    <div class="stat-box"><div class="stat-label">Poprawne</div><div class="stat-val ok" id="tCorrect">0</div></div>
+    <div class="stat-box"><div class="stat-label">Błędne</div><div class="stat-val bad" id="tWrong">0</div></div>
+    <div class="stat-box"><div class="stat-label">Seria</div><div class="stat-val streak" id="tStreak">0</div></div>
+    <div class="stat-box"><div class="stat-label">Ukończono</div><div class="stat-val" id="tDone" style="color:var(--acc)">0%</div></div>
+  </div>
+  <div style="margin-top:16px;background:var(--card);border-radius:12px;padding:14px;border:1px solid var(--border)">
+    <div style="font-size:.75rem;color:var(--acc);font-family:'Fira Code',monospace;margin-bottom:8px">⌨️ Skróty</div>
+    <div style="font-size:.8rem;color:var(--text2);line-height:1.8">
+      <kbd class="kbd">Enter</kbd> Sprawdź<br>
+      <kbd class="kbd">Shift+Enter</kbd> Pokaż odpowiedź<br>
+      <kbd class="kbd">Tab</kbd> Następne zadanie
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOKUS -->
+<section id="fokus">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">🎯 FOKUS</div>
+  <h2 class="section-title">Sesja Fokus — Access</h2>
+  <p class="section-desc">90-sekundowa sesja. Przejdź przez fiszki w skupieniu. Spacja = odwróć, → = następna.</p>
+</div>
+<div class="fokus-wrap">
+  <div class="fokus-top">
+    <div class="fokus-info">Karta <span id="fokusNum">—</span> z <span id="fokusTotal">—</span> &nbsp;|&nbsp; Czas: <span id="fokusTime">1:30</span></div>
+    <div class="fokus-controls">
+      <button class="fokus-btn start" onclick="startFokus()">▶ Start</button>
+      <button class="fokus-btn" onclick="stopFokus()">⏹ Stop</button>
+      <button class="fokus-btn" onclick="resetFokus()">↺ Reset</button>
+    </div>
+  </div>
+  <div class="fokus-card">
+    <div class="fokus-q" id="fokusQ">Naciśnij Start aby rozpocząć sesję fokus</div>
+    <div class="fokus-a" id="fokusA"></div>
+  </div>
+  <div class="fokus-bar-wrap"><div class="fokus-bar" id="fokusBar"></div></div>
+  <div style="margin-top:12px;font-size:.8rem;color:var(--muted);text-align:center">
+    <kbd class="kbd">Spacja</kbd> odwróć kartę &nbsp; <kbd class="kbd">→</kbd> następna &nbsp; <kbd class="kbd">←</kbd> poprzednia
+  </div>
+</div>
+</div>
+</section>
+
+<!-- NOTATNIK -->
+<section id="notatnik">
+<div class="container">
+<div class="text-center">
+  <div class="section-badge">📝 NOTATNIK</div>
+  <h2 class="section-title">Notatnik reguł Access</h2>
+  <p class="section-desc">25 złotych reguł Access SQL. Odhaczaj co umiesz. Dodaj własne notatki.</p>
+</div>
+<div class="nb-wrap">
+<div class="nb-panel">
+  <div class="nb-head">
+    <h4>📋 Złote reguły Access</h4>
+    <span class="nb-count" id="nbCount">0/25 ukończone</span>
+  </div>
+  <div class="nb-items" id="nbItems"></div>
+</div>
+<div class="nb-panel">
+  <div class="nb-head"><h4>✏️ Moje notatki</h4></div>
+  <textarea class="typing-input" id="nbInput" rows="3" placeholder="Dodaj własną notatkę..." style="margin-bottom:10px"></textarea>
+  <div class="nb-btns">
+    <button class="nb-btn primary" onclick="addNote()">+ Dodaj</button>
+    <button class="nb-btn danger" onclick="clearNotes()">🗑 Wyczyść</button>
+  </div>
+  <div class="nb-list" id="nbList" style="margin-top:14px"></div>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-logo">🗂️ Access • Teoria | ViralloEdu</div>
+  <p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">prof. inż. Kacper Stabrawa</a>) &nbsp;🧠 <strong>ViralloEdu</strong></p>
+</footer>
+<div class="toast" id="toast"><b></b><span></span></div>
+<script>
+// ═══════════════════════════════════════════════
+// DANE: SŁOWNIK
+// ═══════════════════════════════════════════════
+const slownikData = [
+  {name:"SELECT TOP n",badge:"klauzula",cat:"SELECT",short:"Pobiera n pierwszych wierszy — Access zamiast LIMIT.",full:"Access nie obsługuje LIMIT. Używa SELECT TOP n lub SELECT TOP n PERCENT.",code:"SELECT TOP 5 *\nFROM Uczniowie\nORDER BY Wynik DESC;",tip:"Bez ORDER BY — kolejność przypadkowa! Zawsze łącz TOP z ORDER BY."},
+  {name:"SELECT TOP n PERCENT",badge:"access",cat:"SELECT",short:"Pobiera n% pierwszych wierszy — tylko Access.",full:"Unikalne dla Access. SELECT TOP 10 PERCENT pobiera 10% wierszy tabeli.",code:"SELECT TOP 10 PERCENT NazwaProduktu, Cena\nFROM Produkty\nORDER BY Cena DESC;",tip:"Nie istnieje w MySQL ani SQLite. Tylko Access i SQL Server."},
+  {name:"IIF()",badge:"access",cat:"IIF/Switch",short:"Warunkowe wyrażenie — Access zamiast CASE WHEN.",full:"IIF(warunek, wartość_gdy_true, wartość_gdy_false). Działa jak IF-ELSE.",code:"SELECT Imie,\n  IIF(Plec='K','Uczennica','Uczeń') AS Status\nFROM Uczniowie;",tip:"Na maturze: separatory to PRZECINKI (nie średniki jak w Excelu!). IIF możesz zagnieżdżać: IIF(w, t, IIF(w2, t2, f2))"},
+  {name:"Switch()",badge:"access",cat:"IIF/Switch",short:"Wiele warunków — czytelniejsze niż zagnieżdżone IIF.",full:"Switch(w1,v1, w2,v2, ..., True,domyślny) — sprawdza warunki po kolei, pierwsze True wygrywa.",code:"SELECT Imie, Ocena,\n  Switch(Ocena=6,'Celujący',\n         Ocena=5,'Bardzo dobry',\n         Ocena=4,'Dobry',\n         True,'Inne') AS Slownie\nFROM Oceny;",tip:"Ostatni warunek = True działa jak ELSE. Bez True — gdy żaden nie pasuje, zwraca NULL."},
+  {name:"Nz()",badge:"access",cat:"IIF/Switch",short:"Zastępuje NULL wartością domyślną.",full:"Nz(pole, wartość_gdy_null) — odpowiednik COALESCE() w Access.",code:"SELECT Imie,\n  Nz(DataZwrotu, 'W obiegu') AS Status\nFROM Wypozyczenia;",tip:"Nz = Null to Zero/nothing. Używaj gdy pole może być NULL a chcesz pokazać coś innego."},
+  {name:"Choose()",badge:"access",cat:"IIF/Switch",short:"Wybiera wartość wg indeksu (1-bazowany).",full:"Choose(indeks, v1, v2, v3, ...) — gdy indeks=1 zwraca v1, gdy 2 zwraca v2 itd.",code:"SELECT Ocena,\n  Choose(Ocena,'Ndst','Dop','Dst','Dobry','B.dobry','Celuj') AS Slownie\nFROM Oceny;",tip:"Idealny gdy masz kolumnę z wartościami 1,2,3,4... i chcesz je zamienić na etykiety."},
+  {name:"Mid()",badge:"funkcja",cat:"Tekst",short:"Wycina fragment tekstu — Access zamiast SUBSTR.",full:"Mid(tekst, start, długość) — pozycje liczone od 1. W MySQL: SUBSTRING() lub MID().",code:"SELECT Imie,\n  Mid(Imie, 1, 1) AS Inicjal,\n  Mid(Imie, 1, 1) & Mid(Nazwisko, 1, 1) AS Inicjaly\nFROM Uczniowie;",tip:"Mid(tekst, 1, 1) = pierwsza litera. Mid(tekst, 2) = od drugiego znaku do końca (brak 3. arg)."},
+  {name:"Left() / Right()",badge:"funkcja",cat:"Tekst",short:"Pobiera n znaków z lewej/prawej strony.",full:"Left(tekst, n) — pierwsze n znaków. Right(tekst, n) — ostatnie n znaków.",code:"SELECT Tytul,\n  Left(Tytul, 10) AS Skrot,\n  Right(Tytul, 3) AS Koniec\nFROM Ksiazki;",tip:"Przydatne do ekstrakcji prefiksów, sufiksów, skrótów. Odpowiednik LEFT()/RIGHT() w MySQL."},
+  {name:"Len()",badge:"funkcja",cat:"Tekst",short:"Zwraca długość tekstu — Access zamiast LENGTH().",full:"Len(tekst) zlicza znaki włącznie ze spacjami. W MySQL: LENGTH().",code:"SELECT Tytul, Len(Tytul) AS Dlugosc\nFROM Ksiazki\nWHERE Len(Tytul) > 15\nORDER BY Len(Tytul) DESC;",tip:"W WHERE można używać Len(): WHERE Len(Nazwisko) > 8."},
+  {name:"UCase() / LCase()",badge:"funkcja",cat:"Tekst",short:"Zmiana wielkości liter — Access zamiast UPPER/LOWER.",full:"UCase(tekst) = WIELKIE LITERY. LCase(tekst) = małe litery.",code:"SELECT UCase(Imie) AS ImieDuze,\n       LCase(Email) AS EmailMale\nFROM Klienci;",tip:"W MySQL: UPPER() i LOWER(). W Access: UCase() i LCase() — inne nazwy!"},
+  {name:"Format()",badge:"access",cat:"Tekst",short:"Formatuje liczby i daty wg wzorca.",full:"Format(wartość, 'wzorzec') — bardzo elastyczna. Np. '0.00' = 2 miejsca, 'dd/mm/yyyy' = data.",code:"SELECT Format(Cena, '0.00') AS CenaPLN,\n       Format(DataZamowienia, 'dd/mm/yyyy') AS Data\nFROM Zamowienia;",tip:"Format(liczba, '0.00') = wymuś 2 miejsca. Format(liczba, '000') = zero-padding: 001, 012, 123."},
+  {name:"InStr()",badge:"funkcja",cat:"Tekst",short:"Zwraca pozycję szukanego tekstu w stringu.",full:"InStr(tekst, szukany) — zwraca pozycję pierwszego wystąpienia (1-bazowane) lub 0.",code:"SELECT Autor,\n  InStr(Autor, ' ') AS PozycjaSpacji,\n  Mid(Autor, InStr(Autor,' ')+1) AS SamoNazwisko\nFROM Ksiazki;",tip:"InStr > 0 = znaleziono. Kombinuj z Mid() do ekstrakcji fragmentów tekstu."},
+  {name:"Replace()",badge:"funkcja",cat:"Tekst",short:"Zastępuje tekst innym tekstem.",full:"Replace(tekst, stare, nowe) — zamienia wszystkie wystąpienia.",code:"SELECT Email,\n  Replace(Email, 'mail.pl', 'virallo.edu') AS NowyEmail\nFROM Klienci;",tip:"Identyczne z MySQL REPLACE(). Przydatne do masowej aktualizacji tekstów."},
+  {name:"Date() / Now()",badge:"data",cat:"Daty",short:"Bieżąca data / data i czas.",full:"Date() = tylko data (jak CURDATE() w MySQL). Now() = data + czas (jak NOW() w MySQL).",code:"SELECT *, Date() AS Dzisiaj\nFROM Zamowienia\nWHERE DataZamowienia = Date();",tip:"Date()-30 = data sprzed 30 dni. Można używać w WHERE i SET w UPDATE."},
+  {name:"Year() / Month() / Day()",badge:"data",cat:"Daty",short:"Wyciąga rok/miesiąc/dzień z daty.",full:"Year(data), Month(data), Day(data) — zwracają liczby całkowite.",code:"SELECT DataZamowienia,\n  Year(DataZamowienia) AS Rok,\n  Month(DataZamowienia) AS Miesiac\nFROM Zamowienia\nWHERE Year(DataZamowienia) = 2024;",tip:"W MySQL: YEAR(), MONTH(), DAY() — te same nazwy ale inne przypadki."},
+  {name:"DateAdd()",badge:"data",cat:"Daty",short:"Dodaje/odejmuje czas od daty.",full:"DateAdd(interval, n, data). Interwały: 'd'=dni, 'm'=miesiące, 'yyyy'=lata.",code:"SELECT DataWyp,\n  DateAdd('d', 14, DataWyp) AS TerminZwrotu\nFROM Wypozyczenia;",tip:"DateAdd('d', -7, Date()) = tydzień temu. MySQL: DATE_ADD() / DATE_SUB()."},
+  {name:"DateDiff()",badge:"data",cat:"Daty",short:"Oblicza różnicę między datami.",full:"DateDiff(interval, data1, data2). Zwraca liczbę w podanych jednostkach.",code:"SELECT DataWyp, DataZwrotu,\n  DateDiff('d', DataWyp, DataZwrotu) AS LiczbaDni\nFROM Wypozyczenia\nWHERE DataZwrotu IS NOT NULL;",tip:"DateDiff('yyyy', DataUr, Date()) = wiek w latach. MySQL: DATEDIFF() liczy tylko dni."},
+  {name:"DatePart()",badge:"data",cat:"Daty",short:"Zwraca część daty (kwartał, tydzień itp.).",full:"DatePart(interval, data). 'q'=kwartał, 'ww'=tydzień w roku, 'w'=dzień tygodnia.",code:"SELECT DatePart('q', DataZamowienia) AS Kwartal,\n       DatePart('ww', DataZamowienia) AS NrTygodnia\nFROM Zamowienia;",tip:"DatePart('q', ...) = 1,2,3,4 dla kwartałów. MySQL: QUARTER(), WEEK()."},
+  {name:"Round()",badge:"funkcja",cat:"Liczby",short:"Zaokrągla liczbę.",full:"Round(liczba, n) — zaokrągla do n miejsc po przecinku. Identyczne z MySQL.",code:"SELECT NazwaProduktu,\n  Cena,\n  Round(Cena * 1.23, 2) AS CenaBrutto\nFROM Produkty;",tip:"Round(Cena/0.05)*0.05 = zaokrąglenie do 5 groszy."},
+  {name:"LIKE z *",badge:"operator",cat:"Operatory",short:"Wildcard * zamiast % w Access.",full:"W Access LIKE używa * (gwiazdka) zamiast % (procent) i ? zamiast _ (podkreślnik).",code:"-- Access:\nWHERE Nazwisko LIKE 'Kow*'\nWHERE Imie LIKE '???'\n\n-- MySQL/SQL:\nWHERE Nazwisko LIKE 'Kow%'\nWHERE Imie LIKE '___'",tip:"NAJWIĘKSZA pułapka maturalna! W Access: * i ?. W MySQL/SQL: % i _. Nie mieszaj!"},
+  {name:"Konkatenacja &",badge:"operator",cat:"Operatory",short:"Łączenie stringów przez & (nie + ani ||).",full:"Access używa & do łączenia tekstów. Nie + (może dać błąd przy NULL) ani || (nie obsługiwane).",code:"SELECT Imie & ' ' & Nazwisko AS PelneImie\nFROM Uczniowie;\n\nSELECT 'Nr: ' & CStr(ID_Ucznia) & '. ' & Imie AS Opis\nFROM Uczniowie;",tip:"& z liczbą może wymagać CStr(). 'a' & NULL = 'a' (bezpieczniejsze niż +)."},
+  {name:"Aliasy [ ]",badge:"klauzula",cat:"SELECT",short:"Nazwy ze spacjami w nawiasach kwadratowych.",full:"W Access aliasy z spacją wymagają [ ]. W MySQL: backtick ``. Standard SQL: podwójny cudzysłów.",code:'SELECT Imie AS [Imię ucznia],\n       Klasa AS [Klasa szkolna]\nFROM Uczniowie;',tip:"[Imię ucznia] — nawiasy kwadratowe obowiązkowe przy spacjach i polskich znakach w nazwach."},
+  {name:"SELECT INTO",badge:"dml",cat:"DDL",short:"Tworzy nową tabelę z wynikami SELECT.",full:"SELECT ... INTO NowaTabel FROM ... WHERE ... — kwerenda tworząca. Tworzy tabelę z danymi.",code:"SELECT Imie, Nazwisko, Klasa\n  INTO Maturzysci\nFROM Uczniowie\nWHERE Klasa IN ('3A','3B');",tip:"MySQL: CREATE TABLE ... AS SELECT .... W Access: SELECT INTO to specjalność — bardzo popularne na maturze!"},
+  {name:"JOIN 3+ tabel (nawiasy)",badge:"klauzula",cat:"JOIN",short:"Przy 3+ tabelach obowiązkowe nawiasy!",full:"Access wymaga nawiasów gdy łączysz więcej niż 2 tabele: (T1 JOIN T2 ON ...) JOIN T3 ON ...",code:"SELECT U.Imie, K.Tytul, W.DataWyp\nFROM (Uczniowie U\n  INNER JOIN Wypozyczenia W\n  ON U.ID_Ucznia = W.ID_Ucznia)\nINNER JOIN Ksiazki K\n  ON W.ID_Ksiazki = K.ID_Ksiazki;",tip:"NAJCZĘSTSZY błąd przy 3 tabelach w Access! Nawiasy są OBOWIĄZKOWE. MySQL: bez nawiasów."},
+  {name:"Kwerenda parametryczna [ ]",badge:"access",cat:"DDL",short:"[Tekst w nawiasach] = okno dialogowe.",full:"WHERE pole = [Podaj wartość:] — Access wyświetla okno dialogowe z pytaniem.",code:"SELECT * FROM Uczniowie\nWHERE Klasa = [Podaj klasę:];",tip:"Unikalne dla Access GUI. W kodzie SQL poza Access nie działa. Na maturze możesz to stosować."},
+  {name:"TRANSFORM / PIVOT",badge:"access",cat:"DDL",short:"Kwerenda krzyżowa — tabela przestawna w SQL.",full:"TRANSFORM COUNT/SUM(pole) SELECT ... GROUP BY ... PIVOT kolumna — tworzy tabelę przestawną.",code:"TRANSFORM COUNT(Ocena)\nSELECT ID_Ucznia\nFROM Oceny\nGROUP BY ID_Ucznia\nPIVOT Przedmiot;",tip:"Tylko Access! Tworzy kolumny dynamicznie na podstawie wartości. MySQL: ręczne CASE WHEN."},
+  {name:"CStr() / CInt() / CDbl()",badge:"access",cat:"Konwersja",short:"Funkcje konwersji typów — specyficzne dla Access.",full:"CStr(liczba), CInt(tekst), CDbl(tekst), CDate(tekst). MySQL odpowiednik: CAST().",code:"SELECT 'ID: ' & CStr(ID_Ucznia) & ' — ' & Imie AS Opis\nFROM Uczniowie;",tip:"CStr() potrzebne gdy konkatenacją & łączysz liczbę z tekstem. MySQL: CAST(id AS CHAR)."},
+  {name:"IsNull() / IsNumeric()",badge:"access",cat:"Operatory",short:"Funkcje sprawdzania wartości — Access.",full:"IsNull(wyr) = True gdy NULL. IsNumeric(wyr) = True gdy jest liczbą. Zwracają -1/0.",code:"SELECT IIF(IsNull(DataZwrotu), 'Aktywne', 'Zwrócone') AS Status\nFROM Wypozyczenia;",tip:"IsNull() działa jak IS NULL ale w wyrażeniach IIF/Switch. IsNumeric() przydatne do walidacji."},
+  {name:"StrConv()",badge:"funkcja",cat:"Tekst",short:"Konwertuje wielkość liter — ProperCase!",full:"StrConv(tekst, 1) = WIELKIE. StrConv(tekst, 2) = małe. StrConv(tekst, 3) = Pierwsza Wielka.",code:"SELECT StrConv(Nazwisko, 3) AS NazwiskoWlasciwe\nFROM Nauczyciele;",tip:"StrConv(x,3) = Proper Case — każde słowo z wielką literą. Nie ma odpowiednika w MySQL!"},
+];
+
+// ═══════════════════════════════════════════════
+// DANE: MODUŁY TEORII
+// ═══════════════════════════════════════════════
+const modulyData = [
+{id:"select",name:"SELECT & TOP",icon:"🔍",content:`
+<div class="mod-card">
+<h4>🔍 Access SQL a standardowy SQL — klucze różnic</h4>
+<p>Access używa dialektu SQL opartego o Jet/ACE engine. Większość składni SQL działa tak samo, ale kilka elementów jest INNYCH — i właśnie te różnice wychodzą na maturze.</p>
+<div class="diff-row">
+  <div class="diff-panel sql-panel"><h6>📘 MySQL / SQLite</h6><pre>SELECT *
+FROM Filmy
+LIMIT 5;
+
+WHERE tytul LIKE 'A%';
+
+SELECT tytul || ' (' || rok || ')'
+FROM Filmy;
+
+CASE WHEN ocena=6 THEN 'Cel'
+     ELSE 'Inne' END</pre></div>
+  <div class="diff-panel acc-panel"><h6>🗂️ Microsoft Access</h6><pre>SELECT TOP 5 *
+FROM Filmy;
+
+WHERE tytul LIKE 'A*';
+
+SELECT tytul & ' (' & rok & ')'
+FROM Filmy;
+
+IIF(ocena=6,'Cel','Inne')</pre></div>
+</div>
+</div>
+<div class="mod-card">
+<h4>⚡ SELECT TOP n — zamiast LIMIT</h4>
+<p>Access nie ma LIMIT. Zamiast tego używa SELECT TOP n lub SELECT TOP n PERCENT.</p>
+<pre><span class="a-cm">-- 5 najdroższych produktów:</span>
+<span class="a-kw">SELECT TOP 5</span> NazwaProduktu, Cena
+<span class="a-kw">FROM</span> Produkty
+<span class="a-kw">ORDER BY</span> Cena <span class="a-kw">DESC</span>;
+
+<span class="a-cm">-- 10% najlepszych wyników egzaminów:</span>
+<span class="a-kw">SELECT TOP 10 PERCENT</span> *
+<span class="a-kw">FROM</span> Egzaminy
+<span class="a-kw">ORDER BY</span> Wynik <span class="a-kw">DESC</span>;
+
+<span class="a-cm">-- TOP z warunkiem WHERE:</span>
+<span class="a-kw">SELECT TOP 3</span> Imie, Wynik
+<span class="a-kw">FROM</span> Uczniowie <span class="a-kw">AS</span> U
+<span class="a-kw">INNER JOIN</span> Egzaminy <span class="a-kw">AS</span> E <span class="a-kw">ON</span> U.ID_Ucznia = E.ID_Ucznia
+<span class="a-kw">WHERE</span> E.Przedmiot = <span class="a-str">'Matematyka'</span>
+<span class="a-kw">ORDER BY</span> E.Wynik <span class="a-kw">DESC</span>;</pre>
+<div class="wtopa"><h5>⚠️ TOP bez ORDER BY = losowe wiersze</h5><p>SELECT TOP 5 bez ORDER BY zwraca 5 "przypadkowych" wierszy — wynik jest nieprzewidywalny. Na maturze zawsze łącz TOP z ORDER BY!</p></div>
+</div>
+<div class="mod-card">
+<h4>🔎 LIKE z gwiazdką — nie z procentem!</h4>
+<p>To jedna z największych pułapek na maturze z Access.</p>
+<pre><span class="a-cm">-- Access używa * i ? (NIE % i _)</span>
+<span class="a-kw">WHERE</span> Nazwisko <span class="a-kw">LIKE</span> <span class="a-str">'Kow*'</span>     <span class="a-cm">-- zaczyna się od Kow</span>
+<span class="a-kw">WHERE</span> Nazwisko <span class="a-kw">LIKE</span> <span class="a-str">'*ski'</span>     <span class="a-cm">-- kończy się na ski</span>
+<span class="a-kw">WHERE</span> Tytul <span class="a-kw">LIKE</span> <span class="a-str">'*war*'</span>      <span class="a-cm">-- zawiera war</span>
+<span class="a-kw">WHERE</span> Imie <span class="a-kw">LIKE</span> <span class="a-str">'???'</span>          <span class="a-cm">-- dokładnie 3 znaki (? = 1 znak)</span>
+<span class="a-kw">WHERE</span> Kod <span class="a-kw">LIKE</span> <span class="a-str">'##-###'</span>       <span class="a-cm">-- # = jedna cyfra</span></pre>
+<div class="acc-diff"><h5>🗂️ Wildcards Access vs SQL</h5><ul>
+  <li><b>*</b> = dowolna liczba dowolnych znaków (MySQL: %)</li>
+  <li><b>?</b> = dokładnie jeden dowolny znak (MySQL: _)</li>
+  <li><b>#</b> = dokładnie jedna cyfra (MySQL: brak odpowiednika)</li>
+</ul></div>
+</div>
+<div class="mod-card">
+<h4>🔗 Konkatenacja stringów przez &amp;</h4>
+<pre><span class="a-cm">-- Łączenie pól tekstowych:</span>
+<span class="a-kw">SELECT</span> Imie <span class="a-op">&amp;</span> <span class="a-str">' '</span> <span class="a-op">&amp;</span> Nazwisko <span class="a-kw">AS</span> PelneImie
+<span class="a-kw">FROM</span> Uczniowie;
+
+<span class="a-cm">-- Łączenie z liczbą - potrzebny CStr():</span>
+<span class="a-kw">SELECT</span> <span class="a-str">'Nr '</span> <span class="a-op">&amp;</span> <span class="a-fn">CStr</span>(ID_Ucznia) <span class="a-op">&amp;</span> <span class="a-str">': '</span> <span class="a-op">&amp;</span> Imie <span class="a-kw">AS</span> Opis
+<span class="a-kw">FROM</span> Uczniowie;
+
+<span class="a-cm">-- Aliasy ze spacją - nawiasy kwadratowe:</span>
+<span class="a-kw">SELECT</span> Imie <span class="a-kw">AS</span> [Imię ucznia],
+       Klasa <span class="a-kw">AS</span> [Klasa szkolna]
+<span class="a-kw">FROM</span> Uczniowie;</pre>
+<div class="tip-box"><h5>💡 Dlaczego & a nie +?</h5><p>W Access + działa numerycznie. Jeśli jedno pole jest NULL, + daje NULL. & jest bezpieczniejszy — NULL jest traktowany jako pusty string.</p></div>
+</div>`
+},
+{id:"iif",name:"IIF & Switch",icon:"🔀",content:`
+<div class="mod-card">
+<h4>🔀 IIF() — Access zamiast CASE WHEN</h4>
+<p>IIF(warunek, wartość_gdy_true, wartość_gdy_false) to odpowiednik CASE WHEN ... THEN ... ELSE ... END.</p>
+<pre><span class="a-cm">-- Podstawowe użycie:</span>
+<span class="a-kw">SELECT</span> Imie, Plec,
+  <span class="a-fn">IIF</span>(Plec=<span class="a-str">'K'</span>, <span class="a-str">'Uczennica'</span>, <span class="a-str">'Uczeń'</span>) <span class="a-kw">AS</span> Status
+<span class="a-kw">FROM</span> Uczniowie;
+
+<span class="a-cm">-- IIF z liczbami:</span>
+<span class="a-kw">SELECT</span> NazwaProduktu, Magazyn,
+  <span class="a-fn">IIF</span>(Magazyn > <span class="a-num">10</span>, <span class="a-str">'Dostępny'</span>, <span class="a-str">'Mało'</span>) <span class="a-kw">AS</span> Stan
+<span class="a-kw">FROM</span> Produkty;
+
+<span class="a-cm">-- IIF z NULL (użyj IsNull):</span>
+<span class="a-kw">SELECT</span> ID_Wyp,
+  <span class="a-fn">IIF</span>(<span class="a-fn">IsNull</span>(DataZwrotu), <span class="a-str">'Aktywne'</span>, DataZwrotu) <span class="a-kw">AS</span> ZwrotInfo
+<span class="a-kw">FROM</span> Wypozyczenia;</pre>
+</div>
+<div class="mod-card">
+<h4>🔀🔀 Zagnieżdżone IIF() — wiele opcji</h4>
+<pre><span class="a-cm">-- 3 warianty przez zagnieżdżone IIF:</span>
+<span class="a-kw">SELECT</span> Imie, Ocena,
+  <span class="a-fn">IIF</span>(Ocena=<span class="a-num">6</span>, <span class="a-str">'Celujący'</span>,
+    <span class="a-fn">IIF</span>(Ocena=<span class="a-num">5</span>, <span class="a-str">'Bardzo dobry'</span>,
+      <span class="a-fn">IIF</span>(Ocena=<span class="a-num">4</span>, <span class="a-str">'Dobry'</span>,
+        <span class="a-fn">IIF</span>(Ocena=<span class="a-num">3</span>, <span class="a-str">'Dostateczny'</span>, <span class="a-str">'Inne'</span>)
+      )
+    )
+  ) <span class="a-kw">AS</span> Slownie
+<span class="a-kw">FROM</span> Oceny;</pre>
+<div class="tip-box"><h5>💡 Kiedy IIF, kiedy Switch?</h5><p>IIF() — gdy 2 opcje (true/false). Zagnieżdżone IIF — gdy 3-4 opcje. Switch() — gdy 5+ opcji. Switch jest czytelniejszy dla wielu warunków.</p></div>
+</div>
+<div class="mod-card">
+<h4>⚡ Switch() — czytelna alternatywa</h4>
+<pre><span class="a-cm">-- Switch() = elegancka wersja zagnieżdżonych IIF:</span>
+<span class="a-kw">SELECT</span> Imie, Ocena,
+  <span class="a-fn">Switch</span>(
+    Ocena=<span class="a-num">6</span>, <span class="a-str">'Celujący'</span>,
+    Ocena=<span class="a-num">5</span>, <span class="a-str">'Bardzo dobry'</span>,
+    Ocena=<span class="a-num">4</span>, <span class="a-str">'Dobry'</span>,
+    Ocena=<span class="a-num">3</span>, <span class="a-str">'Dostateczny'</span>,
+    Ocena=<span class="a-num">2</span>, <span class="a-str">'Dopuszczający'</span>,
+    <span class="a-kw">True</span>,   <span class="a-str">'Niedostateczny'</span>
+  ) <span class="a-kw">AS</span> Slownie
+<span class="a-kw">FROM</span> Oceny;
+
+<span class="a-cm">-- Switch z przedziałami (sprawdza po kolei!):</span>
+<span class="a-kw">SELECT</span> ID_Ucznia, Wynik,
+  <span class="a-fn">Switch</span>(
+    Wynik >= <span class="a-num">90</span>, <span class="a-str">'Celujący'</span>,
+    Wynik >= <span class="a-num">75</span>, <span class="a-str">'Bardzo dobry'</span>,
+    Wynik >= <span class="a-num">60</span>, <span class="a-str">'Dobry'</span>,
+    Wynik >= <span class="a-num">50</span>, <span class="a-str">'Dostateczny'</span>,
+    <span class="a-kw">True</span>,         <span class="a-str">'Niedostateczny'</span>
+  ) <span class="a-kw">AS</span> Ocena
+<span class="a-kw">FROM</span> Egzaminy;</pre>
+<div class="wtopa"><h5>⚠️ Switch bez True na końcu</h5><p>Jeśli żaden warunek Switch() nie jest spełniony i nie ma True na końcu — wynik to NULL. Zawsze dodawaj True jako ostatni warunek = domyślna wartość.</p></div>
+</div>
+<div class="mod-card">
+<h4>🛡️ Nz() — obsługa NULL</h4>
+<pre><span class="a-cm">-- Zastąp NULL tekstem:</span>
+<span class="a-kw">SELECT</span> ID_Wyp, <span class="a-fn">Nz</span>(DataZwrotu, <span class="a-str">'W obiegu'</span>) <span class="a-kw">AS</span> Zwrot
+<span class="a-kw">FROM</span> Wypozyczenia;
+
+<span class="a-cm">-- Nz w obliczeniach - zapobiega NULL:</span>
+<span class="a-kw">SELECT</span> ID_Pozycji,
+  <span class="a-fn">Nz</span>(Ilosc, <span class="a-num">0</span>) * <span class="a-fn">Nz</span>(CenaJednostkowa, <span class="a-num">0</span>) <span class="a-kw">AS</span> Wartosc
+<span class="a-kw">FROM</span> PozycjeZamowienia;
+
+<span class="a-cm">-- Sumowanie z Nz:</span>
+<span class="a-kw">SELECT</span> ID_Zamowienia,
+  <span class="a-fn">SUM</span>(<span class="a-fn">Nz</span>(Ilosc * CenaJednostkowa, <span class="a-num">0</span>)) <span class="a-kw">AS</span> Wartosc
+<span class="a-kw">FROM</span> PozycjeZamowienia
+<span class="a-kw">GROUP BY</span> ID_Zamowienia;</pre>
+</div>`
+},
+{id:"funkcje",name:"Funkcje tekstowe",icon:"📝",content:`
+<div class="mod-card">
+<h4>✂️ Mid(), Left(), Right() — cięcie tekstu</h4>
+<pre><span class="a-cm">-- Mid(tekst, start, długość) — pozycje od 1:</span>
+<span class="a-kw">SELECT</span> Imie,
+  <span class="a-fn">Mid</span>(Imie, <span class="a-num">1</span>, <span class="a-num">1</span>) <span class="a-kw">AS</span> PierwszaLitera,
+  <span class="a-fn">Left</span>(Imie, <span class="a-num">3</span>) <span class="a-kw">AS</span> Pierwsze3,
+  <span class="a-fn">Right</span>(Imie, <span class="a-num">2</span>) <span class="a-kw">AS</span> Ostatnie2
+<span class="a-kw">FROM</span> Uczniowie;
+
+<span class="a-cm">-- Inicjały: pierwsza litera imienia + pierwsza litera nazwiska:</span>
+<span class="a-kw">SELECT</span> Imie, Nazwisko,
+  <span class="a-fn">Mid</span>(Imie,<span class="a-num">1</span>,<span class="a-num">1</span>) <span class="a-op">&amp;</span> <span class="a-str">'.'</span> <span class="a-op">&amp;</span> <span class="a-fn">Mid</span>(Nazwisko,<span class="a-num">1</span>,<span class="a-num">1</span>) <span class="a-op">&amp;</span> <span class="a-str">'.'</span> <span class="a-kw">AS</span> Inicjaly
+<span class="a-kw">FROM</span> Uczniowie;
+
+<span class="a-cm">-- Filtrowanie przez Len():</span>
+<span class="a-kw">SELECT</span> Tytul, <span class="a-fn">Len</span>(Tytul) <span class="a-kw">AS</span> DlugoscTytulu
+<span class="a-kw">FROM</span> Ksiazki
+<span class="a-kw">WHERE</span> <span class="a-fn">Len</span>(Tytul) > <span class="a-num">10</span>
+<span class="a-kw">ORDER BY</span> <span class="a-fn">Len</span>(Tytul) <span class="a-kw">DESC</span>;</pre>
+</div>
+<div class="mod-card">
+<h4>🎨 Format() — formatowanie</h4>
+<pre><span class="a-cm">-- Liczby:</span>
+<span class="a-fn">Format</span>(Cena, <span class="a-str">'0.00'</span>)         <span class="a-cm">-- 2 miejsca: 3.50, 99.00</span>
+<span class="a-fn">Format</span>(ID_Ucznia, <span class="a-str">'000'</span>)      <span class="a-cm">-- zero-padding: 001, 012, 123</span>
+<span class="a-fn">Format</span>(Pensja, <span class="a-str">'# ##0.00'</span>)   <span class="a-cm">-- separator tysięcy: 5 800.00</span>
+
+<span class="a-cm">-- Daty:</span>
+<span class="a-fn">Format</span>(DataZamowienia, <span class="a-str">'dd/mm/yyyy'</span>)   <span class="a-cm">-- 15/03/2024</span>
+<span class="a-fn">Format</span>(DataZamowienia, <span class="a-str">'yyyy-mm-dd'</span>)   <span class="a-cm">-- 2024-03-15</span>
+<span class="a-fn">Format</span>(DataZamowienia, <span class="a-str">'mmmm yyyy'</span>)    <span class="a-cm">-- March 2024</span>
+
+<span class="a-cm">-- W SELECT:</span>
+<span class="a-kw">SELECT</span> NazwaProduktu,
+  <span class="a-str">'Cena: '</span> <span class="a-op">&amp;</span> <span class="a-fn">Format</span>(Cena, <span class="a-str">'0.00'</span>) <span class="a-op">&amp;</span> <span class="a-str">' PLN'</span> <span class="a-kw">AS</span> CenaFormatowana
+<span class="a-kw">FROM</span> Produkty;</pre>
+</div>
+<div class="mod-card">
+<h4>🔍 InStr() — szukanie w tekście</h4>
+<pre><span class="a-cm">-- Znajdź pozycję spacji (separator imię/nazwisko):</span>
+<span class="a-kw">SELECT</span> Autor,
+  <span class="a-fn">InStr</span>(Autor, <span class="a-str">' '</span>) <span class="a-kw">AS</span> PozycjaSpacji,
+  <span class="a-fn">Left</span>(Autor, <span class="a-fn">InStr</span>(Autor,<span class="a-str">' '</span>)-<span class="a-num">1</span>) <span class="a-kw">AS</span> Imie,
+  <span class="a-fn">Mid</span>(Autor, <span class="a-fn">InStr</span>(Autor,<span class="a-str">' '</span>)+<span class="a-num">1</span>) <span class="a-kw">AS</span> Nazwisko
+<span class="a-kw">FROM</span> Ksiazki
+<span class="a-kw">WHERE</span> <span class="a-fn">InStr</span>(Autor, <span class="a-str">' '</span>) > <span class="a-num">0</span>;
+
+<span class="a-cm">-- Ekstrakcja domeny emaila:</span>
+<span class="a-kw">SELECT</span> Email,
+  <span class="a-fn">Mid</span>(Email, <span class="a-fn">InStr</span>(Email,<span class="a-str">'@'</span>)+<span class="a-num">1</span>) <span class="a-kw">AS</span> Domena
+<span class="a-kw">FROM</span> Klienci;</pre>
+</div>
+<div class="mod-card">
+<h4>🔤 UCase(), LCase(), Replace(), StrConv()</h4>
+<pre><span class="a-fn">UCase</span>(Imie)            <span class="a-cm">-- JAN (MySQL: UPPER)</span>
+<span class="a-fn">LCase</span>(Email)           <span class="a-cm">-- jan@mail.pl (MySQL: LOWER)</span>
+<span class="a-fn">StrConv</span>(Nazwisko, <span class="a-num">3</span>)   <span class="a-cm">-- Proper Case: Kowalski</span>
+<span class="a-fn">Trim</span>(Tekst)            <span class="a-cm">-- usuwa spacje z obu stron</span>
+<span class="a-fn">LTrim</span>(Tekst)           <span class="a-cm">-- tylko z lewej</span>
+<span class="a-fn">RTrim</span>(Tekst)           <span class="a-cm">-- tylko z prawej</span>
+
+<span class="a-fn">Replace</span>(Email, <span class="a-str">'@gmail.com'</span>, <span class="a-str">'@virallo.edu'</span>) <span class="a-cm">-- zamiana</span>
+<span class="a-fn">Space</span>(<span class="a-num">5</span>)               <span class="a-cm">-- '     ' (5 spacji)</span>
+<span class="a-fn">Asc</span>(<span class="a-str">'A'</span>)               <span class="a-cm">-- 65 (kod ASCII)</span>
+<span class="a-fn">Chr</span>(<span class="a-num">65</span>)                <span class="a-cm">-- 'A' (znak z kodu)</span></pre>
+</div>`
+},
+{id:"daty",name:"Daty i czas",icon:"📅",content:`
+<div class="mod-card">
+<h4>📅 Date(), Now() i podstawowe funkcje dat</h4>
+<pre><span class="a-cm">-- Bieżąca data i czas:</span>
+<span class="a-fn">Date</span>()       <span class="a-cm">-- tylko data: 2024-03-15 (MySQL: CURDATE())</span>
+<span class="a-fn">Now</span>()        <span class="a-cm">-- data + czas: 2024-03-15 14:30 (MySQL: NOW())</span>
+
+<span class="a-cm">-- Wyciąganie składowych:</span>
+<span class="a-fn">Year</span>(DataUrodzenia)    <span class="a-cm">-- 2006</span>
+<span class="a-fn">Month</span>(DataUrodzenia)   <span class="a-cm">-- 5 (maj = 5)</span>
+<span class="a-fn">Day</span>(DataUrodzenia)     <span class="a-cm">-- 12</span>
+<span class="a-fn">Weekday</span>(DataZam)       <span class="a-cm">-- 1=Niedziela...7=Sobota</span>
+
+<span class="a-cm">-- Użycie w WHERE:</span>
+<span class="a-kw">SELECT</span> * <span class="a-kw">FROM</span> Zamowienia
+<span class="a-kw">WHERE</span> <span class="a-fn">Year</span>(DataZamowienia) = <span class="a-num">2024</span>
+  <span class="a-kw">AND</span> <span class="a-fn">Month</span>(DataZamowienia) = <span class="a-num">3</span>;  <span class="a-cm">-- marzec 2024</span></pre>
+</div>
+<div class="mod-card">
+<h4>➕ DateAdd() — dodawanie do dat</h4>
+<pre><span class="a-cm">-- DateAdd(interval, n, data):</span>
+<span class="a-fn">DateAdd</span>(<span class="a-str">'d'</span>, <span class="a-num">14</span>, DataWyp)       <span class="a-cm">-- +14 dni</span>
+<span class="a-fn">DateAdd</span>(<span class="a-str">'m'</span>, <span class="a-num">3</span>, DataZam)        <span class="a-cm">-- +3 miesiące</span>
+<span class="a-fn">DateAdd</span>(<span class="a-str">'yyyy'</span>, <span class="a-num">1</span>, DataZam)     <span class="a-cm">-- +1 rok</span>
+<span class="a-fn">DateAdd</span>(<span class="a-str">'d'</span>, -<span class="a-num">30</span>, <span class="a-fn">Date</span>())       <span class="a-cm">-- 30 dni temu</span>
+
+<span class="a-cm">-- Termin zwrotu = 14 dni po wypożyczeniu:</span>
+<span class="a-kw">SELECT</span> ID_Wyp, DataWyp,
+  <span class="a-fn">DateAdd</span>(<span class="a-str">'d'</span>, <span class="a-num">14</span>, DataWyp) <span class="a-kw">AS</span> TerminZwrotu
+<span class="a-kw">FROM</span> Wypozyczenia
+<span class="a-kw">WHERE</span> DataZwrotu <span class="a-kw">IS NULL</span>;
+
+<span class="a-cm">-- Przeterminowane: DataWyp + 14 dni < dzisiaj:</span>
+<span class="a-kw">SELECT</span> * <span class="a-kw">FROM</span> Wypozyczenia
+<span class="a-kw">WHERE</span> DataZwrotu <span class="a-kw">IS NULL</span>
+  <span class="a-kw">AND</span> <span class="a-fn">DateAdd</span>(<span class="a-str">'d'</span>, <span class="a-num">14</span>, DataWyp) < <span class="a-fn">Date</span>();</pre>
+<div class="acc-diff"><h5>🗂️ Interwały DateAdd / DateDiff</h5><ul>
+  <li><b>'d'</b> — dni</li>
+  <li><b>'m'</b> — miesiące</li>
+  <li><b>'yyyy'</b> — lata</li>
+  <li><b>'h'</b> — godziny</li>
+  <li><b>'ww'</b> — tygodnie</li>
+  <li><b>'q'</b> — kwartały</li>
+</ul></div>
+</div>
+<div class="mod-card">
+<h4>📐 DateDiff() — różnica dat</h4>
+<pre><span class="a-cm">-- DateDiff(interval, data1, data2):</span>
+<span class="a-fn">DateDiff</span>(<span class="a-str">'d'</span>, DataWyp, DataZwrotu)    <span class="a-cm">-- liczba dni</span>
+<span class="a-fn">DateDiff</span>(<span class="a-str">'m'</span>, DataUr, <span class="a-fn">Date</span>())        <span class="a-cm">-- miesięcy od urodzenia</span>
+<span class="a-fn">DateDiff</span>(<span class="a-str">'yyyy'</span>, DataUr, <span class="a-fn">Date</span>())     <span class="a-cm">-- wiek w latach</span>
+
+<span class="a-cm">-- Wiek uczniów:</span>
+<span class="a-kw">SELECT</span> Imie, Nazwisko, DataUrodzenia,
+  <span class="a-fn">DateDiff</span>(<span class="a-str">'yyyy'</span>, DataUrodzenia, <span class="a-fn">Date</span>()) <span class="a-kw">AS</span> Wiek
+<span class="a-kw">FROM</span> Uczniowie
+<span class="a-kw">ORDER BY</span> Wiek <span class="a-kw">DESC</span>;
+
+<span class="a-cm">-- Czas trwania wypożyczenia:</span>
+<span class="a-kw">SELECT</span> ID_Wyp, DataWyp, DataZwrotu,
+  <span class="a-fn">IIF</span>(<span class="a-fn">IsNull</span>(DataZwrotu),
+    <span class="a-str">'Aktywne'</span>,
+    <span class="a-fn">CStr</span>(<span class="a-fn">DateDiff</span>(<span class="a-str">'d'</span>, DataWyp, DataZwrotu)) <span class="a-op">&amp;</span> <span class="a-str">' dni'</span>
+  ) <span class="a-kw">AS</span> CzasTrwania
+<span class="a-kw">FROM</span> Wypozyczenia;</pre>
+</div>`
+},
+{id:"join",name:"JOIN i relacje",icon:"🔗",content:`
+<div class="mod-card">
+<h4>🔗 INNER JOIN — standardowe łączenie</h4>
+<p>INNER JOIN w Access działa identycznie jak w standardowym SQL — zwraca tylko wiersze z dopasowaniem w obu tabelach.</p>
+<pre><span class="a-cm">-- Oceny uczniów z ich danymi:</span>
+<span class="a-kw">SELECT</span> U.Imie, U.Nazwisko, O.Przedmiot, O.Ocena
+<span class="a-kw">FROM</span> Uczniowie <span class="a-kw">AS</span> U
+<span class="a-kw">INNER JOIN</span> Oceny <span class="a-kw">AS</span> O <span class="a-kw">ON</span> U.ID_Ucznia = O.ID_Ucznia
+<span class="a-kw">WHERE</span> O.Ocena >= <span class="a-num">5</span>
+<span class="a-kw">ORDER BY</span> U.Nazwisko;</pre>
+</div>
+<div class="mod-card">
+<h4>⚠️ JOIN 3+ tabel — NAWIASY OBOWIĄZKOWE!</h4>
+<p>To jest największa różnica składni JOIN w Access. Gdy łączysz 3 lub więcej tabel, MUSISZ użyć nawiasów.</p>
+<pre><span class="a-cm">-- ✅ POPRAWNIE w Access (z nawiasami):</span>
+<span class="a-kw">SELECT</span> U.Imie, K.Tytul, W.DataWyp
+<span class="a-kw">FROM</span> (Uczniowie <span class="a-kw">AS</span> U
+  <span class="a-kw">INNER JOIN</span> Wypozyczenia <span class="a-kw">AS</span> W
+    <span class="a-kw">ON</span> U.ID_Ucznia = W.ID_Ucznia)
+<span class="a-kw">INNER JOIN</span> Ksiazki <span class="a-kw">AS</span> K
+  <span class="a-kw">ON</span> W.ID_Ksiazki = K.ID_Ksiazki;
+
+<span class="a-cm">-- ❌ BŁĄD w Access (bez nawiasów - działa w MySQL):</span>
+<span class="a-cm">-- FROM Uczniowie U JOIN Wypozyczenia W ON ...</span>
+<span class="a-cm">--                  JOIN Ksiazki K ON ...; -- BŁĄD!</span>
+
+<span class="a-cm">-- 4 tabele - 3 poziomy nawiasów:</span>
+<span class="a-kw">FROM</span> ((Zamowienia <span class="a-kw">AS</span> Z
+  <span class="a-kw">INNER JOIN</span> Klienci <span class="a-kw">AS</span> K <span class="a-kw">ON</span> Z.ID_Klienta=K.ID_Klienta)
+  <span class="a-kw">INNER JOIN</span> PozycjeZamowienia <span class="a-kw">AS</span> PZ <span class="a-kw">ON</span> Z.ID_Zamowienia=PZ.ID_Zamowienia)
+<span class="a-kw">INNER JOIN</span> Produkty <span class="a-kw">AS</span> P <span class="a-kw">ON</span> PZ.ID_Produktu=P.ID_Produktu</pre>
+<div class="wtopa"><h5>⚠️ Brak nawiasów = błąd składni w Access</h5><p>MySQL/SQLite przyjmuje JOIN bez nawiasów. Access NIE przyjmuje. Na maturze z Access: każdy JOIN powyżej 2 tabel wymaga nawiasowania — im więcej tabel, tym więcej nawiasów!</p></div>
+</div>
+<div class="mod-card">
+<h4>↙️ LEFT JOIN i wiersze bez par</h4>
+<pre><span class="a-cm">-- Wszystkie książki + liczba wypożyczeń (0 dla nigdy niewyp.):</span>
+<span class="a-kw">SELECT</span> K.Tytul, <span class="a-fn">Count</span>(W.ID_Wyp) <span class="a-kw">AS</span> LiczbaWypoz
+<span class="a-kw">FROM</span> Ksiazki <span class="a-kw">AS</span> K
+<span class="a-kw">LEFT JOIN</span> Wypozyczenia <span class="a-kw">AS</span> W <span class="a-kw">ON</span> K.ID_Ksiazki = W.ID_Ksiazki
+<span class="a-kw">GROUP BY</span> K.Tytul
+<span class="a-kw">ORDER BY</span> LiczbaWypoz <span class="a-kw">DESC</span>;
+
+<span class="a-cm">-- Książki nigdy nie wypożyczone (LEFT JOIN + IS NULL):</span>
+<span class="a-kw">SELECT</span> K.Tytul
+<span class="a-kw">FROM</span> Ksiazki <span class="a-kw">AS</span> K
+<span class="a-kw">LEFT JOIN</span> Wypozyczenia <span class="a-kw">AS</span> W <span class="a-kw">ON</span> K.ID_Ksiazki = W.ID_Ksiazki
+<span class="a-kw">WHERE</span> W.ID_Wyp <span class="a-kw">IS NULL</span>;</pre>
+</div>`
+},
+{id:"ddl",name:"DDL i kwerendy specjalne",icon:"🏗️",content:`
+<div class="mod-card">
+<h4>🏗️ CREATE TABLE — typy danych Access</h4>
+<p>Access ma własne nazwy typów danych, choć w SQL można używać standardowych odpowiedników.</p>
+<pre><span class="a-kw">CREATE TABLE</span> Koła (
+  ID_Kola    <span class="a-num">INT PRIMARY KEY</span>,
+  NazwaKola  <span class="a-kw">TEXT</span>,           <span class="a-cm">-- Access: TEXT = VARCHAR</span>
+  Sala       <span class="a-kw">TEXT</span>,
+  MaxOsob    <span class="a-kw">INT</span>,
+  Oplata     <span class="a-kw">REAL</span>,           <span class="a-cm">-- Access: REAL = DECIMAL/FLOAT</span>
+  Aktywne    <span class="a-kw">INT DEFAULT</span> <span class="a-num">1</span>,  <span class="a-cm">-- Access: 0/1 zamiast BOOLEAN</span>
+  ID_Nauc    <span class="a-kw">INT REFERENCES</span> Nauczyciele(ID_Nauczyciela)
+);</pre>
+<div class="acc-diff"><h5>🗂️ Typy danych Access vs SQL</h5><ul>
+  <li><b>TEXT</b> (lub SHORT TEXT) — odpowiednik VARCHAR(255)</li>
+  <li><b>MEMO / LONG TEXT</b> — odpowiednik TEXT (długi)</li>
+  <li><b>NUMBER / INT</b> — liczba całkowita</li>
+  <li><b>CURRENCY / REAL</b> — liczba z przecinkiem</li>
+  <li><b>DATE/TIME</b> — data i czas</li>
+  <li><b>YES/NO (0/-1)</b> — odpowiednik BOOLEAN (nie 0/1 jak w SQL!)</li>
+</ul></div>
+</div>
+<div class="mod-card">
+<h4>📋 ALTER TABLE — ADD COLUMN (słowo COLUMN obowiązkowe!)</h4>
+<pre><span class="a-cm">-- Access wymaga słowa COLUMN przy ADD:</span>
+<span class="a-kw">ALTER TABLE</span> Uczniowie <span class="a-kw">ADD COLUMN</span> Email <span class="a-kw">TEXT</span>;
+<span class="a-kw">ALTER TABLE</span> Uczniowie <span class="a-kw">ADD COLUMN</span> NrPesel <span class="a-kw">TEXT</span>;
+
+<span class="a-cm">-- Każdą kolumnę dodajemy OSOBNO (Access nie pozwala na kilka naraz):</span>
+<span class="a-cm">-- ALTER TABLE T ADD kol1 TEXT, kol2 INT; -- BŁĄD w Access!</span>
+
+<span class="a-cm">-- Usuwanie kolumny:</span>
+<span class="a-kw">ALTER TABLE</span> Uczniowie <span class="a-kw">DROP COLUMN</span> Email;</pre>
+<div class="wtopa"><h5>⚠️ ADD vs ADD COLUMN</h5><p>W MySQL: <code>ALTER TABLE T ADD Email VARCHAR(100)</code> — bez słowa COLUMN. W Access: <code>ALTER TABLE T ADD COLUMN Email TEXT</code> — słowo COLUMN jest WYMAGANE!</p></div>
+</div>
+<div class="mod-card">
+<h4>📊 SELECT INTO — kwerenda tworząca</h4>
+<pre><span class="a-cm">-- Tworzenie nowej tabeli z danych:</span>
+<span class="a-kw">SELECT</span> Imie, Nazwisko, Klasa
+  <span class="a-kw">INTO</span> Maturzysci
+<span class="a-kw">FROM</span> Uczniowie
+<span class="a-kw">WHERE</span> Klasa <span class="a-kw">IN</span> (<span class="a-str">'3A'</span>, <span class="a-str">'3B'</span>);
+
+<span class="a-cm">-- Kopia tabeli z zagregowanymi danymi:</span>
+<span class="a-kw">SELECT</span> U.Imie, U.Nazwisko, <span class="a-fn">Round</span>(<span class="a-fn">AVG</span>(O.Ocena), <span class="a-num">2</span>) <span class="a-kw">AS</span> Srednia
+  <span class="a-kw">INTO</span> Uczniowie_Najlepsi
+<span class="a-kw">FROM</span> Uczniowie <span class="a-kw">AS</span> U
+<span class="a-kw">INNER JOIN</span> Oceny <span class="a-kw">AS</span> O <span class="a-kw">ON</span> U.ID_Ucznia = O.ID_Ucznia
+<span class="a-kw">GROUP BY</span> U.Imie, U.Nazwisko
+<span class="a-kw">HAVING</span> <span class="a-fn">AVG</span>(O.Ocena) > <span class="a-num">4.5</span>;</pre>
+<div class="tip-box"><h5>💡 MySQL odpowiednik</h5><p>MySQL: <code>CREATE TABLE NowaTabel AS SELECT ... FROM ...</code>. W Access: <code>SELECT ... INTO NowaTabel FROM ...</code>. Kolejność INTO jest przed FROM!</p></div>
+</div>
+<div class="mod-card">
+<h4>❓ Kwerenda parametryczna [Podaj:]</h4>
+<pre><span class="a-cm">-- [Tekst w nawiasach] = Access pyta użytkownika:</span>
+<span class="a-kw">SELECT</span> * <span class="a-kw">FROM</span> Uczniowie
+<span class="a-kw">WHERE</span> Klasa = [Podaj klasę (np. 3A):];
+
+<span class="a-cm">-- Parametr w IIF:</span>
+<span class="a-kw">SELECT</span> * <span class="a-kw">FROM</span> Egzaminy
+<span class="a-kw">WHERE</span> Wynik > [Podaj minimalny wynik:]
+  <span class="a-kw">AND</span> Przedmiot = [Podaj przedmiot:];
+
+<span class="a-cm">-- Parametr jako część LIKE:</span>
+<span class="a-kw">SELECT</span> * <span class="a-kw">FROM</span> Ksiazki
+<span class="a-kw">WHERE</span> Autor <span class="a-kw">LIKE</span> [Podaj fragment nazwiska:] <span class="a-op">&amp;</span> <span class="a-str">'*'</span>;</pre>
+<div class="acc-diff"><h5>🗂️ Kwerendy specjalne tylko w Access</h5><ul>
+  <li><b>[Parametr]</b> — dialog pytający użytkownika</li>
+  <li><b>SELECT INTO</b> — kwerenda tworząca tabelę</li>
+  <li><b>INSERT INTO ... SELECT</b> — kwerenda dołączająca</li>
+  <li><b>UPDATE ... INNER JOIN</b> — aktualizacja z JOIN</li>
+  <li><b>TRANSFORM/PIVOT</b> — kwerenda krzyżowa</li>
+  <li><b>TOP n PERCENT</b> — procent wierszy</li>
+</ul></div>
+</div>`
+}
+];
+
+// ═══════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════
+const quizData = [
+  {q:"Jak pobrać 5 najdroższych produktów w Access?",hint:"Access nie ma LIMIT",opts:["SELECT * FROM Produkty LIMIT 5 ORDER BY Cena DESC","SELECT TOP 5 * FROM Produkty ORDER BY Cena DESC","SELECT * FROM Produkty ORDER BY Cena DESC TOP 5","SELECT FIRST 5 * FROM Produkty ORDER BY Cena DESC"],ans:1,exp:"Access używa SELECT TOP n zamiast LIMIT. Zawsze łącz z ORDER BY — bez niego wynik jest przypadkowy."},
+  {q:"Jaki wildcard zastępuje dowolną liczbę znaków w Access LIKE?",hint:"To NIE jest procent!",opts:["% (procent)","_ (podkreślnik)","* (gwiazdka)","? (pytajnik)"],ans:2,exp:"W Access LIKE używa * zamiast % (MySQL). ? zastępuje jeden znak (MySQL: _). # zastępuje jedną cyfrę. To jeden z najczęstszych błędów maturalnych!"},
+  {q:"Czym jest IIF() w Access?",hint:"Odpowiednik czego z MySQL?",opts:["Funkcja inicjalizacji bazy danych","Odpowiednik CASE WHEN ... THEN ... ELSE ... END","Funkcja do liczenia wierszy warunkowych","Operator logiczny AND/OR"],ans:1,exp:"IIF(warunek, wartość_jeśli_true, wartość_jeśli_false) to odpowiednik CASE WHEN ... THEN ... ELSE ... END. Separatory to przecinki — nie średniki!"},
+  {q:"Jak wyglądają aliasy ze spacją w Access?",hint:"Nie cudzysłowy, nie backtick",opts:["Imie AS 'Imię ucznia'","Imie AS `Imię ucznia`","Imie AS [Imię ucznia]","Imie AS \"Imię ucznia\""],ans:2,exp:"Access używa nawiasów kwadratowych [ ] dla aliasów i nazw pól zawierających spacje lub polskie znaki. MySQL: backtick ``. Standard SQL: podwójny cudzysłów."},
+  {q:"Co robi Switch(w1,v1, w2,v2, True, domyślny)?",hint:"Myśl o if-elseif-else",opts:["Przełącza między trybami bazy danych","Sprawdza warunki po kolei — zwraca wartość przy pierwszym True","Losuje jedną z podanych wartości","Wykonuje wartość gdy wszystkie warunki False"],ans:1,exp:"Switch() sprawdza warunki po kolei. Gdy warunek jest True, zwraca przypisaną wartość. True na końcu działa jako ELSE — wartość domyślna gdy żaden warunek nie pasuje."},
+  {q:"Ile nawiasów potrzebujesz łącząc 3 tabele w Access JOIN?",hint:"MySQL nie wymaga, Access tak",opts:["0 — nawiasy są opcjonalne","1 para — (T1 JOIN T2) JOIN T3","2 pary — ((T1 JOIN T2) JOIN T3)","Nawiasy przy każdym JOIN"],ans:1,exp:"Przy 3 tabelach: (T1 JOIN T2 ON ...) JOIN T3 ON ... — 1 para nawiasów. Przy 4 tabelach: ((T1 JOIN T2) JOIN T3) JOIN T4 — 2 pary. To obowiązkowe w Access, niewymagane w MySQL!"},
+  {q:"Jaki jest odpowiednik LIMIT 5 w Access?",hint:"Unikalne dla Access",opts:["FETCH FIRST 5","ROWNUM <= 5","SELECT TOP 5","LIMIT 5 (działa tak samo)"],ans:2,exp:"Access nie obsługuje LIMIT. SELECT TOP n to specjalność Access (i SQL Server). SELECT TOP n PERCENT pobiera n procent wierszy."},
+  {q:"Czym jest Nz(pole, 'brak') w Access?",hint:"Obsługa NULL",opts:["Sprawdza czy pole jest numeryczne","Zastępuje NULL wartością domyślną — jak COALESCE()","Neguje wartość logiczną pola","Normalizuje tekst do małych liter"],ans:1,exp:"Nz(pole, zamiennik) = Null to Zero. Odpowiednik COALESCE(pole, zamiennik) w MySQL. Gdy pole jest NULL, zwraca zamiennik. Przydatne w obliczeniach i konkatenacji."},
+  {q:"Do czego służy Mid(tekst, 2, 3) w Access?",hint:"Liczy od 1",opts:["Wyciąga środkowe 3 znaki z środka tekstu","Wyciąga 3 znaki zaczynając od pozycji 2","Usuwa 2 pierwsze i 3 ostatnie znaki","Zwraca True jeśli tekst ma 2-3 znaki"],ans:1,exp:"Mid(tekst, start, długość) — pozycje liczone od 1. Mid('Kowalski', 2, 3) = 'owa'. Odpowiednik SUBSTR() w MySQL. Brak 3. argumentu = od startu do końca."},
+  {q:"Jak działa SELECT INTO w Access?",hint:"Kwerenda tworząca",opts:["Wstawia wartości do istniejącej tabeli","Tworzy nową tabelę z wynikami SELECT","Wybiera dane z kilku tabel naraz","Importuje dane z zewnętrznego pliku"],ans:1,exp:"SELECT kolumny INTO NowaTabel FROM ... WHERE ... tworzy nową tabelę i wypełnia ją wynikami SELECT. MySQL odpowiednik: CREATE TABLE T AS SELECT .... Bardzo popularne na maturze!"},
+  {q:"Co oznacza [Podaj klasę:] w kwerendzie Access WHERE Klasa = [Podaj klasę:]?",hint:"Interaktywna kwerenda",opts:["Odwołanie do kolumny o nazwie 'Podaj klasę'","Access wyświetla okno dialogowe z pytaniem do użytkownika","Komentarz ignorowany przez Access","Wartość domyślna gdy Klasa jest pusta"],ans:1,exp:"[Tekst w nawiasach kwadratowych] który NIE jest nazwą pola = parametr kwerendy. Access wyświetla okno dialogowe i wstawia wpisaną wartość do zapytania. Unikalne dla Access!"},
+  {q:"Jak zapisać konkatenację w Access: imię + spacja + nazwisko?",hint:"Nie + ani ||",opts:["imie + ' ' + nazwisko","imie CONCAT(' ', nazwisko)","imie & ' ' & nazwisko","CONCAT(imie, ' ', nazwisko)"],ans:2,exp:"Access używa & (ampersand) do konkatenacji tekstów. Nie + (może dać błąd przy NULL) ani || (nieobsługiwane). imie & ' ' & nazwisko = 'Jan Kowalski'."},
+  {q:"Co robi DateAdd('d', 30, DataWyp)?",hint:"Dodaje czas",opts:["Oblicza ile dni minęło od DataWyp","Dodaje 30 dni do DataWyp","Formatuje DataWyp jako 30-znakowy string","Sprawdza czy minęło 30 dni"],ans:1,exp:"DateAdd(interval, n, data) dodaje n jednostek do daty. 'd'=dni, 'm'=miesiące, 'yyyy'=lata. DateAdd('d', 30, DataWyp) = DataWyp + 30 dni. MySQL: DATE_ADD()."},
+  {q:"Jak obliczyć różnicę w dniach między dwiema datami w Access?",hint:"Specjalna funkcja daty",opts:["DataKonca - DataPoczatku","DATEDIFF(DataPoczatku, DataKonca)","DateDiff('d', DataPoczatku, DataKonca)","Abs(DataKonca - DataPoczatku)"],ans:2,exp:"DateDiff(interval, data1, data2) — 'd' = dni, 'm' = miesiące, 'yyyy' = lata. MySQL: DATEDIFF(data2, data1) — inna kolejność argumentów!"},
+  {q:"Czym różni się Format(Cena, '0.00') od Round(Cena, 2)?",hint:"Format vs zaokrąglanie",opts:["Niczym — obydwie zwracają liczbę z 2 miejscami","Format zwraca tekst '3.50', Round zwraca liczbę 3.5","Round formatuje do wydruku, Format zaokrągla","Format działa tylko na datach, Round na liczbach"],ans:1,exp:"Format() zwraca STRING (tekst) — np. '3.50' zawsze z 2 miejscami. Round() zwraca LICZBĘ — np. 3.5 (bez trailing zero). Przy konkatenacji z & użyj Format(), przy obliczeniach Round()."},
+  {q:"Jak pobrać pierwszą literę pola Imie w Access?",hint:"Mid lub Left",opts:["SUBSTRING(Imie, 1, 1)","Mid(Imie, 1, 1) lub Left(Imie, 1)","Imie[0]","CHAR_AT(Imie, 1)"],ans:1,exp:"Mid(Imie, 1, 1) — wyciąga 1 znak zaczynając od pozycji 1. Tożsame z Left(Imie, 1). MySQL: SUBSTR(Imie, 1, 1) lub LEFT(Imie, 1). W Access nie używamy SUBSTR!"},
+  {q:"Co oznacza TRANSFORM w Access?",hint:"Tworzy tabelę przestawną",opts:["Transformuje typy danych kolumn","Kwerenda krzyżowa — tworzy tabelę przestawną w SQL","Konwertuje SELECT na UPDATE","Odwraca kolejność wierszy"],ans:1,exp:"TRANSFORM tworzy kwerendę krzyżową (cross-tab). TRANSFORM COUNT(pole) SELECT ... GROUP BY ... PIVOT kolumna — dynamicznie tworzy kolumny z wartości. Unikalne dla Access, nie ma w MySQL."},
+  {q:"Dlaczego Choose(Ocena, 'Ndst', 'Dop', 'Dst', 'Dobry', 'B.dobry', 'Cel') działa dla Ocena=1 do 6?",hint:"Indeksowanie od 1",opts:["Indeksuje od 0, więc Ocena=1 to 'Ndst'","Indeksuje od 1, Ocena=1 → wartość na pozycji 1 = 'Ndst'","Wartości muszą odpowiadać dokładnie zakresowi 1-6","Choose działa tylko dla liczb do 10"],ans:1,exp:"Choose(indeks, v1, v2, v3, ...) zwraca wartość na pozycji indeks. Indeksowanie od 1 — Choose(1,...) = v1, Choose(2,...) = v2 itd. Idealny gdy kolumna ma wartości 1,2,3,4..."},
+  {q:"Jak poprawnie dodać kolumnę w Access SQL?",hint:"Jedno słowo więcej niż w MySQL",opts:["ALTER TABLE T ADD Email TEXT","ALTER TABLE T ADD COLUMN Email TEXT","ALTER TABLE T MODIFY ADD Email TEXT","ALTER TABLE T INSERT COLUMN Email TEXT"],ans:1,exp:"W Access: ALTER TABLE T ADD COLUMN Email TEXT — słowo COLUMN jest WYMAGANE. W MySQL: ALTER TABLE T ADD Email VARCHAR(100) — COLUMN jest opcjonalne. Każdą kolumnę dodajemy osobno!"},
+  {q:"Jaka jest różnica między Date() a Now() w Access?",hint:"Data vs data+czas",opts:["Niczym — to synonimy","Date() = tylko data (bez godziny), Now() = data + czas","Now() = tylko data, Date() = data + czas","Date() dla dat przeszłych, Now() dla bieżącej"],ans:1,exp:"Date() zwraca tylko datę (2024-03-15), jak CURDATE() w MySQL. Now() zwraca datę i czas (2024-03-15 14:30:00), jak NOW() w MySQL. Date() jest częściej używane w WHERE przy filtrowaniu dat."},
+  {q:"Co zwraca: IIF(Wynik >= 50, 1, 0) dla Wynik = 43?",hint:"43 >= 50?",opts:["1 (bo 43 to niezerowe)","0 (warunek niespełniony)","NULL (brak wartości)","Błąd składni"],ans:1,exp:"43 >= 50 jest False, więc IIF zwraca wartość_gdy_false = 0. To klasyczny wzorzec do sumowania warunkowego: SUM(IIF(CzyZdal=1, 1, 0)) — Access-odpowiednik COUNTIF z Excela."},
+  {q:"Jakie nawiasy używamy dla aliasów ze spacją w Access?",hint:"Nie cudzysłowy!",opts:["Okrągłe: (Imię ucznia)","Klamrowe: {Imię ucznia}","Kwadratowe: [Imię ucznia]","Cudzysłowy: \"Imię ucznia\""],ans:2,exp:"[ ] — nawiasy kwadratowe. SELECT Imie AS [Imię ucznia]. W MySQL: backtick `Imię ucznia`. W Standard SQL: \"Imię ucznia\". W Access: tylko [ ] dla nazw z polskimi znakami i spacjami."},
+  {q:"SELECT TOP 10 PERCENT * FROM T ORDER BY Wynik DESC — co zwróci dla tabeli 80-wierszowej?",hint:"10% z 80",opts:["10 wierszy","8 wierszy","4 wiersze","Błąd — PERCENT nie istnieje"],ans:1,exp:"10% z 80 = 8 wierszy. TOP n PERCENT zaokrągla w górę. Dostępne tylko w Access i SQL Server — nie ma w MySQL ani SQLite."},
+  {q:"Który kod Access jest poprawny dla 3 tabel?",hint:"Nawiasy!",opts:["FROM T1 JOIN T2 ON ... JOIN T3 ON ...","FROM (T1 JOIN T2 ON ...) JOIN T3 ON ...","FROM T1 JOIN (T2 JOIN T3 ON ...) ON ...","Wszystkie są poprawne w Access"],ans:1,exp:"Access WYMAGA nawiasów dla 3+ tabel: (T1 JOIN T2 ON ...) JOIN T3 ON ... Bez nawiasów Access zgłosi błąd składni. MySQL akceptuje obie formy."},
+  {q:"Co to StrConv(Nazwisko, 3)?",hint:"Konwersja wielkości liter",opts:["Konwertuje Nazwisko na 3-znakowy string","Zwraca pierwsze 3 znaki Nazwisko","Zamienia pierwszą literę każdego słowa na wielką (Proper Case)","Koduje Nazwisko w UTF-3"],ans:2,exp:"StrConv(tekst, 3) = vbProperCase = Pierwsza Wielka Litera Każdego Słowa. StrConv(tekst,1) = WIELKIE. StrConv(tekst,2) = małe. Nie ma odpowiednika w MySQL!"},
+];
+
+// ═══════════════════════════════════════════════
+// FISZKI
+// ═══════════════════════════════════════════════
+const fiszkiData = [
+  {q:"LIMIT n w MySQL → co w Access?",a:"SELECT TOP n ... ORDER BY kolumna DESC/ASC. TOP musi być z ORDER BY!",cat:"SELECT"},
+  {q:"LIKE 'A%' (MySQL) → co w Access?",a:"LIKE 'A*' — gwiazdka zamiast procenta! ? = jeden znak, # = jedna cyfra.",cat:"Operatory"},
+  {q:"CASE WHEN w SQL → co w Access?",a:"IIF(warunek, wartość_true, wartość_false). Lub Switch(w1,v1,...,True,domyślny).",cat:"IIF"},
+  {q:"COALESCE(pole, 'brak') → co w Access?",a:"Nz(pole, 'brak') — Null to Zero. Zastępuje NULL wartością domyślną.",cat:"IIF"},
+  {q:"Konkatenacja: imie + ' ' + nazw (MySQL)?",a:"W Access: imie & ' ' & nazwisko. Ampersand & — nie + ani ||.",cat:"Tekst"},
+  {q:"SUBSTR(tekst, 2, 3) (MySQL) → co w Access?",a:"Mid(tekst, 2, 3) — wyciąga 3 znaki od pozycji 2. Pozycje od 1.",cat:"Tekst"},
+  {q:"LENGTH(tekst) (MySQL) → co w Access?",a:"Len(tekst) — zwraca liczbę znaków. MySQL: LENGTH(). Access: Len().",cat:"Tekst"},
+  {q:"UPPER(tekst) (MySQL) → co w Access?",a:"UCase(tekst). LCase() = LOWER(). Inne nazwy funkcji!",cat:"Tekst"},
+  {q:"Co robi Format(Cena, '0.00')?",a:"Formatuje liczbę jako STRING z zawsze 2 miejscami: 3.50, 99.00, 1500.00. Inaczej niż Round()!",cat:"Tekst"},
+  {q:"Co robi Format(Data, 'dd/mm/yyyy')?",a:"Formatuje datę jako tekst w formacie polskim: 15/03/2024.",cat:"Daty"},
+  {q:"CURDATE() (MySQL) → co w Access?",a:"Date() — tylko data. Now() = data + czas (jak NOW() w MySQL).",cat:"Daty"},
+  {q:"DATE_ADD(data, INTERVAL 30 DAY) → Access?",a:"DateAdd('d', 30, data). 'd'=dni, 'm'=miesiące, 'yyyy'=lata.",cat:"Daty"},
+  {q:"DATEDIFF(d1, d2) (MySQL) → Access?",a:"DateDiff('d', data1, data2) — inna kolejność! 'd'=dni, 'yyyy'=lata.",cat:"Daty"},
+  {q:"JOIN 3 tabel — co jest inaczej w Access?",a:"Nawiasy OBOWIĄZKOWE: (T1 JOIN T2 ON ...) JOIN T3 ON ... MySQL nie wymaga nawiasów!",cat:"JOIN"},
+  {q:"SELECT INTO — do czego?",a:"Tworzy NOWĄ tabelę z wyników SELECT. MySQL: CREATE TABLE T AS SELECT ...",cat:"DDL"},
+  {q:"ALTER TABLE ADD — różnica Access vs MySQL?",a:"Access: ADD COLUMN nazwa TYP — słowo COLUMN obowiązkowe! MySQL: ADD nazwa TYP — opcjonalne.",cat:"DDL"},
+  {q:"Co to kwerenda parametryczna [Podaj:] w Access?",a:"WHERE pole = [Podaj wartość:] — Access wyświetla okno dialogowe. Unikalne dla Access GUI.",cat:"DDL"},
+  {q:"Co to TRANSFORM/PIVOT w Access?",a:"Kwerenda krzyżowa — tworzy tabelę przestawną SQL. TRANSFORM COUNT(pole) ... PIVOT kolumna.",cat:"DDL"},
+  {q:"Jak działa IIF zagnieżdżone?",a:"IIF(w1, v1, IIF(w2, v2, IIF(w3, v3, domyślny))) — każdy false prowadzi do kolejnego IIF.",cat:"IIF"},
+  {q:"Choose(Ocena, 'Ndst', ...) dla Ocena=3?",a:"Choose(3, 'Ndst','Dop','Dst',...) = 'Dst'. Indeksowanie od 1 — indeks 3 = trzecia wartość.",cat:"IIF"},
+  {q:"InStr(Autor, ' ') co zwraca?",a:"Pozycję pierwszej spacji (1-bazowane) lub 0 jeśli nie znaleziono. Np. InStr('Jan Kow',' ') = 4.",cat:"Tekst"},
+  {q:"Mid(Autor, InStr(Autor,' ')+1) — co robi?",a:"Wyciąga część po spacji = samo nazwisko. InStr daje pozycję spacji, +1 = następny znak, Mid bez długości = do końca.",cat:"Tekst"},
+  {q:"StrConv(tekst, 3) — co robi?",a:"Proper Case — pierwsza wielka litera każdego słowa. Brak odpowiednika w MySQL.",cat:"Tekst"},
+  {q:"SUM(IIF(CzyZdal=1,1,0)) — do czego?",a:"Sumowanie warunkowe — liczy ile wierszy spełnia warunek. Access-odpowiednik COUNTIF z Excela.",cat:"IIF"},
+  {q:"TOP bez ORDER BY — problem?",a:"Bez ORDER BY wynik jest przypadkowy/niezdefiniowany. Zawsze: SELECT TOP n ... ORDER BY kolumna!",cat:"SELECT"},
+  {q:"Aliasy ze spacją w Access — jak zapisać?",a:"[Imię ucznia] — nawiasy kwadratowe. MySQL: `Imię ucznia`. Standard: \"Imię ucznia\".",cat:"SELECT"},
+  {q:"IsNull(pole) vs IS NULL — różnica?",a:"IS NULL — w WHERE: WHERE pole IS NULL. IsNull(pole) — w wyrażeniach IIF/Switch: IIF(IsNull(pole), 'brak', pole).",cat:"Operatory"},
+  {q:"Format(ID, '000') — co daje?",a:"Zero-padding: 1→'001', 12→'012', 123→'123'. Wynik to STRING, nie liczba!",cat:"Tekst"},
+  {q:"DatePart('q', data) — co zwraca?",a:"Numer kwartału: 1,2,3 lub 4. DatePart('ww', data) = numer tygodnia w roku.",cat:"Daty"},
+  {q:"YES/NO w Access a BOOLEAN w SQL?",a:"Access: YES/NO = -1/0 (nie 1/0!). W SQL: BOOLEAN = TRUE/FALSE = 1/0.",cat:"DDL"},
+];
+
+// ═══════════════════════════════════════════════
+// TYPING
+// ═══════════════════════════════════════════════
+const typingData = [
+  {p:"Pobierz 3 najtańsze produkty z tabeli Produkty",h:"SELECT TOP ... ORDER BY ... ASC",a:"SELECT TOP 3 * FROM Produkty ORDER BY Cena ASC;",tip:"TOP bez ORDER BY = losowe. TOP + ORDER BY ASC = najtańsze, DESC = najdroższe."},
+  {p:"Znajdź uczniów których imię zaczyna się na 'A' (Access LIKE)",h:"LIKE 'A*' — gwiazdka, nie procent!",a:"SELECT * FROM Uczniowie WHERE Imie LIKE 'A*';",tip:"W Access LIKE używa * nie %. To jedna z największych pułapek maturalnych!"},
+  {p:"Wyświetl uczniów z etykietą: płeć K → 'Uczennica', M → 'Uczeń'",h:"IIF(warunek, wartość_true, wartość_false)",a:"SELECT Imie, IIF(Plec='K','Uczennica','Uczeń') AS Status FROM Uczniowie;",tip:"IIF = Access-odpowiednik CASE WHEN. Separatory: przecinki!"},
+  {p:"Oblicz termin zwrotu = data wypożyczenia + 14 dni",h:"DateAdd('d', 14, DataWyp)",a:"SELECT ID_Wyp, DataWyp, DateAdd('d',14,DataWyp) AS TerminZwrotu FROM Wypozyczenia;",tip:"DateAdd('d', n, data) dodaje n dni. 'm' = miesiące, 'yyyy' = lata."},
+  {p:"Pokaż ocenę słownie: 6→Celujący, 5→Bardzo dobry, reszta→Inne",h:"Switch(w1,v1, w2,v2, True, domyślny)",a:"SELECT Imie, Switch(Ocena=6,'Celujący',Ocena=5,'Bardzo dobry',True,'Inne') AS Slownie FROM Oceny;",tip:"True na końcu Switch() = ELSE. Bez True — NULL gdy żaden warunek nie pasuje."},
+  {p:"Formatuj ceny z 2 miejscami po przecinku jako tekst",h:"Format(pole, '0.00')",a:"SELECT NazwaProduktu, Format(Cena,'0.00') AS CenaPLN FROM Produkty;",tip:"Format zwraca STRING. Round zwraca liczbę. Użyj Format przy konkatenacji z & ."},
+  {p:"Pobierz imię i nazwisko ucznia jako 'Kowalski Jan' (nazwisko pierwsze)",h:"Nazwisko & ' ' & Imie",a:"SELECT Nazwisko & ' ' & Imie AS Uczen FROM Uczniowie;",tip:"Konkatenacja przez & — nie + ani ||. Wynik: 'Kowalski Jan'."},
+  {p:"Utwórz nową tabelę Maturzysci z uczniów klasy 3A",h:"SELECT ... INTO ...",a:"SELECT * INTO Maturzysci FROM Uczniowie WHERE Klasa = '3A';",tip:"SELECT INTO tworzy nową tabelę. MySQL: CREATE TABLE T AS SELECT ..."},
+  {p:"Oblicz ile dni trwało każde zwrócone wypożyczenie",h:"DateDiff('d', data1, data2)",a:"SELECT ID_Wyp, DateDiff('d',DataWyp,DataZwrotu) AS LiczbaDni FROM Wypozyczenia WHERE DataZwrotu IS NOT NULL;",tip:"DateDiff('d', start, koniec). Zwraca liczbę całkowitą."},
+  {p:"Pokaż ID ucznia w formacie UCZ/001, UCZ/012",h:"'UCZ/' & Format(ID, '000')",a:"SELECT 'UCZ/' & Format(ID_Ucznia,'000') AS KodUcznia, Imie FROM Uczniowie;",tip:"Format(liczba,'000') = zero-padding. Wynik to STRING!"},
+  {p:"Wyciągnij inicjały ucznia (pierwsza litera imienia i nazwiska)",h:"Mid(pole, 1, 1) & '.' & Mid(...)",a:"SELECT Mid(Imie,1,1) & '.' & Mid(Nazwisko,1,1) & '.' AS Inicjaly FROM Uczniowie;",tip:"Mid(tekst, start, dlugosc) — pozycje od 1. Mid(t,1,1) = pierwsza litera."},
+  {p:"Połącz 3 tabele: Uczniowie, Wypozyczenia, Ksiazki (Access!)",h:"(T1 JOIN T2 ON ...) JOIN T3 ON ...",a:"SELECT U.Imie, K.Tytul, W.DataWyp FROM (Uczniowie AS U INNER JOIN Wypozyczenia AS W ON U.ID_Ucznia = W.ID_Ucznia) INNER JOIN Ksiazki AS K ON W.ID_Ksiazki = K.ID_Ksiazki;",tip:"OBOWIĄZKOWE NAWIASY! (T1 JOIN T2) JOIN T3 — Access wymaga, MySQL nie."},
+  {p:"Zamień NULL w DataZwrotu na tekst 'W obiegu'",h:"Nz(pole, zamiennik)",a:"SELECT ID_Wyp, Nz(DataZwrotu,'W obiegu') AS Status FROM Wypozyczenia;",tip:"Nz() = Null to Zero. Odpowiednik COALESCE() w MySQL."},
+  {p:"Pobierz 20% egzaminów z najwyższymi wynikami",h:"SELECT TOP n PERCENT",a:"SELECT TOP 20 PERCENT * FROM Egzaminy ORDER BY Wynik DESC;",tip:"TOP n PERCENT — tylko Access i SQL Server. MySQL nie obsługuje."},
+  {p:"Dodaj kolumnę Telefon (TEXT) do tabeli Klienci",h:"ALTER TABLE ... ADD COLUMN ...",a:"ALTER TABLE Klienci ADD COLUMN Telefon TEXT;",tip:"Access WYMAGA słowa COLUMN po ADD! MySQL: ADD Telefon VARCHAR(20) bez COLUMN."},
+];
+
+// ═══════════════════════════════════════════════
+// NOTATNIK — ZŁOTE REGUŁY ACCESS
+// ═══════════════════════════════════════════════
+const notatnikData = [
+  {txt:"SELECT TOP n (nie LIMIT n!) — Access nie obsługuje LIMIT. Zawsze łącz z ORDER BY!",tag:"SELECT"},
+  {txt:"LIKE 'A*' — gwiazdka *, nie procent %! ? = jeden znak, # = jedna cyfra.",tag:"Operatory"},
+  {txt:"IIF(warunek, tak, nie) = CASE WHEN ... THEN ... ELSE ... END w Access.",tag:"IIF"},
+  {txt:"Switch(w1,v1, w2,v2, True, domyślny) — True na końcu = ELSE. Bez True → NULL gdy nic nie pasuje.",tag:"IIF"},
+  {txt:"Nz(pole, zamiennik) = COALESCE() — zastępuje NULL wartością domyślną.",tag:"IIF"},
+  {txt:"Konkatenacja: imie & ' ' & nazwisko — AMPERSAND &, nie + ani ||.",tag:"Tekst"},
+  {txt:"Mid(tekst, start, długość) = SUBSTR() — pozycje od 1. Left(t,n) = pierwsze n znaków.",tag:"Tekst"},
+  {txt:"Len(tekst) = LENGTH() w MySQL. UCase() = UPPER(). LCase() = LOWER().",tag:"Tekst"},
+  {txt:"Format(wartość, '0.00') zwraca STRING (tekst). Round(wartość, 2) zwraca LICZBĘ.",tag:"Tekst"},
+  {txt:"Format(liczba, '000') = zero-padding: 1→'001', 12→'012'. Tylko Access.",tag:"Tekst"},
+  {txt:"Date() = tylko data (CURDATE()). Now() = data + czas (NOW() w MySQL).",tag:"Daty"},
+  {txt:"DateAdd('d', 30, data) = data + 30 dni. 'd'=dni, 'm'=miesiące, 'yyyy'=lata.",tag:"Daty"},
+  {txt:"DateDiff('d', data1, data2) = liczba dni między datami. Różna kolejność niż MySQL DATEDIFF!",tag:"Daty"},
+  {txt:"DatePart('q', data) = kwartał (1-4). 'ww' = numer tygodnia w roku.",tag:"Daty"},
+  {txt:"JOIN 3+ tabel w Access WYMAGA nawiasów: (T1 JOIN T2 ON ...) JOIN T3 ON ...",tag:"JOIN"},
+  {txt:"SELECT ... INTO NowaTabel FROM ... = kwerenda tworząca nową tabelę. MySQL: CREATE TABLE AS SELECT.",tag:"DDL"},
+  {txt:"ALTER TABLE T ADD COLUMN Email TEXT — słowo COLUMN OBOWIĄZKOWE w Access!",tag:"DDL"},
+  {txt:"[Podaj wartość:] w WHERE = kwerenda parametryczna — okno dialogowe. Tylko Access GUI.",tag:"DDL"},
+  {txt:"TRANSFORM COUNT(pole) SELECT ... GROUP BY ... PIVOT kolumna = kwerenda krzyżowa.",tag:"DDL"},
+  {txt:"YES/NO w Access = -1/0 (nie 1/0!). BOOLEAN w SQL = TRUE/FALSE = 1/0.",tag:"DDL"},
+  {txt:"Aliasy ze spacją: [Imię ucznia] — nawiasy kwadratowe w Access. MySQL: backtick.",tag:"SELECT"},
+  {txt:"InStr(tekst, szukany) = pozycja (1-bazowana) lub 0 jeśli nie znaleziono.",tag:"Tekst"},
+  {txt:"SUM(IIF(warunek, 1, 0)) = sumowanie warunkowe = COUNTIF z Excela w Access SQL.",tag:"IIF"},
+  {txt:"TOP n PERCENT — pobiera n% wierszy tabeli. Tylko Access i SQL Server.",tag:"SELECT"},
+  {txt:"StrConv(tekst, 3) = Proper Case. Brak odpowiednika w MySQL.",tag:"Tekst"},
+];
+
+const fokusData = [...fiszkiData];
+
+// ═══════════════════════════════════════════════
+// INIT + UTILITIES
+// ═══════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  document.getElementById('navBar').style.width = (window.scrollY / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+});
+
+function toast(title, msg) {
+  const t = document.getElementById('toast');
+  t.querySelector('b').textContent = title;
+  t.querySelector('span').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ROADMAPA checkboxes
+document.querySelectorAll('.rm-check input').forEach(cb => {
+  const k = cb.dataset.k;
+  if (localStorage.getItem(k)) { cb.checked = true; cb.closest('.rm-check').classList.add('done'); }
+  cb.addEventListener('change', () => {
+    localStorage.setItem(k, cb.checked ? '1' : '');
+    cb.closest('.rm-check').classList.toggle('done', cb.checked);
+  });
+});
+
+// ═══════════════════════════════════════════════
+// SŁOWNIK
+// ═══════════════════════════════════════════════
+const allCats = ['wszystkie', ...new Set(slownikData.map(d => d.cat))];
+let activeSlownikCat = 'wszystkie';
+
+function renderSlownikFilter() {
+  document.getElementById('slownikFilter').innerHTML = allCats.map(c =>
+    `<button class="sf-btn${c === activeSlownikCat ? ' active' : ''}" onclick="setSlownikCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setSlownikCat(c) { activeSlownikCat = c; renderSlownikFilter(); filterSlownik(); }
+
+function filterSlownik() {
+  const q = document.getElementById('slownikSearch').value.toLowerCase();
+  const filtered = slownikData.filter(d =>
+    (activeSlownikCat === 'wszystkie' || d.cat === activeSlownikCat) &&
+    (d.name.toLowerCase().includes(q) || d.short.toLowerCase().includes(q))
+  );
+  document.getElementById('slownikGrid').innerHTML = filtered.map(d => `
+    <div class="sk-card" onclick="this.classList.toggle('open')">
+      <div class="sk-head"><span class="sk-name">${d.name}</span><span class="sk-badge badge-${d.badge}">${d.badge}</span></div>
+      <div class="sk-short">${d.short}</div>
+      <div class="sk-body">
+        <div class="sk-body-inner">${d.full}</div>
+        ${d.code ? `<pre>${escHtml(d.code)}</pre>` : ''}
+        ${d.tip ? `<div class="sk-tip">🎓 Matura: ${d.tip}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+renderSlownikFilter(); filterSlownik();
+
+// ═══════════════════════════════════════════════
+// MODUŁY
+// ═══════════════════════════════════════════════
+function renderModuly() {
+  document.getElementById('modTabs').innerHTML = modulyData.map((m,i) =>
+    `<button class="mod-tab${i===0?' active':''}" onclick="switchMod(${i})">${m.icon} ${m.name}</button>`
+  ).join('');
+  document.getElementById('modContents').innerHTML = modulyData.map((m,i) =>
+    `<div class="mod-content${i===0?' active':''}" id="mod_${i}">${m.content}</div>`
+  ).join('');
+}
+function switchMod(idx) {
+  document.querySelectorAll('.mod-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.mod-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+}
+renderModuly();
+
+// ═══════════════════════════════════════════════
+// QUERY BUILDER
+// ═══════════════════════════════════════════════
+const tableSchemas = {
+  Uczniowie: {cols:['ID_Ucznia','Imie','Nazwisko','Klasa','DataUrodzenia','Plec'], related:'Oceny', fk:'ID_Ucznia', aggCol:'Klasa'},
+  Oceny:     {cols:['ID_Oceny','ID_Ucznia','Przedmiot','Ocena','DataOceny'], related:'Uczniowie', fk:'ID_Ucznia', aggCol:'Przedmiot'},
+  Nauczyciele:{cols:['ID_Nauczyciela','Imie','Nazwisko','Przedmiot','Pensja'], related:'Oceny', fk:'ID_Nauczyciela', aggCol:'Przedmiot'},
+  Produkty:  {cols:['ID_Produktu','NazwaProduktu','Kategoria','Cena','Magazyn'], related:'PozycjeZamowienia', fk:'ID_Produktu', aggCol:'Kategoria'},
+  Zamowienia:{cols:['ID_Zamowienia','ID_Klienta','DataZamowienia','Status','WartoscCalkowita'], related:'Klienci', fk:'ID_Klienta', aggCol:'Status'},
+  Ksiazki:   {cols:['ID_Ksiazki','Tytul','Autor','RokWydania','Gatunek','Cena'], related:'Wypozyczenia', fk:'ID_Ksiazki', aggCol:'Gatunek'},
+};
+
+function buildQuery() {
+  const type = document.getElementById('bType').value;
+  const table = document.getElementById('bTable').value;
+  const sc = tableSchemas[table];
+  const where = document.getElementById('bWhere').value.trim();
+  const grp = document.getElementById('bGroup').value.trim();
+  const ord = document.getElementById('bOrder').value;
+  const top = document.getElementById('bTop').value;
+  const nl = '\n';
+  let q = '', note = '';
+
+  const topStr = top ? `TOP ${top} ` : '';
+
+  if (type === 'select') {
+    q = `SELECT ${topStr}${sc.cols.slice(0,3).join(', ')}${nl}FROM ${table}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    if (grp) q += `${nl}GROUP BY ${grp}`;
+    if (ord) q += `${nl}ORDER BY ${sc.cols[0]} ${ord}`;
+    q += ';';
+    note = 'Kwerenda wybierająca Access — pobiera dane.';
+  } else if (type === 'top') {
+    q = `SELECT TOP ${top||5} ${sc.cols[0]}, ${sc.cols[1]}${nl}FROM ${table}${nl}ORDER BY ${sc.cols[sc.cols.length-1]} DESC;`;
+    note = 'SELECT TOP n — Access zamiast LIMIT n. Zawsze z ORDER BY!';
+  } else if (type === 'iif') {
+    q = `SELECT ${sc.cols[1]},${nl}  IIF(${sc.cols[sc.cols.length-1]} > 0, 'Tak', 'Nie') AS [Czy spełnia warunek]${nl}FROM ${table};`;
+    note = 'IIF(warunek, wartość_true, wartość_false) — Access zamiast CASE WHEN.';
+  } else if (type === 'join') {
+    q = `SELECT U.${sc.cols[1]}, R.*${nl}FROM ${table} AS U${nl}INNER JOIN ${sc.related} AS R ON U.${sc.fk} = R.${sc.fk}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    q += ';';
+    note = 'JOIN dwóch tabel. Dla 3+ tabel dodaj nawiasy: (T1 JOIN T2 ON ...) JOIN T3 ON ...';
+  } else if (type === 'group') {
+    q = `SELECT ${topStr}${sc.aggCol}, COUNT(*) AS Liczba, AVG(${sc.cols[sc.cols.length-1]}) AS Srednia${nl}FROM ${table}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    q += `${nl}GROUP BY ${sc.aggCol}`;
+    if (ord) q += `${nl}ORDER BY Liczba ${ord}`;
+    q += ';';
+    note = `Agregacja: grupowanie po ${sc.aggCol} z COUNT i AVG.`;
+  } else if (type === 'insert') {
+    const vals = sc.cols.map((c,i) => i===0 ? '1' : i===1||i===2 ? '"wartość"' : 'NULL').join(', ');
+    q = `INSERT INTO ${table} (${sc.cols.join(', ')})${nl}VALUES (${vals});`;
+    note = 'Kwerenda dołączająca — wstawia nowy rekord.';
+  } else if (type === 'update') {
+    q = `UPDATE ${table}${nl}SET ${sc.cols[1]} = "nowa_wartość"${nl}WHERE ${where || sc.cols[0] + ' = 1'};`;
+    note = '⚠️ UPDATE bez WHERE zmienia WSZYSTKIE rekordy!';
+  } else if (type === 'delete') {
+    q = `DELETE FROM ${table}${nl}WHERE ${where || sc.cols[0] + ' = 1'};`;
+    note = '⚠️ DELETE bez WHERE usuwa WSZYSTKIE rekordy!';
+  } else if (type === 'selectinto') {
+    q = `SELECT ${sc.cols.slice(0,3).join(', ')}${nl}  INTO Nowa_${table}${nl}FROM ${table}`;
+    if (where) q += `${nl}WHERE ${where}`;
+    q += ';';
+    note = 'SELECT INTO — tworzy NOWĄ tabelę. MySQL: CREATE TABLE AS SELECT ...';
+  }
+
+  document.getElementById('queryOut').textContent = q;
+  document.getElementById('queryNote').textContent = note;
+}
+
+function copyQuery() {
+  const q = document.getElementById('queryOut').textContent;
+  if (q) { navigator.clipboard.writeText(q).then(() => toast('Skopiowano!', 'Kwerenda w schowku')); }
+}
+
+function resetBuilder() {
+  ['bType','bTable','bTop','bOrder'].forEach(id => document.getElementById(id).selectedIndex = 0);
+  ['bWhere','bGroup'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('queryOut').textContent = '';
+  document.getElementById('queryNote').textContent = '';
+}
+
+buildQuery();
+
+// ═══════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════
+let qCur = 0, qAnswered = [], qCorrect = 0;
+
+function renderQuiz() {
+  const box = document.getElementById('quizBox');
+  if (qCur >= quizData.length) {
+    box.innerHTML = `<div class="quiz-result">
+      <div class="result-score">${qCorrect}</div>
+      <div class="result-max">/ ${quizData.length} poprawnych</div>
+      <p class="result-text" style="color:var(--text2)">${qCorrect >= 20 ? '🏆 Mistrz Access! Gotowy na maturę!' : qCorrect >= 15 ? '💪 Dobry wynik — jeszcze trochę powtórek!' : '📚 Powtórz materiał i spróbuj ponownie.'}</p>
+      <button class="result-btn" onclick="resetQuiz()">↺ Zacznij od nowa</button>
+    </div>`; return;
+  }
+  const d = quizData[qCur];
+  const prog = quizData.map((_,i) => `<div class="q-dot${i<qCur?' done':i===qCur?' current':''}"></div>`).join('');
+  const letters = ['A','B','C','D'];
+  const opts = d.opts.map((o,i) => {
+    let cls = 'q-opt';
+    if (qAnswered[qCur] !== undefined) {
+      if (i === d.ans) cls += ' correct';
+      else if (i === qAnswered[qCur] && i !== d.ans) cls += ' wrong';
+    }
+    return `<div class="${cls}" onclick="answerQ(${i})"><div class="q-letter">${letters[i]}</div><div>${o}</div></div>`;
+  }).join('');
+  const fb = qAnswered[qCur] !== undefined ? `<div class="quiz-feedback show ${qAnswered[qCur]===d.ans?'ok':'bad'}"><h5>${qAnswered[qCur]===d.ans?'✓ Poprawnie!':'✗ Błędna odpowiedź'}</h5><p>${d.exp}</p></div>` : '<div class="quiz-feedback"></div>';
+  box.innerHTML = `
+    <div class="quiz-progress">${prog}</div>
+    <div class="quiz-num">Pytanie <span>${qCur+1}</span> z <span>${quizData.length}</span></div>
+    <h3 class="quiz-q">${d.q}</h3>
+    <div class="quiz-hint">${d.hint}</div>
+    <div class="quiz-opts">${opts}</div>
+    ${fb}
+    <div class="quiz-btns">
+      <button class="qbtn qbtn-prev" onclick="prevQ()" ${qCur===0?'disabled':''}>← Poprzednie</button>
+      <button class="qbtn qbtn-next" onclick="nextQ()">${qCur===quizData.length-1?'Zakończ':'Następne →'}</button>
+    </div>`;
+}
+
+function answerQ(i) {
+  if (qAnswered[qCur] !== undefined) return;
+  qAnswered[qCur] = i;
+  if (i === quizData[qCur].ans) qCorrect++;
+  renderQuiz();
+}
+function nextQ() { if (qCur < quizData.length) { qCur++; renderQuiz(); } }
+function prevQ() { if (qCur > 0) { qCur--; renderQuiz(); } }
+function resetQuiz() { qCur = 0; qAnswered = []; qCorrect = 0; renderQuiz(); }
+renderQuiz();
+
+// ═══════════════════════════════════════════════
+// FISZKI
+// ═══════════════════════════════════════════════
+let flashIdx = 0, mastered = new Set(), flashFiltered = [...fiszkiData], activeFlashCat = 'wszystkie';
+
+function buildFlashFilter() {
+  const cats = ['wszystkie', ...new Set(fiszkiData.map(f => f.cat))];
+  document.getElementById('flashFilter').innerHTML = cats.map(c =>
+    `<button class="ff-btn${c===activeFlashCat?' active':''}" onclick="setFlashCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setFlashCat(c) {
+  activeFlashCat = c;
+  flashFiltered = c === 'wszystkie' ? fiszkiData.filter(f => !mastered.has(f.q)) : fiszkiData.filter(f => f.cat===c && !mastered.has(f.q));
+  flashIdx = 0;
+  buildFlashFilter();
+  showCard();
+}
+
+function showCard() {
+  if (!flashFiltered.length) {
+    document.getElementById('flashQ').textContent = '🏆 Wszystkie fiszki opanowane!';
+    document.getElementById('flashTag').textContent = '';
+    document.getElementById('flashA').innerHTML = '';
+    document.getElementById('flashNum').textContent = '-';
+    document.getElementById('flashTotal').textContent = '-';
+    document.getElementById('flashMastered').textContent = `✓ ${mastered.size} opanowanych`;
+    return;
+  }
+  const card = document.getElementById('flashcard');
+  card.classList.remove('flipped');
+  const f = flashFiltered[flashIdx];
+  document.getElementById('flashTag').textContent = f.cat;
+  document.getElementById('flashQ').textContent = f.q;
+  document.getElementById('flashA').innerHTML = f.code ? `${f.a}<pre>${escHtml(f.code)}</pre>` : f.a;
+  document.getElementById('flashNum').textContent = flashIdx + 1;
+  document.getElementById('flashTotal').textContent = flashFiltered.length;
+  document.getElementById('flashMastered').textContent = mastered.size ? `✓ ${mastered.size} opanowanych` : '';
+}
+
+function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard() { flashIdx = (flashIdx + 1) % flashFiltered.length; showCard(); }
+function prevCard() { flashIdx = (flashIdx - 1 + flashFiltered.length) % flashFiltered.length; showCard(); }
+function markMastered() {
+  mastered.add(flashFiltered[flashIdx].q);
+  flashFiltered.splice(flashIdx, 1);
+  if (flashIdx >= flashFiltered.length) flashIdx = 0;
+  buildFlashFilter();
+  showCard();
+}
+function shuffleCards() {
+  for (let i = flashFiltered.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [flashFiltered[i], flashFiltered[j]] = [flashFiltered[j], flashFiltered[i]];
+  }
+  flashIdx = 0; showCard();
+}
+function speakCard() {
+  const q = flashFiltered[flashIdx]?.q;
+  if (q && 'speechSynthesis' in window) { const u = new SpeechSynthesisUtterance(q); u.lang = 'pl-PL'; speechSynthesis.speak(u); }
+}
+
+buildFlashFilter(); showCard();
+
+// ═══════════════════════════════════════════════
+// TYPING SPRINT
+// ═══════════════════════════════════════════════
+let tIdx = 0, tCorrect = 0, tWrong = 0, tStreak = 0, tDone = new Set();
+
+function showTyping() {
+  const d = typingData[tIdx];
+  document.getElementById('typingPrompt').textContent = d ? d.p : '🏆 Ukończono wszystkie zadania!';
+  document.getElementById('typingHint').textContent = d ? '💡 ' + d.h : '';
+  document.getElementById('typingInput').value = '';
+  document.getElementById('typingFeedback').className = 'typing-feedback';
+  document.getElementById('typingFeedback').textContent = '';
+  updateTypingStats();
+}
+
+function checkTyping() {
+  const d = typingData[tIdx];
+  if (!d) return;
+  const user = document.getElementById('typingInput').value.trim().replace(/\s+/g,' ');
+  const correct = d.a.trim().replace(/\s+/g,' ');
+  const fb = document.getElementById('typingFeedback');
+  if (user.toLowerCase() === correct.toLowerCase()) {
+    tCorrect++; tStreak++; tDone.add(tIdx);
+    fb.className = 'typing-feedback ok';
+    fb.textContent = `✓ Poprawnie! ${d.tip}`;
+    setTimeout(nextTyping, 1800);
+  } else {
+    tWrong++; tStreak = 0;
+    fb.className = 'typing-feedback bad';
+    fb.textContent = `✗ Spróbuj ponownie. Wskazówka: ${d.h}`;
+  }
+  updateTypingStats();
+}
+
+function showTypingAnswer() {
+  const d = typingData[tIdx];
+  if (!d) return;
+  const fb = document.getElementById('typingFeedback');
+  fb.className = 'typing-feedback show2';
+  fb.textContent = `👁 Odpowiedź: ${d.a}`;
+  document.getElementById('typingInput').value = d.a;
+}
+
+function nextTyping() {
+  tIdx = (tIdx + 1) % typingData.length;
+  showTyping();
+}
+
+function resetTyping() {
+  tIdx = 0; tCorrect = 0; tWrong = 0; tStreak = 0; tDone.clear();
+  showTyping();
+}
+
+function updateTypingStats() {
+  document.getElementById('tCorrect').textContent = tCorrect;
+  document.getElementById('tWrong').textContent = tWrong;
+  document.getElementById('tStreak').textContent = tStreak;
+  const pct = tDone.size ? Math.round(tDone.size / typingData.length * 100) : 0;
+  document.getElementById('tDone').textContent = pct + '%';
+  document.getElementById('typingProg').textContent = `${tDone.size} / ${typingData.length}`;
+  document.getElementById('typingFill').style.width = pct + '%';
+}
+
+document.getElementById('typingInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); checkTyping(); }
+  if (e.shiftKey && e.key === 'Enter') { e.preventDefault(); showTypingAnswer(); }
+  if (e.key === 'Tab') { e.preventDefault(); nextTyping(); }
+});
+
+showTyping();
+
+// ═══════════════════════════════════════════════
+// FOKUS
+// ═══════════════════════════════════════════════
+let fokusIdx = 0, fokusTimer = null, fokusTime = 90, fokusRunning = false;
+
+function startFokus() {
+  if (fokusRunning) return;
+  fokusRunning = true;
+  showFokusCard();
+  fokusTimer = setInterval(() => {
+    fokusTime--;
+    const m = Math.floor(fokusTime / 60), s = fokusTime % 60;
+    document.getElementById('fokusTime').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    document.getElementById('fokusBar').style.width = (fokusTime / 90 * 100) + '%';
+    if (fokusTime <= 0) { stopFokus(); toast('Sesja zakończona!', `Przerobiłeś ${fokusIdx + 1} fiszek`); }
+  }, 1000);
+}
+
+function stopFokus() {
+  fokusRunning = false;
+  clearInterval(fokusTimer);
+}
+
+function resetFokus() {
+  stopFokus(); fokusTime = 90; fokusIdx = 0;
+  document.getElementById('fokusTime').textContent = '1:30';
+  document.getElementById('fokusBar').style.width = '0%';
+  document.getElementById('fokusQ').textContent = 'Naciśnij Start aby rozpocząć sesję fokus';
+  document.getElementById('fokusA').classList.remove('show');
+  document.getElementById('fokusA').textContent = '';
+  document.getElementById('fokusNum').textContent = '—';
+  document.getElementById('fokusTotal').textContent = '—';
+}
+
+function showFokusCard() {
+  const f = fokusData[fokusIdx % fokusData.length];
+  document.getElementById('fokusQ').textContent = f.q;
+  document.getElementById('fokusA').textContent = f.a;
+  document.getElementById('fokusA').classList.remove('show');
+  document.getElementById('fokusNum').textContent = (fokusIdx % fokusData.length) + 1;
+  document.getElementById('fokusTotal').textContent = fokusData.length;
+}
+
+document.addEventListener('keydown', e => {
+  if (!fokusRunning) return;
+  if (e.code === 'Space' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('fokusA').classList.toggle('show');
+  }
+  if (e.code === 'ArrowRight') { e.preventDefault(); fokusIdx++; showFokusCard(); }
+  if (e.code === 'ArrowLeft') { e.preventDefault(); if (fokusIdx > 0) fokusIdx--; showFokusCard(); }
+});
+
+// ═══════════════════════════════════════════════
+// NOTATNIK
+// ═══════════════════════════════════════════════
+let userNotes = JSON.parse(localStorage.getItem('acc_notes') || '[]');
+
+function renderNotatnik() {
+  const el = document.getElementById('nbItems');
+  el.innerHTML = notatnikData.map((n, i) => {
+    const k = 'acc_nb_' + i;
+    const done = localStorage.getItem(k);
+    return `<label class="nb-item">
+      <input type="checkbox" ${done ? 'checked' : ''} onchange="toggleNb(${i}, this.checked)">
+      <div><div class="nb-txt">${n.txt}</div><div class="nb-tag">${n.tag}</div></div>
+    </label>`;
+  }).join('');
+  updateNbCount();
+  renderUserNotes();
+}
+
+function toggleNb(i, v) {
+  localStorage.setItem('acc_nb_' + i, v ? '1' : '');
+  updateNbCount();
+}
+
+function updateNbCount() {
+  const done = notatnikData.filter((_, i) => localStorage.getItem('acc_nb_' + i)).length;
+  document.getElementById('nbCount').textContent = `${done}/${notatnikData.length} ukończone`;
+}
+
+function addNote() {
+  const inp = document.getElementById('nbInput');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  userNotes.push(txt);
+  localStorage.setItem('acc_notes', JSON.stringify(userNotes));
+  inp.value = '';
+  renderUserNotes();
+  toast('Dodano!', 'Notatka zapisana.');
+}
+
+function deleteNote(i) {
+  userNotes.splice(i, 1);
+  localStorage.setItem('acc_notes', JSON.stringify(userNotes));
+  renderUserNotes();
+}
+
+function clearNotes() {
+  if (!confirm('Usunąć wszystkie notatki?')) return;
+  userNotes = [];
+  localStorage.setItem('acc_notes', JSON.stringify([]));
+  renderUserNotes();
+}
+
+function renderUserNotes() {
+  document.getElementById('nbList').innerHTML = userNotes.map((n, i) =>
+    `<div class="nb-list-item"><div class="nb-txt">${n}</div><button class="nb-del" onclick="deleteNote(${i})">✕</button></div>`
+  ).join('');
+}
+
+renderNotatnik();
+
+</script>
+</body>
+</html>
