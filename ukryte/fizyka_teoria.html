@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080c14">
+<title>Fizyka Rozszerzona • Teoria | ViralloEdu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']],
+    packages: {'[+]': ['ams']}
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080c14;--card:#0e1520;--elevated:#141e2e;--panel:#1a2438;
+  --text:#eef2f8;--text2:#8899bb;--muted:#445577;
+  --fiz:#f43f5e;--fiz2:#e11d48;--fiz3:#4c0519;
+  --sec:#fb923c;--sec2:#f97316;
+  --green:#10d48e;--blue:#3b82f6;--cyan:#06d6ff;--gold:#ffd43b;
+  --border:rgba(244,63,94,0.08);--border2:rgba(244,63,94,0.18);
+  --glow:0 0 60px rgba(244,63,94,0.12);
+  --glow2:0 0 30px rgba(244,63,94,0.20);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+code{font-family:'Fira Code',monospace;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.18);padding:2px 8px;border-radius:5px;font-size:0.83em;color:var(--fiz)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--fiz3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--fiz2)}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,12,20,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.05em}
+.nav-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--fiz),var(--sec));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;box-shadow:var(--glow2);flex-shrink:0}
+.nav-links{display:flex;gap:2px;flex-wrap:nowrap}
+.nav-links a{padding:6px 11px;border-radius:7px;font-size:0.78rem;color:var(--text2);transition:0.25s;white-space:nowrap}
+.nav-links a:hover{background:var(--elevated);color:var(--fiz)}
+.nav-progress{position:absolute;left:0;right:0;bottom:-1px;height:2px}
+.nav-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--fiz),var(--sec),var(--gold));transition:width 0.2s}
+@media(max-width:900px){.nav-links{display:none}}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(244,63,94,0.07) 0%,transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(244,63,94,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(244,63,94,0.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.2);border-radius:50px;font-size:0.85rem;color:var(--fiz);margin-bottom:28px;animation:fadeUp 0.8s ease both}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.8rem,8vw,5rem);font-weight:700;line-height:1.05;margin-bottom:18px;animation:fadeUp 0.8s 0.1s ease both}
+.hero h1 .accent{background:linear-gradient(135deg,var(--fiz),var(--sec));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:640px;color:var(--text2);font-size:1.05rem;margin-bottom:36px;line-height:1.7;animation:fadeUp 0.8s 0.2s ease both}
+.hero-modules{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:36px;animation:fadeUp 0.8s 0.3s ease both}
+.hero-mod{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 18px;min-width:120px;transition:0.3s;cursor:pointer;text-align:center}
+.hero-mod:hover{border-color:var(--fiz);transform:translateY(-3px);box-shadow:var(--glow2)}
+.hero-mod .mnum{font-size:0.72rem;color:var(--fiz);font-weight:600;margin-bottom:2px;font-family:'Fira Code',monospace}
+.hero-mod .mname{font-size:0.85rem;color:var(--text);font-weight:500}
+.hero-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;font-weight:700;border-radius:50px;font-size:0.95rem;transition:0.3s;border:none;cursor:pointer;font-family:inherit;animation:fadeUp 0.8s 0.4s ease both}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(244,63,94,0.3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:80px 0;position:relative;z-index:1}
+.section-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.18);border-radius:50px;font-size:0.8rem;color:var(--fiz);font-family:'Fira Code',monospace;margin-bottom:14px}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px}
+.section-desc{color:var(--text2);max-width:600px;margin:0 auto 48px;font-size:0.95rem}
+.text-center{text-align:center}
+
+/* ROADMAPA */
+#roadmapa{background:var(--card)}
+.roadmap-grid{display:grid;gap:14px;max-width:1000px;margin:0 auto}
+.roadmap-item{background:var(--elevated);border:1px solid var(--border);border-radius:16px;padding:18px 22px;display:grid;grid-template-columns:60px 1fr auto;gap:16px;align-items:center;transition:0.3s;cursor:pointer}
+.roadmap-item:hover{border-color:var(--border2)}
+.roadmap-item.done{border-color:rgba(16,212,142,0.25);background:rgba(16,212,142,0.03)}
+.ri-num{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--fiz);line-height:1;text-align:center}
+.ri-info h4{font-size:0.95rem;margin-bottom:3px}
+.ri-info p{font-size:0.82rem;color:var(--text2)}
+.ri-check{width:28px;height:28px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;transition:0.3s;font-size:0.75rem;flex-shrink:0}
+.roadmap-item.done .ri-check{background:rgba(16,212,142,0.15);border-color:#10d48e;color:#10d48e}
+
+/* SŁOWNIK */
+.glossary-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;justify-content:center}
+.g-tag{padding:6px 14px;border-radius:20px;font-size:0.78rem;border:1px solid var(--border);background:var(--elevated);color:var(--text2);cursor:pointer;transition:0.2s;font-family:'Fira Code',monospace}
+.g-tag.active,.g-tag:hover{border-color:var(--fiz);color:var(--fiz);background:rgba(244,63,94,0.06)}
+.glossary-search{width:100%;max-width:480px;display:block;margin:0 auto 32px;padding:12px 18px;background:var(--card);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:'Outfit',sans-serif;font-size:0.92rem;outline:none;transition:0.2s}
+.glossary-search:focus{border-color:var(--fiz);box-shadow:0 0 0 3px rgba(244,63,94,0.1)}
+.glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.g-card{background:var(--elevated);border:1px solid var(--border);border-radius:14px;padding:18px;transition:0.25s}
+.g-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.g-card .g-term{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--fiz);margin-bottom:4px}
+.g-card .g-symbol{font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--sec);margin-bottom:6px}
+.g-card .g-def{font-size:0.83rem;color:var(--text2);line-height:1.55}
+.g-card .g-unit{font-size:0.75rem;color:var(--muted);margin-top:6px;font-family:'Fira Code',monospace}
+.g-card .g-tag-label{display:inline-block;font-size:0.68rem;padding:2px 8px;border-radius:10px;background:rgba(244,63,94,0.1);color:var(--fiz);border:1px solid rgba(244,63,94,0.2);margin-top:6px;font-family:'Fira Code',monospace}
+
+/* MODUŁY */
+.modules-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px;justify-content:center}
+.mod-tab{padding:8px 16px;border-radius:10px;font-size:0.82rem;border:1px solid var(--border);background:var(--elevated);color:var(--text2);cursor:pointer;transition:0.2s;font-weight:500}
+.mod-tab.active{background:rgba(244,63,94,0.12);border-color:var(--fiz);color:var(--fiz)}
+.module-panel{display:none;max-width:960px;margin:0 auto}
+.module-panel.active{display:block}
+.mod-h2{font-family:'Cinzel',serif;font-size:1.5rem;color:var(--fiz);margin-bottom:6px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.mod-intro{color:var(--text2);font-size:0.93rem;margin-bottom:28px;line-height:1.65}
+
+/* Teoria cards */
+.theory-card{background:var(--elevated);border:1px solid var(--border);border-radius:16px;padding:22px 26px;margin-bottom:18px}
+.theory-card h3{font-family:'Cinzel',serif;font-size:1.05rem;color:var(--fiz);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.theory-card h3::before{content:'';display:inline-block;width:3px;height:16px;background:var(--fiz);border-radius:2px;flex-shrink:0}
+.theory-card p{font-size:0.9rem;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.theory-card p:last-child{margin-bottom:0}
+
+/* Formula box */
+.formula-box{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:16px 20px;margin:14px 0;text-align:center}
+.formula-box .formula-label{font-size:0.72rem;color:var(--fiz);font-family:'Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em}
+.formula-box .formula-main{font-size:1.1rem;color:var(--text)}
+.formula-box .formula-legend{font-size:0.78rem;color:var(--text2);margin-top:8px;line-height:1.55}
+
+/* Wzory tabela */
+.wzory-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.85rem}
+.wzory-table th{background:rgba(244,63,94,0.1);color:var(--fiz);padding:10px 14px;text-align:left;font-weight:600;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.05em}
+.wzory-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+.wzory-table tr:last-child td{border-bottom:none}
+.wzory-table tr:hover td{background:rgba(244,63,94,0.03)}
+
+/* Tips / uwagi */
+.tip{background:rgba(244,63,94,0.05);border-left:3px solid var(--fiz);border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0;font-size:0.87rem;color:var(--text2)}
+.tip strong{color:var(--fiz)}
+.tip-green{background:rgba(16,212,142,0.05);border-left-color:#10d48e}
+.tip-green strong{color:#10d48e}
+.tip-gold{background:rgba(255,212,59,0.05);border-left-color:var(--gold)}
+.tip-gold strong{color:var(--gold)}
+.tip-blue{background:rgba(59,130,246,0.05);border-left-color:var(--blue)}
+.tip-blue strong{color:var(--blue)}
+
+/* Przykłady obliczeniowe */
+.example-box{background:var(--card);border:1px solid rgba(251,146,60,0.2);border-radius:14px;padding:20px 24px;margin:16px 0}
+.example-box .ex-title{font-size:0.78rem;color:var(--sec);font-family:'Fira Code',monospace;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;display:flex;align-items:center;gap:6px}
+.example-box .ex-body{font-size:0.9rem;color:var(--text2);line-height:1.7}
+.example-box .ex-step{margin:6px 0;padding-left:14px;position:relative}
+.example-box .ex-step::before{content:'→';position:absolute;left:0;color:var(--sec);font-size:0.8rem}
+.example-box .ex-ans{margin-top:10px;padding:8px 12px;background:rgba(251,146,60,0.06);border-radius:8px;font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--sec)}
+
+/* QUIZ */
+#quiz{background:var(--card)}
+.quiz-progress-wrap{max-width:700px;margin:0 auto 28px;display:flex;align-items:center;gap:16px}
+.quiz-progress-bar{flex:1;height:6px;background:var(--elevated);border-radius:3px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--fiz),var(--sec));transition:width 0.4s}
+.quiz-score-badge{font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);min-width:60px;text-align:right}
+.quiz-card{max-width:700px;margin:0 auto;background:var(--elevated);border:1px solid var(--border);border-radius:20px;padding:28px;transition:0.3s}
+.quiz-num{font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--fiz);margin-bottom:10px}
+.quiz-q{font-size:1.05rem;font-weight:500;margin-bottom:22px;line-height:1.55}
+.quiz-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.quiz-opt{padding:13px 18px;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:0.2s;font-size:0.9rem;background:var(--card);text-align:left;color:var(--text);font-family:'Outfit',sans-serif}
+.quiz-opt:hover{border-color:var(--fiz);background:rgba(244,63,94,0.06)}
+.quiz-opt.correct{border-color:#10d48e;background:rgba(16,212,142,0.1);color:#10d48e}
+.quiz-opt.wrong{border-color:#f43f5e;background:rgba(244,63,94,0.1);color:#f43f5e}
+.quiz-explanation{font-size:0.85rem;color:var(--text2);background:var(--panel);border-radius:10px;padding:12px 16px;margin-top:6px;display:none;line-height:1.55}
+.quiz-explanation.show{display:block}
+.quiz-btn{padding:12px 28px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:50px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:inherit;transition:0.3s}
+.quiz-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(244,63,94,0.3)}
+.quiz-result{text-align:center;padding:20px 0;display:none}
+.quiz-result.show{display:block}
+.quiz-result .big-score{font-family:'Cinzel',serif;font-size:3.5rem;color:var(--fiz);line-height:1}
+.quiz-result p{color:var(--text2);margin-top:8px}
+
+/* FISZKI */
+.flashcard-controls{display:flex;gap:12px;justify-content:center;margin-bottom:28px;flex-wrap:wrap}
+.fc-ctrl{padding:9px 20px;border-radius:50px;font-size:0.85rem;border:1px solid var(--border);background:var(--elevated);color:var(--text2);cursor:pointer;transition:0.2s;font-family:inherit}
+.fc-ctrl:hover{border-color:var(--fiz);color:var(--fiz)}
+.fc-ctrl.active{background:rgba(244,63,94,0.1);border-color:var(--fiz);color:var(--fiz)}
+.flashcard-area{perspective:1200px;max-width:560px;margin:0 auto;cursor:pointer}
+.flashcard{width:100%;height:240px;position:relative;transform-style:preserve-3d;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1)}
+.flashcard.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px;text-align:center;border:1px solid var(--border)}
+.fc-face.front{background:var(--elevated);border-color:var(--border2)}
+.fc-face.back{background:var(--panel);border-color:rgba(244,63,94,0.25);transform:rotateY(180deg)}
+.fc-label{font-family:'Fira Code',monospace;font-size:0.72rem;color:var(--fiz);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em}
+.fc-content{font-size:1.1rem;color:var(--text);font-weight:500;line-height:1.5}
+.fc-back-content{font-size:0.95rem;color:var(--text2);line-height:1.6}
+.flashcard-nav{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:20px}
+.fc-nav-btn{padding:9px 22px;border-radius:50px;border:1px solid var(--border);background:var(--elevated);color:var(--text2);cursor:pointer;transition:0.2s;font-family:inherit;font-size:0.85rem}
+.fc-nav-btn:hover{border-color:var(--fiz);color:var(--fiz)}
+.fc-counter{font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--muted)}
+.fc-mastered-btn{padding:9px 20px;border-radius:50px;border:1px solid rgba(16,212,142,0.3);background:rgba(16,212,142,0.05);color:#10d48e;cursor:pointer;font-family:inherit;font-size:0.82rem;transition:0.2s}
+.fc-mastered-btn:hover{background:rgba(16,212,142,0.12)}
+
+/* FOOTER */
+footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:8px;color:var(--fiz)}
+.footer-copy{font-size:0.85rem;color:var(--muted)}
+.footer-copy a{color:var(--text2);transition:0.2s}
+.footer-copy a:hover{color:var(--fiz)}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--panel);border:1px solid rgba(244,63,94,0.3);border-radius:14px;padding:12px 18px;box-shadow:0 8px 40px rgba(0,0,0,0.4);transform:translateY(140%);transition:0.3s;z-index:9999;max-width:280px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:2px;font-size:0.88rem;color:var(--fiz)}
+.toast span{font-size:0.8rem;color:var(--text2)}
+
+@media(max-width:700px){
+  .glossary-grid{grid-template-columns:1fr}
+  .roadmap-item{grid-template-columns:40px 1fr auto;gap:12px}
+  .wzory-table{font-size:0.78rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-icon">⚛️</div>
+    <span style="font-family:'Cinzel',serif">Fizyka<span style="color:var(--fiz)">Rozszerzona</span></span>
+  </div>
+  <div class="nav-links">
+    <a href="#roadmapa">Roadmapa</a>
+    <a href="#slownik">Słownik</a>
+    <a href="#teoria">Teoria</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#fiszki">Fiszki</a>
+    <a href="viralloedu.html">← Hub</a>
+  </div>
+  <div class="nav-progress"><div class="nav-bar" id="navBar"></div></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-badge">⚛️ Fizyka Rozszerzona — Matura CKE 2025/26</div>
+  <h1>Fizyka <span class="accent">Rozszerzona</span></h1>
+  <p class="hero-desc">Pełna teoria na maturę rozszerzoną z fizyki: mechanika, elektrodynamika, optyka, termodynamika, fizyka kwantowa i jądrowa. Wzory, wyprowadzenia, przykłady obliczeniowe.</p>
+  <div class="hero-modules">
+    <div class="hero-mod" onclick="document.getElementById('teoria').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">01</div><div class="mname">Mechanika</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('teoria').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">02</div><div class="mname">Termodynamika</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('teoria').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">03</div><div class="mname">Elektryczność</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('teoria').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">04</div><div class="mname">Magnetyzm</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('teoria').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">05</div><div class="mname">Optyka</div>
+    </div>
+    <div class="hero-mod" onclick="document.getElementById('teoria').scrollIntoView({behavior:'smooth'})">
+      <div class="mnum">06</div><div class="mname">Kwanty & Jądro</div>
+    </div>
+  </div>
+  <a href="#roadmapa" class="hero-btn">Zacznij naukę →</a>
+</section>
+
+<!-- ROADMAPA -->
+<section id="roadmapa">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">📍 mapa nauki</div>
+    <h2 class="section-title">Roadmapa — zakres matury</h2>
+    <p class="section-desc">Kliknij temat aby oznaczyć jako przerobiony. Postęp zapisywany lokalnie.</p>
+  </div>
+  <div class="roadmap-grid" id="roadmapGrid">
+    <div class="roadmap-item" data-id="rm1" onclick="toggleRM(this)">
+      <div class="ri-num">01</div>
+      <div class="ri-info"><h4>Kinematyka i dynamika</h4><p>Ruch jednostajny, przyspieszony, rzuty, II zasada Newtona, tarcie, siły</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm2" onclick="toggleRM(this)">
+      <div class="ri-num">02</div>
+      <div class="ri-info"><h4>Praca, moc, energia</h4><p>Zasada zachowania energii, sprawność, zderzenia sprężyste i niesprężyste</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm3" onclick="toggleRM(this)">
+      <div class="ri-num">03</div>
+      <div class="ri-info"><h4>Ruch obrotowy</h4><p>Moment siły, moment bezwładności, II zasada dla obrotu, prędkość kątowa</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm4" onclick="toggleRM(this)">
+      <div class="ri-num">04</div>
+      <div class="ri-info"><h4>Grawitacja</h4><p>Prawo powszechnego ciążenia, pola grawitacyjne, ruch po orbicie, I i II prędkość kosmiczna</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm5" onclick="toggleRM(this)">
+      <div class="ri-num">05</div>
+      <div class="ri-info"><h4>Drgania i fale</h4><p>Wahadło, oscylator harmoniczny, fale mechaniczne, dudnienia, fale stojące, efekt Dopplera</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm6" onclick="toggleRM(this)">
+      <div class="ri-num">06</div>
+      <div class="ri-info"><h4>Termodynamika</h4><p>I i II zasada, prawa gazowe, cykl Carnota, entropia, pojemność cieplna, ciepło właściwe</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm7" onclick="toggleRM(this)">
+      <div class="ri-num">07</div>
+      <div class="ri-info"><h4>Elektryczność i pole elektrostatyczne</h4><p>Prawo Coulomba, natężenie i potencjał pola, kondensatory, energia pola elektrycznego</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm8" onclick="toggleRM(this)">
+      <div class="ri-num">08</div>
+      <div class="ri-info"><h4>Prąd stały i obwody</h4><p>Prawo Ohma, prawa Kirchhoffa, połączenia R, moc prądu, SEM i opór wewnętrzny</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm9" onclick="toggleRM(this)">
+      <div class="ri-num">09</div>
+      <div class="ri-info"><h4>Magnetyzm i indukcja</h4><p>Siła Lorentza, siła na przewodnik, indukcja elektromagnetyczna, prawo Faradaya, transformatory</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm10" onclick="toggleRM(this)">
+      <div class="ri-num">10</div>
+      <div class="ri-info"><h4>Prąd przemienny i obwody LC</h4><p>Wartość skuteczna, moc w obwodzie AC, rezonans, filtry RLC</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm11" onclick="toggleRM(this)">
+      <div class="ri-num">11</div>
+      <div class="ri-info"><h4>Optyka geometryczna i falowa</h4><p>Odbicie, załamanie, soczewki, lustra, dyfrakcja, interferencja, siatka dyfrakcyjna</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm12" onclick="toggleRM(this)">
+      <div class="ri-num">12</div>
+      <div class="ri-info"><h4>Fizyka atomowa i kwantowa</h4><p>Efekt fotoelektryczny, model Bohra, promieniowanie ciała czarnego, dwoistość korpuskularno-falowa</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm13" onclick="toggleRM(this)">
+      <div class="ri-num">13</div>
+      <div class="ri-info"><h4>Fizyka jądrowa</h4><p>Budowa jądra, promieniotwórczość α β γ, okres półrozpadu, defekt masy, energia wiązania, reakcje jądrowe</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+    <div class="roadmap-item" data-id="rm14" onclick="toggleRM(this)">
+      <div class="ri-num">14</div>
+      <div class="ri-info"><h4>Szczególna teoria względności</h4><p>Dylatacja czasu, skrócenie długości, masa relatywistyczna, równoważność masy i energii E=mc²</p></div>
+      <div class="ri-check">✓</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- SŁOWNIK -->
+<section id="slownik" style="background:var(--card)">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">📖 słownik pojęć</div>
+    <h2 class="section-title">Słownik wielkości fizycznych</h2>
+    <p class="section-desc">Symbole, jednostki i definicje — wszystko co musisz znać na maturze.</p>
+  </div>
+  <input type="text" class="glossary-search" placeholder="🔍 Szukaj pojęcia, symbolu, jednostki..." id="glossSearch" oninput="filterGloss()">
+  <div class="glossary-filter">
+    <button class="g-tag active" onclick="filterByTag('all',this)">Wszystkie</button>
+    <button class="g-tag" onclick="filterByTag('mechanika',this)">Mechanika</button>
+    <button class="g-tag" onclick="filterByTag('termodynamika',this)">Termodynamika</button>
+    <button class="g-tag" onclick="filterByTag('elektrycznosc',this)">Elektryczność</button>
+    <button class="g-tag" onclick="filterByTag('magnetyzm',this)">Magnetyzm</button>
+    <button class="g-tag" onclick="filterByTag('optyka',this)">Optyka</button>
+    <button class="g-tag" onclick="filterByTag('kwanty',this)">Kwanty/Jądro</button>
+  </div>
+  <div class="glossary-grid" id="glossGrid">
+    <!-- Generated by JS -->
+  </div>
+</div>
+</section>
+
+<!-- TEORIA MODUŁY -->
+<section id="teoria">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">📚 teoria</div>
+    <h2 class="section-title">Pełna teoria — moduły</h2>
+    <p class="section-desc">Wybierz dział i przerabiaj wzory z wyjaśnieniami i przykładami.</p>
+  </div>
+  <div class="modules-nav">
+    <button class="mod-tab active" onclick="showModule('mech',this)">⚙️ Mechanika</button>
+    <button class="mod-tab" onclick="showModule('termo',this)">🌡️ Termodynamika</button>
+    <button class="mod-tab" onclick="showModule('elek',this)">⚡ Elektryczność</button>
+    <button class="mod-tab" onclick="showModule('magn',this)">🧲 Magnetyzm</button>
+    <button class="mod-tab" onclick="showModule('optyk',this)">🔭 Optyka</button>
+    <button class="mod-tab" onclick="showModule('kwant',this)">⚛️ Kwanty & Jądro</button>
+    <button class="mod-tab" onclick="showModule('relat',this)">🚀 Względność</button>
+  </div>
+
+  <!-- MECHANIKA -->
+  <div class="module-panel active" id="mod-mech">
+    <h2 class="mod-h2">⚙️ Mechanika</h2>
+    <p class="mod-intro">Mechanika klasyczna opisuje ruch ciał, siły i energię. Na maturze rozszerzonej obowiązuje kinematyka (opisy ruchu), dynamika (przyczyny ruchu), ruch obrotowy, grawitacja oraz sprężystość.</p>
+
+    <div class="theory-card">
+      <h3>Kinematyka — ruch jednostajny i przyspieszony</h3>
+      <p>Ruch jednostajny prostoliniowy (bez przyspieszenia):</p>
+      <div class="formula-box">
+        <div class="formula-label">Droga w ruchu jednostajnym</div>
+        <div class="formula-main">\[ s = v \cdot t \]</div>
+        <div class="formula-legend">\(s\) — droga [m], \(v\) — prędkość [m/s], \(t\) — czas [s]</div>
+      </div>
+      <p>Ruch jednostajnie przyspieszony (stałe przyspieszenie \(a\)):</p>
+      <div class="formula-box">
+        <div class="formula-label">Prędkość, droga, związek bez czasu</div>
+        <div class="formula-main">\[ v = v_0 + a t \qquad s = v_0 t + \tfrac{1}{2}at^2 \qquad v^2 = v_0^2 + 2as \]</div>
+        <div class="formula-legend">\(v_0\) — prędkość początkowa [m/s], \(a\) — przyspieszenie [m/s²]</div>
+      </div>
+      <div class="tip"><strong>⚠️ Matura:</strong> Wzory kinematyczne obowiązują dla stałego przyspieszenia. Przy zmiennym \(a\) stosuj całkowanie (poziom rozszerzony).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Rzuty</h3>
+      <p>Rzut poziomy — ciało ma prędkość poziomą \(v_0\), spada swobodnie w pionie:</p>
+      <div class="formula-box">
+        <div class="formula-label">Rzut poziomy</div>
+        <div class="formula-main">\[ x = v_0 t, \quad y = \tfrac{1}{2}g t^2, \quad t_{lotu} = \sqrt{\tfrac{2H}{g}} \]</div>
+        <div class="formula-legend">\(H\) — wysokość startu [m], \(g = 9{,}81 \text{ m/s}^2\)</div>
+      </div>
+      <p>Rzut ukośny — kąt \(\alpha\) do poziomu:</p>
+      <div class="formula-box">
+        <div class="formula-label">Rzut ukośny</div>
+        <div class="formula-main">\[ H_{max} = \frac{v_0^2 \sin^2\!\alpha}{2g}, \qquad Z = \frac{v_0^2 \sin 2\alpha}{g} \]</div>
+        <div class="formula-legend">\(H_{max}\) — maksymalna wysokość, \(Z\) — zasięg poziomy [m]</div>
+      </div>
+      <div class="tip tip-green"><strong>✓ Trick:</strong> Maksymalny zasięg dla \(\alpha = 45°\). Rzuty pod kątami suplementarnymi mają ten sam zasięg.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Zasady dynamiki Newtona</h3>
+      <table class="wzory-table">
+        <tr><th>Zasada</th><th>Treść</th><th>Wzór</th></tr>
+        <tr><td>I zasada (bezwładności)</td><td>Ciało bez sił zewnętrznych spoczywa lub porusza się jednostajnie</td><td>\(\vec{F}_{wyp}=0 \Rightarrow a=0\)</td></tr>
+        <tr><td>II zasada</td><td>Wypadkowa siła = masa × przyspieszenie</td><td>\(\vec{F} = m\vec{a}\)</td></tr>
+        <tr><td>III zasada (akcja-reakcja)</td><td>Siły wzajemnego oddziaływania są równe i przeciwnie skierowane</td><td>\(\vec{F}_{AB} = -\vec{F}_{BA}\)</td></tr>
+      </table>
+      <p>Siła tarcia statycznego i kinetycznego:</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ F_{t} = \mu \cdot N \]</div>
+        <div class="formula-legend">\(\mu\) — współczynnik tarcia (bezwymiarowy), \(N\) — siła normalna [N]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Praca, moc i energia</h3>
+      <div class="formula-box">
+        <div class="formula-label">Praca siły pod kątem</div>
+        <div class="formula-main">\[ W = F \cdot s \cdot \cos\theta \]</div>
+        <div class="formula-legend">\(\theta\) — kąt między siłą a kierunkiem ruchu</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Energie — kinetyczna, potencjalna grawitacyjna, sprężysta</div>
+        <div class="formula-main">\[ E_k = \tfrac{1}{2}mv^2, \quad E_p = mgh, \quad E_{sp} = \tfrac{1}{2}kx^2 \]</div>
+        <div class="formula-legend">\(k\) — współczynnik sprężystości [N/m], \(x\) — odkształcenie [m]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Zasada zachowania energii mechanicznej</div>
+        <div class="formula-main">\[ E_k + E_p = \text{const} \quad (\text{bez tarcia}) \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Moc i sprawność</div>
+        <div class="formula-main">\[ P = \frac{W}{t} = F \cdot v, \qquad \eta = \frac{E_{użyteczna}}{E_{dostarczona}} \cdot 100\% \]</div>
+        <div class="formula-legend">\(P\) — moc [W = J/s], \(\eta\) — sprawność [%]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Pęd i zasada zachowania pędu</h3>
+      <div class="formula-box">
+        <div class="formula-label">Pęd i impuls siły</div>
+        <div class="formula-main">\[ \vec{p} = m\vec{v}, \qquad \vec{F}\Delta t = \Delta\vec{p} \]</div>
+      </div>
+      <p><strong>Zderzenia:</strong></p>
+      <table class="wzory-table">
+        <tr><th>Typ</th><th>Zachowanie pędu</th><th>Zachowanie E_k</th></tr>
+        <tr><td>Sprężyste</td><td>✓ tak</td><td>✓ tak</td></tr>
+        <tr><td>Niesprężyste (doskonałe)</td><td>✓ tak</td><td>✗ nie (traci się)</td></tr>
+      </table>
+      <div class="formula-box">
+        <div class="formula-label">Zderzenie centralne sprężyste</div>
+        <div class="formula-main">\[ v_1' = \frac{m_1-m_2}{m_1+m_2}v_1 \qquad v_2' = \frac{2m_1}{m_1+m_2}v_1 \]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Ruch obrotowy</h3>
+      <div class="formula-box">
+        <div class="formula-label">Kinematyka obrotowa</div>
+        <div class="formula-main">\[ \omega = \frac{\Delta\varphi}{\Delta t}, \quad \varepsilon = \frac{\Delta\omega}{\Delta t}, \quad v = \omega r, \quad a_c = \frac{v^2}{r} = \omega^2 r \]</div>
+        <div class="formula-legend">\(\omega\) — prędkość kątowa [rad/s], \(\varepsilon\) — przyspieszenie kątowe [rad/s²]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">II zasada Newtona dla obrotu</div>
+        <div class="formula-main">\[ M = I \cdot \varepsilon \qquad M = F \cdot r \cdot \sin\theta \]</div>
+        <div class="formula-legend">\(M\) — moment siły [N·m], \(I\) — moment bezwładności [kg·m²]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Bryła</th><th>Moment bezwładności</th></tr>
+        <tr><td>Punkt materialny</td><td>\(I = mr^2\)</td></tr>
+        <tr><td>Cienki pręt (oś przez środek)</td><td>\(I = \tfrac{1}{12}mL^2\)</td></tr>
+        <tr><td>Dysk / walec (oś symetrii)</td><td>\(I = \tfrac{1}{2}mr^2\)</td></tr>
+        <tr><td>Kula (oś przez środek)</td><td>\(I = \tfrac{2}{5}mr^2\)</td></tr>
+        <tr><td>Pierścień / obręcz (oś symetrii)</td><td>\(I = mr^2\)</td></tr>
+      </table>
+      <div class="formula-box">
+        <div class="formula-label">Energia kinetyczna obrotu i pęd kątowy</div>
+        <div class="formula-main">\[ E_{k,obr} = \tfrac{1}{2}I\omega^2, \qquad L = I\omega \]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Grawitacja</h3>
+      <div class="formula-box">
+        <div class="formula-label">Prawo powszechnego ciążenia Newtona</div>
+        <div class="formula-main">\[ F = G\frac{m_1 m_2}{r^2}, \qquad G = 6{,}674 \times 10^{-11}\ \text{N·m}^2/\text{kg}^2 \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Natężenie pola grawitacyjnego i potencjał</div>
+        <div class="formula-main">\[ g = \frac{GM}{r^2}, \qquad V_g = -\frac{GM}{r} \]</div>
+        <div class="formula-legend">Na powierzchni Ziemi: \(g \approx 9{,}81\ \text{m/s}^2\), \(M_Z = 5{,}97\times10^{24}\ \text{kg}\), \(R_Z = 6{,}37\times10^6\ \text{m}\)</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Prędkości kosmiczne</div>
+        <div class="formula-main">\[ v_I = \sqrt{\frac{GM}{R}} \approx 7{,}9\ \text{km/s}, \qquad v_{II} = \sqrt{\frac{2GM}{R}} \approx 11{,}2\ \text{km/s} \]</div>
+        <div class="formula-legend">I prędkość kosmiczna = orbit kołowy tuż przy Ziemi. II = prędkość ucieczki.</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">III prawo Keplera</div>
+        <div class="formula-main">\[ \frac{T^2}{a^3} = \text{const} = \frac{4\pi^2}{GM} \]</div>
+        <div class="formula-legend">\(T\) — okres obiegu, \(a\) — półoś wielka orbity</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Drgania harmoniczne i fale</h3>
+      <div class="formula-box">
+        <div class="formula-label">Ruch harmoniczny prosty (SHM)</div>
+        <div class="formula-main">\[ x(t) = A\cos(\omega t + \varphi_0), \quad \omega = 2\pi f = \frac{2\pi}{T} \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Okresy drgań</div>
+        <div class="formula-main">\[ T_{sprężyna} = 2\pi\sqrt{\frac{m}{k}}, \qquad T_{wahadło} = 2\pi\sqrt{\frac{l}{g}} \]</div>
+        <div class="formula-legend">\(m\) — masa [kg], \(k\) — stała sprężyny [N/m], \(l\) — długość wahadła [m]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Fale — podstawowe zależności</div>
+        <div class="formula-main">\[ v = f\lambda, \qquad f = \frac{1}{T} \]</div>
+        <div class="formula-legend">\(v\) — prędkość fali [m/s], \(f\) — częstotliwość [Hz], \(\lambda\) — długość fali [m]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Efekt Dopplera (źródło/obserwator w ruchu)</div>
+        <div class="formula-main">\[ f_{obs} = f_0 \cdot \frac{v \pm v_{obs}}{v \mp v_{źr}} \]</div>
+        <div class="formula-legend">Górne znaki gdy zbliżają się, dolne gdy oddalają</div>
+      </div>
+      <div class="tip tip-gold"><strong>📌 Fale stojące:</strong> węzły co \(\lambda/2\), strzałki między węzłami. Struna zaciśnięta na obu końcach: \(l = n\lambda/2\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Prawo Hooke'a i sprężystość</h3>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Hooke'a — siła sprężysta</div>
+        <div class="formula-main">\[ F = -kx \]</div>
+        <div class="formula-legend">\(k\) — stała sprężystości [N/m], \(x\) — odkształcenie [m]. Znak minus — siła przeciwna do odkształcenia.</div>
+      </div>
+      <p>Moduł Younga \(E\) (przy rozciąganiu pręta):</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ E = \frac{\sigma}{\varepsilon} = \frac{F/A}{\Delta l / l_0} \]</div>
+        <div class="formula-legend">\(\sigma\) — naprężenie [Pa = N/m²], \(\varepsilon\) — odkształcenie względne (bezwymiarowe)</div>
+      </div>
+      <div class="tip tip-gold"><strong>📌 Połączenia sprężyn:</strong> Szeregowe: \(\frac{1}{k_z}=\frac{1}{k_1}+\frac{1}{k_2}\). Równoległe: \(k_z = k_1+k_2\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Hydrostatyka i hydrodynamika</h3>
+      <div class="formula-box">
+        <div class="formula-label">Ciśnienie hydrostatyczne</div>
+        <div class="formula-main">\[ p = p_0 + \rho g h \]</div>
+        <div class="formula-legend">\(\rho\) — gęstość cieczy [kg/m³], \(h\) — głębokość [m]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Archimedesa</div>
+        <div class="formula-main">\[ F_{wyp} = \rho_{cieczy} \cdot g \cdot V_{zanurz} \]</div>
+        <div class="formula-legend">Siła wyporu = ciężar wypartej cieczy</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Równanie ciągłości i Bernoulliego</div>
+        <div class="formula-main">\[ A_1 v_1 = A_2 v_2 \qquad p + \tfrac{1}{2}\rho v^2 + \rho g h = \text{const} \]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Układy nieinercjalne — siły pozorne</h3>
+      <p>W układzie przyspieszającym z przyspieszeniem \(a\) pojawia się pozorna siła bezwładności:</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ \vec{F}_{bezw} = -m\vec{a}_{ukł} \]</div>
+      </div>
+      <p>Siła odśrodkowa (w układzie obracającym się z \(\omega\)):</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ F_{ods} = m\omega^2 r = \frac{mv^2}{r} \]</div>
+        <div class="formula-legend">Skierowana od osi obrotu — pozorna w obracającym się układzie odniesienia</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — rzut ukośny</div>
+      <div class="ex-body">
+        Piłka rzucona pod kątem 30° z prędkością 20 m/s. Oblicz zasięg.
+        <div class="ex-step">Wzór: \(Z = \dfrac{v_0^2 \sin 2\alpha}{g}\)</div>
+        <div class="ex-step">\(Z = \dfrac{20^2 \cdot \sin 60°}{9{,}81} = \dfrac{400 \cdot 0{,}866}{9{,}81} \approx 35{,}3\ \text{m}\)</div>
+        <div class="ex-ans">Zasięg ≈ 35,3 m</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Fale elektromagnetyczne</h3>
+      <p>Fale EM to sprzężone oscylujące pola elektryczne i magnetyczne, propagują się w próżni z prędkością <strong>c = 3×10⁸ m/s</strong>.</p>
+      <div class="formula-box">
+        <div class="formula-label">Prędkość fali EM, energia fotonu</div>
+        <div class="formula-main">\[ c = f\lambda, \qquad E = hf = \frac{hc}{\lambda} \]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Zakres</th><th>λ</th><th>Zastosowanie</th></tr>
+        <tr><td>Radiowe</td><td>&gt; 1 mm</td><td>Radio, TV, WiFi</td></tr>
+        <tr><td>Podczerwień (IR)</td><td>0,7 μm – 1 mm</td><td>Kamera termowizyjna, pilot</td></tr>
+        <tr><td>Widzialne</td><td>380–780 nm</td><td>Wzrok (czerwony→fioletowy)</td></tr>
+        <tr><td>Ultrafiolet (UV)</td><td>10–380 nm</td><td>Sterylizacja, opalenizna</td></tr>
+        <tr><td>Rentgenowskie (X)</td><td>0,01–10 nm</td><td>RTG, tomografia</td></tr>
+        <tr><td>Gamma (γ)</td><td>&lt; 0,01 nm</td><td>Radioterapia, sterilizacja</td></tr>
+      </table>
+      <div class="tip tip-green"><strong>✓ Zakres widzialny:</strong> λ ≈ 380–780 nm. Czerwony ma najdłuższą λ, fioletowy najkrótszą. Energie fotonów: 1,6–3,3 eV.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Zasada superpozycji</h3>
+      <p>Wypadkowe wychylenie fali wynikające z nakładania się dwóch lub więcej fal jest sumą algebraiczną ich wychyleń:</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ y = y_1 + y_2 + \cdots + y_n \]</div>
+      </div>
+      <p>Interferencja konstruktywna (fale w fazie):</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ \Delta\varphi = 2n\pi \quad \Rightarrow \quad A_{wyp} = A_1 + A_2 \]</div>
+      </div>
+      <p>Interferencja destruktywna (fazy przeciwne):</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ \Delta\varphi = (2n+1)\pi \quad \Rightarrow \quad A_{wyp} = |A_1 - A_2| \]</div>
+      </div>
+      <div class="tip"><strong>Dudnienia:</strong> Nakładanie się dwóch fal o bliskich częstotliwościach. Częstotliwość dudnień: \(f_{dud} = |f_1 - f_2|\).</div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — zderzenie niesprężyste</div>
+      <div class="ex-body">
+        Kula \(m_1=2\) kg porusza się z \(v_1=6\) m/s i uderza w spoczywającą kulę \(m_2=4\) kg. Zderzenie doskonale niesprężyste — oblicz prędkość po zderzeniu.
+        <div class="ex-step">\(p_{przed} = m_1 v_1 = 2\cdot6 = 12\ \text{kg·m/s}\)</div>
+        <div class="ex-step">\(v' = \dfrac{m_1 v_1}{m_1+m_2} = \dfrac{12}{6} = 2\ \text{m/s}\)</div>
+        <div class="ex-ans">v' = 2 m/s (razem po zderzeniu)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMODYNAMIKA -->
+  <div class="module-panel" id="mod-termo">
+    <h2 class="mod-h2">🌡️ Termodynamika i fizyka cieplna</h2>
+    <p class="mod-intro">Termodynamika dotyczy ciepła, temperatury i przemian energii wewnętrznej. Na maturze: prawa gazowe, zasady termodynamiki, cykl Carnota.</p>
+
+    <div class="theory-card">
+      <h3>Temperatura i skale</h3>
+      <div class="formula-box">
+        <div class="formula-label">Konwersja Celsjusz ↔ Kelwin</div>
+        <div class="formula-main">\[ T [K] = T [°C] + 273{,}15 \approx T [°C] + 273 \]</div>
+      </div>
+      <div class="tip"><strong>Zero absolutne:</strong> \(T = 0\ \text{K} = -273{,}15°C\). Temperatura nie może być ujemna w skali Kelvina.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Prawa gazowe — gaz doskonały</h3>
+      <table class="wzory-table">
+        <tr><th>Prawo</th><th>Stała</th><th>Wzór</th></tr>
+        <tr><td>Boyle'a-Mariotte'a (izoterma)</td><td>T = const</td><td>\(p_1 V_1 = p_2 V_2\)</td></tr>
+        <tr><td>Gay-Lussaca (izobara)</td><td>p = const</td><td>\(\dfrac{V_1}{T_1} = \dfrac{V_2}{T_2}\)</td></tr>
+        <tr><td>Charlesa (izochora)</td><td>V = const</td><td>\(\dfrac{p_1}{T_1} = \dfrac{p_2}{T_2}\)</td></tr>
+        <tr><td>Clapeyrona (ogólne)</td><td>—</td><td>\(\dfrac{p_1 V_1}{T_1} = \dfrac{p_2 V_2}{T_2}\)</td></tr>
+      </table>
+      <div class="formula-box">
+        <div class="formula-label">Równanie stanu gazu doskonałego</div>
+        <div class="formula-main">\[ pV = nRT \qquad (R = 8{,}314\ \text{J/(mol·K)}) \]</div>
+        <div class="formula-legend">\(n\) — liczba moli [mol], \(R\) — stała gazowa, \(k_B = 1{,}38\times10^{-23}\ \text{J/K}\)</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>I Zasada termodynamiki</h3>
+      <div class="formula-box">
+        <div class="formula-label">I zasada termodynamiki</div>
+        <div class="formula-main">\[ \Delta U = Q - W \]</div>
+        <div class="formula-legend">\(\Delta U\) — zmiana energii wewnętrznej [J], \(Q\) — ciepło dostarczone [J], \(W\) — praca wykonana przez gaz [J]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Przemiana</th><th>Cecha</th><th>Zależność</th></tr>
+        <tr><td>Izotermiczna</td><td>\(T = \text{const}\), \(\Delta U = 0\)</td><td>\(Q = W\)</td></tr>
+        <tr><td>Izobaryczna</td><td>\(p = \text{const}\)</td><td>\(W = p\Delta V\)</td></tr>
+        <tr><td>Izochoryczna</td><td>\(V = \text{const}\), \(W = 0\)</td><td>\(\Delta U = Q\)</td></tr>
+        <tr><td>Adiabatyczna</td><td>\(Q = 0\)</td><td>\(\Delta U = -W\)</td></tr>
+      </table>
+    </div>
+
+    <div class="theory-card">
+      <h3>Ciepło — pojemność cieplna i ciepło przemiany</h3>
+      <div class="formula-box">
+        <div class="formula-label">Ciepło właściwe i pojemność cieplna</div>
+        <div class="formula-main">\[ Q = mc\Delta T \qquad Q = C\Delta T \]</div>
+        <div class="formula-legend">\(c\) — ciepło właściwe [J/(kg·K)], \(C\) — pojemność cieplna [J/K], \(m\) — masa [kg]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Ciepło przemiany fazowej</div>
+        <div class="formula-main">\[ Q = mL \]</div>
+        <div class="formula-legend">\(L\) — ciepło przemiany (topnienia / parowania) [J/kg]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>II Zasada termodynamiki i sprawność</h3>
+      <p>Ciepło nie przepływa samoistnie od ciała zimniejszego do cieplejszego. Idealny silnik cieplny (Carnota) ma maksymalną sprawność:</p>
+      <div class="formula-box">
+        <div class="formula-label">Sprawność silnika Carnota</div>
+        <div class="formula-main">\[ \eta_{Carnota} = 1 - \frac{T_2}{T_1} \]</div>
+        <div class="formula-legend">\(T_1\) — temperatura grzejnika [K], \(T_2\) — temperatura chłodnicy [K]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Sprawność dowolnego silnika cieplnego</div>
+        <div class="formula-main">\[ \eta = \frac{W}{Q_1} = \frac{Q_1 - Q_2}{Q_1} = 1 - \frac{Q_2}{Q_1} \]</div>
+      </div>
+      <div class="tip"><strong>⚠️ Uwaga:</strong> Temperatury MUSZĄ być w Kelwinach. Sprawność Carnota jest maksymalna — żaden silnik rzeczywisty jej nie przekroczy.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Kinetyczna teoria gazów</h3>
+      <p>Gaz doskonały składa się z punktowych cząsteczek, które poruszają się losowo i zderzają sprężyście.</p>
+      <div class="formula-box">
+        <div class="formula-label">Ciśnienie gazu — model kinetyczny</div>
+        <div class="formula-main">\[ p = \frac{1}{3}\rho\langle v^2\rangle = \frac{2}{3}\frac{E_k}{V} \]</div>
+        <div class="formula-legend">\(\langle v^2 \rangle\) — średnia kwadratowa prędkości cząsteczek</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Prędkość średnia kwadratowa i energia kinetyczna</div>
+        <div class="formula-main">\[ v_{rms} = \sqrt{\frac{3RT}{M}} = \sqrt{\frac{3k_BT}{m_0}} \qquad \langle E_k\rangle = \frac{3}{2}k_BT \]</div>
+        <div class="formula-legend">\(M\) — masa molarna [kg/mol], \(m_0\) — masa jednej cząsteczki [kg]</div>
+      </div>
+      <div class="tip tip-blue"><strong>🔵 Ważne:</strong> Temperatura jest miarą średniej energii kinetycznej cząsteczek. Przy \(T=0\ \text{K}\) ruch ustaje (zero absolutne).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Przemiany fazowe i krzywa fazowa</h3>
+      <table class="wzory-table">
+        <tr><th>Przemiana</th><th>Opis</th><th>Wzór energii</th></tr>
+        <tr><td>Topnienie / Krzepnięcie</td><td>Stała \(T\) podczas przemiany</td><td>\(Q = mL_t\)</td></tr>
+        <tr><td>Parowanie / Skraplanie</td><td>Ciecz ↔ para</td><td>\(Q = mL_p\)</td></tr>
+        <tr><td>Sublimacja</td><td>Stały ↔ para</td><td>\(Q = mL_s\)</td></tr>
+      </table>
+      <div class="tip"><strong>⚠️ Ciepła latentne:</strong> Woda: \(L_t \approx 334\ \text{kJ/kg}\), \(L_p \approx 2260\ \text{kJ/kg}\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Przewodnictwo cieplne i promieniowanie</h3>
+      <div class="formula-box">
+        <div class="formula-label">Fourier — strumień ciepła przez przewodnik</div>
+        <div class="formula-main">\[ \frac{\Delta Q}{\Delta t} = \lambda A \frac{\Delta T}{d} \]</div>
+        <div class="formula-legend">\(\lambda\) — przewodność cieplna [W/(m·K)], \(A\) — przekrój [m²], \(d\) — grubość [m]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Stefana-Boltzmanna (promieniowanie ciała doskonale czarnego)</div>
+        <div class="formula-main">\[ P = \sigma A T^4, \qquad \sigma = 5{,}67\times10^{-8}\ \text{W/(m²·K}^4) \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Wiena (długość fali maksimum emisji)</div>
+        <div class="formula-main">\[ \lambda_{max} T = 2{,}898\times10^{-3}\ \text{m·K} \]</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — cykl Carnota</div>
+      <div class="ex-body">
+        Silnik cieplny pracuje między 500°C a 100°C. Oblicz sprawność Carnota.
+        <div class="ex-step">\(T_1 = 500 + 273 = 773\ \text{K}\)</div>
+        <div class="ex-step">\(T_2 = 100 + 273 = 373\ \text{K}\)</div>
+        <div class="ex-step">\(\eta = 1 - \dfrac{373}{773} = 1 - 0{,}4826 = 0{,}517\)</div>
+        <div class="ex-ans">Sprawność Carnota ≈ 51,7%</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Entropia</h3>
+      <p>Entropia \(S\) jest funkcją stanu układu — miarą nieuporządkowania. Rośnie w procesach samorzutnych (II zasada).</p>
+      <div class="formula-box">
+        <div class="formula-label">Zmiana entropii w procesie odwracalnym</div>
+        <div class="formula-main">\[ \Delta S = \frac{Q}{T} \qquad [	ext{J/K}] \]</div>
+        <div class="formula-legend">\(Q\) — ciepło dostarczone [J], \(T\) — temperatura bezwzględna [K]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">II zasada termodynamiki — entropia wszechświata</div>
+        <div class="formula-main">\[ \Delta S_{wszechświata} \geq 0 \]</div>
+        <div class="formula-legend">Dla procesów odwracalnych \(\Delta S = 0\). Dla nieodwracalnych (rzeczywistych) \(\Delta S > 0\).</div>
+      </div>
+      <div class="tip tip-blue"><strong>🔵 Interpretacja:</strong> Entropia rośnie — układ dąży do stanu o większym nieuporządkowaniu. Ciepło nie może samoistnie przepływać od zimniejszego do cieplejszego.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Cykl Carnota na wykresie p-V</h3>
+      <p>Cykl Carnota składa się z 4 procesów:</p>
+      <table class="wzory-table">
+        <tr><th>Krok</th><th>Przemiana</th><th>Zmiana</th><th>Wzór pracy</th></tr>
+        <tr><td>1→2</td><td>Izotermiczna (rozprężanie) przy \(T_1\)</td><td>Pobiera \(Q_1\) od grzejnika</td><td>\(W = nRT_1\ln(V_2/V_1)\)</td></tr>
+        <tr><td>2→3</td><td>Adiabatyczna (rozprężanie)</td><td>Spada do \(T_2\), brak \(Q\)</td><td>\(W = -\Delta U\)</td></tr>
+        <tr><td>3→4</td><td>Izotermiczna (sprężanie) przy \(T_2\)</td><td>Oddaje \(Q_2\) do chłodnicy</td><td>\(W = -nRT_2\ln(V_3/V_4)\)</td></tr>
+        <tr><td>4→1</td><td>Adiabatyczna (sprężanie)</td><td>Wzrasta do \(T_1\), brak \(Q\)</td><td>\(W = -\Delta U\)</td></tr>
+      </table>
+      <div class="tip"><strong>Pole w cyklu p-V</strong> = praca netto wykonana przez silnik = \(W = Q_1 - Q_2\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Energia wewnętrzna i równanie ekwipartycji</h3>
+      <div class="formula-box">
+        <div class="formula-label">Energia wewnętrzna jednoatomowego gazu doskonałego</div>
+        <div class="formula-main">\[ U = \frac{3}{2}nRT = \frac{3}{2}Nk_BT \]</div>
+        <div class="formula-legend">Każdy stopień swobody wnosi \(	frac{1}{2}k_BT\) energii. Atom jednoatomowy ma 3 stopnie swobody (translacyjne).</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Gaz dwuatomowy (5 stopni swobody w temp. pokojowej)</div>
+        <div class="formula-main">\[ U = \frac{5}{2}nRT \]</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — prędkość cząsteczek gazu</div>
+      <div class="ex-body">
+        Oblicz prędkość rms cząsteczek azotu (\(M = 0{,}028\ \text{kg/mol}\)) w temperaturze 27°C.
+        <div class="ex-step">\(T = 27 + 273 = 300\ \text{K}\)</div>
+        <div class="ex-step">\(v_{rms} = \sqrt{\dfrac{3RT}{M}} = \sqrt{\dfrac{3\cdot8{,}314\cdot300}{0{,}028}} = \sqrt{267100} \approx 517\ \text{m/s}\)</div>
+        <div class="ex-ans">v_rms ≈ 517 m/s</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELEKTRYCZNOŚĆ -->
+  <div class="module-panel" id="mod-elek">
+    <h2 class="mod-h2">⚡ Elektryczność i magnetyzm</h2>
+    <p class="mod-intro">Pole elektrostatyczne, prąd stały, obwody elektryczne — fundamenty elektrotechniki. Szczególnie ważne na maturze: kondensatory, prawa Kirchhoffa, moc elektryczna.</p>
+
+    <div class="theory-card">
+      <h3>Pole elektrostatyczne — prawo Coulomba</h3>
+      <div class="formula-box">
+        <div class="formula-label">Siła Coulomba</div>
+        <div class="formula-main">\[ F = k\frac{|q_1||q_2|}{r^2}, \qquad k = \frac{1}{4\pi\varepsilon_0} = 9\times10^9\ \text{N·m}^2/\text{C}^2 \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Natężenie i potencjał pola punktowego ładunku</div>
+        <div class="formula-main">\[ E = k\frac{|q|}{r^2} = \frac{F}{q_{próbny}}, \qquad V = k\frac{q}{r} \]</div>
+        <div class="formula-legend">\(E\) — natężenie [N/C = V/m], \(V\) — potencjał [V]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Praca i energia w polu</div>
+        <div class="formula-main">\[ W = q\Delta V = qEd \quad (\text{pole jednorodne}) \]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Kondensatory</h3>
+      <div class="formula-box">
+        <div class="formula-label">Pojemność, ładunek, energia kondensatora</div>
+        <div class="formula-main">\[ C = \frac{Q}{U}, \qquad E = \frac{Q^2}{2C} = \frac{CU^2}{2} = \frac{QU}{2} \]</div>
+        <div class="formula-legend">\(C\) — pojemność [F], \(Q\) — ładunek [C], \(U\) — napięcie [V]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Kondensator płaski</div>
+        <div class="formula-main">\[ C = \varepsilon_0\varepsilon_r\frac{A}{d}, \qquad E_{pole} = \frac{U}{d} \]</div>
+        <div class="formula-legend">\(\varepsilon_0 = 8{,}85\times10^{-12}\ \text{F/m}\), \(\varepsilon_r\) — przenikalność względna, \(A\) — powierzchnia [m²], \(d\) — odległość okładek [m]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Połączenie</th><th>Pojemność zastępcza</th></tr>
+        <tr><td>Szeregowe</td><td>\(\dfrac{1}{C_z} = \dfrac{1}{C_1}+\dfrac{1}{C_2}+\cdots\)</td></tr>
+        <tr><td>Równoległe</td><td>\(C_z = C_1 + C_2 + \cdots\)</td></tr>
+      </table>
+    </div>
+
+    <div class="theory-card">
+      <h3>Prąd stały — prawo Ohma i obwody</h3>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Ohma i opór</div>
+        <div class="formula-main">\[ I = \frac{U}{R}, \qquad R = \rho\frac{l}{A} \]</div>
+        <div class="formula-legend">\(\rho\) — oporność właściwa [\(\Omega\)·m], \(l\) — długość [m], \(A\) — przekrój [m²]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Połączenie oporników</th><th>Wzór</th></tr>
+        <tr><td>Szeregowe</td><td>\(R_z = R_1 + R_2 + \cdots\)</td></tr>
+        <tr><td>Równoległe</td><td>\(\dfrac{1}{R_z} = \dfrac{1}{R_1}+\dfrac{1}{R_2}+\cdots\)</td></tr>
+      </table>
+      <div class="formula-box">
+        <div class="formula-label">Prawa Kirchhoffa</div>
+        <div class="formula-main">\[ \sum I_{wpływające} = \sum I_{wypływające} \qquad \text{(I prawo — węzeł)} \]</div>
+        <div class="formula-main">\[ \sum \mathcal{E} = \sum IR \qquad \text{(II prawo — oczko)} \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">SEM, opór wewnętrzny, napięcie na zaciskach</div>
+        <div class="formula-main">\[ U_{zac} = \mathcal{E} - Ir, \qquad I = \frac{\mathcal{E}}{R + r} \]</div>
+        <div class="formula-legend">\(\mathcal{E}\) — SEM [V], \(r\) — opór wewnętrzny [\(\Omega\)]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Moc elektryczna i ciepło Joule'a</div>
+        <div class="formula-main">\[ P = UI = I^2R = \frac{U^2}{R}, \qquad Q = Pt = UIt \]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Prąd elektryczny w gazach i cieczach</h3>
+      <div class="formula-box">
+        <div class="formula-label">Elektroliza — prawo Faradaya</div>
+        <div class="formula-main">\[ m = \frac{A}{n_w F}\cdot Q = \frac{A}{n_w F}\cdot It \]</div>
+        <div class="formula-legend">\(A\) — masa molarna [g/mol], \(n_w\) — wartościowość, \(F = 96485\ \text{C/mol}\) — stała Faradaya</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Ruchliwość nośników i konduktywność</div>
+        <div class="formula-main">\[ \sigma = \frac{1}{\rho} = n e \mu \]</div>
+        <div class="formula-legend">\(n\) — koncentracja nośników [1/m³], \(\mu\) — ruchliwość [m²/(V·s)]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Prawo Gaussa</h3>
+      <div class="formula-box">
+        <div class="formula-label">Strumień elektryczny i prawo Gaussa</div>
+        <div class="formula-main">\[ \Phi_E = \oint \vec{E}\cdot d\vec{A} = \frac{Q_{wewn}}{\varepsilon_0} \]</div>
+        <div class="formula-legend">Strumień \(\Phi_E\) przez zamkniętą powierzchnię Gaussa = suma ładunków wewnątrz / \(\varepsilon_0\)</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Rozkład ładunku</th><th>Pole elektryczne</th></tr>
+        <tr><td>Punkt / kula</td><td>\(E = kQ/r^2\) (na zewnątrz), \(E = 0\) (w środku)\</td></tr>
+        <tr><td>Nieskończona płaszczyzna ładunkowa</td><td>\(E = \sigma/(2\varepsilon_0)\)</td></tr>
+        <tr><td>Kondensator płaski (dwie płaszczyzny)</td><td>\(E = \sigma/\varepsilon_0 = U/d\)</td></tr>
+      </table>
+    </div>
+
+    <div class="theory-card">
+      <h3>Połączenia kondensatorów — przykład</h3>
+      <div class="tip tip-gold"><strong>📌 Szeregowe C:</strong> \(\frac{1}{C_z}=\frac{1}{C_1}+\frac{1}{C_2}\) — ładunek ten sam, napięcia się sumują.<br><strong>📌 Równoległe C:</strong> \(C_z = C_1+C_2\) — napięcia równe, ładunki się sumują.</div>
+      <div class="formula-box">
+        <div class="formula-label">Przykład: C₁=3μF i C₂=6μF szeregowo, U=12V</div>
+        <div class="formula-main">\[ \frac{1}{C_z} = \frac{1}{3}+\frac{1}{6} = \frac{1}{2} \Rightarrow C_z = 2\ \mu	ext{F} \]</div>
+        <div class="formula-legend">\(Q = C_z U = 2\cdot12 = 24\ \mu	ext{C}\). Na każdym kondensatorze: \(U_1 = 8	ext{ V}\), \(U_2 = 4	ext{ V}\).</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Ruch ładunku w polu elektrycznym — kondensator</h3>
+      <p>Elektron przyspieszany napięciem \(U\):</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ eU = \tfrac{1}{2}mv^2 \quad \Rightarrow \quad v = \sqrt{\frac{2eU}{m}} \]</div>
+      </div>
+      <p>Ładunek poruszający się w jednorodnym polu elektrycznym \(E = U/d\) — ruch paraboliczny jak rzut poziomy:</p>
+      <div class="formula-box">
+        <div class="formula-main">\[ a = \frac{qE}{m} = \frac{qU}{md} \]</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — prawa Kirchhoffa</div>
+      <div class="ex-body">
+        Dwie baterie: \(\mathcal{E}_1 = 12\ \text{V},\ r_1 = 1\ \Omega\) i \(\mathcal{E}_2 = 9\ \text{V},\ r_2 = 0{,}5\ \Omega\), opór zewnętrzny \(R = 5\ \Omega\), połączone szeregowo (zgodnie). Oblicz prąd.
+        <div class="ex-step">\(I = \dfrac{\mathcal{E}_1 + \mathcal{E}_2}{R + r_1 + r_2} = \dfrac{12 + 9}{5 + 1 + 0{,}5} = \dfrac{21}{6{,}5} \approx 3{,}23\ \text{A}\)</div>
+        <div class="ex-ans">I ≈ 3,23 A</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — energia kondensatora</div>
+      <div class="ex-body">
+        Kondensator \(C = 10\ \mu\text{F}\) naładowany do \(U = 100\ \text{V}\). Oblicz zgromadzoną energię.
+        <div class="ex-step">\(E = \tfrac{1}{2}CU^2 = \tfrac{1}{2}\cdot10\times10^{-6}\cdot100^2 = 0{,}05\ \text{J}\)</div>
+        <div class="ex-ans">E = 50 mJ = 0,05 J</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAGNETYZM -->
+  <div class="module-panel" id="mod-magn">
+    <h2 class="mod-h2">🧲 Magnetyzm i indukcja elektromagnetyczna</h2>
+
+    <div class="theory-card">
+      <h3>Siła Lorentza i siła na przewodnik</h3>
+      <div class="formula-box">
+        <div class="formula-label">Siła Lorentza na ładunek</div>
+        <div class="formula-main">\[ \vec{F} = q\vec{v}\times\vec{B}, \quad F = qvB\sin\theta \]</div>
+        <div class="formula-legend">\(B\) — indukcja magnetyczna [T], \(v\) — prędkość [m/s], \(\theta\) — kąt między v i B</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Siła na przewodnik z prądem</div>
+        <div class="formula-main">\[ F = BIl\sin\theta \]</div>
+        <div class="formula-legend">\(I\) — prąd [A], \(l\) — długość przewodnika w polu [m]</div>
+      </div>
+      <div class="tip tip-blue"><strong>🔵 Reguła lewej ręki:</strong> Cztery palce — kierunek prądu, linie pola B prostopadle do dłoni, kciuk wskazuje siłę.</div>
+      <div class="formula-box">
+        <div class="formula-label">Ruch kołowy ładunku w polu B</div>
+        <div class="formula-main">\[ r = \frac{mv}{qB}, \qquad T = \frac{2\pi m}{qB} \]</div>
+        <div class="formula-legend">\(r\) — promień toru, \(T\) — okres (niezależny od v!)</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Indukcja elektromagnetyczna — prawo Faradaya</h3>
+      <div class="formula-box">
+        <div class="formula-label">Strumień magnetyczny i SEM indukcji</div>
+        <div class="formula-main">\[ \Phi = B \cdot A \cdot \cos\theta, \qquad \mathcal{E} = -\frac{\Delta\Phi}{\Delta t} = -N\frac{\Delta\Phi}{\Delta t} \]</div>
+        <div class="formula-legend">\(\Phi\) — strumień [Wb = T·m²], \(N\) — liczba zwojów cewki</div>
+      </div>
+      <div class="tip"><strong>Reguła Lenza:</strong> Indukowany prąd ma taki kierunek, by sprzeciwiać się zmianie strumienia, która go wywołała.</div>
+      <div class="formula-box">
+        <div class="formula-label">Transformator idealny</div>
+        <div class="formula-main">\[ \frac{U_2}{U_1} = \frac{N_2}{N_1}, \qquad \frac{I_2}{I_1} = \frac{N_1}{N_2} \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Prąd przemienny — wartość skuteczna</div>
+        <div class="formula-main">\[ U_{sk} = \frac{U_{max}}{\sqrt{2}}, \qquad I_{sk} = \frac{I_{max}}{\sqrt{2}}, \qquad P = U_{sk}I_{sk}\cos\varphi \]</div>
+        <div class="formula-legend">\(\cos\varphi\) — współczynnik mocy (czynnik mocy)</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Pole magnetyczne przewodnika i solenoidu</h3>
+      <div class="formula-box">
+        <div class="formula-label">Indukcja B wokół nieskończenie długiego prostoliniowego przewodnika</div>
+        <div class="formula-main">\[ B = \frac{\mu_0 I}{2\pi r}, \qquad \mu_0 = 4\pi\times10^{-7}\ \text{T·m/A} \]</div>
+        <div class="formula-legend">\(r\) — odległość od przewodnika [m], \(\mu_0\) — przenikalność magnetyczna próżni</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Indukcja B wewnątrz solenoidu</div>
+        <div class="formula-main">\[ B = \mu_0 n I = \mu_0 \frac{N}{l} I \]</div>
+        <div class="formula-legend">\(n\) — liczba zwojów na metr [1/m], \(N\) — całkowita liczba zwojów, \(l\) — długość solenoidu [m]</div>
+      </div>
+      <div class="tip tip-green"><strong>✓ Reguła prawej dłoni:</strong> Obwinięte palce — kierunek prądu w zwojach, kciuk wskazuje biegun N solenoidu.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Samoindukcja i energia pola magnetycznego</h3>
+      <div class="formula-box">
+        <div class="formula-label">SEM samoindukcji</div>
+        <div class="formula-main">\[ \mathcal{E}_L = -L\frac{dI}{dt} \]</div>
+        <div class="formula-legend">\(L\) — indukcyjność [H = Wb/A = V·s/A]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Indukcyjność solenoidu i energia pola B</div>
+        <div class="formula-main">\[ L = \mu_0 n^2 V = \mu_0 \frac{N^2}{l}A \qquad E = \frac{1}{2}LI^2 \]</div>
+        <div class="formula-legend">\(V\) — objętość solenoidu [m³]</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Obwód RLC — prąd przemienny</h3>
+      <div class="formula-box">
+        <div class="formula-label">Reaktancja pojemnościowa i indukcyjna</div>
+        <div class="formula-main">\[ X_C = \frac{1}{\omega C}, \qquad X_L = \omega L \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Impedancja i prawo Ohma dla AC</div>
+        <div class="formula-main">\[ Z = \sqrt{R^2 + (X_L - X_C)^2}, \qquad I_{sk} = \frac{U_{sk}}{Z} \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Rezonans szeregowy</div>
+        <div class="formula-main">\[ f_0 = \frac{1}{2\pi\sqrt{LC}}, \qquad \omega_0 = \frac{1}{\sqrt{LC}} \]</div>
+        <div class="formula-legend">W rezonansie: \(X_L = X_C\), impedancja = R (minimalna), prąd maksymalny</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Indukcja wzajemna</h3>
+      <div class="formula-box">
+        <div class="formula-label">Współczynnik indukcji wzajemnej M</div>
+        <div class="formula-main">\[ \mathcal{E}_2 = -M\frac{dI_1}{dt}, \qquad M = \frac{N_2\Phi_{21}}{I_1} \qquad [	ext{H}] \]</div>
+        <div class="formula-legend">Zmiana prądu w cewce 1 indukuje SEM w cewce 2. Podstawa działania transformatora.</div>
+      </div>
+      <div class="tip tip-blue"><strong>🔵 Transformator:</strong> Dwie cewki sprzężone magnetycznie. Ideał: \(U_2/U_1 = N_2/N_1\), \(P_1 = P_2\). Straty: prądy wirowe, histereza, opór uzwojeń.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Prądy wirowe (Foucaulta)</h3>
+      <p>Zmieniające się pole magnetyczne indukuje prądy wirowe w przewodniku. Konsekwencje:</p>
+      <table class="wzory-table">
+        <tr><th>Zjawisko</th><th>Opis</th><th>Zastosowanie</th></tr>
+        <tr><td>Nagrzewanie</td><td>Prądy wirowe wydzielają ciepło Joulea</td><td>Kuchnie indukcyjne, piece indukcyjne</td></tr>
+        <tr><td>Hamowanie</td><td>Siła spowalniająca poruszający się magnes</td><td>Hamulce elektromagnetyczne, wagi</td></tr>
+        <tr><td>Ekranowanie</td><td>Prądy wirowe tłumią pole wewnątrz przewodnika</td><td>Klatka Faradaya</td></tr>
+      </table>
+      <div class="tip"><strong>Ograniczanie prądów wirowych:</strong> Rdzenie blaszane (laminowanie) — cienkimi izolowanymi blaszkami zmniejsza się obszar przepływu prądów wirowych.</div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — siła na przewodnik w polu B</div>
+      <div class="ex-body">
+        Przewodnik długości \(l = 0{,}5\ \text{m}\) z prądem \(I = 3\ \text{A}\) umieszczony prostopadle do pola \(B = 0{,}2\ \text{T}\). Oblicz siłę.
+        <div class="ex-step">\(F = BIl\sin90° = 0{,}2 \cdot 3 \cdot 0{,}5 \cdot 1 = 0{,}3\ \text{N}\)</div>
+        <div class="ex-ans">F = 0,3 N</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTYKA -->
+  <div class="module-panel" id="mod-optyk">
+    <h2 class="mod-h2">🔭 Optyka — geometryczna i falowa</h2>
+
+    <div class="theory-card">
+      <h3>Optyka geometryczna</h3>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Snella-Descartes'a (załamanie)</div>
+        <div class="formula-main">\[ n_1 \sin\theta_1 = n_2 \sin\theta_2, \qquad n = \frac{c}{v} \]</div>
+        <div class="formula-legend">\(n\) — współczynnik załamania, \(c = 3\times10^8\ \text{m/s}\)</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Równanie soczewki (lupy, obiektywu)</div>
+        <div class="formula-main">\[ \frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}, \qquad Z = \frac{d_i}{d_o} \]</div>
+        <div class="formula-legend">\(f\) — ogniskowa [m], \(d_o\) — odległość przedmiotu, \(d_i\) — odległość obrazu, \(Z\) — powiększenie</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Zdolność skupiająca (optyczna) soczewki</div>
+        <div class="formula-main">\[ Z_{opt} = \frac{1}{f}\ [\text{dioptrie, dpt}] \]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Typ soczewki/lustra</th><th>\(f\)</th><th>Obraz rzeczywisty gdy</th></tr>
+        <tr><td>Soczewka skupiająca (wypukła)</td><td>\(f > 0\)</td><td>\(d_o > f\)</td></tr>
+        <tr><td>Soczewka rozpraszająca (wklęsła)</td><td>\(f < 0\)</td><td>Nigdy</td></tr>
+        <tr><td>Zwierciadło wklęsłe</td><td>\(f = R/2 > 0\)</td><td>\(d_o > f\)</td></tr>
+        <tr><td>Zwierciadło wypukłe</td><td>\(f < 0\)</td><td>Nigdy</td></tr>
+      </table>
+    </div>
+
+    <div class="theory-card">
+      <h3>Optyka falowa</h3>
+      <div class="formula-box">
+        <div class="formula-label">Warunki interferencji (szczelinа/szczeliny Younga)</div>
+        <div class="formula-main">\[ \Delta = d\sin\theta \approx d\frac{x}{L} \]</div>
+        <div class="formula-legend">\(d\) — odległość szczelin, \(L\) — odległość ekranu, \(x\) — położenie prążka</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Siatka dyfrakcyjna — główne maksima</div>
+        <div class="formula-main">\[ d\sin\theta = n\lambda, \qquad n = 0, \pm1, \pm2, \ldots \]</div>
+        <div class="formula-legend">\(d = 1/N\) — stała siatki, \(N\) — liczba szczelin na metr</div>
+      </div>
+      <div class="tip tip-green"><strong>✓ Na maturze:</strong> Siatka dyfrakcyjna służy do wyznaczania długości fali światła. Zmierz kąt, oblicz \(\lambda = d\sin\theta/n\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Całkowite wewnętrzne odbicie</h3>
+      <div class="formula-box">
+        <div class="formula-label">Kąt graniczny (z gęstszego do rzadszego ośrodka)</div>
+        <div class="formula-main">\[ \sin\theta_g = \frac{n_2}{n_1} \qquad (n_1 > n_2) \]</div>
+        <div class="formula-legend">Gdy \(\theta \geq \theta_g\) — brak promienia załamanego, całkowite odbicie. Podstawa: światłowody, pryzmaty.</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Dyspersja i rozszczepienie światła</h3>
+      <p>Różne długości fal mają różne współczynniki załamania w tym samym ośrodku — dyspersja. Przykład: pryzmat rozprasza białe światło na widmo.</p>
+      <div class="formula-box">
+        <div class="formula-label">Warunki interferencji Younga (dwie szczeliny)</div>
+        <div class="formula-main">\[ x_{bright} = \frac{n\lambda L}{d}, \quad x_{dark} = \frac{(n+\tfrac{1}{2})\lambda L}{d} \]</div>
+        <div class="formula-legend">\(L\) — odległość ekranu [m], \(d\) — odległość szczelin [m], \(n = 0, \pm1, \pm2,...\)</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Wady wzroku i korekcja</h3>
+      <table class="wzory-table">
+        <tr><th>Wada</th><th>Przyczyna</th><th>Korekcja</th><th>Soczewka</th></tr>
+        <tr><td>Krótkowzroczność (myopia)</td><td>Obraz pada przed siatkówką — zbyt długa gałka lub zbyt silna rogówka</td><td>Oddala ognisko</td><td>Rozpraszająca \(f&lt;0\)</td></tr>
+        <tr><td>Dalekowzroczność (hyperopia)</td><td>Obraz pada za siatkówką — zbyt krótka gałka</td><td>Zbliża ognisko</td><td>Skupiająca \(f&gt;0\)</td></tr>
+        <tr><td>Astygmatyzm</td><td>Niesferyczna rogówka, różne ogniskowe dla różnych płaszczyzn</td><td>Wyrównanie</td><td>Cylindryczna</td></tr>
+      </table>
+      <div class="tip"><strong>Moc korekcyjna:</strong> Okulary o \(D = -2\) dpt korygują krótkowzroczność — soczewka rozpraszająca o \(f = -0{,}5	ext{ m}\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Mikroskop i luneta astronomiczna</h3>
+      <div class="formula-box">
+        <div class="formula-label">Powiększenie mikroskopu (obiektyw + okular)</div>
+        <div class="formula-main">\[ M_{mikr} = M_{ob} \cdot M_{ok} = \frac{d}{f_{ob}}\cdot\frac{D_{wzr}}{f_{ok}} \]</div>
+        <div class="formula-legend">\(d\) — odległość między obiektywem a okularem [m], \(D_{wzr} \approx 0{,}25	ext{ m}\) — odległość wyraźnego widzenia</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Powiększenie lunety astronomicznej (Keplera)</div>
+        <div class="formula-main">\[ M_{lun} = \frac{f_{ob}}{f_{ok}} \]</div>
+        <div class="formula-legend">Im dłuższa ogniskowa obiektywu i krótsza okularu — tym silniejsze powiększenie.</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Polaryzacja światła</h3>
+      <p>Światło naturalne jest niepolaryzowane. Przez filtr polaryzacyjny przechodzi tylko składowa zgodna z kierunkiem polaryzacji.</p>
+      <div class="formula-box">
+        <div class="formula-label">Prawo Malusa</div>
+        <div class="formula-main">\[ I = I_0 \cos^2\theta \]</div>
+        <div class="formula-legend">\(\theta\) — kąt między kierunkiem polaryzacji a analizatorem. Przy \(\theta = 90°\) brak światła.</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Kąt Brewstera (polaryzacja przy odbiciu)</div>
+        <div class="formula-main">\[ \tan\theta_B = \frac{n_2}{n_1} \]</div>
+        <div class="formula-legend">Przy kącie Brewstera odbite światło jest w pełni spolaryzowane.</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — soczewka skupiająca</div>
+      <div class="ex-body">
+        Soczewka skupiająca o ogniskowej \(f = 20\ \text{cm}\). Przedmiot w odległości \(d_o = 30\ \text{cm}\). Gdzie jest obraz?
+        <div class="ex-step">\(\dfrac{1}{d_i} = \dfrac{1}{f} - \dfrac{1}{d_o} = \dfrac{1}{20} - \dfrac{1}{30} = \dfrac{3-2}{60} = \dfrac{1}{60}\)</div>
+        <div class="ex-step">\(d_i = 60\ \text{cm}\) (po prawej stronie — obraz rzeczywisty)</div>
+        <div class="ex-step">Powiększenie: \(Z = d_i/d_o = 60/30 = 2\times\)</div>
+        <div class="ex-ans">d_i = 60 cm, powiększenie 2×, obraz rzeczywisty</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KWANTY I JĄDRO -->
+  <div class="module-panel" id="mod-kwant">
+    <h2 class="mod-h2">⚛️ Fizyka kwantowa i jądrowa</h2>
+
+    <div class="theory-card">
+      <h3>Efekt fotoelektryczny</h3>
+      <div class="formula-box">
+        <div class="formula-label">Równanie Einsteina — efekt fotoelektryczny</div>
+        <div class="formula-main">\[ E_{foton} = hf = \frac{hc}{\lambda} = W + E_{k,max} \]</div>
+        <div class="formula-legend">\(h = 6{,}626\times10^{-34}\ \text{J·s}\) — stała Plancka, \(W\) — praca wyjścia [J lub eV]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Napięcie hamowania</div>
+        <div class="formula-main">\[ eU_h = E_{k,max} = hf - W \]</div>
+        <div class="formula-legend">\(e = 1{,}6\times10^{-19}\ \text{C}\) — ładunek elektronu, \(1\ \text{eV} = 1{,}6\times10^{-19}\ \text{J}\)</div>
+      </div>
+      <div class="tip"><strong>⚠️ Efekt fotoelektryczny:</strong> Zależy od częstotliwości (nie natężenia) światła. Poniżej częstotliwości granicznej \(f_0 = W/h\) — efekt nie zachodzi.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Model atomu Bohra — atom wodorowy</h3>
+      <div class="formula-box">
+        <div class="formula-label">Energia powłoki elektronu w atomie H</div>
+        <div class="formula-main">\[ E_n = -\frac{13{,}6\ \text{eV}}{n^2} \]</div>
+        <div class="formula-legend">\(n\) — główna liczba kwantowa (1, 2, 3,...)</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Emisja/absorpcja fotonu przy przejściu</div>
+        <div class="formula-main">\[ hf = E_{n_2} - E_{n_1} = 13{,}6\left(\frac{1}{n_1^2} - \frac{1}{n_2^2}\right)\ \text{eV} \]</div>
+        <div class="formula-legend">Emisja: \(n_2 < n_1\) (skok w dół). Absorpcja: \(n_2 > n_1\) (skok w górę).</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Fala de Broglie'a</div>
+        <div class="formula-main">\[ \lambda = \frac{h}{p} = \frac{h}{mv} \]</div>
+        <div class="formula-legend">Każda cząstka ma przypisaną długość fali.</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Fizyka jądrowa</h3>
+      <div class="formula-box">
+        <div class="formula-label">Zapis jądra atomowego</div>
+        <div class="formula-main">\[ {}^{A}_{Z}X \quad \text{gdzie}\ A = Z + N \]</div>
+        <div class="formula-legend">\(A\) — liczba masowa (nukleony), \(Z\) — liczba atomowa (protony), \(N\) — neutrony</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Rozpad</th><th>Emisja</th><th>Zmiana Z/A</th></tr>
+        <tr><td>Alfa (α)</td><td>\({}^4_2\text{He}\)</td><td>\(Z{-}2,\ A{-}4\)</td></tr>
+        <tr><td>Beta minus (β⁻)</td><td>elektron + antyneutrino</td><td>\(Z{+}1,\ A\) bez zmian</td></tr>
+        <tr><td>Beta plus (β⁺)</td><td>pozyton + neutrino</td><td>\(Z{-}1,\ A\) bez zmian</td></tr>
+        <tr><td>Gamma (γ)</td><td>foton γ</td><td>Brak zmian Z, A</td></tr>
+      </table>
+      <div class="formula-box">
+        <div class="formula-label">Prawo zaniku promieniotwórczego</div>
+        <div class="formula-main">\[ N(t) = N_0 \cdot 2^{-t/T_{1/2}} = N_0 e^{-\lambda t} \]</div>
+        <div class="formula-legend">\(T_{1/2}\) — okres półrozpadu [s], \(\lambda = \dfrac{\ln 2}{T_{1/2}}\) — stała rozpadu</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Defekt masy i energia wiązania</div>
+        <div class="formula-main">\[ \Delta m = Zm_p + Nm_n - m_{jadra}, \qquad E_B = \Delta m \cdot c^2 \]</div>
+        <div class="formula-legend">\(1\ \text{u} = 931{,}5\ \text{MeV}/c^2 = 1{,}66\times10^{-27}\ \text{kg}\)</div>
+      </div>
+      <div class="tip tip-gold"><strong>📌 Reakcje jądrowe:</strong> Zachowanie liczby masowej A i atomowej Z. Zawsze: \(\sum A_{przed} = \sum A_{po}\) i \(\sum Z_{przed} = \sum Z_{po}\).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Widma emisyjne i absorpcyjne</h3>
+      <p>Atomy emitują i pochłaniają fotony o ściśle określonych energiach odpowiadających przejściom między poziomami energetycznymi.</p>
+      <div class="formula-box">
+        <div class="formula-label">Częstotliwość fotonu emitowanego/pochłoniętego</div>
+        <div class="formula-main">\[ hf = E_{wyższy} - E_{niższy} = \Delta E \]</div>
+      </div>
+      <table class="wzory-table">
+        <tr><th>Seria widmowa wodoru</th><th>Przejście do n</th><th>Zakres</th></tr>
+        <tr><td>Lymana</td><td>n = 1</td><td>UV</td></tr>
+        <tr><td>Balmera</td><td>n = 2</td><td>Widzialny</td></tr>
+        <tr><td>Paschena</td><td>n = 3</td><td>IR</td></tr>
+      </table>
+      <div class="tip"><strong>Widmo absorpcyjne:</strong> Ciemne linie na jasnym tle — atom pochłania fotony o dokładnie tych energiach, które mógłby emitować. Metoda identyfikacji pierwiastków (spektroskopia).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Laser — zasada działania</h3>
+      <p>LASER = Light Amplification by Stimulated Emission of Radiation. Kluczowe pojęcia:</p>
+      <table class="wzory-table">
+        <tr><th>Pojęcie</th><th>Opis</th></tr>
+        <tr><td>Inwersja obsadzenia</td><td>Więcej elektronów na poziomie wzbudzonym niż podstawowym — warunek wzmocnienia</td></tr>
+        <tr><td>Emisja wymuszona</td><td>Foton pobudza atom do emisji identycznego fotonu — koherentne światło</td></tr>
+        <tr><td>Wnęka optyczna</td><td>Dwa lustra (jedno półprzepuszczalne) — wielokrotna amplifikacja</td></tr>
+      </table>
+      <div class="tip tip-green"><strong>✓ Właściwości lasera:</strong> Monochromatyczność (jedna λ), koherencja (stała faza), równoległość (mała rozbieżność wiązki).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Dawki promieniowania i ochrona radiologiczna</h3>
+      <div class="formula-box">
+        <div class="formula-label">Pochłonieta dawka promieniowania</div>
+        <div class="formula-main">\[ D = \frac{E}{m} \qquad [\text{Gy} = \text{J/kg}] \]</div>
+        <div class="formula-legend">\(D\) — dawka pochłonięta [Gy = grej], \(E\) — energia pochłonięta [J], \(m\) — masa tkanki [kg]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Dawka skuteczna (równoważna)</div>
+        <div class="formula-main">\[ H = w_R \cdot D \qquad [\text{Sv} = \text{siwert}] \]</div>
+        <div class="formula-legend">\(w_R\) — współczynnik jakości promieniowania: \(\gamma\)=1, \(\beta\)=1, \(\alpha\)=20, neutron=10–20</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Datowanie radioizotopami i zastosowania</h3>
+      <div class="formula-box">
+        <div class="formula-label">Datowanie radiowęglowe (C-14, T½ = 5730 lat)</div>
+        <div class="formula-main">\[ t = \frac{T_{1/2}}{\ln 2}\ln\frac{N_0}{N} = T_{1/2}\cdot\frac{\log(N_0/N)}{\log 2} \]</div>
+      </div>
+      <div class="tip tip-blue"><strong>🔵 Zastosowania promieniotwórczości:</strong><br>
+        • Medycyna: PET (F-18), scyntygrafia (Tc-99m), terapia nowotworów (I-131, radioterapia γ)<br>
+        • Przemysł: mierniki grubości, sterylizacja sprzętu<br>
+        • Energia: elektrownie jądrowe (rozszczepienie U-235), perspektywicznie fuzja (D+T)
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Promieniowanie rentgenowskie i Compton</h3>
+      <div class="formula-box">
+        <div class="formula-label">Efekt Comptona — zmiana długości fali</div>
+        <div class="formula-main">\[ \Delta\lambda = \lambda' - \lambda = \frac{h}{m_e c}(1 - \cos\theta) \]</div>
+        <div class="formula-legend">\(h/(m_e c) = 2{,}426\times10^{-12}\ \text{m}\) — długość Comptona elektronu, \(\theta\) — kąt rozproszenia</div>
+      </div>
+      <div class="tip"><strong>Compton vs fotoelektryczny:</strong> Compton = rozproszenie fotonu na elektronie (foton zmienia energię). Fotoelektryczny = pochłonięcie fotonu i emisja elektronu.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Zasada nieoznaczoności Heisenberga</h3>
+      <div class="formula-box">
+        <div class="formula-label">Relacja nieoznaczoności (pozycja-pęd i energia-czas)</div>
+        <div class="formula-main">\[ \Delta x \cdot \Delta p \geq \frac{\hbar}{2}, \qquad \Delta E \cdot \Delta t \geq \frac{\hbar}{2} \]</div>
+        <div class="formula-legend">\(\hbar = h/(2\pi) = 1{,}055\times10^{-34}\ \text{J·s}\) — zredukowana stała Plancka</div>
+      </div>
+      <div class="tip tip-blue"><strong>🔵 Interpretacja:</strong> Im dokładniej znamy położenie cząstki, tym mniej znamy jej pęd i odwrotnie — to fundamentalne ograniczenie, nie kwestia niedoskonałości pomiaru.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Rozszczepienie i synteza jądrowa</h3>
+      <table class="wzory-table">
+        <tr><th>Reakcja</th><th>Opis</th><th>Energia</th></tr>
+        <tr><td>Rozszczepienie</td><td>\(^{235}_{92}\text{U} + n \to\) fragmenty + kilka n</td><td>\(\sim200\ \text{MeV/reakcja}\)</td></tr>
+        <tr><td>Synteza</td><td>\(^2_1\text{H} + ^3_1\text{H} \to ^4_2\text{He} + n\)</td><td>\(17{,}6\ \text{MeV/reakcja}\)</td></tr>
+      </table>
+      <div class="formula-box">
+        <div class="formula-label">Aktywność próbki promieniotwórczej</div>
+        <div class="formula-main">\[ A = \lambda N = \frac{\ln 2}{T_{1/2}}\cdot N \quad [\text{Bq} = \text{rozpad/s}] \]</div>
+      </div>
+      <div class="tip"><strong>⚠️ Jednostki:</strong> 1 Bq = 1 rozpad/s. 1 Ci = 3,7×10¹⁰ Bq (stara jednostka, wciąż używana).</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Promieniowanie i jego właściwości</h3>
+      <table class="wzory-table">
+        <tr><th>Rodzaj</th><th>Cząstka</th><th>Przenikliwość</th><th>Jonizacja</th><th>Zatrzymuje</th></tr>
+        <tr><td>Alfa (α)</td><td>⁴He, q=+2e</td><td>Bardzo mała</td><td>Bardzo silna</td><td>Kartka papieru</td></tr>
+        <tr><td>Beta (β⁻)</td><td>e⁻</td><td>Średnia</td><td>Średnia</td><td>Kilka mm Al</td></tr>
+        <tr><td>Gamma (γ)</td><td>foton γ</td><td>Bardzo duża</td><td>Słaba</td><td>Grube ołów/beton</td></tr>
+      </table>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — efekt fotoelektryczny</div>
+      <div class="ex-body">
+        Na metal (praca wyjścia \(W = 2{,}3\ \text{eV}\)) pada światło o \(\lambda = 300\ \text{nm}\). Oblicz max prędkość elektronów.
+        <div class="ex-step">\(E_{foton} = hc/\lambda = 1240\ \text{eV·nm} / 300\ \text{nm} = 4{,}13\ \text{eV}\)</div>
+        <div class="ex-step">\(E_{k,max} = 4{,}13 - 2{,}3 = 1{,}83\ \text{eV} = 1{,}83\cdot1{,}6\times10^{-19} = 2{,}93\times10^{-19}\ \text{J}\)</div>
+        <div class="ex-step">\(v = \sqrt{2E_k/m_e} = \sqrt{2\cdot2{,}93\times10^{-19}/9{,}11\times10^{-31}} \approx 8{,}02\times10^5\ \text{m/s}\)</div>
+        <div class="ex-ans">v_max ≈ 8 × 10⁵ m/s</div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="ex-title">🔢 Przykład — okres półrozpadu</div>
+      <div class="ex-body">
+        Próbka radonu-222 (\(T_{1/2} = 3{,}82\ \text{dni}\)) zawiera początkowo \(N_0 = 10^{12}\) atomów. Ile atomów pozostanie po 11,46 dniach?
+        <div class="ex-step">\(t/T_{1/2} = 11{,}46/3{,}82 = 3\)</div>
+        <div class="ex-step">\(N = N_0 \cdot 2^{-3} = 10^{12}/8 = 1{,}25\times10^{11}\)</div>
+        <div class="ex-ans">N ≈ 1,25 × 10¹¹ atomów</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WZGLĘDNOŚĆ -->
+  <div class="module-panel" id="mod-relat">
+    <h2 class="mod-h2">🚀 Szczególna teoria względności</h2>
+
+    <div class="theory-card">
+      <h3>Postulaty Einsteina i konsekwencje</h3>
+      <p>1. Prawa fizyki są jednakowe we wszystkich inercjalnych układach odniesienia.<br>2. Prędkość światła w próżni \(c = 3\times10^8\ \text{m/s}\) jest stała dla wszystkich obserwatorów.</p>
+      <div class="formula-box">
+        <div class="formula-label">Czynnik Lorentza</div>
+        <div class="formula-main">\[ \gamma = \frac{1}{\sqrt{1 - v^2/c^2}} \geq 1 \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Dylatacja czasu (czas wolniej płynie w poruszającym się układzie)</div>
+        <div class="formula-main">\[ \Delta t = \gamma \Delta t_0 \]</div>
+        <div class="formula-legend">\(\Delta t_0\) — czas własny (w układzie spoczynkowym względem zdarzenia)</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Skrócenie Lorentza (długość skraca się w kierunku ruchu)</div>
+        <div class="formula-main">\[ l = \frac{l_0}{\gamma} \]</div>
+        <div class="formula-legend">\(l_0\) — długość własna (w spoczynku)</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Relatywistyczna energia i masa</div>
+        <div class="formula-main">\[ E = \gamma mc^2, \quad E_0 = mc^2, \quad E_k = (\gamma - 1)mc^2 \]</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Równoważność masy i energii</div>
+        <div class="formula-main">\[ E = mc^2 \]</div>
+        <div class="formula-legend">\(m\) — masa [kg], \(c = 3\times10^8\ \text{m/s}\)</div>
+      </div>
+      <div class="tip"><strong>⚠️ Pamiętaj:</strong> Przy \(v \ll c\) efekty relatywistyczne są pomijalnie małe. Przy \(v 	o c\) energia dąży do nieskończoności.</div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Pęd relatywistyczny i energia całkowita</h3>
+      <div class="formula-box">
+        <div class="formula-label">Pęd relatywistyczny</div>
+        <div class="formula-main">\[ p = \gamma mv = \frac{mv}{\sqrt{1-v^2/c^2}} \]</div>
+        <div class="formula-legend">Dla \(v 	o c\): \(p 	o \infty\). Pęd klasyczny: \(p = mv\) (przybliżenie dla \(v \ll c\)).</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Związek energia–pęd (niezmiennik relatywistyczny)</div>
+        <div class="formula-main">\[ E^2 = (pc)^2 + (m_0 c^2)^2 \]</div>
+        <div class="formula-legend">Dla fotonu (\(m_0 = 0\)): \(E = pc\). Dla cząstki w spoczynku (\(p=0\)): \(E = m_0c^2\).</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Dodawanie prędkości relatywistyczne</div>
+        <div class="formula-main">\[ v' = \frac{v_1 + v_2}{1 + v_1 v_2/c^2} \]</div>
+        <div class="formula-legend">Klasycznie: \(v' = v_1 + v_2\). Relatywistycznie: suma nie może przekroczyć c.</div>
+      </div>
+    </div>
+
+    <div class="theory-card">
+      <h3>Paradoks bliźniąt i efekty GPS</h3>
+      <p>Dylatacja czasu ma realne konsekwencje:</p>
+      <div class="tip tip-gold"><strong>📌 GPS:</strong> Satelity GPS poruszają się szybko (dylatacja czasu spowalnia ich zegary) i są wyżej w polu grawitacyjnym (OTW przyspiesza zegary). Korekta: ~38 μs/dobę, bez niej GPS miałby błąd ~10 km/dobę.</div>
+      <div class="tip"><strong>Paradoks bliźniąt:</strong> Bliźniak podróżujący z prędkością bliską c starzeje się wolniej od bliźniaka pozostałego na Ziemi. To nie jest paradoks — układ podróżnika jest nieinercjalny (musi się zawrócić).</div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">🧠 quiz</div>
+    <h2 class="section-title">Quiz — sprawdź wiedzę</h2>
+    <p class="section-desc">25 pytań z zakresu matury rozszerzonej z fizyki.</p>
+  </div>
+  <div class="quiz-progress-wrap">
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizFill" style="width:0%"></div></div>
+    <div class="quiz-score-badge" id="quizScore">0/40</div>
+  </div>
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-num" id="quizNum">Pytanie 1 / 25</div>
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="quiz-opts" id="quizOpts"></div>
+    <div class="quiz-explanation" id="quizExp"></div>
+    <button class="quiz-btn" id="quizNext" style="display:none" onclick="nextQuestion()">Następne pytanie →</button>
+  </div>
+  <div class="quiz-result" id="quizResult">
+    <div class="big-score" id="bigScore"></div>
+    <p id="resultMsg"></p>
+    <button class="quiz-btn" style="margin-top:16px" onclick="restartQuiz()">Zacznij od nowa</button>
+  </div>
+</div>
+</section>
+
+<!-- FISZKI -->
+<section id="fiszki" style="background:var(--card)">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">🃏 fiszki</div>
+    <h2 class="section-title">Fiszki — wzory i pojęcia</h2>
+    <p class="section-desc">Kliknij fiszkę aby odwrócić. Ucz się wzorów metodą aktywnego przypominania.</p>
+  </div>
+  <div class="flashcard-controls">
+    <button class="fc-ctrl" onclick="shuffleFlashcards()">🔀 Przetasuj</button>
+    <button class="fc-ctrl active" onclick="filterFlashcards('all',this)">Wszystkie</button>
+    <button class="fc-ctrl" onclick="filterFlashcards('mechanika',this)">Mechanika</button>
+    <button class="fc-ctrl" onclick="filterFlashcards('termodynamika',this)">Termodynamika</button>
+    <button class="fc-ctrl" onclick="filterFlashcards('elektrycznosc',this)">Elektryczność</button>
+    <button class="fc-ctrl" onclick="filterFlashcards('optyka',this)">Optyka</button>
+    <button class="fc-ctrl" onclick="filterFlashcards('kwanty',this)">Kwanty/Jądro</button>
+  </div>
+  <div class="flashcard-area" id="flashcardArea">
+    <div class="flashcard" id="flashcard" onclick="flipCard()" style="cursor:pointer" title="Kliknij aby odwrócić">
+      <div class="fc-face front">
+        <div class="fc-label">PYTANIE</div>
+        <div class="fc-content" id="fcFront"></div>
+      </div>
+      <div class="fc-face back">
+        <div class="fc-label">ODPOWIEDŹ</div>
+        <div class="fc-back-content" id="fcBack"></div>
+      </div>
+    </div>
+  </div>
+  <div class="flashcard-nav">
+    <button class="fc-nav-btn" onclick="event.stopPropagation();prevFlashcard()">← Poprzednia</button>
+    <span class="fc-counter" id="fcCounter">1 / ?</span>
+    <button class="fc-mastered-btn" onclick="event.stopPropagation();masterCard()">✓ Znam</button>
+    <button class="fc-nav-btn" onclick="event.stopPropagation();nextFlashcard()">Następna →</button>
+  </div>
+</div>
+</section>
+
+<!-- STAŁE FIZYCZNE -->
+<section id="stale" style="background:var(--card)">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">🔢 stałe fizyczne</div>
+    <h2 class="section-title">Stałe fizyczne — tabela maturalna</h2>
+    <p class="section-desc">Wszystkie stałe fizyczne dopuszczone na maturę rozszerzoną z fizyki.</p>
+  </div>
+  <div style="max-width:900px;margin:0 auto;overflow-x:auto">
+    <table class="wzory-table" style="width:100%">
+      <tr><th>Stała</th><th>Symbol</th><th>Wartość</th><th>Jednostka</th></tr>
+      <tr><td>Prędkość światła w próżni</td><td>\(c\)</td><td>\(3{,}00 \times 10^8\)</td><td>m/s</td></tr>
+      <tr><td>Stała Plancka</td><td>\(h\)</td><td>\(6{,}626 \times 10^{-34}\)</td><td>J·s</td></tr>
+      <tr><td>Zredukowana stała Plancka</td><td>\(\hbar\)</td><td>\(1{,}055 \times 10^{-34}\)</td><td>J·s</td></tr>
+      <tr><td>Ładunek elementarny</td><td>\(e\)</td><td>\(1{,}602 \times 10^{-19}\)</td><td>C</td></tr>
+      <tr><td>Masa elektronu</td><td>\(m_e\)</td><td>\(9{,}109 \times 10^{-31}\)</td><td>kg</td></tr>
+      <tr><td>Masa protonu</td><td>\(m_p\)</td><td>\(1{,}673 \times 10^{-27}\)</td><td>kg</td></tr>
+      <tr><td>Masa neutronu</td><td>\(m_n\)</td><td>\(1{,}675 \times 10^{-27}\)</td><td>kg</td></tr>
+      <tr><td>Stała Boltzmanna</td><td>\(k_B\)</td><td>\(1{,}381 \times 10^{-23}\)</td><td>J/K</td></tr>
+      <tr><td>Stała gazowa</td><td>\(R\)</td><td>\(8{,}314\)</td><td>J/(mol·K)</td></tr>
+      <tr><td>Stała Avogadra</td><td>\(N_A\)</td><td>\(6{,}022 \times 10^{23}\)</td><td>mol⁻¹</td></tr>
+      <tr><td>Stała grawitacji</td><td>\(G\)</td><td>\(6{,}674 \times 10^{-11}\)</td><td>N·m²/kg²</td></tr>
+      <tr><td>Przyspieszenie ziemskie</td><td>\(g\)</td><td>\(9{,}81\)</td><td>m/s²</td></tr>
+      <tr><td>Przenikalność próżni</td><td>\(\varepsilon_0\)</td><td>\(8{,}854 \times 10^{-12}\)</td><td>F/m</td></tr>
+      <tr><td>Przenikalność magnetyczna próżni</td><td>\(\mu_0\)</td><td>\(4\pi \times 10^{-7}\)</td><td>T·m/A</td></tr>
+      <tr><td>Stała Stefana-Boltzmanna</td><td>\(\sigma\)</td><td>\(5{,}671 \times 10^{-8}\)</td><td>W/(m²·K⁴)</td></tr>
+      <tr><td>Stała Coulomba</td><td>\(k\)</td><td>\(8{,}988 \times 10^{9}\)</td><td>N·m²/C²</td></tr>
+      <tr><td>Jednostka masy atomowej</td><td>\(u\)</td><td>\(1{,}661 \times 10^{-27}\)</td><td>kg</td></tr>
+      <tr><td>1 elektronowolt</td><td>\(1\ \text{eV}\)</td><td>\(1{,}602 \times 10^{-19}\)</td><td>J</td></tr>
+      <tr><td>Masa Ziemi</td><td>\(M_Z\)</td><td>\(5{,}972 \times 10^{24}\)</td><td>kg</td></tr>
+      <tr><td>Promień Ziemi</td><td>\(R_Z\)</td><td>\(6{,}371 \times 10^{6}\)</td><td>m</td></tr>
+    </table>
+  </div>
+</div>
+</section>
+
+<!-- KALKULATOR WZORÓW -->
+<section id="kalkulator">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">🧮 kalkulator</div>
+    <h2 class="section-title">Kalkulator wzorów fizycznych</h2>
+    <p class="section-desc">Wpisz znane wartości, oblicz szukane. Tolerancja 1% przy sprawdzaniu.</p>
+  </div>
+  <div style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px">
+    <!-- Kalkulator 1: Rzut ukośny -->
+    <div class="theory-card">
+      <h3>Rzut ukośny — zasięg</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">\(Z = v_0^2 \sin(2\alpha) / g\)</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:0.82rem;color:var(--text2)">v₀ [m/s]: <input type="number" id="calc_v0" placeholder="np. 20" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">α [°]: <input type="number" id="calc_alpha" placeholder="np. 45" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <button onclick="calcRzut()" style="padding:10px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:4px">Oblicz zasięg →</button>
+        <div id="calc_rzut_result" style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);padding:8px;background:rgba(244,63,94,0.06);border-radius:8px;display:none"></div>
+      </div>
+    </div>
+    <!-- Kalkulator 2: Sprawność Carnota -->
+    <div class="theory-card">
+      <h3>Sprawność Carnota</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">\(\eta = 1 - T_2/T_1\)</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:0.82rem;color:var(--text2)">T₁ — grzejnik [°C]: <input type="number" id="calc_T1" placeholder="np. 500" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">T₂ — chłodnica [°C]: <input type="number" id="calc_T2" placeholder="np. 100" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <button onclick="calcCarnot()" style="padding:10px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:4px">Oblicz sprawność →</button>
+        <div id="calc_carnot_result" style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);padding:8px;background:rgba(244,63,94,0.06);border-radius:8px;display:none"></div>
+      </div>
+    </div>
+    <!-- Kalkulator 3: Efekt fotoelektryczny -->
+    <div class="theory-card">
+      <h3>Efekt fotoelektryczny</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">\(E_{k,max} = hf - W = hc/\lambda - W\)</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:0.82rem;color:var(--text2)">λ — długość fali [nm]: <input type="number" id="calc_lam" placeholder="np. 300" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">W — praca wyjścia [eV]: <input type="number" id="calc_W" placeholder="np. 2.3" step="0.01" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <button onclick="calcPhoto()" style="padding:10px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:4px">Oblicz Ek max →</button>
+        <div id="calc_photo_result" style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);padding:8px;background:rgba(244,63,94,0.06);border-radius:8px;display:none"></div>
+      </div>
+    </div>
+    <!-- Kalkulator 4: Rozpad promieniotwórczy -->
+    <div class="theory-card">
+      <h3>Rozpad promieniotwórczy</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">\(N = N_0 \cdot 2^{-t/T_{1/2}}\)</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:0.82rem;color:var(--text2)">N₀ — liczba atomów: <input type="number" id="calc_N0" placeholder="np. 1000000" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">t — czas: <input type="number" id="calc_t" placeholder="np. 10" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">T½ — okres półrozpadu: <input type="number" id="calc_T12" placeholder="np. 5 (ta sama jednostka co t)" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <button onclick="calcDecay()" style="padding:10px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:4px">Oblicz N(t) →</button>
+        <div id="calc_decay_result" style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);padding:8px;background:rgba(244,63,94,0.06);border-radius:8px;display:none"></div>
+      </div>
+    </div>
+    <!-- Kalkulator 5: Soczewka -->
+    <div class="theory-card">
+      <h3>Równanie soczewki</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">\(1/f = 1/d_o + 1/d_i\)</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:0.82rem;color:var(--text2)">f — ogniskowa [cm]: <input type="number" id="calc_f" placeholder="np. 20" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">d_o — odległość przedmiotu [cm]: <input type="number" id="calc_do" placeholder="np. 30" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <button onclick="calcLens()" style="padding:10px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:4px">Oblicz d_i →</button>
+        <div id="calc_lens_result" style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);padding:8px;background:rgba(244,63,94,0.06);border-radius:8px;display:none"></div>
+      </div>
+    </div>
+    <!-- Kalkulator 6: Siła Lorentza -->
+    <div class="theory-card">
+      <h3>Siła Lorentza</h3>
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:12px">\(F = qvB\sin\theta\)</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <label style="font-size:0.82rem;color:var(--text2)">q [C]: <input type="number" id="calc_q" placeholder="np. 1.6e-19" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">v [m/s]: <input type="number" id="calc_v" placeholder="np. 1e6" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">B [T]: <input type="number" id="calc_B" placeholder="np. 0.5" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <label style="font-size:0.82rem;color:var(--text2)">θ [°]: <input type="number" id="calc_theta" placeholder="np. 90" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;margin-top:4px"></label>
+        <button onclick="calcLorentz()" style="padding:10px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:10px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:4px">Oblicz F →</button>
+        <div id="calc_lorentz_result" style="font-family:'Fira Code',monospace;font-size:0.85rem;color:var(--fiz);padding:8px;background:rgba(244,63,94,0.06);border-radius:8px;display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- NOTATNIK ŚCIĄGI -->
+<section id="notatnik" style="background:var(--card)">
+<div class="container">
+  <div class="text-center">
+    <div class="section-badge">📝 notatnik</div>
+    <h2 class="section-title">Builder ściągi</h2>
+    <p class="section-desc">Zbierz wzory do własnej ściągi i skopiuj tekst.</p>
+  </div>
+  <div style="max-width:800px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px" id="noteButtons">
+      <!-- filled by JS -->
+    </div>
+    <textarea id="notepad" style="width:100%;height:260px;background:var(--elevated);border:1px solid var(--border2);border-radius:14px;padding:16px;color:var(--text);font-family:'Fira Code',monospace;font-size:0.83rem;line-height:1.7;resize:vertical;outline:none" placeholder="Klikaj wzory powyżej aby dodawać do ściągi..."></textarea>
+    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+      <button onclick="copyNote()" style="padding:10px 22px;background:linear-gradient(135deg,var(--fiz),var(--sec));color:#fff;border:none;border-radius:50px;font-family:inherit;font-weight:600;cursor:pointer">📋 Kopiuj</button>
+      <button onclick="clearNote()" style="padding:10px 22px;background:var(--elevated);border:1px solid var(--border2);color:var(--text2);border-radius:50px;font-family:inherit;cursor:pointer">🗑 Wyczyść</button>
+      <button onclick="saveNote()" style="padding:10px 22px;background:var(--elevated);border:1px solid rgba(16,212,142,0.3);color:#10d48e;border-radius:50px;font-family:inherit;cursor:pointer">💾 Zapisz (local)</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-logo">⚛️ Fizyka Rozszerzona — ViralloEdu</div>
+  <p class="footer-copy">Wykonanie: <a href="https://staberek.com">Staberek</a> (<a href="https://staberek.com">prof. inż. Kacper Stabrawa</a>) &nbsp;🧠 <strong>ViralloEdu</strong></p>
+</footer>
+
+<div class="toast" id="toast"><b></b><span></span></div>
+
+<script>
+// ─── SCROLL PROGRESS ───
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('navBar').style.width=(window.scrollY/h*100)+'%';
+});
+
+// ─── ROADMAPA ───
+const rmDone=new Set(JSON.parse(localStorage.getItem('fiz_rm')||'[]'));
+rmDone.forEach(id=>{
+  const el=document.querySelector(`[data-id="${id}"]`);
+  if(el) el.classList.add('done');
+});
+function toggleRM(el){
+  const id=el.dataset.id;
+  el.classList.toggle('done');
+  if(el.classList.contains('done'))rmDone.add(id);else rmDone.delete(id);
+  localStorage.setItem('fiz_rm',JSON.stringify([...rmDone]));
+  showToast('Roadmapa','Postęp zapisany ✓');
+}
+
+// ─── MODUŁY ───
+function showModule(id,btn){
+  document.querySelectorAll('.module-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.mod-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('mod-'+id).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('teoria').scrollIntoView({behavior:'smooth'});
+  try{if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise().catch(()=>{});}}catch(e){}
+}
+
+// ─── SŁOWNIK ───
+const GLOSS_DATA=[
+  {term:'Prędkość',sym:'v',def:'Wielkość wektorowa opisująca szybkość i kierunek ruchu ciała',unit:'m/s',tag:'mechanika'},
+  {term:'Przyspieszenie',sym:'a',def:'Zmiana prędkości w jednostce czasu; a = Δv/Δt',unit:'m/s²',tag:'mechanika'},
+  {term:'Siła',sym:'F',def:'Oddziaływanie powodujące zmianę ruchu lub kształtu ciała; F = ma',unit:'N = kg·m/s²',tag:'mechanika'},
+  {term:'Praca',sym:'W',def:'Iloczyn siły i przemieszczenia w kierunku siły; W = Fs·cosθ',unit:'J = N·m',tag:'mechanika'},
+  {term:'Moc',sym:'P',def:'Praca wykonana w jednostce czasu; P = W/t = Fv',unit:'W = J/s',tag:'mechanika'},
+  {term:'Energia kinetyczna',sym:'Ek',def:'Energia związana z ruchem; Ek = ½mv²',unit:'J',tag:'mechanika'},
+  {term:'Energia potencjalna',sym:'Ep',def:'Energia związana z położeniem w polu sił; Ep = mgh',unit:'J',tag:'mechanika'},
+  {term:'Pęd',sym:'p',def:'Iloczyn masy i prędkości; p = mv',unit:'kg·m/s',tag:'mechanika'},
+  {term:'Moment siły',sym:'M',def:'Iloczyn siły i ramienia; M = F·r·sinθ',unit:'N·m',tag:'mechanika'},
+  {term:'Moment bezwładności',sym:'I',def:'Miara oporu ciała na obrót; zależy od rozkładu masy',unit:'kg·m²',tag:'mechanika'},
+  {term:'Pęd kątowy',sym:'L',def:'L = Iω — zachowuje się przy braku zewnętrznych momentów sił',unit:'kg·m²/s',tag:'mechanika'},
+  {term:'Prędkość kątowa',sym:'ω',def:'Kąt obrotu w jednostce czasu; ω = 2π/T = 2πf',unit:'rad/s',tag:'mechanika'},
+  {term:'Stała sprężystości',sym:'k',def:'Charakteryzuje twardość sprężyny; F = kx (prawo Hooke\'a)',unit:'N/m',tag:'mechanika'},
+  {term:'Stała grawitacji',sym:'G',def:'Stała w prawie Newtona; G = 6,674×10⁻¹¹ N·m²/kg²',unit:'N·m²/kg²',tag:'mechanika'},
+  {term:'Temperatura',sym:'T',def:'Miara średniej energii kinetycznej cząsteczek; bezwzgl. w Kelwinach',unit:'K',tag:'termodynamika'},
+  {term:'Ciepło właściwe',sym:'c',def:'Ciepło potrzebne do ogrzania 1 kg substancji o 1 K; Q = mcΔT',unit:'J/(kg·K)',tag:'termodynamika'},
+  {term:'Ciepło przemiany',sym:'L',def:'Ciepło potrzebne do zmiany fazy 1 kg bez zmiany temp.; Q = mL',unit:'J/kg',tag:'termodynamika'},
+  {term:'Entropia',sym:'S',def:'Miara nieuporządkowania układu; rośnie w procesach samorzutnych',unit:'J/K',tag:'termodynamika'},
+  {term:'Stała gazowa',sym:'R',def:'R = 8,314 J/(mol·K); w równaniu stanu pV = nRT',unit:'J/(mol·K)',tag:'termodynamika'},
+  {term:'Stała Boltzmanna',sym:'kB',def:'kB = 1,38×10⁻²³ J/K; energia termiczna na cząsteczkę ≈ kBT',unit:'J/K',tag:'termodynamika'},
+  {term:'Ładunek elementarny',sym:'e',def:'Najmniejszy ładunek; e = 1,6×10⁻¹⁹ C',unit:'C',tag:'elektrycznosc'},
+  {term:'Natężenie prądu',sym:'I',def:'Ładunek przepływający w jednostce czasu; I = Q/t',unit:'A = C/s',tag:'elektrycznosc'},
+  {term:'Napięcie (SEM)',sym:'U, ε',def:'Różnica potencjałów elektrycznych; praca na przeniesienie jednostkowego ładunku',unit:'V = J/C',tag:'elektrycznosc'},
+  {term:'Opór elektryczny',sym:'R',def:'Stosunek napięcia do natężenia; R = U/I (prawo Ohma)',unit:'Ω = V/A',tag:'elektrycznosc'},
+  {term:'Pojemność elektryczna',sym:'C',def:'Stosunek ładunku do napięcia; C = Q/U',unit:'F = C/V',tag:'elektrycznosc'},
+  {term:'Natężenie pola E',sym:'E',def:'Siła na jednostkowy ładunek próbny; E = F/q = U/d',unit:'V/m = N/C',tag:'elektrycznosc'},
+  {term:'Indukcja magnetyczna',sym:'B',def:'Miara siły pola magnetycznego; F = qvBsinθ',unit:'T = Wb/m² = V·s/m²',tag:'magnetyzm'},
+  {term:'Strumień magnetyczny',sym:'Φ',def:'Φ = B·A·cosθ — całkowa miara pola przez powierzchnię',unit:'Wb = T·m²',tag:'magnetyzm'},
+  {term:'Indukcja elektromag.',sym:'ε',def:'SEM generowana przez zmianę strumienia; ε = -ΔΦ/Δt',unit:'V',tag:'magnetyzm'},
+  {term:'Współczynnik załamania',sym:'n',def:'Stosunek prędkości światła w próżni do prędkości w ośrodku; n = c/v',unit:'bezwymiarowy',tag:'optyka'},
+  {term:'Ogniskowa',sym:'f',def:'Odległość od soczewki/lustra do ogniska; 1/f = 1/do + 1/di',unit:'m',tag:'optyka'},
+  {term:'Zdolność skupiająca',sym:'Z',def:'Z = 1/f — im wyższa, tym silniejsza soczewka',unit:'dpt (dioptrie)',tag:'optyka'},
+  {term:'Stała Plancka',sym:'h',def:'h = 6,626×10⁻³⁴ J·s; kwant akcji — energia fotonu E = hf',unit:'J·s',tag:'kwanty'},
+  {term:'Praca wyjścia',sym:'W',def:'Minimalna energia potrzebna do wybicia elektronu z metalu',unit:'eV lub J',tag:'kwanty'},
+  {term:'Energia wiązania',sym:'EB',def:'Energia potrzebna do rozłożenia jądra na wolne nukleony; EB = Δm·c²',unit:'MeV',tag:'kwanty'},
+  {term:'Okres półrozpadu',sym:'T½',def:'Czas, po którym połowa jąder promieniotwórczych ulega rozpadowi',unit:'s (lub lata)',tag:'kwanty'},
+  {term:'Stała Boltzmanna → kB',sym:'kB',def:'Energia termiczna ≈ kBT; kB = 1,38×10⁻²³ J/K',unit:'J/K',tag:'kwanty'},
+  {term:'Jedność masy atomowej',sym:'u',def:'u = 1,66×10⁻²⁷ kg; 1 u odpowiada energii 931,5 MeV',unit:'kg lub MeV/c²',tag:'kwanty'},
+  {term:'Czynnik Lorentza',sym:'γ',def:'γ = 1/√(1-v²/c²) ≥ 1; opisuje efekty STW',unit:'bezwymiarowy',tag:'kwanty'},
+];
+
+let glossFilter='all',glossSearch='';
+function renderGloss(){
+  const grid=document.getElementById('glossGrid');
+  let data=GLOSS_DATA.filter(g=>{
+    const matchTag=glossFilter==='all'||g.tag===glossFilter;
+    const q=glossSearch.toLowerCase();
+    const matchQ=!q||g.term.toLowerCase().includes(q)||g.sym.toLowerCase().includes(q)||g.def.toLowerCase().includes(q)||g.unit.toLowerCase().includes(q);
+    return matchTag&&matchQ;
+  });
+  grid.innerHTML=data.map(g=>`
+    <div class="g-card">
+      <div class="g-term">${g.term}</div>
+      <div class="g-symbol">${g.sym}</div>
+      <div class="g-def">${g.def}</div>
+      <div class="g-unit">Jednostka: ${g.unit}</div>
+      <div class="g-tag-label">${g.tag}</div>
+    </div>
+  `).join('');
+}
+function filterGloss(){glossSearch=document.getElementById('glossSearch').value;renderGloss();}
+function filterByTag(tag,btn){
+  glossFilter=tag;
+  document.querySelectorAll('.g-tag').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGloss();
+}
+renderGloss();
+
+// ─── QUIZ ───
+const QUIZ=[
+  {q:'Jaką wartość ma przyspieszenie ziemskie na powierzchni Ziemi?',opts:['9,81 m/s²','6,67×10⁻¹¹ m/s²','3×10⁸ m/s²','1,38×10⁻²³ m/s²'],ans:0,exp:'g = 9,81 m/s² — standardowe przyspieszenie ziemskie na poziomie morza.'},
+  {q:'Sprawność silnika Carnota pracującego między 800 K a 400 K wynosi:',opts:['25%','50%','75%','100%'],ans:1,exp:'η = 1 - T₂/T₁ = 1 - 400/800 = 0,5 = 50%'},
+  {q:'Jakie prawo opisuje zmianę strumienia magnetycznego indukującą SEM?',opts:['Prawo Coulomba','Prawo Faradaya','Prawo Ohma','Prawo Boyle\'a'],ans:1,exp:'Prawo Faradaya: ε = -ΔΦ/Δt — zmieniający się strumień magnetyczny indukuje elektromotoryczną siłę.'},
+  {q:'Foton czerwonego światła (λ = 700 nm) ma energię (h = 6,63×10⁻³⁴ J·s):',opts:['1,78 eV','2,84 eV','3,10 eV','0,90 eV'],ans:0,exp:'E = hc/λ = 6,63×10⁻³⁴ × 3×10⁸ / 700×10⁻⁹ ≈ 2,84×10⁻¹⁹ J ≈ 1,78 eV'},
+  {q:'Ciało o masie 2 kg spada z wysokości 10 m. Prędkość tuż przed uderzeniem (g=10 m/s²):',opts:['10 m/s','14,14 m/s','20 m/s','100 m/s'],ans:1,exp:'mgh = ½mv² → v = √(2gh) = √(2×10×10) = √200 ≈ 14,14 m/s'},
+  {q:'Okres drgań wahadła matematycznego zależy od:',opts:['Masy wahadła','Długości wahadła i g','Amplitudy drgań','Masy i długości'],ans:1,exp:'T = 2π√(l/g) — zależy TYLKO od długości i przyspieszenia grawitacyjnego, nie od masy ani amplitudy (dla małych drgań).'},
+  {q:'W jakiej przemianie termodynamicznej gaz nie wymienia ciepła z otoczeniem?',opts:['Izotermiczna','Izobaryczna','Izochoryczna','Adiabatyczna'],ans:3,exp:'Adiabatyczna: Q = 0. Cała energia pochodzi ze zmiany energii wewnętrznej.'},
+  {q:'II zasada dynamiki Newtona w postaci wektorowej to:',opts:['F = mv','F = ma','F = m/a','F = pt'],ans:1,exp:'F = ma — wypadkowa siła równa się iloczynowi masy i przyspieszenia.'},
+  {q:'Energia kinetyczna rotacji wyrażona przez moment bezwładności I i prędkość kątową ω:',opts:['½Iω','½Iω²','Iω²','2Iω'],ans:1,exp:'Ek_obr = ½Iω² — analogia do ½mv² dla ruchu postępowego.'},
+  {q:'Przy przejściu elektronu z n=3 do n=1 w atomie wodoru:',opts:['Foton jest emitowany','Foton jest pochłaniany','Nic się nie dzieje','Elektron ucieka'],ans:0,exp:'n=3 → n=1: skok do niższego poziomu = emisja fotonu. Pochłanianie zachodzi przy skoku w górę.'},
+  {q:'Jednostka indukcji magnetycznej B to:',opts:['Weber','Tesla','Henr','Gauss (SI)'],ans:1,exp:'Jednostka SI indukcji magnetycznej to Tesla [T = Wb/m² = V·s/m²].'},
+  {q:'Prędkość fali (v), częstotliwość (f) i długość fali (λ) powiązane są wzorem:',opts:['v = f/λ','v = fλ','v = λ/f','v = f²λ'],ans:1,exp:'v = fλ — prędkość fali jest iloczynem częstotliwości i długości fali.'},
+  {q:'Czym jest efekt fotoelektryczny zewnętrzny?',opts:['Emisja elektronów pod wpływem światła','Ogrzewanie metalu przez prąd','Fluorescencja','Rozpraszanie Comptona'],ans:0,exp:'Efekt fotoelektryczny zewnętrzny: wybijanie elektronów z powierzchni metalu przez fotony o dostatecznie dużej energii (f > f₀).'},
+  {q:'Zasada zachowania pędu obowiązuje, gdy:',opts:['Energia kinetyczna jest stała','Wypadkowa siła zewnętrzna = 0','Temperatura jest stała','Tarcie jest pominięte'],ans:1,exp:'Zasada zachowania pędu: Σp = const gdy Σf_zewn = 0.'},
+  {q:'Jaki jest stosunek U₂/U₁ w transformatorze idealnym?',opts:['N₁/N₂','N₂/N₁','(N₂/N₁)²','√(N₂/N₁)'],ans:1,exp:'Transformator idealny: U₂/U₁ = N₂/N₁ — napięcia proporcjonalne do liczby zwojów.'},
+  {q:'Wzór na energię wiązania jądra atomowego to:',opts:['EB = Δm/c²','EB = Δm·c²','EB = hf','EB = ½mv²'],ans:1,exp:'Energia wiązania: EB = Δm·c² gdzie Δm = defekt masy jądra. Wynik często w MeV (1 u = 931,5 MeV/c²).'},
+  {q:'Prędkość ucieczki z Ziemi wynosi około:',opts:['7,9 km/s','11,2 km/s','29,8 km/s','3×10⁸ m/s'],ans:1,exp:'II prędkość kosmiczna (ucieczki): v_II = √(2GM/R) ≈ 11,2 km/s. I prędkość kosmiczna ≈ 7,9 km/s (orbita).'},
+  {q:'Prawo Snella mówi, że n₁sinθ₁ = n₂sinθ₂. Jeśli światło przechodzi z wody (n=1,33) do powietrza (n=1), kąt załamania jest:',opts:['Mniejszy od kąta padania','Równy kątowi padania','Większy od kąta padania','Kąt nie istnieje'],ans:2,exp:'Przejście z ośrodka gęstszego do rzadszego (n₁ > n₂): sinθ₂ = (n₁/n₂)sinθ₁ > sinθ₁, więc θ₂ > θ₁.'},
+  {q:'Dylatacja czasu mówi, że poruszający się zegar:',opts:['Tyka szybciej','Tyka wolniej','Zatrzymuje się','Nie jest zmieniany'],ans:1,exp:'Dylatacja czasu: Δt = γΔt₀ gdzie γ > 1 — zegar w poruszającym się układzie tyka wolniej.'},
+  {q:'Ładunek kondensatora Q, napięcie U, pojemność C — która zależność jest poprawna?',opts:['Q = C/U','Q = CU','Q = U/C','C = Q²/U'],ans:1,exp:'Q = CU — definicja pojemności elektrycznej: C = Q/U, stąd Q = CU.'},
+  {q:'Wzór na energię kondensatora to:',opts:['E = QU','E = CU²','E = ½CU²','E = CU/2'],ans:2,exp:'Energia kondensatora: E = ½CU² = Q²/(2C) = QU/2.'},
+  {q:'Prawo Coulomba mówi, że siła między ładunkami:',opts:['Rośnie liniowo z odległością','Maleje z kwadratem odległości','Jest stała','Maleje liniowo'],ans:1,exp:'F = k|q₁||q₂|/r² — siła odwrotnie proporcjonalna do kwadratu odległości.'},
+  {q:'W rozpadzie alfa jądro traci:',opts:['2 protony i 2 neutrony','4 protony','2 elektrony','1 proton'],ans:0,exp:'Rozpad alfa: emisja jądra helu ⁴₂He. Jądro traci 2 protony (Z-2) i 2 neutrony (A-4).'},
+  {q:'Warunkiem rezonansu w obwodzie LC jest:',opts:['ωL = 1/ωC','ωL = R','ωC = R','L = C'],ans:0,exp:'Rezonans: XL = XC → ωL = 1/(ωC), stąd ω₀ = 1/√(LC).'},
+  {q:'Energia fotonu o długości fali 300 nm (UV) w eV:',opts:['1,24 eV','4,14 eV','0,62 eV','2,07 eV'],ans:1,exp:'E = hc/λ = (1,24 eV·μm)/(0,3 μm) = 4,14 eV. Stała hc = 1240 eV·nm — przydatna do szybkich obliczeń.'},
+  {q:'Prędkość rms cząsteczek gazu wzrasta gdy:',opts:['Maleje ciśnienie','Rośnie temperatura','Maleje objętość','Rośnie masa molarna'],ans:1,exp:'v_rms = √(3RT/M) — prędkość rośnie z temperaturą, maleje dla większej masy molarnej.'},
+  {q:'Indukcja magnetyczna wewnątrz solenoidu (n zwojów/m, prąd I) wynosi:',opts:['B = μ₀nI','B = μ₀I/(2πr)','B = μ₀n²I','B = nI/μ₀'],ans:0,exp:'B = μ₀nI — wzór dla nieskończonego solenoidu. μ₀ = 4π×10⁻⁷ T·m/A.'},
+  {q:'Kąt graniczny całkowitego wewnętrznego odbicia spełnia:',opts:['sinθ_g = n₂/n₁','sinθ_g = n₁/n₂','tanθ_g = n₂/n₁','cosθ_g = n₂/n₁'],ans:0,exp:'sinθ_g = n₂/n₁ (dla n₁ > n₂). Przy θ ≥ θ_g brak promienia załamanego — całkowite odbicie.'},
+  {q:'Energia wiązania jądra ⁴He (α) wynosi ok. 28,3 MeV. Energia wiązania na nukleon to:',opts:['28,3 MeV','7,07 MeV','14,15 MeV','56,6 MeV'],ans:1,exp:'Energia na nukleon = 28,3 MeV / 4 nukleony = 7,075 MeV/nukleon.'},
+  {q:'W obwodzie szeregowym RLC przy rezonansie:',opts:['Impedancja jest maksymalna','Prąd jest minimalny','Impedancja Z = R','XL i XC nie mają wpływu'],ans:2,exp:'Przy rezonansie XL = XC, więc Z = √(R² + 0²) = R — minimalna impedancja, maksymalny prąd.'},
+  {q:'Prawo Malusa — intensywność spolaryzowanego światła po przejściu przez analizator (kąt θ):',opts:['I = I₀sinθ','I = I₀cos²θ','I = I₀/2','I = I₀cosθ'],ans:1,exp:'Prawo Malusa: I = I₀cos²θ. Przy θ = 0°: I = I₀ (maks). Przy θ = 90°: I = 0.'},
+  {q:'Ciało spada swobodnie z wysokości 80 m. Czas spadku (g = 10 m/s²):',opts:['4 s','8 s','16 s','√8 s ≈ 2,83 s'],ans:0,exp:'h = ½gt² → t = √(2h/g) = √(2·80/10) = √16 = 4 s.'},
+  {q:'Masa relatywistyczna cząstki poruszającej się z v = 0,8c wynosi (m₀ = masa spoczynkowa):',opts:['m₀/0,6','m₀·0,6','m₀/0,36','m₀·1,25'],ans:0,exp:'γ = 1/√(1-0,64) = 1/√0,36 = 1/0,6 ≈ 1,667. m_rel = γm₀ = m₀/0,6.'},
+  {q:'Wzór na pracę wykonaną przez silnik cieplny gdy pobiera Q₁ od grzejnika i oddaje Q₂ do chłodnicy:',opts:['W = Q₁ + Q₂','W = Q₁ - Q₂','W = Q₁·Q₂','W = Q₂ - Q₁'],ans:1,exp:'Z zasady zachowania energii: W = Q₁ - Q₂. Silnik "przetwarza" część ciepła z grzejnika na pracę.'},
+  {q:'Jądrowa reakcja syntezy D + T → ⁴He + n. Która stała jest potrzebna do obliczenia energii wyzwolonej?',opts:['Stała Plancka h','c² (E = mc²)','Stała Boltzmanna kB','Stała Coulomba k'],ans:1,exp:'Energia wiązania z defektu masy: ΔE = Δm·c². Defekt masy Δm wyznaczamy z tabel mas atomowych.'},
+  {q:'Soczewka wklęsła (rozpraszająca) o ogniskowej f = -30 cm i przedmiot w d_o = 15 cm. Obraz jest:',opts:['Rzeczywisty, za soczewką','Pozorny, przed soczewką','Rzeczywisty, z drugiej strony','Nie istnieje'],ans:1,exp:'1/d_i = 1/(-30) - 1/15 = -1/30 - 2/30 = -3/30. d_i = -10 cm — ujemne → obraz pozorny po tej samej stronie co przedmiot.'},
+  {q:'Prędkość fazy, prędkość grupy i prędkość nośnej informacji — która z nich nie może przekroczyć c (STW)?',opts:['Tylko prędkość fazy','Tylko prędkość grupy','Prędkość nośna informacji','Wszystkie trzy'],ans:2,exp:'Sygnał niosący informację (energia) porusza się z prędkością grupową ≤ c. Prędkość fazowa może przekroczyć c, ale nie niesie energii ani informacji.'},
+  {q:'Prawo Wiena λ_max·T = const. Jeśli temperatura ciała wzrośnie 4-krotnie, długość fali maksimum emisji:',opts:['Wzrośnie 4-krotnie','Zmaleje 4-krotnie','Zmaleje 2-krotnie','Wzrośnie 2-krotnie'],ans:1,exp:'λ_max = const/T. Jeśli T → 4T, to λ_max → const/(4T) = λ_max/4 — czterokrotnie mniejsza.'},
+  {q:'Dlaczego efekt fotoelektryczny świadczy o kwantowej naturze światła?',opts:['Bo zależy od natężenia','Bo zależy od częstotliwości, nie natężenia','Bo elektrony mają masę','Bo prędkość elektronów zależy od natężenia'],ans:1,exp:'Klasycznie energia fali rośnie z natężeniem. W efekcie fotoelektrycznym poniżej f₀ brak elektronów niezależnie od natężenia — dowód kwantowości (E=hf).'},
+  {q:'Wypadkowa siła działająca na ładunek w polu elektrycznym i magnetycznym (siła Lorentza pełna):',opts:['F = qE','F = qvB','F = q(E + v×B)','F = qE + mv²/r'],ans:2,exp:'Pełna siła Lorentza: F = q(E + v×B). Składowa elektryczna qE i magnetyczna q(v×B) sumują się wektorowo.'},
+];
+
+let quizIdx=0,quizScore=0,answered=false;
+function loadQuestion(){
+  if(quizIdx>=QUIZ.length){
+    document.getElementById('quizCard').style.display='none';
+    const res=document.getElementById('quizResult');
+    res.classList.add('show');
+    document.getElementById('bigScore').textContent=quizScore+'/'+QUIZ.length;
+    const pct=Math.round(quizScore/QUIZ.length*100);
+    document.getElementById('resultMsg').textContent=pct>=80?'Świetny wynik! Jesteś gotowy na maturę 🎉':pct>=60?'Dobry wynik! Przejrzyj jeszcze słabsze działy.':'Powtórz materiał i spróbuj ponownie.';
+    return;
+  }
+  const q=QUIZ[quizIdx];
+  answered=false;
+  document.getElementById('quizNum').textContent=`Pytanie ${quizIdx+1} / ${QUIZ.length}`;
+  document.getElementById('quizFill').style.width=(quizIdx/QUIZ.length*100)+'%';
+  document.getElementById('quizScore').textContent=quizScore+'/'+QUIZ.length;
+  document.getElementById('quizQ').innerHTML=q.q;
+  document.getElementById('quizExp').className='quiz-explanation';
+  document.getElementById('quizNext').style.display='none';
+  const opts=document.getElementById('quizOpts');
+  opts.innerHTML=q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('');
+  try{if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise().catch(()=>{});}}catch(e){}
+}
+function answerQuiz(i){
+  if(answered)return;
+  answered=true;
+  const q=QUIZ[quizIdx];
+  const btns=document.querySelectorAll('.quiz-opt');
+  btns.forEach((b,j)=>{b.disabled=true;if(j===q.ans)b.classList.add('correct');else if(j===i)b.classList.add('wrong');});
+  if(i===q.ans)quizScore++;
+  document.getElementById('quizExp').textContent=q.exp;
+  document.getElementById('quizExp').classList.add('show');
+  document.getElementById('quizNext').style.display='inline-flex';
+}
+function nextQuestion(){quizIdx++;loadQuestion();}
+function restartQuiz(){
+  quizIdx=0;quizScore=0;
+  document.getElementById('quizCard').style.display='block';
+  document.getElementById('quizResult').classList.remove('show');
+  loadQuestion();
+}
+loadQuestion();
+
+// ─── FISZKI ───
+const CARDS=[
+  {q:'Wzór na prędkość w rzucie poziomym',a:'x = v₀t (poziomo), y = ½gt² (pionowo). Prędkość wypadkowa: v = √(v₀² + (gt)²)',tag:'mechanika'},
+  {q:'II zasada Newtona dla ruchu obrotowego',a:'M = Iε, gdzie M — moment siły [N·m], I — moment bezwładności [kg·m²], ε — przyspieszenie kątowe [rad/s²]',tag:'mechanika'},
+  {q:'Zasada zachowania energii mechanicznej',a:'Ek + Ep = const (bez tarcia). ½mv² + mgh = ½mv₀² + mgh₀',tag:'mechanika'},
+  {q:'Okres wahadła matematycznego',a:'T = 2π√(l/g) — zależy od długości i g, NIE od masy ani amplitudy',tag:'mechanika'},
+  {q:'III prawo Keplera',a:'T²/a³ = const = 4π²/(GM) — stosunek kwadratu okresu do sześcianu półosi',tag:'mechanika'},
+  {q:'Prędkości kosmiczne',a:'I = √(GM/R) ≈ 7,9 km/s (orbita), II = √(2GM/R) ≈ 11,2 km/s (ucieczka)',tag:'mechanika'},
+  {q:'Zasada zachowania pędu',a:'Σp = const gdy Σf_zewn = 0. W zderzeniu: m₁v₁ + m₂v₂ = m₁v₁\' + m₂v₂\'',tag:'mechanika'},
+  {q:'Prawo Hooka',a:'F = kx — siła sprężysta proporcjonalna do odkształcenia. Energia sprężysta: E = ½kx²',tag:'mechanika'},
+  {q:'Równanie stanu gazu doskonałego',a:'pV = nRT, gdzie R = 8,314 J/(mol·K). Lub: p₁V₁/T₁ = p₂V₂/T₂',tag:'termodynamika'},
+  {q:'I zasada termodynamiki',a:'ΔU = Q - W — zmiana energii wewnętrznej = ciepło dostarczone - praca wykonana przez gaz',tag:'termodynamika'},
+  {q:'Sprawność silnika Carnota',a:'η = 1 - T₂/T₁ (temperatury w Kelwinach!). Jest to maksymalna możliwa sprawność.',tag:'termodynamika'},
+  {q:'Ciepło właściwe — wzór',a:'Q = mcΔT — ciepło = masa × ciepło właściwe × zmiana temperatury',tag:'termodynamika'},
+  {q:'Przemiana adiabatyczna',a:'Q = 0 — brak wymiany ciepła z otoczeniem. ΔU = -W',tag:'termodynamika'},
+  {q:'Prawo Coulomba',a:'F = k|q₁||q₂|/r², k = 9×10⁹ N·m²/C². Siły odwrotnie prop. do r²',tag:'elektrycznosc'},
+  {q:'Natężenie i potencjał pola elektrycznego',a:'E = kq/r² [V/m = N/C], V = kq/r [V]. Praca: W = qΔV',tag:'elektrycznosc'},
+  {q:'Kondensator — energia i pojemność',a:'C = Q/U, E = ½CU² = Q²/(2C). Kondensator płaski: C = ε₀εᵣA/d',tag:'elektrycznosc'},
+  {q:'Prawa Kirchhoffa',a:'I: Σl_wchodzące = Σl_wychodzące (węzeł). II: Σε = ΣIR (oczko)',tag:'elektrycznosc'},
+  {q:'Moc elektryczna',a:'P = UI = I²R = U²/R. Ciepło Joulea: Q = UIt = I²Rt',tag:'elektrycznosc'},
+  {q:'SEM i napięcie na zaciskach',a:'U_zac = ε - Ir, I = ε/(R+r). Przy r→0: U_zac = ε',tag:'elektrycznosc'},
+  {q:'Siła Lorentza i ruch kołowy',a:'F = qvBsinθ. Ruch kołowy: r = mv/(qB), T = 2πm/(qB)',tag:'magnetyzm'},
+  {q:'Prawo Faradaya — indukcja',a:'ε = -NΔΦ/Δt, Φ = BScosθ. Reguła Lenza: prąd sprzeciwia się zmianie strumienia.',tag:'magnetyzm'},
+  {q:'Efekt fotoelektryczny — wzór Einsteina',a:'E_foton = hf = W + E_k_max. hf₀ = W (częstotliwość graniczna). 1 eV = 1,6×10⁻¹⁹ J',tag:'kwanty'},
+  {q:'Energie poziomów w atomie wodoru',a:'Eₙ = -13,6 eV/n². Emisja fotonu: hf = Eₙ₂ - Eₙ₁ przy skoku w dół.',tag:'kwanty'},
+  {q:'Prawo zaniku promieniotwórczego',a:'N(t) = N₀ · 2^(-t/T½) = N₀e^(-λt), λ = ln2/T½',tag:'kwanty'},
+  {q:'Energia wiązania jądra',a:'ΔE_B = Δm·c², Δm = Zm_p + Nm_n - m_jądra. 1 u = 931,5 MeV/c²',tag:'kwanty'},
+  {q:'Dylatacja czasu (STW)',a:'Δt = γΔt₀, γ = 1/√(1-v²/c²). Ruchomy zegar tyka wolniej.',tag:'kwanty'},
+  {q:'Prawo Snella (załamanie)',a:'n₁sinθ₁ = n₂sinθ₂, n = c/v. Całkowite odbicie gdy sinθ > n₂/n₁',tag:'optyka'},
+  {q:'Równanie soczewki cienkiej',a:'1/f = 1/d_o + 1/d_i. Powiększenie: Z = d_i/d_o. Zdolność skupiająca: Z_opt = 1/f [dpt]',tag:'optyka'},
+  {q:'Siatka dyfrakcyjna',a:'dsinθ = nλ, n = 0,±1,±2,... Stała siatki d = 1/N, N = liczba szczelin/m',tag:'optyka'},
+  {q:'Fala de Brogliego',a:'λ = h/p = h/(mv). Każda cząstka ma falową długość — dwoistość korpuskularno-falowa.',tag:'kwanty'},
+  {q:'Sprawność ogólna silnika cieplnego',a:'η = W/Q₁ = 1 - Q₂/Q₁. Zawsze η ≤ η_Carnota',tag:'termodynamika'},
+  {q:'Siła dośrodkowa w ruchu kołowym',a:'F = mv²/r = mω²r. Przyśpieszenie dośrodkowe: aD = v²/r = ω²r',tag:'mechanika'},
+  {q:'Rozpad alfa — zapis',a:'⁴₂He emitowane. Jądro córki: (A-4, Z-2)X. Przykład: ²³⁸₉₂U → ²³⁴₉₀Th + ⁴₂He',tag:'kwanty'},
+  {q:'Transformator idealny',a:'U₂/U₁ = N₂/N₁, I₂/I₁ = N₁/N₂. Moc przekazywana: P₁ = P₂',tag:'magnetyzm'},
+  {q:'Wartość skuteczna prądu zmiennego',a:'U_sk = U_max/√2 ≈ 0,707·U_max. Dla prądu 230V (sieć): U_max ≈ 325V',tag:'magnetyzm'},
+  {q:'Wzór na zasięg rzutu ukośnego',a:'Z = v₀²sin(2α)/g. Maks. zasięg przy α=45°. Kąty suplementarne: ten sam zasięg.',tag:'mechanika'},
+  {q:'Ciepło przemiany fazowej',a:'Q = mL, L — ciepło topnienia/parowania. Temperatura nie zmienia się podczas przemiany!',tag:'termodynamika'},
+  {q:'Równoważność masy i energii',a:'E₀ = mc². Energia spoczynkowa. Pełna: E = γmc². c = 3×10⁸ m/s',tag:'kwanty'},
+  {q:'Potencjał grawitacyjny',a:'V_g = -GM/r (ujemny!). Praca przeniesienia masy m: W = m·ΔV_g',tag:'mechanika'},
+  {q:'Interferencja konstruktywna',a:'Δ = nλ (n = 0,1,2,...) → maksimum. Δ = (n+½)λ → minimum.',tag:'optyka'},
+  // ─── Dodatkowe fiszki (41–60) ───
+  {q:'Indukcyjność solenoidu',a:'L = μ₀n²V = μ₀N²A/l. Energia pola magnetycznego: E = ½LI². Jednostka: H = V·s/A.',tag:'magnetyzm'},
+  {q:'Reaktancja pojemnościowa i indukcyjna',a:'Xc = 1/(ωC) [Ω], XL = ωL [Ω]. Impedancja: Z = √(R² + (XL−XC)²)',tag:'magnetyzm'},
+  {q:'Rezonans w obwodzie LC',a:'f₀ = 1/(2π√LC). W rezonansie: XL = XC, Z = R, prąd maksymalny.',tag:'magnetyzm'},
+  {q:'Prawo Malusa',a:'I = I₀cos²θ. Przy θ=0°: I=I₀. Przy θ=90°: I=0. Analizator obrócony o θ.',tag:'optyka'},
+  {q:'Całkowite wewnętrzne odbicie',a:'sinθ_g = n₂/n₁ (n₁>n₂). Gdy θ≥θ_g — brak załamania, pełne odbicie. Zastosowanie: światłowody.',tag:'optyka'},
+  {q:'Ciśnienie hydrostatyczne',a:'p = p₀ + ρgh. Na głębokości h ciśnienie rośnie o ρgh. 1 atm ≈ 10⁵ Pa.',tag:'mechanika'},
+  {q:'Równanie ciągłości i Bernoulliego',a:'A₁v₁ = A₂v₂ (ciągłość). p + ½ρv² + ρgh = const (Bernoulli). Szybszy przepływ = niższe ciśnienie.',tag:'mechanika'},
+  {q:'Moduł Younga',a:'E = σ/ε = (F/A)/(Δl/l₀). Miara sztywności materiału. Jednostka: Pa = N/m².',tag:'mechanika'},
+  {q:'Prędkość rms cząsteczek gazu',a:'v_rms = √(3RT/M) = √(3kBT/m₀). Rośnie z T, maleje dla cięższych cząsteczek.',tag:'termodynamika'},
+  {q:'Prawo Stefana-Boltzmanna',a:'P = σAT⁴, σ = 5,67×10⁻⁸ W/(m²·K⁴). Moc promieniowania rośnie jak T⁴.',tag:'termodynamika'},
+  {q:'Prawo Wiena — maks. emisji',a:'λ_max·T = 2,898×10⁻³ m·K. Gwiazdy gorętsze emitują w krótszych λ (niebieskie).',tag:'termodynamika'},
+  {q:'Efekt Comptona',a:'Δλ = (h/m_e·c)(1−cosθ). Foton traci energię rozpraszając się na elektronie. h/(m_e·c) = 2,426 pm.',tag:'kwanty'},
+  {q:'Zasada nieoznaczoności Heisenberga',a:'Δx·Δp ≥ ℏ/2. ΔE·Δt ≥ ℏ/2. Fundamentalne ograniczenie, nie techniczne.',tag:'kwanty'},
+  {q:'Aktywność promieniotwórcza',a:'A = λN = (ln2/T½)·N [Bq = rozpad/s]. 1 Ci = 3,7×10¹⁰ Bq.',tag:'kwanty'},
+  {q:'Właściwości promieniowania α',a:'Cząstka ⁴He, ładunek +2e. Zasięg kilka cm powietrza, zatrzymana przez kartkę. Silna jonizacja.',tag:'kwanty'},
+  {q:'Właściwości promieniowania γ',a:'Foton o wysokiej energii. Bardzo przenikliwe (grube ołów). Słaba jonizacja. Nie zmienia Z ani A jądra.',tag:'kwanty'},
+  {q:'Czynnik Lorentza γ przy v = 0,6c',a:'γ = 1/√(1−0,36) = 1/√0,64 = 1/0,8 = 1,25. Czas wydłuża się ×1,25, długość skraca ×0,8.',tag:'kwanty'},
+  {q:'Związek między eV a Joulami',a:'1 eV = 1,602×10⁻¹⁹ J. 1 keV = 10³ eV. 1 MeV = 10⁶ eV. Stała hc = 1240 eV·nm.',tag:'kwanty'},
+  {q:'Zdolność skupiająca układu soczewek',a:'Z_ukł = Z₁ + Z₂ + ... [dpt]. Odległość ekwiwalentna: 1/f = 1/f₁ + 1/f₂ (cienkie soczewki stykające się).',tag:'optyka'},
+  {q:'Wzór na powiększenie soczewki',a:'Z = -d_i/d_o = f/(f−d_o). Ujemne Z → obraz odwrócony (rzeczywisty). Dodatnie Z → prosty (pozorny).',tag:'optyka'},
+  {q:'Wzór Stefana-Boltzmanna na moc promieniowania',a:'P = σAT⁴. σ = 5,67×10⁻⁸ W/(m²K⁴). Moc rośnie z T do potęgi czwartej.',tag:'termodynamika'},
+  {q:'Liczba Avogadra i mol',a:'NA = 6,022×10²³ mol⁻¹. 1 mol zawiera NA cząsteczek. Masa molarna M [g/mol].',tag:'termodynamika'},
+];
+
+let fcArr=[...CARDS],fcIdx=0,fcFiltered=[...CARDS];
+function renderCard(){
+  if(!fcFiltered.length) return;
+  const c=fcFiltered[fcIdx];
+  const front=document.getElementById('fcFront');
+  const back=document.getElementById('fcBack');
+  if(!front||!back) return;
+  front.textContent=c.q;
+  back.textContent=c.a;
+  document.getElementById('fcCounter').textContent=(fcIdx+1)+' / '+fcFiltered.length;
+  document.getElementById('flashcard').classList.remove('flipped');
+  try{if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([front,back]).catch(()=>{});}}catch(e){}
+}
+function flipCard(){document.getElementById('flashcard').classList.toggle('flipped');}
+function nextFlashcard(){fcIdx=(fcIdx+1)%fcFiltered.length;renderCard();}
+function prevFlashcard(){fcIdx=(fcIdx-1+fcFiltered.length)%fcFiltered.length;renderCard();}
+function masterCard(){
+  fcFiltered.splice(fcIdx,1);
+  if(!fcFiltered.length){showToast('Fiszki','Wszystkie opanowane! 🎉');fcFiltered=[...CARDS];}
+  fcIdx=fcIdx%fcFiltered.length;
+  renderCard();
+}
+function shuffleFlashcards(){
+  for(let i=fcFiltered.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcFiltered[i],fcFiltered[j]]=[fcFiltered[j],fcFiltered[i]];}
+  fcIdx=0;renderCard();
+}
+function filterFlashcards(tag,btn){
+  document.querySelectorAll('.fc-ctrl').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fcFiltered=tag==='all'?[...CARDS]:CARDS.filter(c=>c.tag===tag);
+  fcIdx=0;renderCard();
+}
+renderCard();
+
+// ─── TOAST ───
+function showToast(title,msg){
+  const t=document.getElementById('toast');
+  t.querySelector('b').textContent=title;
+  t.querySelector('span').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ─── HERO MODS CLICK ───
+document.querySelectorAll('.hero-mod').forEach(m=>{
+  m.addEventListener('click',()=>{
+    document.getElementById('teoria').scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ─── KALKULATORY ───
+function showCalcResult(id, msg){
+  const el = document.getElementById(id);
+  el.style.display = 'block';
+  el.textContent = msg;
+}
+function calcRzut(){
+  const v0 = parseFloat(document.getElementById('calc_v0').value);
+  const alpha = parseFloat(document.getElementById('calc_alpha').value);
+  if(isNaN(v0)||isNaN(alpha)){showCalcResult('calc_rzut_result','⚠️ Wpisz obie wartości');return;}
+  const g = 9.81;
+  const Z = v0*v0*Math.sin(2*alpha*Math.PI/180)/g;
+  const Hmax = v0*v0*Math.pow(Math.sin(alpha*Math.PI/180),2)/(2*g);
+  const t = 2*v0*Math.sin(alpha*Math.PI/180)/g;
+  showCalcResult('calc_rzut_result', `Zasięg Z = ${Z.toFixed(2)} m
+H_max = ${Hmax.toFixed(2)} m
+Czas lotu = ${t.toFixed(2)} s`);
+}
+function calcCarnot(){
+  const T1c = parseFloat(document.getElementById('calc_T1').value);
+  const T2c = parseFloat(document.getElementById('calc_T2').value);
+  if(isNaN(T1c)||isNaN(T2c)){showCalcResult('calc_carnot_result','⚠️ Wpisz obie temperatury');return;}
+  const T1 = T1c + 273.15, T2 = T2c + 273.15;
+  if(T1 <= T2){showCalcResult('calc_carnot_result','⚠️ T₁ musi być > T₂');return;}
+  const eta = (1 - T2/T1)*100;
+  showCalcResult('calc_carnot_result', `η_Carnota = ${eta.toFixed(2)}%
+T₁ = ${T1.toFixed(1)} K
+T₂ = ${T2.toFixed(1)} K`);
+}
+function calcPhoto(){
+  const lam = parseFloat(document.getElementById('calc_lam').value);
+  const W = parseFloat(document.getElementById('calc_W').value);
+  if(isNaN(lam)||isNaN(W)){showCalcResult('calc_photo_result','⚠️ Wpisz λ i W');return;}
+  const E_eV = 1240/lam;
+  const Ek = E_eV - W;
+  if(Ek < 0){showCalcResult('calc_photo_result',`E_foton = ${E_eV.toFixed(3)} eV
+Ek = ${Ek.toFixed(3)} eV < 0
+⚠️ Efekt nie zachodzi! f < f₀`);return;}
+  const v = Math.sqrt(2*Ek*1.6e-19/9.109e-31);
+  showCalcResult('calc_photo_result', `E_foton = ${E_eV.toFixed(3)} eV
+Ek_max = ${Ek.toFixed(3)} eV
+v_max = ${v.toExponential(3)} m/s`);
+}
+function calcDecay(){
+  const N0 = parseFloat(document.getElementById('calc_N0').value);
+  const t = parseFloat(document.getElementById('calc_t').value);
+  const T12 = parseFloat(document.getElementById('calc_T12').value);
+  if(isNaN(N0)||isNaN(t)||isNaN(T12)){showCalcResult('calc_decay_result','⚠️ Wpisz N₀, t i T½');return;}
+  const N = N0 * Math.pow(2, -t/T12);
+  const ratio = (N/N0*100).toFixed(3);
+  showCalcResult('calc_decay_result', `N(t) = ${N.toExponential(4)}
+= ${ratio}% N₀
+(t/T½ = ${(t/T12).toFixed(3)})`);
+}
+function calcLens(){
+  const f = parseFloat(document.getElementById('calc_f').value);
+  const d_o = parseFloat(document.getElementById('calc_do').value);
+  if(isNaN(f)||isNaN(d_o)){showCalcResult('calc_lens_result','⚠️ Wpisz f i d_o');return;}
+  const inv_di = 1/f - 1/d_o;
+  if(Math.abs(inv_di) < 1e-10){showCalcResult('calc_lens_result','⚠️ Obraz w nieskończoności (d_o = f)');return;}
+  const d_i = 1/inv_di;
+  const Z = d_i/d_o;
+  const typ = d_i > 0 ? 'Rzeczywisty' : 'Pozorny';
+  const ornt = Z < 0 ? 'odwrócony' : 'prosty';
+  showCalcResult('calc_lens_result', `d_i = ${d_i.toFixed(2)} cm
+Powiększenie Z = ${Z.toFixed(2)}×
+Obraz: ${typ}, ${ornt}`);
+}
+function calcLorentz(){
+  const q = parseFloat(document.getElementById('calc_q').value);
+  const v = parseFloat(document.getElementById('calc_v').value);
+  const B = parseFloat(document.getElementById('calc_B').value);
+  const theta = parseFloat(document.getElementById('calc_theta').value);
+  if([q,v,B,theta].some(isNaN)){showCalcResult('calc_lorentz_result','⚠️ Wpisz wszystkie wartości');return;}
+  const F = Math.abs(q)*v*B*Math.sin(theta*Math.PI/180);
+  const r = (Math.abs(q)>0 && B>0) ? Math.abs(q<=0?0:1)*v*9.109e-31/( Math.abs(q)*B ) : 0;
+  showCalcResult('calc_lorentz_result', `F = ${F.toExponential(4)} N`);
+}
+
+// ─── NOTATNIK ───
+const NOTE_SNIPPETS = [
+  'F = ma (II zasada Newtona)',
+  'v = v₀ + at, s = v₀t + ½at²',
+  'Z = v₀²sin(2α)/g (rzut ukośny)',
+  'T_wahadło = 2π√(l/g)',
+  'Ek = ½mv², Ep = mgh',
+  'F_grawitacji = GMm/r²',
+  'pV = nRT (gaz doskonały)',
+  'η_Carnota = 1 - T₂/T₁',
+  'ΔU = Q - W (I zasada termodyn.)',
+  'F = k|q₁q₂|/r² (Coulomb)',
+  'E = kq/r², V = kq/r',
+  'C = Q/U, E_kond = ½CU²',
+  'P = UI = I²R = U²/R',
+  'F = BIl sinθ (na przewodnik)',
+  'F = qvB sinθ (Lorentza)',
+  'ε = -NΔΦ/Δt (Faraday)',
+  'n₁sinθ₁ = n₂sinθ₂ (Snell)',
+  '1/f = 1/dₒ + 1/dᵢ (soczewka)',
+  'dsinθ = nλ (siatka)',
+  'E_foton = hf = hc/λ',
+  'Eₙ = -13,6/n² eV (H atom)',
+  'N = N₀·2^(-t/T½)',
+  'E = Δm·c² (wiązanie jądra)',
+  'Δt = γΔt₀, l = l₀/γ (STW)',
+  'v_rms = √(3RT/M)',
+];
+(function initNote(){
+  const nb = document.getElementById('noteButtons');
+  if(!nb) return;
+  NOTE_SNIPPETS.forEach(s=>{
+    const btn = document.createElement('button');
+    btn.textContent = s.split('(')[0].trim();
+    btn.title = s;
+    btn.style.cssText = 'padding:6px 12px;font-size:0.75rem;background:var(--elevated);border:1px solid var(--border2);border-radius:20px;color:var(--text2);cursor:pointer;font-family:inherit;transition:0.2s';
+    btn.onmouseover = ()=>btn.style.borderColor = 'var(--fiz)';
+    btn.onmouseout = ()=>btn.style.borderColor = 'rgba(244,63,94,0.18)';
+    btn.onclick = ()=>{
+      const ta = document.getElementById('notepad');
+      ta.value += (ta.value ? '\n' : '') + s;
+    };
+    nb.appendChild(btn);
+  });
+  // Load saved
+  const saved = localStorage.getItem('fiz_note');
+  if(saved) document.getElementById('notepad').value = saved;
+})();
+function copyNote(){
+  const ta = document.getElementById('notepad');
+  navigator.clipboard.writeText(ta.value).then(()=>showToast('Skopiowano','Ściąga w schowku ✓')).catch(()=>{ta.select();document.execCommand('copy');showToast('Skopiowano','Ściąga w schowku ✓');});
+}
+function clearNote(){ document.getElementById('notepad').value = ''; localStorage.removeItem('fiz_note'); }
+function saveNote(){ localStorage.setItem('fiz_note', document.getElementById('notepad').value); showToast('Zapisano','Notatnik zapisany lokalnie ✓'); }
+
+// ─── UPDATE NAV LINKS ───
+document.querySelector('.nav-links').innerHTML = `
+  <a href="#roadmapa">Roadmapa</a>
+  <a href="#slownik">Słownik</a>
+  <a href="#teoria">Teoria</a>
+  <a href="#quiz">Quiz</a>
+  <a href="#fiszki">Fiszki</a>
+  <a href="#stale">Stałe</a>
+  <a href="#kalkulator">Kalkulator</a>
+  <a href="#notatnik">Ściąga</a>
+  <a href="viralloedu.html">← Hub</a>
+`;
+</script>
+</body>
+</html>

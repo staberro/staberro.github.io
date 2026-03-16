@@ -194,8 +194,8 @@ footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);po
   <p class="hero-sub">SQL, Python, Excel, Access, Fizyka rozszerzona, Matematyka rozszerzona + podstawa. Każdy przedmiot: teoria + interaktywne ćwiczenia na najwyższym poziomie.</p>
   <div class="hero-stats">
     <div class="h-stat"><div class="h-stat-val">6</div><div class="h-stat-label">przedmiotów</div></div>
-    <div class="h-stat"><div class="h-stat-val">15</div><div class="h-stat-label">plików HTML</div></div>
-    <div class="h-stat"><div class="h-stat-val">7</div><div class="h-stat-label">ukończone</div></div>
+    <div class="h-stat"><div class="h-stat-val">17</div><div class="h-stat-label">plików HTML</div></div>
+    <div class="h-stat"><div class="h-stat-val">9</div><div class="h-stat-label">ukończone</div></div>
     <div class="h-stat"><div class="h-stat-val">∞</div><div class="h-stat-label">powtórek</div></div>
   </div>
   <div class="hero-cta">
@@ -310,16 +310,17 @@ footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);po
         </div>
       </div>
       <div class="sc-name">Fizyka Rozszerzona</div>
-      <div class="sc-desc">Mechanika, elektrodynamika, optyka, termodynamika, fizyka kwantowa i jądrowa. Teoria z wyprowadzeniami wzorów + zadania obliczeniowe na poziomie rozszerzonym CKE.</div>
+      <div class="sc-desc">Pełna teoria CKE (66 tematów, MathJax, quiz 40 pytań, 60 fiszek, kalkulator wzorów) + trainer z zadaniami obliczeniowymi na poziomie rozszerzonym z tolerancją 1%.</div>
       <div class="sc-modules">
-        <span class="sc-mod">Mechanika</span><span class="sc-mod">Elektryczność</span><span class="sc-mod">Optyka</span>
-        <span class="sc-mod">Termodynamika</span><span class="sc-mod">Kwanty</span><span class="sc-mod">Jądro</span>
+        <span class="sc-mod">Mechanika</span><span class="sc-mod">Termodynamika</span><span class="sc-mod">Elektryczność</span>
+        <span class="sc-mod">Magnetyzm</span><span class="sc-mod">Optyka</span><span class="sc-mod">Kwanty/Jądro</span>
+        <span class="sc-mod">STW</span><span class="sc-mod">MathJax</span>
       </div>
       <div class="sc-links">
-        <a href="#" class="sc-btn teoria disabled">📚 Teoria Fizyki</a>
-        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Fizyki</a>
+        <a href="fizyka_teoria.html" class="sc-btn teoria">📚 Teoria Fizyki</a>
+        <a href="fizyka_trainer.html" class="sc-btn cwicz">⚡ Zadania Fizyki</a>
       </div>
-      <div class="sc-progress"><div class="sc-progress-bar" style="width:0%"></div></div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
     </div>
 
     <!-- MATEMATYKA -->
@@ -462,12 +463,665 @@ footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);po
     <div class="rm-item soon">
       <div class="rm-dot"><div class="rm-circle">5</div></div>
       <div class="rm-body">
-        <div class="rm-tag">// 05 — DO ZROBIENIA</div>
+        <div class="rm-tag">// 05 — GOTOWE</div>
         <div class="rm-name">Fizyka Rozszerzona — Teoria + Ćwiczenia</div>
-        <div class="rm-desc">Interaktywne wykresy (Chart.js), symulacje (Canvas), kalkulator wzorów z podstawianiem jednostek. Zadania obliczeniowe z tolerancją.</div>
+        <div class="rm-desc">Komplet fizyki rozszerzonej CKE. Teoria: 66 tematów, MathJax 3, quiz 40 pytań, 60 fiszek, kalkulator 6 wzorów, stałe fizyczne, notatnik. Trainer: zadania obliczeniowe z tolerancją 1%, wszystkie działy.</div>
         <div class="rm-files">
-          <span class="rm-file file-soon">fizyka_teoria.html</span>
-          <span class="rm-file file-soon">fizyka_cwiczenia.html</span>
+          <span class="rm-file file-done">fizyka_teoria.html</span>
+          <span class="rm-file file-done">fizyka_trainer.html</span>
+        </div>
+      </div>
+    </div>
+    <div class="rm-item soon">
+      <div class="rm-dot"><div class="rm-circle">6</div></div>
+      <div class="rm-body">
+        <div class="rm-tag">// 06 — DO ZROBIENIA</div>
+        <div class="rm-name">Matematyka (rozszerzona + podstawa) — Teoria + Ćwiczenia</div>
+        <div class="rm-desc">MathJax do renderowania wzorów, interaktywne wykresy funkcji, krok-po-kroku rozwiązania. Dwa poziomy: podstawa i rozszerzenie.</div>
+        <div class="rm-files">
+          <span class="rm-file file-soon">matematyka_teoria.html</span>
+          <span class="rm-file file-soon">matematyka_cwiczenia.html</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PROMPTY -->
+<section class="prompts" id="prompty">
+<div style="max-width:780px;margin:0 auto">
+  <div class="section-label" style="text-align:left">// gotowe do przeklejenia</div>
+  <h2 class="section-title" style="text-align:left;margin-bottom:6px">Prompty do nowych czatów</h2>
+  <p class="section-sub" style="text-align:left;margin-bottom:20px">Każdy prompt to gotowy brief dla AI. Przekopiuj do nowego czatu, dołącz odpowiednie pliki referencyjne i gotowe.</p>
+  <div class="prompt-intro">
+    <h4>📎 Jak używać</h4>
+    <p>1. Kliknij <b>Pokaż prompt</b> przy wybranym materiale<br>
+    2. Kliknij <b>Kopiuj</b> — prompt ląduje w schowku<br>
+    3. Wklej do nowego czatu z Claude<br>
+    4. Jeśli prompt mówi "dołącz plik" — dołącz <code>sql_teoria.html</code> lub <code>sqledukacja_v25.html</code> jako referencję stylu<br>
+    5. Claude wyprodukuje gotowy plik HTML zgodny z konwencją ViralloEdu</p>
+  </div>
+  <div class="prompts-list" id="promptsList"></div>
+</div>
+</section>
+
+<!-- KONWENCJE -->
+<section class="conventions" id="konwencje">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-label" style="text-align:left">// standardy platformy</div>
+  <h2 class="section-title" style="text-align:left;margin-bottom:6px">Konwencje ViralloEdu</h2>
+  <p class="section-sub" style="text-align:left;margin-bottom:28px">Zasady które obowiązują w KAŻDYM pliku platformy — dla spójności.</p>
+  <div class="conv-grid">
+    <div class="conv-card">
+      <h4>🎨 Estetyka</h4>
+      <ul>
+        <li>Tło zawsze <code>#080c14</code> (dark navy)</li>
+        <li>Fonty: Cinzel (nagłówki) + Outfit (body) + Fira Code (kod)</li>
+        <li>Każdy przedmiot ma własny kolor akcentu</li>
+        <li>Noise overlay + grid bg na każdej stronie</li>
+        <li>Radius kart: 16–24px. Zawsze border + hover effect</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>📁 Nazewnictwo plików</h4>
+      <ul>
+        <li><code>sql_teoria.html</code> — teoria SQL</li>
+        <li><code>sqledukacja_v25.html</code> — ćwiczenia SQL</li>
+        <li><code>python_teoria.html</code> — teoria Python ✓</li>
+        <li><code>python_cwiczenia.html</code> — ćwiczenia Python</li>
+        <li><code>virallo_hub.html</code> — ta strona (hub)</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>🧩 Sekcje teorii (kolejność)</h4>
+      <ul>
+        <li>Hero → Roadmapa → Słownik → Moduły</li>
+        <li>→ Przykłady → Quiz → Fiszki</li>
+        <li>→ Typing Sprint → Fokus → Notatnik</li>
+        <li>localStorage: checkboxy roadmapy + mastered fiszki</li>
+        <li>Toast notifications przy akcjach</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>⚙️ Technologia</h4>
+      <ul>
+        <li>Zero frameworków — vanilla HTML+CSS+JS</li>
+        <li>Jeden plik = cała aplikacja (self-contained)</li>
+        <li>SQL: sql.js (SQLite w przeglądarce)</li>
+        <li>Python: Skulpt.js (eval w przeglądarce)</li>
+        <li>Wzory: MathJax dla fizyki i matmy</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>📊 Zawartość bazy zadań</h4>
+      <ul>
+        <li>Minimum 400–800 zadań per przedmiot</li>
+        <li>Każde zadanie: treść, odpowiedź, poziom, kategoria</li>
+        <li>Zadania DML/DDL: izolowane tabele (setup SQL)</li>
+        <li>Tagi poziomów: podstawowy, średni, zaawansowany, matura</li>
+        <li>Postęp dzienny: cel = 25 zadań</li>
+      </ul>
+    </div>
+    <div class="conv-card">
+      <h4>🎓 Zgodność z CKE</h4>
+      <ul>
+        <li>SQL: standard SQLite + uwagi o Access</li>
+        <li>Python: Python 3.x, standardowa biblioteka</li>
+        <li>Excel: polskie nazwy funkcji (JEŻELI, WYSZUKAJ.PIONOWO)</li>
+        <li>Fizyka/Matma: zgodność z podstawą programową</li>
+        <li>Każde zadanie ma oznaczenie "maturalne" jeśli pochodzi z CKE</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="footer-logo">🧠 ViralloEdu</div>
+  <p class="footer-copy">Wykonanie: <a href="https://staberek.com" target="_blank">Staberek</a> (<a href="https://staberek.com" target="_blank">prof. inż. Kacper Stabrawa</a>) &nbsp;🧠 <strong>ViralloEdu</strong></p>
+</footer>
+
+<div class="toast" id="toast"><b></b><span></span></div>
+
+<script>
+const prompts = [
+{subject:"Python — Teoria",file:"python_teoria.html",tags:"dołącz: sql_teoria.html jako wzorzec stylu i struktury",prompt:`Stwórz python_teoria.html — kompletna teoria Python dla platformy ViralloEdu.\nWzorzec struktury i estetyki: sql_teoria.html (dołączony).\n\nKOLORY: akcent #ffd43b (gold), secondary #fb923c. Tło: #080c14. Fonty: Cinzel+Outfit+Fira Code.\n\nSEKCJE:\n1. Hero, 2. Roadmapa (6 poziomów localStorage), 3. Słownik (40+ kart)\n4. Moduły teorii (6 zakładek), 5. Interaktywne Przykłady (Skulpt.js)\n6. Quiz (25 pytań), 7. Fiszki (35 kart), 8. Typing Sprint (20 zadań)\n9. Fokus (timer 90s), 10. Notatnik (25 reguł)`},
+{subject:"Python — Ćwiczenia interaktywne",file:"python_cwiczenia.html",tags:"dołącz: sqledukacja_v25.html jako wzorzec layoutu",prompt:`Stwórz python_cwiczenia.html — interaktywny trener Python.\nWzorzec layoutu: sqledukacja_v25.html. Kolor: #ffd43b.\nSilnik: Skulpt.js. Baza: 300+ zadań.\nKategorie: podstawy, listy, slowniki, funkcje, pliki_algorytmy, matura.`},
+{subject:"Excel — Teoria",file:"excel_teoria.html",tags:"dołącz: sql_teoria.html jako wzorzec stylu",prompt:`Stwórz excel_teoria.html — kompletna teoria Excel dla ViralloEdu.\nWzorzec: sql_teoria.html. Kolor: #10d48e (green).\nPolskie nazwy funkcji: WYSZUKAJ.PIONOWO, JEŻELI, SUMA.JEŻELI, LICZ.JEŻELI.\nRoadmapa: Podstawy → Formuły → Logika → Wyszukiwanie → Tabele → VBA`},
+{subject:"Excel — Ćwiczenia",file:"excel_cwiczenia.html",tags:"dołącz: sqledukacja_v25.html jako wzorzec layoutu",prompt:`Stwórz excel_cwiczenia.html — interaktywny trener Excel.\nSymulator arkusza 2D. Baza: 300+ zadań. Kolor: #10d48e.`},
+{subject:"Access — Teoria + Ćwiczenia",file:"access_teoria.html + access_cwiczenia.html",tags:"dołącz: sql_teoria.html + sqledukacja_v25.html",prompt:`Stwórz DWA pliki: access_teoria.html i access_cwiczenia.html.\nKolor: #ff8c42. Różnice Access vs SQL: SELECT TOP n, IIF(w;t;f), Mid(t;s;l).`},
+{subject:"Fizyka Rozszerzona",file:"fizyka_teoria.html + fizyka_cwiczenia.html",tags:"dołącz: sql_teoria.html jako wzorzec stylu",prompt:`Stwórz DWA pliki: fizyka_teoria.html i fizyka_cwiczenia.html.\nKolor: #f43f5e. MathJax 3 dla wzorów. Tolerancja 1% przy sprawdzaniu.`},
+{subject:"Matematyka Rozszerzona",file:"matematyka_teoria.html + matematyka_cwiczenia.html",tags:"dołącz: sql_teoria.html jako wzorzec stylu",prompt:`Stwórz DWA pliki: matematyka_teoria.html i matematyka_cwiczenia.html.\nKolor: #3b82f6. MathJax 3. Przełącznik PODSTAWA / ROZSZERZENIE.`}
+];
+
+function renderPrompts() {
+  const list = document.getElementById('promptsList');
+  if (!list) return;
+  list.innerHTML = prompts.map((p, i) => `
+    <div class="prompt-item">
+      <div class="prompt-head" onclick="togglePrompt(${i})">
+        <div class="prompt-idx">${String(i+1).padStart(2,'0')}</div>
+        <div class="prompt-subject"><b>${p.subject}</b><span>📎 ${p.tags}</span></div>
+        <button class="prompt-toggle">Pokaż prompt</button>
+      </div>
+      <div class="prompt-body" id="pb_${i}">
+        <div class="prompt-box">${p.prompt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}<button class="prompt-copy" onclick="copyPrompt(${i})">📋 Kopiuj</button></div>
+      </div>
+    </div>`).join('');
+}
+
+function togglePrompt(i) {
+  const body = document.getElementById(`pb_${i}`);
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.prompt-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.prompt-toggle').forEach(b => b.textContent = 'Pokaż prompt');
+  if (!isOpen) { body.classList.add('open'); body.closest('.prompt-item').querySelector('.prompt-toggle').textContent = 'Zwiń ▲'; }
+}
+
+function copyPrompt(i) {
+  navigator.clipboard.writeText(prompts[i].prompt).then(() => {
+    const t = document.getElementById('toast');
+    t.querySelector('b').textContent = 'Skopiowano!';
+    t.querySelector('span').textContent = 'Prompt w schowku';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  });
+}
+
+renderPrompts();
+
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    const rect = target.getBoundingClientRect();
+    link.style.color = (rect.top < 100 && rect.bottom > 0) ? 'var(--hub)' : '';
+  });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.subject-card, .plan-card, .conv-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>rset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ViralloEdu — Platforma Maturalna</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080f;--card:#0c1018;--elevated:#111720;--panel:#161e2c;
+  --text:#f0f4ff;--text2:#7a90b8;--muted:#3a4a66;
+  --border:rgba(255,255,255,0.05);--border2:rgba(255,255,255,0.1);
+  --sql:#00d4ff;--sql-g:rgba(0,212,255,0.08);
+  --py:#ffd43b;--py-g:rgba(255,212,59,0.08);
+  --xl:#10d48e;--xl-g:rgba(16,212,142,0.08);
+  --ac:#ff8c42;--ac-g:rgba(255,140,66,0.08);
+  --php:#a78bfa;--php-g:rgba(167,139,250,0.08);
+  --fiz:#f43f5e;--fiz-g:rgba(244,63,94,0.08);
+  --mat:#3b82f6;--mat-g:rgba(59,130,246,0.08);
+  --hub:#c8b4ff;
+  --gold:#f5c842;
+  --glow-sql:0 0 40px rgba(0,212,255,0.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:1}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(6,8,15,0.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:12px;font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;letter-spacing:0.06em}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--hub),#6366f1);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;box-shadow:0 0 20px rgba(200,180,255,0.2)}
+.nav-badge{font-size:0.7rem;padding:3px 10px;background:rgba(200,180,255,0.1);border:1px solid rgba(200,180,255,0.2);border-radius:20px;color:var(--hub);margin-left:6px;font-family:'Fira Code',monospace}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-link{padding:7px 14px;border-radius:8px;font-size:0.82rem;color:var(--text2);transition:0.2s;font-weight:500}
+.nav-link:hover{background:var(--elevated);color:var(--text)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px 60px;position:relative;z-index:1}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(200,180,255,0.06) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(200,180,255,0.07);border:1px solid rgba(200,180,255,0.18);border-radius:50px;font-size:0.82rem;color:var(--hub);margin-bottom:28px;font-family:'Fira Code',monospace;animation:up 0.7s ease both}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(3rem,9vw,6rem);font-weight:900;line-height:0.95;margin-bottom:20px;animation:up 0.7s 0.1s ease both;letter-spacing:-0.01em}
+.hero h1 .v{background:linear-gradient(135deg,#c8b4ff,#818cf8,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .l{background:linear-gradient(135deg,#ffd43b,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.1rem;color:var(--text2);max-width:560px;line-height:1.7;margin-bottom:40px;animation:up 0.7s 0.2s ease both}
+.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:44px;animation:up 0.7s 0.3s ease both}
+.h-stat{text-align:center}
+.h-stat-val{font-family:'Cinzel',serif;font-size:2rem;color:var(--hub);line-height:1}
+.h-stat-label{font-size:0.78rem;color:var(--muted);margin-top:2px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:up 0.7s 0.4s ease both}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;background:linear-gradient(135deg,#c8b4ff,#818cf8);color:#06080f;font-weight:700;border-radius:50px;font-size:0.95rem;transition:0.3s;border:none;cursor:pointer;font-family:inherit}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(200,180,255,0.25)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:14px 30px;background:transparent;color:var(--text);font-weight:600;border-radius:50px;font-size:0.95rem;transition:0.3s;border:1px solid var(--border2);cursor:pointer;font-family:inherit}
+.btn-secondary:hover{background:var(--elevated);border-color:rgba(200,180,255,0.3)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.subjects{padding:60px 24px 80px;position:relative;z-index:1}
+.section-label{text-align:center;font-family:'Fira Code',monospace;font-size:0.78rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px}
+.section-title{text-align:center;font-family:'Cinzel',serif;font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:8px}
+.section-sub{text-align:center;color:var(--text2);font-size:0.92rem;margin-bottom:44px}
+.subjects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;max-width:1200px;margin:0 auto}
+.subject-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;transition:0.3s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:0}
+.subject-card::before{content:'';position:absolute;inset:0;opacity:0;transition:0.4s;pointer-events:none;border-radius:20px}
+.subject-card:hover{transform:translateY(-4px)}
+.subject-card:hover::before{opacity:1}
+.subject-card[data-color="sql"]{--c:var(--sql);--bg:var(--sql-g)}
+.subject-card[data-color="py"]{--c:var(--py);--bg:var(--py-g)}
+.subject-card[data-color="xl"]{--c:var(--xl);--bg:var(--xl-g)}
+.subject-card[data-color="ac"]{--c:var(--ac);--bg:var(--ac-g)}
+.subject-card[data-color="php"]{--c:var(--php);--bg:var(--php-g)}
+.subject-card[data-color="fiz"]{--c:var(--fiz);--bg:var(--fiz-g)}
+.subject-card[data-color="mat"]{--c:var(--mat);--bg:var(--mat-g)}
+.subject-card:hover{border-color:var(--c);box-shadow:0 8px 40px rgba(0,0,0,0.3)}
+.subject-card::before{background:radial-gradient(ellipse 60% 50% at 50% 0%,var(--bg),transparent)}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.sc-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;background:var(--bg, rgba(255,255,255,0.04));border:1px solid var(--border)}
+.sc-status{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.sc-badge{font-size:0.7rem;padding:3px 10px;border-radius:20px;font-family:'Fira Code',monospace;font-weight:600}
+.badge-done{background:rgba(16,212,142,0.12);color:#10d48e;border:1px solid rgba(16,212,142,0.2)}
+.badge-wip{background:rgba(245,200,66,0.12);color:#f5c842;border:1px solid rgba(245,200,66,0.2)}
+.badge-soon{background:rgba(100,116,139,0.15);color:#64748b;border:1px solid rgba(100,116,139,0.2)}
+.sc-name{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;margin-bottom:4px;color:var(--c,var(--text))}
+.sc-desc{font-size:0.86rem;color:var(--text2);line-height:1.55;margin-bottom:16px;flex:1}
+.sc-modules{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.sc-mod{font-size:0.72rem;padding:3px 9px;background:var(--elevated);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-family:'Fira Code',monospace}
+.sc-links{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+.sc-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:10px;font-size:0.82rem;font-weight:600;transition:0.25s;text-align:center;border:1px solid var(--border)}
+.sc-btn.teoria{background:var(--elevated);color:var(--text)}
+.sc-btn.teoria:hover{background:var(--panel);border-color:rgba(255,255,255,0.15)}
+.sc-btn.cwicz{background:var(--bg, rgba(255,255,255,0.04));color:var(--c,var(--text));border-color:var(--c)}
+.sc-btn.cwicz:hover{background:var(--c);color:#06080f}
+.sc-btn.disabled{opacity:0.35;pointer-events:none;cursor:not-allowed}
+.sc-btn.single{grid-column:1/-1}
+.sc-progress{height:3px;background:var(--elevated);border-radius:2px;margin-top:14px;overflow:hidden}
+.sc-progress-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--c),var(--c));transition:width 0.5s;opacity:0.7}
+footer{padding:44px 24px;text-align:center;border-top:1px solid var(--border);position:relative;z-index:1}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:10px;color:var(--hub)}
+.footer-copy{font-size:0.85rem;color:var(--muted)}
+.footer-copy a{color:var(--text2);transition:0.2s}
+.footer-copy a:hover{color:var(--hub)}
+/* PLAN */
+.plan{padding:60px 24px 80px;position:relative;z-index:1;background:var(--card)}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1100px;margin:0 auto}
+@media(max-width:800px){.plan-grid{grid-template-columns:1fr}}
+.plan-card{background:var(--elevated);border:1px solid var(--border);border-radius:18px;padding:22px}
+.plan-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.plan-num{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--hub);line-height:1;min-width:24px}
+.plan-title{font-weight:600;font-size:0.95rem}
+.plan-body{font-size:0.85rem;color:var(--text2);line-height:1.65}
+.plan-body b{color:var(--text)}
+.plan-body code{background:rgba(200,180,255,0.1);border:1px solid rgba(200,180,255,0.15);padding:1px 6px;border-radius:4px;font-size:0.8rem;color:var(--hub);font-family:'Fira Code',monospace}
+/* ROADMAP */
+.roadmap{padding:60px 24px 80px;position:relative;z-index:1}
+.roadmap-list{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.rm-item{display:grid;grid-template-columns:60px 1fr;gap:0;position:relative}
+.rm-item:not(:last-child)::after{content:'';position:absolute;left:29px;top:56px;bottom:0;width:2px;background:var(--border);z-index:0}
+.rm-dot{width:60px;display:flex;flex-direction:column;align-items:center;padding-top:16px;position:relative;z-index:1}
+.rm-circle{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;font-family:'Fira Code',monospace;flex-shrink:0;transition:0.3s}
+.rm-item.done .rm-circle{background:rgba(16,212,142,0.15);border-color:#10d48e;color:#10d48e}
+.rm-item.wip .rm-circle{background:rgba(245,200,66,0.15);border-color:#f5c842;color:#f5c842}
+.rm-item.soon .rm-circle{color:var(--muted);border-color:var(--border)}
+.rm-body{padding:14px 0 24px 12px}
+.rm-tag{font-family:'Fira Code',monospace;font-size:0.72rem;color:var(--muted);margin-bottom:4px}
+.rm-name{font-family:'Cinzel',serif;font-size:1rem;margin-bottom:5px}
+.rm-item.done .rm-name{color:#10d48e}
+.rm-item.wip .rm-name{color:#f5c842}
+.rm-desc{font-size:0.85rem;color:var(--text2);line-height:1.55}
+.rm-files{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.rm-file{font-size:0.72rem;padding:3px 9px;border-radius:6px;font-family:'Fira Code',monospace}
+.file-done{background:rgba(16,212,142,0.08);color:#10d48e;border:1px solid rgba(16,212,142,0.2)}
+.file-wip{background:rgba(245,200,66,0.08);color:#f5c842;border:1px solid rgba(245,200,66,0.2)}
+.file-soon{background:var(--elevated);color:var(--muted);border:1px solid var(--border)}
+/* PROMPTY */
+.prompts{padding:60px 24px 80px;position:relative;z-index:1;background:var(--card)}
+.prompt-intro{max-width:780px;margin:0 auto 32px;background:var(--elevated);border:1px solid var(--border);border-radius:16px;padding:20px 24px}
+.prompt-intro h4{color:var(--hub);margin-bottom:8px;font-size:0.95rem;display:flex;align-items:center;gap:8px}
+.prompt-intro p{font-size:0.88rem;color:var(--text2);line-height:1.65}
+.prompts-list{display:flex;flex-direction:column;gap:16px;max-width:780px;margin:0 auto}
+.prompt-item{background:var(--elevated);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:0.25s}
+.prompt-item:hover{border-color:rgba(200,180,255,0.25)}
+.prompt-head{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer}
+.prompt-idx{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--hub);min-width:30px}
+.prompt-subject{flex:1}
+.prompt-subject b{display:block;font-size:0.92rem;margin-bottom:2px}
+.prompt-subject span{font-size:0.8rem;color:var(--text2);font-family:'Fira Code',monospace}
+.prompt-toggle{font-size:0.78rem;color:var(--text2);padding:5px 12px;background:var(--card);border-radius:20px;border:1px solid var(--border);cursor:pointer;font-family:inherit;transition:0.2s;white-space:nowrap}
+.prompt-toggle:hover{border-color:var(--hub);color:var(--hub)}
+.prompt-body{display:none;padding:0 20px 18px}
+.prompt-body.open{display:block}
+.prompt-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;font-family:'Fira Code',monospace;font-size:0.8rem;color:var(--text2);line-height:1.7;white-space:pre-wrap;position:relative}
+.prompt-copy{position:absolute;top:10px;right:10px;padding:5px 12px;background:var(--elevated);border:1px solid var(--border);border-radius:8px;font-size:0.72rem;color:var(--text2);cursor:pointer;font-family:'Outfit',sans-serif;transition:0.2s}
+.prompt-copy:hover{border-color:var(--hub);color:var(--hub)}
+/* KONWENCJE */
+.conventions{padding:60px 24px 80px;position:relative;z-index:1}
+.conv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.conv-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px}
+.conv-card h4{font-size:0.88rem;color:var(--hub);margin-bottom:8px;font-family:'Fira Code',monospace;display:flex;align-items:center;gap:7px}
+.conv-card ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.conv-card li{font-size:0.83rem;color:var(--text2);line-height:1.5;padding-left:14px;position:relative}
+.conv-card li::before{content:'→';position:absolute;left:0;color:var(--muted);font-size:0.75rem}
+.conv-card li code{background:rgba(200,180,255,0.1);padding:1px 5px;border-radius:4px;font-size:0.78rem;color:var(--hub);font-family:'Fira Code',monospace}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--panel);border:1px solid rgba(200,180,255,0.2);border-radius:14px;padding:12px 18px;box-shadow:0 8px 40px rgba(0,0,0,0.4);transform:translateY(140%);transition:0.3s;z-index:999;max-width:280px}
+.toast.show{transform:translateY(0)}
+.toast b{display:block;margin-bottom:2px;font-size:0.88rem;color:var(--hub)}
+.toast span{font-size:0.8rem;color:var(--text2)}
+@media(max-width:600px){
+  .subjects-grid{grid-template-columns:1fr}
+  .sc-links{grid-template-columns:1fr}
+  .sc-btn.single{grid-column:1}
+  .hero h1{font-size:3rem}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">🧠</div>
+    Virallo<span style="color:var(--hub)">Edu</span>
+    <span class="nav-badge">MATURA 2025/26</span>
+  </div>
+  <div class="nav-right">
+    <a href="#materialy" class="nav-link">Materiały</a>
+    <a href="#plan" class="nav-link">Plan</a>
+    <a href="#prompty" class="nav-link">Prompty</a>
+    <a href="#konwencje" class="nav-link">Konwencje</a>
+    <a href="emulator_lekcji.html" class="nav-link" style="color:var(--hub);border:1px solid rgba(200,180,255,0.2);border-radius:8px">📚 Emulator</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">🎓 Kompletna platforma edukacyjna pod maturę</div>
+  <h1><span class="v">Virallo</span><span class="l">Edu</span></h1>
+  <p class="hero-sub">SQL, Python, Excel, Access, Fizyka rozszerzona, Matematyka rozszerzona + podstawa. Każdy przedmiot: teoria + interaktywne ćwiczenia na najwyższym poziomie.</p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="h-stat-val">6</div><div class="h-stat-label">przedmiotów</div></div>
+    <div class="h-stat"><div class="h-stat-val">17</div><div class="h-stat-label">plików HTML</div></div>
+    <div class="h-stat"><div class="h-stat-val">9</div><div class="h-stat-label">ukończone</div></div>
+    <div class="h-stat"><div class="h-stat-val">∞</div><div class="h-stat-label">powtórek</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#materialy" class="btn-primary">Przeglądaj materiały →</a>
+    <a href="#prompty" class="btn-secondary">📋 Gotowe prompty</a>
+  </div>
+</section>
+
+<section class="subjects" id="materialy">
+  <div class="section-label">// materiały edukacyjne</div>
+  <h2 class="section-title">Wszystkie materiały</h2>
+  <p class="section-sub">Każdy przedmiot = plik z teorią + plik z ćwiczeniami. Kliknij aby otworzyć.</p>
+
+  <div class="subjects-grid">
+
+    <!-- SQL -->
+    <div class="subject-card" data-color="sql">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2)">🗄️</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">SQL</div>
+      <div class="sc-desc">Kompletna teoria SQL + 757 zadań z izolowanymi tabelami. Obejmuje SELECT, JOIN, GROUP BY, HAVING, DML, DDL, podzapytania — wszystko co leci na maturze informatycznej.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">SELECT</span><span class="sc-mod">JOIN</span><span class="sc-mod">GROUP BY</span>
+        <span class="sc-mod">HAVING</span><span class="sc-mod">DML</span><span class="sc-mod">DDL</span>
+        <span class="sc-mod">Subquery</span><span class="sc-mod">VIEW</span>
+      </div>
+      <div class="sc-links">
+        <a href="sql_teoria.html" class="sc-btn teoria">📚 Teoria SQL</a>
+        <a href="sqledukacja_v25.html" class="sc-btn cwicz">⚡ 757 Zadań</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
+    </div>
+
+    <!-- PYTHON -->
+    <div class="subject-card" data-color="py">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(255,212,59,0.08);border-color:rgba(255,212,59,0.2)">🐍</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">Python</div>
+      <div class="sc-desc">Zmienne, listy, słowniki, pętle, funkcje, pliki, NumPy, algorytmy. Teoria + zadania maturalne z automatycznym sprawdzaniem kodu.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Podstawy</span><span class="sc-mod">Listy/dicts</span><span class="sc-mod">Funkcje</span>
+        <span class="sc-mod">Pliki I/O</span><span class="sc-mod">Algorytmy</span><span class="sc-mod">Matura</span>
+      </div>
+      <div class="sc-links">
+        <a href="python_teoria.html" class="sc-btn teoria">📚 Teoria Py</a>
+        <a href="python_cwiczenia.html" class="sc-btn cwicz">⚡ Zadania Py</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
+    </div>
+
+    <!-- EXCEL -->
+    <div class="subject-card" data-color="xl">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(16,212,142,0.08);border-color:rgba(16,212,142,0.2)">📊</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">Excel</div>
+      <div class="sc-desc">Teoria Excel + 400 zadań interaktywnych z symulatorem arkusza. JEŻELI, WYSZUKAJ.PIONOWO, LICZ.JEŻELI, SUMA.JEŻELI, INDEKS, funkcje tekstowe — wszystko co leci na maturze.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Formuły</span><span class="sc-mod">JEŻELI</span><span class="sc-mod">WYSZUKAJ.PIONOWO</span>
+        <span class="sc-mod">Tabele</span><span class="sc-mod">Wykresy</span><span class="sc-mod">VBA</span>
+      </div>
+      <div class="sc-links">
+        <a href="excel_teoria.html" class="sc-btn teoria">📚 Teoria Excel</a>
+        <a href="excel_trainer.html" class="sc-btn cwicz">⚡ 400 Zadań</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
+    </div>
+
+    <!-- ACCESS -->
+    <div class="subject-card" data-color="ac">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(255,140,66,0.08);border-color:rgba(255,140,66,0.2)">🗂️</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">Access</div>
+      <div class="sc-desc">341 interaktywnych zadań Access SQL z panelem bazy danych jak w prawdziwym programie. Wszystkie specyficzne konstrukcje Access: SELECT TOP, IIF(), Switch(), Mid(), Format(), DateAdd(), kwerendy krzyżowe, parametry.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">SELECT TOP</span><span class="sc-mod">IIF()</span><span class="sc-mod">Switch()</span>
+        <span class="sc-mod">Mid/Format</span><span class="sc-mod">DateAdd</span><span class="sc-mod">TRANSFORM</span>
+      </div>
+      <div class="sc-links">
+        <a href="access_teoria.html" class="sc-btn teoria">📚 Teoria Access</a>
+        <a href="access_trainer.html" class="sc-btn cwicz">⚡ 341 Zadań</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
+    </div>
+
+    <!-- FIZYKA -->
+    <div class="subject-card" data-color="fiz">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(244,63,94,0.08);border-color:rgba(244,63,94,0.2)">⚛️</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">Fizyka Rozszerzona</div>
+      <div class="sc-desc">Pełna teoria CKE (66 tematów, MathJax, quiz 40 pytań, 60 fiszek, kalkulator wzorów) + trainer z zadaniami obliczeniowymi na poziomie rozszerzonym z tolerancją 1%.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Mechanika</span><span class="sc-mod">Termodynamika</span><span class="sc-mod">Elektryczność</span>
+        <span class="sc-mod">Magnetyzm</span><span class="sc-mod">Optyka</span><span class="sc-mod">Kwanty/Jądro</span>
+        <span class="sc-mod">STW</span><span class="sc-mod">MathJax</span>
+      </div>
+      <div class="sc-links">
+        <a href="fizyka_teoria.html" class="sc-btn teoria">📚 Teoria Fizyki</a>
+        <a href="fizyka_trainer.html" class="sc-btn cwicz">⚡ Zadania Fizyki</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:100%"></div></div>
+    </div>
+
+    <!-- MATEMATYKA -->
+    <div class="subject-card" data-color="mat">
+      <div class="sc-top">
+        <div class="sc-icon" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2)">📐</div>
+        <div class="sc-status">
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+          <span class="sc-badge badge-done">✓ GOTOWE</span>
+        </div>
+      </div>
+      <div class="sc-name">Matematyka Rozszerzona</div>
+      <div class="sc-desc">Funkcje, pochodne, całki, ciągi, granice, geometria analityczna, liczby zespolone, kombinatoryka, rachunek prawdopodobieństwa. Pełne przygotowanie na poziom rozszerzony + podstawa.</div>
+      <div class="sc-modules">
+        <span class="sc-mod">Funkcje</span><span class="sc-mod">Pochodne</span><span class="sc-mod">Całki</span>
+        <span class="sc-mod">Ciągi</span><span class="sc-mod">Geometria</span><span class="sc-mod">Statystyka</span>
+      </div>
+      <div class="sc-links">
+        <a href="#" class="sc-btn teoria disabled">📚 Teoria Matmy</a>
+        <a href="#" class="sc-btn cwicz disabled">⚡ Zadania Matmy</a>
+      </div>
+      <div class="sc-progress"><div class="sc-progress-bar" style="width:0%"></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PLAN STRUKTURY -->
+<section class="plan" id="plan">
+<div style="max-width:1100px;margin:0 auto">
+  <div class="section-label" style="text-align:left">// architektura systemu</div>
+  <h2 class="section-title" style="text-align:left;margin-bottom:6px">Plan struktury</h2>
+  <p class="section-sub" style="text-align:left;margin-bottom:28px">Każdy przedmiot = 2 pliki. Spójna konwencja nazewnictwa, identyczna architektura sekcji.</p>
+  <div class="plan-grid">
+    <div class="plan-card">
+      <div class="plan-head"><div class="plan-num">01</div><div class="plan-title">Pliki na przedmiot</div></div>
+      <div class="plan-body">Każdy przedmiot składa się z dokładnie <b>2 plików HTML</b>:<br><br>
+        <code>[przedmiot]_teoria.html</code> — teoria, słownik, moduły, quiz, fiszki, typing, fokus, notatnik<br><br>
+        <code>[przedmiot]_cwiczenia.html</code> — interaktywne zadania z automatycznym sprawdzaniem, izolowane środowisko, baza zadań 500–800+</div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-head"><div class="plan-num">02</div><div class="plan-title">Sekcje w pliku TEORIA</div></div>
+      <div class="plan-body">
+        <b>Hero</b> — branding, poziomy, CTA<br>
+        <b>Roadmapa</b> — checkbox lista tematów z localStorage<br>
+        <b>Słownik</b> — karty z filtrem + wyszukiwarką<br>
+        <b>Moduły</b> — pełna teoria z przykładami i błędami<br>
+        <b>Przykłady</b> — interaktywne przykłady uruchamiane w przeglądarce<br>
+        <b>Quiz</b> — 20–30 pytań z wyjaśnieniami<br>
+        <b>Fiszki</b> — 25–40 kart z TTS, shuffle, mastered<br>
+        <b>Typing Sprint</b> — 15–25 zadań wpisywania<br>
+        <b>Fokus</b> — tryb z timerem i klawiszami<br>
+        <b>Notatnik</b> — builder ściągi z exportem .txt
+      </div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-head"><div class="plan-num">03</div><div class="plan-title">Sekcje w pliku ĆWICZENIA</div></div>
+      <div class="plan-body">
+        <b>Panel nawigacji</b> — filtr kategorii, poziomy, postęp dzienny<br>
+        <b>Lista zadań</b> — po lewej, paginowana, z flagami "znam/nie znam"<br>
+        <b>Edytor</b> — środowisko do pisania kodu/SQL/odpowiedzi<br>
+        <b>Weryfikacja</b> — automatyczne sprawdzanie (sql.js / eval)<br>
+        <b>Podpowiedź + Odpowiedź</b> — ujawnianie stopniowe<br>
+        <b>phpMyAdmin-like panel</b> — podgląd tabel / stanu (dla SQL/Access)<br>
+        <b>Statystyki</b> — dzienne cele, streak, postęp kategorii<br>
+        <b>Reset środowiska</b> — per-zadanie izolowane tabele
+      </div>
+    </div>
+    <div class="plan-card">
+      <div class="plan-head"><div class="plan-num">04</div><div class="plan-title">Palety kolorów per przedmiot</div></div>
+      <div class="plan-body">
+        <span style="color:#00d4ff">■</span> <b>SQL</b> — cyan (#00d4ff) + teal<br>
+        <span style="color:#ffd43b">■</span> <b>Python</b> — gold (#ffd43b) + orange<br>
+        <span style="color:#10d48e">■</span> <b>Excel</b> — green (#10d48e) + emerald<br>
+        <span style="color:#ff8c42">■</span> <b>Access</b> — orange (#ff8c42) + amber<br>
+        <span style="color:#f43f5e">■</span> <b>Fizyka</b> — rose (#f43f5e) + red<br>
+        <span style="color:#3b82f6">■</span> <b>Matematyka</b> — blue (#3b82f6) + indigo<br><br>
+        Tło zawsze: <code>#080c14</code>. Fonty zawsze: Cinzel + Outfit + Fira Code.
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ROADMAP TIMELINE -->
+<section class="roadmap" id="roadmap-full">
+<div style="max-width:900px;margin:0 auto">
+  <div class="section-label" style="text-align:left">// harmonogram produkcji</div>
+  <h2 class="section-title" style="text-align:left;margin-bottom:6px">Harmonogram</h2>
+  <p class="section-sub" style="text-align:left;margin-bottom:32px">Co jest gotowe, co w trakcie, co do zrobienia.</p>
+  <div class="roadmap-list">
+    <div class="rm-item done">
+      <div class="rm-dot"><div class="rm-circle">✓</div></div>
+      <div class="rm-body">
+        <div class="rm-tag">// 01 — GOTOWE</div>
+        <div class="rm-name">SQL — Teoria + Ćwiczenia</div>
+        <div class="rm-desc">Kompletna teoria z 9 sekcjami interaktywnymi. 757 zadań z izolowanymi tabelami per zadanie, phpMyAdmin panel, kategoryzacja, postęp dzienny.</div>
+        <div class="rm-files">
+          <span class="rm-file file-done">sql_teoria.html</span>
+          <span class="rm-file file-done">sqledukacja_v25.html</span>
+        </div>
+      </div>
+    </div>
+    <div class="rm-item done">
+      <div class="rm-dot"><div class="rm-circle">✓</div></div>
+      <div class="rm-body">
+        <div class="rm-tag">// 02 — GOTOWE</div>
+        <div class="rm-name">Python — Teoria</div>
+        <div class="rm-desc">Kompletna teoria: roadmapa, słownik 40+ kart, 6 modułów teorii, rozbudowana sekcja interaktywnych przykładów (pętle, warunki, listy, słowniki, funkcje, klasy, wyjątki, pliki, os/sys, math, random, str), sandbox Skulpt.js, quiz 25 pytań, fiszki, typing, fokus, notatnik. Ćwiczenia w planach.</div>
+        <div class="rm-files">
+          <span class="rm-file file-done">python_teoria.html</span>
+          <span class="rm-file file-soon">python_cwiczenia.html</span>
+        </div>
+      </div>
+    </div>
+    <div class="rm-item done">
+      <div class="rm-dot"><div class="rm-circle">✓</div></div>
+      <div class="rm-body">
+        <div class="rm-tag">// 03 — GOTOWE</div>
+        <div class="rm-name">Excel — Teoria</div>
+        <div class="rm-desc">Kompletna teoria: roadmapa 6 poziomów, słownik 30+ kart (polskie nazwy funkcji), 6 modułów teorii, symulator formuł z obsługą JEŻELI/SUMA.JEŻELI/WYSZUKAJ.PIONOWO, quiz 25 pytań, fiszki 30 kart, typing sprint, fokus, notatnik. Ćwiczenia w planach.</div>
+        <div class="rm-files">
+          <span class="rm-file file-done">excel_teoria.html</span>
+          <span class="rm-file file-soon">excel_cwiczenia.html</span>
+        </div>
+      </div>
+    </div>
+    <div class="rm-item soon">
+      <div class="rm-dot"><div class="rm-circle">4</div></div>
+      <div class="rm-body">
+        <div class="rm-tag">// 04 — DO ZROBIENIA</div>
+        <div class="rm-name">Access — Teoria + Ćwiczenia</div>
+        <div class="rm-desc">Specyfika MS Access vs SQL: TOP zamiast LIMIT, IIF() zamiast CASE, relacje w GUI. sql.js jako silnik z mapowaniem składni.</div>
+        <div class="rm-files">
+          <span class="rm-file file-soon">access_teoria.html</span>
+          <span class="rm-file file-soon">access_cwiczenia.html</span>
+        </div>
+      </div>
+    </div>
+    <div class="rm-item soon">
+      <div class="rm-dot"><div class="rm-circle">5</div></div>
+      <div class="rm-body">
+        <div class="rm-tag">// 05 — GOTOWE</div>
+        <div class="rm-name">Fizyka Rozszerzona — Teoria + Ćwiczenia</div>
+        <div class="rm-desc">Komplet fizyki rozszerzonej CKE. Teoria: 66 tematów, MathJax 3, quiz 40 pytań, 60 fiszek, kalkulator 6 wzorów, stałe fizyczne, notatnik. Trainer: zadania obliczeniowe z tolerancją 1%, wszystkie działy.</div>
+        <div class="rm-files">
+          <span class="rm-file file-done">fizyka_teoria.html</span>
+          <span class="rm-file file-done">fizyka_trainer.html</span>
         </div>
       </div>
     </div>
