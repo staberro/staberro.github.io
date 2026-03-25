@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUDLEP — Instalacje & Budownictwo od 1986</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+/* ===========================================================================
+   COLORS — extracted from BUDLEP logo:
+   Blue  #049ddf  (right roof)
+   Red   #dc0916  (left element)
+   Dark  #2d2d2d  (house outline + text)
+   =========================================================================== */
+:root{
+  --blue:#049ddf;
+  --blue-hover:#0bb0f5;
+  --blue-subtle:rgba(4,157,223,.07);
+  --blue-glow:rgba(4,157,223,.15);
+  --red:#dc0916;
+  --red-hover:#f01a27;
+  --red-subtle:rgba(220,9,22,.06);
+  --dark:#2d2d2d;
+  --darker:#1a1a1a;
+
+  /* LIGHT (default) */
+  --bg-base:#ffffff;
+  --bg-alt:#f5f7fa;
+  --bg-card:#ffffff;
+  --surface-border:rgba(0,0,0,.07);
+  --text-heading:#1a1a1a;
+  --text-body:#4a5568;
+  --text-muted:#8896a8;
+  --accent:var(--blue);
+  --accent-hover:var(--blue-hover);
+  --accent-subtle:var(--blue-subtle);
+  --accent-glow:var(--blue-glow);
+  --accent2:var(--red);
+  --shadow-card:0 2px 16px rgba(0,0,0,.05);
+  --shadow-hover:0 12px 40px rgba(4,157,223,.1);
+  --hero-overlay:linear-gradient(135deg,rgba(255,255,255,.93) 0%,rgba(255,255,255,.45) 55%,rgba(255,255,255,.85) 100%);
+  --cta-bg:var(--dark);
+  --tr:background .4s,color .4s,border-color .4s,box-shadow .4s;
+}
+[data-theme="dark"]{
+  --bg-base:#0e1117;
+  --bg-alt:#161b26;
+  --bg-card:#1c2233;
+  --surface-border:rgba(255,255,255,.07);
+  --text-heading:#edf0f5;
+  --text-body:#a8b4c8;
+  --text-muted:#6a7a92;
+  --shadow-card:0 4px 24px rgba(0,0,0,.3);
+  --shadow-hover:0 16px 48px rgba(4,157,223,.12);
+  --hero-overlay:linear-gradient(135deg,rgba(14,17,23,.93) 0%,rgba(14,17,23,.5) 55%,rgba(14,17,23,.88) 100%);
+  --cta-bg:#1c2233;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'Rubik',system-ui,sans-serif;background:var(--bg-base);color:var(--text-body);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:var(--tr)}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}ul{list-style:none}
+
+/* ANIMATIONS */
+.rv{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.rv.v{opacity:1;transform:translateY(0)}
+.rvl{opacity:0;transform:translateX(-50px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.rvl.v{opacity:1;transform:translateX(0)}
+.rvr{opacity:0;transform:translateX(50px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.rvr.v{opacity:1;transform:translateX(0)}
+.sg .rv:nth-child(1){transition-delay:0s}.sg .rv:nth-child(2){transition-delay:.08s}.sg .rv:nth-child(3){transition-delay:.16s}
+.sg .rv:nth-child(4){transition-delay:.24s}.sg .rv:nth-child(5){transition-delay:.32s}.sg .rv:nth-child(6){transition-delay:.4s}
+.sg .rv:nth-child(7){transition-delay:.48s}.sg .rv:nth-child(8){transition-delay:.56s}
+
+/* HERO WORD REVEAL */
+.hw{display:inline-block;overflow:hidden}
+.hw span{display:inline-block;transform:translateY(115%);animation:wr .8s cubic-bezier(.22,1,.36,1) forwards}
+.hw:nth-child(1) span{animation-delay:.1s}
+.hw:nth-child(2) span{animation-delay:.25s}
+.hw:nth-child(3) span{animation-delay:.4s}
+.hw:nth-child(4) span{animation-delay:.55s}
+.hw:nth-child(5) span{animation-delay:.7s}
+.hw:nth-child(6) span{animation-delay:.85s}
+@keyframes wr{to{transform:translateY(0)}}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.container{max-width:1240px;margin:0 auto;padding:0 2rem}
+
+/* ============ NAVBAR ============ */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2.5rem;height:70px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.88);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--surface-border);transition:var(--tr)}
+[data-theme="dark"] .navbar{background:rgba(14,17,23,.85)}
+
+.nav-logo{display:flex;align-items:center;gap:.65rem}
+.nav-logo img{height:42px;transition:.3s}
+.nav-logo-text{font-weight:800;font-size:1.25rem;letter-spacing:2.5px;color:var(--text-heading);transition:var(--tr)}
+
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-size:.76rem;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s cubic-bezier(.22,1,.36,1)}
+.nav-links a:hover{color:var(--text-heading)}
+.nav-links a:hover::after{width:100%}
+
+.nav-actions{display:flex;align-items:center;gap:.7rem}
+.theme-toggle{width:36px;height:36px;background:var(--bg-alt);border:1px solid var(--surface-border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;transition:all .3s;color:var(--text-body)}
+[data-theme="dark"] .theme-toggle{background:var(--bg-card)}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.nav-cta{padding:.55rem 1.4rem;background:var(--accent);color:#fff;font-family:'Rubik',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;border:none;border-radius:7px;cursor:pointer;transition:all .3s}
+.nav-cta:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 6px 18px rgba(4,157,223,.25)}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover}
+.hero-bg::after{content:'';position:absolute;inset:0;background:var(--hero-overlay);transition:var(--tr)}
+.hero-content{position:relative;z-index:1;padding:7rem 0 4rem}
+.hero h1{font-size:clamp(2.5rem,5.8vw,4.5rem);font-weight:800;line-height:1.1;color:var(--text-heading);margin-bottom:1.6rem;transition:var(--tr)}
+/* Blue word */
+.hero h1 .bl{color:var(--blue)}
+/* Red word */
+.hero h1 .rl{color:var(--red)}
+.hero-sub{font-size:.98rem;color:var(--text-body);max-width:530px;line-height:1.8;margin-bottom:2.25rem;opacity:0;animation:fu .7s 1.1s cubic-bezier(.22,1,.36,1) forwards}
+.hero-actions{display:flex;gap:.9rem;flex-wrap:wrap;opacity:0;animation:fu .7s 1.3s cubic-bezier(.22,1,.36,1) forwards}
+.btn{padding:.85rem 1.9rem;font-family:'Rubik',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.3px;border-radius:8px;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:.45rem;border:none}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:var(--blue-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(4,157,223,.25)}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(220,9,22,.2)}
+.btn-o{background:transparent;color:var(--text-heading);border:1.5px solid var(--surface-border)}
+.btn-o:hover{border-color:var(--accent);color:var(--accent)}
+
+.hero-signet{position:absolute;right:7%;bottom:13%;width:108px;height:108px;border:2px solid var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;animation:fu .7s 1.7s cubic-bezier(.22,1,.36,1) forwards;z-index:1}
+.hero-signet-in{text-align:center;font-weight:700;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);line-height:1.4}
+.hero-signet-in strong{display:block;font-size:1.8rem;font-weight:800;color:var(--text-heading);margin:2px 0}
+
+/* ============ STATS ============ */
+.stats-bar{border-top:1px solid var(--surface-border);border-bottom:1px solid var(--surface-border);background:var(--bg-alt);transition:var(--tr)}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.stat-item{padding:2.25rem 1rem;border-right:1px solid var(--surface-border);transition:var(--tr)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-size:2.6rem;font-weight:800;line-height:1}
+/* Alternating blue/red on stat numbers */
+.stat-item:nth-child(odd) .stat-num{color:var(--blue)}
+.stat-item:nth-child(even) .stat-num{color:var(--red)}
+.stat-num small{font-size:1.3rem}
+.stat-lbl{font-size:.7rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:.45rem}
+
+/* ============ SECTIONS ============ */
+.section{padding:6rem 0;transition:var(--tr)}
+.section-alt{background:var(--bg-alt)}
+.section-header{margin-bottom:3rem}
+.s-label{display:inline-flex;align-items:center;gap:.7rem;font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:1rem}
+.s-label::before{content:'';width:28px;height:2px;background:var(--blue)}
+.s-title{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:700;color:var(--text-heading);line-height:1.25;margin-bottom:.8rem;transition:var(--tr)}
+.s-desc{font-size:.92rem;color:var(--text-muted);max-width:550px;line-height:1.7}
+
+/* ============ SERVICES (horizontal scroll) ============ */
+.svc-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:.5rem}
+.svc-wrap::-webkit-scrollbar{display:none}
+.svc-track{display:flex;gap:1.25rem;padding:0 2rem;width:max-content}
+.svc-card{flex:0 0 310px;scroll-snap-align:start;background:var(--bg-card);border:1px solid var(--surface-border);border-radius:14px;overflow:hidden;transition:all .35s cubic-bezier(.22,1,.36,1);cursor:pointer}
+.svc-card:hover{border-color:var(--accent-glow);transform:translateY(-5px);box-shadow:var(--shadow-hover)}
+.svc-img{height:195px;overflow:hidden;position:relative;background:var(--bg-alt)}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.svc-card:hover .svc-img img{transform:scale(1.06)}
+.svc-body{padding:1.3rem 1.4rem 1.6rem}
+.svc-num{font-size:.78rem;color:var(--blue);font-weight:700;margin-bottom:.3rem;letter-spacing:.5px}
+.svc-card h3{font-size:1.1rem;font-weight:700;color:var(--text-heading);margin-bottom:.5rem;transition:var(--tr)}
+.svc-card p{font-size:.83rem;color:var(--text-muted);line-height:1.6}
+.svc-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:1rem;font-size:.74rem;font-weight:700;color:var(--red);letter-spacing:.3px;transition:gap .3s}
+.svc-card:hover .svc-link{gap:.7rem}
+.scroll-hint{display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:1.2rem;padding-left:2rem}
+.scroll-hint span{display:inline-block;animation:sb 1.5s infinite}
+@keyframes sb{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+/* ============ ABOUT ============ */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
+.about-img{position:relative;border-radius:14px;overflow:hidden}
+.about-img img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.about-badge{position:absolute;bottom:1.25rem;left:1.25rem;background:var(--blue);color:#fff;padding:.85rem 1.3rem;border-radius:10px;display:flex;align-items:center;gap:.6rem}
+.about-badge strong{font-size:1.9rem;font-weight:800}
+.about-badge span{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;line-height:1.3}
+.about-text p{margin-bottom:1rem;line-height:1.75;font-size:.9rem}
+.about-feats{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:1.5rem}
+.af{padding:1.1rem;background:var(--bg-alt);border:1px solid var(--surface-border);border-radius:10px;transition:all .3s}
+[data-theme="dark"] .af{background:var(--bg-card)}
+.af:hover{border-color:var(--accent-glow)}
+.af-icon{width:32px;height:32px;background:var(--blue-subtle);border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:.5rem;font-size:.9rem}
+.af h4{font-size:.83rem;font-weight:700;color:var(--text-heading);margin-bottom:.2rem;transition:var(--tr)}
+.af p{font-size:.73rem;color:var(--text-muted);line-height:1.45;margin:0}
+
+/* ============ PROCESS ============ */
+.proc-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.proc-steps::before{content:'';position:absolute;top:46px;left:12.5%;right:12.5%;height:2px;background:var(--surface-border)}
+.proc{text-align:center;position:relative;padding:0 1.2rem}
+.proc-dot{width:16px;height:16px;background:var(--blue);border:3px solid var(--bg-base);border-radius:50%;margin:38px auto 1.5rem;position:relative;z-index:1;transition:var(--tr)}
+.proc:nth-child(even) .proc-dot{background:var(--red)}
+.proc-n{font-size:3rem;font-weight:800;line-height:1}
+.proc:nth-child(odd) .proc-n{color:var(--blue-subtle)}
+.proc:nth-child(even) .proc-n{color:var(--red-subtle)}
+[data-theme="dark"] .proc-n{opacity:.3}
+.proc h3{font-size:1rem;font-weight:700;color:var(--text-heading);margin-bottom:.5rem;transition:var(--tr)}
+.proc p{font-size:.8rem;color:var(--text-muted);line-height:1.6}
+
+/* ============ REALIZATIONS ============ */
+.real-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem}
+.real-card{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:4/3;cursor:pointer;background:var(--bg-alt)}
+.real-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.real-card:hover img{transform:scale(1.05)}
+.real-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(26,26,26,.9) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.4rem;opacity:0;transition:opacity .35s}
+.real-card:hover .real-ov{opacity:1}
+.real-ov span{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.2rem}
+.real-ov h3{font-size:1rem;font-weight:700;color:#fff}
+
+/* ============ TRUSTED ============ */
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-top:1.75rem}
+.tc{padding:1.6rem 1.2rem;background:var(--bg-card);border:1px solid var(--surface-border);border-radius:10px;text-align:center;transition:all .3s}
+.tc:hover{border-color:var(--accent-glow);transform:translateY(-3px);box-shadow:var(--shadow-card)}
+.tc-name{font-size:1rem;font-weight:700;color:var(--text-heading);margin-bottom:.2rem;transition:var(--tr)}
+.tc-desc{font-size:.7rem;color:var(--text-muted)}
+
+/* ============ CTA ============ */
+.cta-banner{background:var(--cta-bg);position:relative;overflow:hidden;text-align:center}
+.cta-banner .s-title{color:#fff;max-width:600px;margin:0 auto .9rem}
+.cta-banner .s-desc{color:rgba(255,255,255,.65);max-width:470px;margin:0 auto 2rem}
+.cta-banner .s-label{color:var(--blue)}
+.cta-banner .s-label::before{background:var(--blue)}
+
+/* ============ CONTACT ============ */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:3.5rem}
+.c-list{display:flex;flex-direction:column;gap:1.4rem}
+.c-item{display:flex;gap:.85rem;align-items:flex-start}
+.c-icon{width:40px;height:40px;min-width:40px;background:var(--blue-subtle);border:1px solid var(--blue-glow);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+.c-item h4{font-size:.83rem;font-weight:700;color:var(--text-heading);margin-bottom:.15rem;transition:var(--tr)}
+.c-item p{font-size:.8rem}
+.c-item a{color:var(--blue)}
+.c-item a:hover{text-decoration:underline}
+.socials{display:flex;gap:.5rem;margin-top:1.2rem}
+.soc{width:38px;height:38px;background:var(--bg-alt);border:1px solid var(--surface-border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .3s;color:var(--text-body)}
+[data-theme="dark"] .soc{background:var(--bg-card)}
+.soc:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.cf{display:flex;flex-direction:column;gap:1rem}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.ff{display:flex;flex-direction:column;gap:.3rem}
+.ff label{font-size:.7rem;font-weight:700;letter-spacing:.3px;color:var(--text-muted)}
+.ff input,.ff textarea,.ff select{padding:.72rem .85rem;background:var(--bg-alt);border:1px solid var(--surface-border);border-radius:8px;color:var(--text-heading);font-family:'Rubik',sans-serif;font-size:.84rem;outline:none;transition:all .3s}
+[data-theme="dark"] .ff input,[data-theme="dark"] .ff textarea,[data-theme="dark"] .ff select{background:var(--bg-card)}
+.ff input:focus,.ff textarea:focus,.ff select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-subtle)}
+.ff textarea{min-height:100px;resize:vertical}
+.f-consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.73rem;color:var(--text-muted);line-height:1.5}
+.f-consent input[type="checkbox"]{width:16px;height:16px;min-width:16px;margin-top:2px;accent-color:var(--blue)}
+.f-consent a{color:var(--blue)}
+.f-btn{padding:.82rem 1.9rem;background:var(--blue);color:#fff;font-family:'Rubik',sans-serif;font-size:.8rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all .3s;align-self:flex-start}
+.f-btn:hover{background:var(--blue-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(4,157,223,.2)}
+
+/* ============ FOOTER ============ */
+.footer{padding:3rem 0 1.5rem;border-top:1px solid var(--surface-border);background:var(--bg-alt);transition:var(--tr)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:2.5rem}
+.footer-brand-text{font-size:.8rem;color:var(--text-muted);line-height:1.6;margin-top:.8rem;max-width:260px}
+.footer-col h4{font-size:.68rem;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-heading);margin-bottom:1rem;transition:var(--tr)}
+.footer-col ul{display:flex;flex-direction:column;gap:.4rem}
+.footer-col a{font-size:.8rem;color:var(--text-muted);transition:color .3s}
+.footer-col a:hover{color:var(--blue)}
+.footer-bottom{margin-top:2.25rem;padding-top:1.25rem;border-top:1px solid var(--surface-border);display:flex;justify-content:space-between;align-items:center;font-size:.73rem;color:var(--text-muted)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1024px){
+.stats-inner{grid-template-columns:repeat(2,1fr)}.stat-item:nth-child(2){border-right:none}
+.about-grid,.contact-grid{grid-template-columns:1fr}
+.proc-steps{grid-template-columns:repeat(2,1fr);gap:1.5rem}.proc-steps::before{display:none}
+.footer-grid{grid-template-columns:1fr 1fr}
+.real-grid,.trust-grid{grid-template-columns:1fr 1fr}
+.nav-links{display:none}.hero-signet{display:none}
+}
+@media(max-width:640px){
+.stats-inner{grid-template-columns:1fr 1fr}.proc-steps{grid-template-columns:1fr}
+.about-feats,.fr{grid-template-columns:1fr}
+.footer-grid,.real-grid,.trust-grid{grid-template-columns:1fr}
+.svc-card{flex:0 0 275px}.navbar{padding:0 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="#" class="nav-logo">
+    <img src="budlep-logo.png" alt="BUDLEP">
+    <div class="nav-logo-text">BUDLEP</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#uslugi">Usługi</a></li>
+    <li><a href="#o-firmie">O firmie</a></li>
+    <li><a href="#realizacje">Realizacje</a></li>
+    <li><a href="#zaufali">Klienci</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" aria-label="Zmień motyw">☀️</button>
+    <button class="nav-cta" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Kontakt</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.pexels.com/photos/8486972/pexels-photo-8486972.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="Technik instalacji">
+  </div>
+  <div class="container hero-content">
+    <h1>
+      <span class="hw"><span>kompleksowe</span></span>
+      <span class="hw"><span class="bl">instalacje</span></span><br>
+      <span class="hw"><span>grzewcze,</span></span>
+      <span class="hw"><span>klimatyzacyjne</span></span><br>
+      <span class="hw"><span>i</span></span>
+      <span class="hw"><span class="rl">sanitarne</span></span>
+    </h1>
+    <p class="hero-sub">Od 1986 roku projektujemy, montujemy i serwisujemy nowoczesne systemy grzewcze, klimatyzacyjne, gazowe i wodno-kanalizacyjne. Działamy na Śląsku i w całej Polsce.</p>
+    <div class="hero-actions">
+      <button class="btn btn-blue" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Bezpłatna wycena →</button>
+      <button class="btn btn-o" onclick="document.getElementById('uslugi').scrollIntoView({behavior:'smooth'})">Poznaj ofertę</button>
+    </div>
+  </div>
+  <div class="hero-signet"><div class="hero-signet-in">od<br><strong>1986</strong>na rynku</div></div>
+</section>
+
+<!-- STATS -->
+<section class="stats-bar rv">
+  <div class="container stats-inner">
+    <div class="stat-item"><div class="stat-num" data-target="38" data-suffix="+">0</div><div class="stat-lbl">Lat doświadczenia</div></div>
+    <div class="stat-item"><div class="stat-num" data-target="2000" data-suffix="+">0</div><div class="stat-lbl">Zrealizowanych projektów</div></div>
+    <div class="stat-item"><div class="stat-num" data-target="10" data-suffix="+">0</div><div class="stat-lbl">Marek partnerskich</div></div>
+    <div class="stat-item"><div class="stat-num" data-target="100" data-suffix="%">0</div><div class="stat-lbl">Satysfakcji klientów</div></div>
+  </div>
+</section>
+
+<!-- USŁUGI -->
+<section class="section" id="uslugi">
+  <div class="container">
+    <div class="section-header rv">
+      <div class="s-label">Nasza oferta</div>
+      <h2 class="s-title">Projektujemy, montujemy<br>i serwisujemy instalacje</h2>
+      <p class="s-desc">Od doradztwa i projektu, przez wykonawstwo, po wieloletnią opiekę serwisową — zapewniamy pełną obsługę.</p>
+    </div>
+  </div>
+  <div class="svc-wrap">
+    <div class="svc-track sg">
+      <div class="svc-card rv">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/7108211/pexels-photo-7108211.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Kotłownia gazowa"></div>
+        <div class="svc-body"><div class="svc-num">01</div><h3>Instalacje grzewcze</h3><p>Kotłownie gazowe i olejowe, ogrzewanie podłogowe, grzejniki. Montaż i serwis kotłów renomowanych producentów.</p><div class="svc-link">Dowiedz się więcej →</div></div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/4489732/pexels-photo-4489732.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Montaż klimatyzacji"></div>
+        <div class="svc-body"><div class="svc-num">02</div><h3>Klimatyzacja i wentylacja</h3><p>Systemy do domów, biur, sklepów i obiektów komercyjnych. Montaż urządzeń Daikin, LG, Rotenso, Midea.</p><div class="svc-link">Dowiedz się więcej →</div></div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Instalacja hydrauliczna"></div>
+        <div class="svc-body"><div class="svc-num">03</div><h3>Instalacje wod-kan i gazowe</h3><p>Kompleksowe instalacje wodne, kanalizacyjne i gazowe dla budownictwa mieszkaniowego i komercyjnego.</p><div class="svc-link">Dowiedz się więcej →</div></div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/8486967/pexels-photo-8486967.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Pompa ciepła"></div>
+        <div class="svc-body"><div class="svc-num">04</div><h3>Pompy ciepła</h3><p>Nowoczesne pompy ciepła powietrze-woda i gruntowe. Ekologiczne ogrzewanie z dotacjami Czyste Powietrze.</p><div class="svc-link">Dowiedz się więcej →</div></div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/5463576/pexels-photo-5463576.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Kotłownia i wymiennikownia"></div>
+        <div class="svc-body"><div class="svc-num">05</div><h3>Kotłownie i wymiennikownie</h3><p>Projektowanie, budowa i modernizacja kotłowni gazowych, olejowych oraz węzłów cieplnych i wymiennikowni.</p><div class="svc-link">Dowiedz się więcej →</div></div>
+      </div>
+      <div class="svc-card rv">
+        <div class="svc-img"><img src="https://images.pexels.com/photos/8005397/pexels-photo-8005397.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Serwisant"></div>
+        <div class="svc-body"><div class="svc-num">06</div><h3>Serwis i przeglądy</h3><p>Obsługa gwarancyjna i pogwarancyjna. Przeglądy kotłów, klimatyzatorów i instalacji gazowych.</p><div class="svc-link">Dowiedz się więcej →</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="container"><div class="scroll-hint">Scrolluj w bok <span>→</span></div></div>
+</section>
+
+<!-- O FIRMIE -->
+<section class="section section-alt" id="o-firmie">
+  <div class="container">
+    <div class="section-header rv">
+      <div class="s-label">O firmie</div>
+      <h2 class="s-title">Tradycja i nowoczesność<br>od ponad 38 lat</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-img rvl">
+        <img src="https://images.pexels.com/photos/8005368/pexels-photo-8005368.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Zespół techników">
+        <div class="about-badge"><strong>1986</strong><span>rok<br>założenia</span></div>
+      </div>
+      <div class="about-text rvr">
+        <p>BUDLEP to rodzinna firma ze Świętochłowic z tradycjami sięgającymi 1986 roku. Specjalizujemy się w kompleksowym wykonawstwie instalacji grzewczych, klimatyzacyjnych, wodnych, gazowych i kanalizacyjnych.</p>
+        <p>Obsługujemy klientów indywidualnych, obiekty handlowe, centra dystrybucyjne i obiekty użyteczności publicznej na terenie Śląska i Polski.</p>
+        <p>Współpracujemy z najlepszymi producentami — Daikin, Bosch, Buderus, LG, Rotenso, Midea, De Dietrich, Hoval, Brötje.</p>
+        <div class="about-feats sg">
+          <div class="af rv"><div class="af-icon">🛡️</div><h4>Gwarancja jakości</h4><p>Profesjonalne montaże z gwarancją</p></div>
+          <div class="af rv"><div class="af-icon">⚡</div><h4>Szybka realizacja</h4><p>Sprawna organizacja i terminowość</p></div>
+          <div class="af rv"><div class="af-icon">🔧</div><h4>Serwis całoroczny</h4><p>Przeglądy i naprawy cały rok</p></div>
+          <div class="af rv"><div class="af-icon">🌱</div><h4>Eko rozwiązania</h4><p>Pompy ciepła, systemy oszczędne</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header rv" style="text-align:center">
+      <div class="s-label" style="justify-content:center;display:flex">Jak pracujemy</div>
+      <h2 class="s-title">Proces realizacji</h2>
+      <p class="s-desc" style="margin:0 auto">Od pierwszego kontaktu do gotowej instalacji — każdy etap jest zaplanowany.</p>
+    </div>
+    <div class="proc-steps sg" style="margin-top:1.5rem">
+      <div class="proc rv"><div class="proc-n">01</div><div class="proc-dot"></div><h3>Doradzamy</h3><p>Bezpłatna wizyta i analiza potrzeb. Dobór rozwiązania pod budżet.</p></div>
+      <div class="proc rv"><div class="proc-n">02</div><div class="proc-dot"></div><h3>Projektujemy</h3><p>Szczegółowa oferta z harmonogramem i kosztorysem.</p></div>
+      <div class="proc rv"><div class="proc-n">03</div><div class="proc-dot"></div><h3>Realizujemy</h3><p>Montaż przez wykwalifikowany zespół z najwyższymi standardami.</p></div>
+      <div class="proc rv"><div class="proc-n">04</div><div class="proc-dot"></div><h3>Serwisujemy</h3><p>Opieka gwarancyjna, pogwarancyjna i gotowość serwisowa.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REALIZACJE -->
+<section class="section section-alt" id="realizacje">
+  <div class="container">
+    <div class="section-header rv">
+      <div class="s-label">Realizacje</div>
+      <h2 class="s-title">Wybrane projekty</h2>
+      <p class="s-desc">Setki zrealizowanych instalacji — od domów po centra dystrybucyjne i obiekty handlowe.</p>
+    </div>
+    <div class="real-grid sg">
+      <div class="real-card rv"><img src="https://images.pexels.com/photos/1427107/pexels-photo-1427107.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Hala"><div class="real-ov"><span>Klimatyzacja obiektowa</span><h3>Centrum dystrybucyjne Lidl, Gliwice</h3></div></div>
+      <div class="real-card rv"><img src="https://images.pexels.com/photos/264507/pexels-photo-264507.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Sklep"><div class="real-ov"><span>Grzewcze i klimatyzacja</span><h3>Martes Sport — sieć sklepów</h3></div></div>
+      <div class="real-card rv"><img src="https://images.pexels.com/photos/3965545/pexels-photo-3965545.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Sklep spożywczy"><div class="real-ov"><span>Serwis klimatyzacji</span><h3>Sklepy ALDI — serwis całoroczny</h3></div></div>
+      <div class="real-card rv"><img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Dom"><div class="real-ov"><span>Pompa ciepła + kotłownia</span><h3>Domy jednorodzinne, Śląsk</h3></div></div>
+      <div class="real-card rv"><img src="https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Galeria"><div class="real-ov"><span>Klimatyzacja i wentylacja</span><h3>Moris — CH, Chorzów</h3></div></div>
+      <div class="real-card rv"><img src="https://images.pexels.com/photos/1661535/pexels-photo-1661535.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Zoo"><div class="real-ov"><span>Instalacje techniczne</span><h3>Śląski Ogród Zoologiczny</h3></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ZAUFALI NAM -->
+<section class="section" id="zaufali">
+  <div class="container">
+    <div class="section-header rv" style="text-align:center">
+      <div class="s-label" style="justify-content:center;display:flex">Klienci</div>
+      <h2 class="s-title">Zaufali nam</h2>
+      <p class="s-desc" style="margin:0 auto">Obsługujemy sieci handlowe, centra dystrybucyjne i obiekty użyteczności publicznej.</p>
+    </div>
+    <div class="trust-grid sg">
+      <div class="tc rv"><div class="tc-name">Martes Sport</div><div class="tc-desc">Sieć sklepów sportowych</div></div>
+      <div class="tc rv"><div class="tc-name">CCC</div><div class="tc-desc">Sieć obuwnicza</div></div>
+      <div class="tc rv"><div class="tc-name">Śląskie Zoo</div><div class="tc-desc">Ogród Zoologiczny</div></div>
+      <div class="tc rv"><div class="tc-name">Lidl</div><div class="tc-desc">Centrum dystrybucyjne, Gliwice</div></div>
+      <div class="tc rv"><div class="tc-name">ALDI</div><div class="tc-desc">Sieć sklepów — serwis</div></div>
+      <div class="tc rv"><div class="tc-name">Moris</div><div class="tc-desc">CH Chorzów</div></div>
+      <div class="tc rv"><div class="tc-name">Iguana</div><div class="tc-desc">Obiekty handlowe</div></div>
+      <div class="tc rv"><div class="tc-name">Erbrus</div><div class="tc-desc">Obiekty komercyjne</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-banner">
+  <div class="container" style="position:relative;z-index:1">
+    <div class="s-label rv" style="justify-content:center;display:flex">Zapraszamy</div>
+    <h2 class="s-title rv">Potrzebujesz instalacji grzewczej<br>lub klimatyzacji?</h2>
+    <p class="s-desc rv" style="transition-delay:.1s">Skontaktuj się i otrzymaj bezpłatną wycenę dopasowaną do Twoich potrzeb.</p>
+    <button class="btn btn-blue rv" style="transition-delay:.2s" onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">Napisz do nas →</button>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="section section-alt" id="kontakt">
+  <div class="container">
+    <div class="section-header rv">
+      <div class="s-label">Kontakt</div>
+      <h2 class="s-title">Porozmawiajmy<br>o Twoim projekcie</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="c-list rvl">
+        <div class="c-item"><div class="c-icon">📍</div><div><h4>Adres</h4><p>ul. Wyzwolenia 12<br>41-600 Świętochłowice</p></div></div>
+        <div class="c-item"><div class="c-icon">📞</div><div><h4>Telefon</h4><p><a href="tel:327701400">32 770 14 00</a><br><a href="tel:502082856">502 082 856</a></p></div></div>
+        <div class="c-item"><div class="c-icon">✉️</div><div><h4>E-mail</h4><p><a href="mailto:biuro@budlep.pl">biuro@budlep.pl</a></p></div></div>
+        <div class="c-item"><div class="c-icon">🕐</div><div><h4>Godziny pracy</h4><p>Pon – Pt: 7:00 – 16:00</p></div></div>
+        <div class="socials">
+          <a href="https://www.facebook.com/budleplep/" target="_blank" class="soc">f</a>
+          <a href="https://www.instagram.com/budlep.pl/" target="_blank" class="soc">ig</a>
+        </div>
+      </div>
+      <form class="cf rvr" onsubmit="event.preventDefault();this.querySelector('.f-btn').textContent='✓ Wysłano!';setTimeout(()=>this.querySelector('.f-btn').textContent='Wyślij wiadomość →',3000)">
+        <div class="fr">
+          <div class="ff"><label>Imię i nazwisko *</label><input type="text" placeholder="Jan Kowalski" required></div>
+          <div class="ff"><label>Telefon *</label><input type="tel" placeholder="500 000 000" required></div>
+        </div>
+        <div class="ff"><label>E-mail *</label><input type="email" placeholder="jan@email.pl" required></div>
+        <div class="ff"><label>Rodzaj usługi</label>
+          <select><option value="">Wybierz usługę...</option><option>Instalacja grzewcza / kotłownia</option><option>Klimatyzacja</option><option>Pompa ciepła</option><option>Kotłownia / wymiennikownia</option><option>Instalacja wod-kan / gazowa</option><option>Serwis / przegląd</option><option>Inne</option></select>
+        </div>
+        <div class="ff"><label>Wiadomość *</label><textarea placeholder="Opisz swoje potrzeby..." required></textarea></div>
+        <div class="f-consent"><input type="checkbox" required><span>Wyrażam zgodę na przetwarzanie danych osobowych przez BUDLEP Sp. z o.o. zgodnie z <a href="#">Polityką Prywatności</a>.</span></div>
+        <button type="submit" class="f-btn">Wyślij wiadomość →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#" class="nav-logo">
+          <img src="budlep-logo.png" alt="BUDLEP" style="height:36px">
+          <div class="nav-logo-text" style="font-size:1.1rem">BUDLEP</div>
+        </a>
+        <p class="footer-brand-text">Instalacje grzewcze, klimatyzacyjne i sanitarne. Działamy na Śląsku od 1986 roku.</p>
+      </div>
+      <div class="footer-col"><h4>Usługi</h4><ul><li><a href="#">Ogrzewanie</a></li><li><a href="#">Klimatyzacja</a></li><li><a href="#">Pompy ciepła</a></li><li><a href="#">Kotłownie</a></li><li><a href="#">Serwis</a></li></ul></div>
+      <div class="footer-col"><h4>Firma</h4><ul><li><a href="#">O nas</a></li><li><a href="#">Realizacje</a></li><li><a href="#">Klienci</a></li><li><a href="#">Kariera</a></li></ul></div>
+      <div class="footer-col"><h4>Kontakt</h4><ul><li><a href="tel:327701400">32 770 14 00</a></li><li><a href="tel:502082856">502 082 856</a></li><li><a href="mailto:biuro@budlep.pl">biuro@budlep.pl</a></li><li>Świętochłowice</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 BUDLEP Sp. z o.o. Wszelkie prawa zastrzeżone.</span>
+      <span><a href="#" style="color:var(--text-muted)">Polityka prywatności</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const tgl=document.getElementById('themeToggle'),h=document.documentElement;
+tgl.addEventListener('click',()=>{
+  const n=h.dataset.theme==='light'?'dark':'light';
+  h.dataset.theme=n;tgl.textContent=n==='light'?'☀️':'🌙';
+});
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')})},{threshold:.08,rootMargin:'0px 0px -25px 0px'});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+const nav=document.querySelector('.navbar');
+window.addEventListener('scroll',()=>{nav.style.boxShadow=scrollY>40?'0 2px 12px rgba(0,0,0,.06)':'none'});
+function animC(){
+  document.querySelectorAll('.stat-num').forEach(el=>{
+    const t=+el.dataset.target,suf=el.dataset.suffix||'';
+    if(!t)return;let c=0;const step=Math.max(1,Math.ceil(t/50));
+    const iv=setInterval(()=>{c+=step;if(c>=t){c=t;clearInterval(iv)}el.textContent=c+suf},28);
+  });
+}
+const sO=new IntersectionObserver(e=>{if(e[0].isIntersecting){animC();sO.disconnect()}},{threshold:.3});
+sO.observe(document.querySelector('.stats-bar'));
+</script>
+</body>
+</html>
