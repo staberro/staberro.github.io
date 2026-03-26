@@ -1,583 +1,606 @@
 <!DOCTYPE html>
-
 <html lang="pl" style="background:#0a0a0f;color:#e8e8f0;">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a0f">
-<title>Plany Subskrypcji — Korepetycje Staberek</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  html, body { background: #0a0a0f !important; color: #e8e8f0 !important; }
-
-:root {
-–bg: #0a0a0f;
-–surface: #111118;
-–surface2: #1a1a24;
-–border: #2a2a3a;
-–text: #e8e8f0;
-–text-dim: #8888a0;
-–accent: #ffd43b;
-–accent-glow: rgba(255, 212, 59, 0.15);
-–plus: #3b82f6;
-–pro: #ffd43b;
-–max: #f43f5e;
-–promax: #a855f7;
-–plus-glow: rgba(59, 130, 246, 0.12);
-–pro-glow: rgba(255, 212, 59, 0.12);
-–max-glow: rgba(244, 63, 94, 0.12);
-–promax-glow: rgba(168, 85, 247, 0.12);
-}
-
-- { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-background: var(–bg) !important;
-color: var(–text);
-font-family: ‘Outfit’, sans-serif;
-min-height: 100vh;
-overflow-x: hidden;
-}
-
-/* Background grid */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image:
-linear-gradient(rgba(255,212,59,0.03) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,212,59,0.03) 1px, transparent 1px);
-background-size: 60px 60px;
-pointer-events: none;
-z-index: 0;
-}
-
-.container {
-position: relative;
-z-index: 1;
-max-width: 1200px;
-margin: 0 auto;
-padding: 40px 20px 60px;
-}
-
-/* Header */
-.header {
-text-align: center;
-margin-bottom: 20px;
-}
-
-.brand {
-font-family: ‘Space Mono’, monospace;
-font-size: 13px;
-letter-spacing: 4px;
-text-transform: uppercase;
-color: var(–accent);
-margin-bottom: 16px;
-opacity: 0;
-animation: fadeUp 0.6s ease forwards;
-}
-
-.header h1 {
-font-size: clamp(32px, 5vw, 56px);
-font-weight: 900;
-line-height: 1.1;
-letter-spacing: -1px;
-opacity: 0;
-animation: fadeUp 0.6s ease 0.1s forwards;
-}
-
-.header h1 .highlight {
-background: linear-gradient(135deg, var(–accent), #ff9f1c);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-
-.header p {
-margin-top: 16px;
-color: var(–text-dim);
-font-size: 17px;
-max-width: 600px;
-margin-left: auto;
-margin-right: auto;
-line-height: 1.6;
-opacity: 0;
-animation: fadeUp 0.6s ease 0.2s forwards;
-}
-
-/* Subjects strip */
-.subjects {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 10px;
-margin: 30px auto 50px;
-max-width: 800px;
-opacity: 0;
-animation: fadeUp 0.6s ease 0.3s forwards;
-}
-
-.subject-tag {
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 100px;
-padding: 8px 18px;
-font-size: 13px;
-font-weight: 500;
-color: var(–text-dim);
-transition: all 0.3s ease;
-cursor: default;
-}
-
-.subject-tag:hover {
-border-color: var(–accent);
-color: var(–accent);
-background: var(–accent-glow);
-}
-
-.subject-tag .emoji { margin-right: 6px; }
-
-/* Pricing Grid */
-.pricing-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 16px;
-margin-bottom: 50px;
-}
-
-@media (max-width: 1100px) {
-.pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; margin-left: auto; margin-right: auto; }
-}
-
-@media (max-width: 600px) {
-.pricing-grid { grid-template-columns: 1fr; max-width: 440px; }
-}
-
-.plan-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 20px;
-padding: 32px 28px;
-position: relative;
-overflow: hidden;
-transition: transform 0.3s ease, border-color 0.3s ease;
-opacity: 0;
-animation: fadeUp 0.7s ease forwards;
-}
-
-.plan-card:nth-child(1) { animation-delay: 0.35s; }
-.plan-card:nth-child(2) { animation-delay: 0.45s; }
-.plan-card:nth-child(3) { animation-delay: 0.55s; }
-.plan-card:nth-child(4) { animation-delay: 0.65s; }
-
-.plan-card:hover {
-transform: translateY(-4px);
-}
-
-.plan-card.plus:hover { border-color: var(–plus); }
-.plan-card.pro:hover { border-color: var(–pro); }
-.plan-card.max:hover { border-color: var(–max); }
-.plan-card.promax:hover { border-color: var(–promax); }
-
-/* Glow blob */
-.plan-card::before {
-content: ‘’;
-position: absolute;
-top: -60px;
-right: -60px;
-width: 180px;
-height: 180px;
-border-radius: 50%;
-filter: blur(60px);
-opacity: 0.5;
-pointer-events: none;
-transition: opacity 0.3s;
-}
-
-.plan-card.plus::before { background: var(–plus); }
-.plan-card.pro::before { background: var(–pro); }
-.plan-card.max::before { background: var(–max); }
-.plan-card.promax::before { background: var(–promax); }
-
-.plan-card:hover::before { opacity: 0.7; }
-
-/* Badge */
-.plan-badge {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 6px 14px;
-border-radius: 100px;
-font-family: ‘Space Mono’, monospace;
-font-size: 12px;
-font-weight: 700;
-letter-spacing: 2px;
-text-transform: uppercase;
-margin-bottom: 20px;
-}
-
-.plus .plan-badge { background: var(–plus-glow); color: var(–plus); border: 1px solid rgba(59,130,246,0.3); }
-.pro .plan-badge { background: var(–pro-glow); color: var(–pro); border: 1px solid rgba(255,212,59,0.3); }
-.max .plan-badge { background: var(–max-glow); color: var(–max); border: 1px solid rgba(244,63,94,0.3); }
-.promax .plan-badge { background: var(–promax-glow); color: var(–promax); border: 1px solid rgba(168,85,247,0.3); }
-
-.popular-flag {
-position: absolute;
-top: 16px;
-right: 16px;
-background: var(–pro);
-color: #0a0a0f;
-font-size: 11px;
-font-weight: 700;
-padding: 4px 12px;
-border-radius: 100px;
-letter-spacing: 0.5px;
-}
-
-.plan-name {
-font-size: 24px;
-font-weight: 800;
-margin-bottom: 6px;
-}
-
-.plan-tagline {
-font-size: 14px;
-color: var(–text-dim);
-margin-bottom: 24px;
-line-height: 1.5;
-}
-
-.plan-price {
-font-size: 44px;
-font-weight: 900;
-letter-spacing: -2px;
-margin-bottom: 2px;
-position: relative;
-z-index: 1;
-}
-
-.plan-price .currency { font-size: 22px; font-weight: 600; vertical-align: super; margin-right: 2px; letter-spacing: 0; }
-.plan-price .period { font-size: 16px; font-weight: 400; color: var(–text-dim); letter-spacing: 0; }
-
-.plus .plan-price { color: var(–plus); }
-.pro .plan-price { color: var(–pro); }
-.max .plan-price { color: var(–max); }
-.promax .plan-price { color: var(–promax); }
-
-.price-note {
-font-size: 13px;
-color: var(–text-dim);
-margin-bottom: 24px;
-padding-bottom: 24px;
-border-bottom: 1px solid var(–border);
-}
-
-.price-note strong {
-color: var(–text);
-font-weight: 600;
-}
-
-/* Features list */
-.features {
-list-style: none;
-display: flex;
-flex-direction: column;
-gap: 12px;
-margin-bottom: 28px;
-}
-
-.features li {
-display: flex;
-align-items: flex-start;
-gap: 10px;
-font-size: 14px;
-line-height: 1.5;
-color: var(–text);
-}
-
-.features li .icon {
-flex-shrink: 0;
-width: 20px;
-height: 20px;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 11px;
-margin-top: 1px;
-}
-
-.plus .features li .icon { background: var(–plus-glow); color: var(–plus); }
-.pro .features li .icon { background: var(–pro-glow); color: var(–pro); }
-.max .features li .icon { background: var(–max-glow); color: var(–max); }
-.promax .features li .icon { background: var(–promax-glow); color: var(–promax); }
-
-.cta-btn {
-display: block;
-width: 100%;
-padding: 12px;
-border: none;
-border-radius: 12px;
-font-family: ‘Outfit’, sans-serif;
-font-size: 13px;
-font-weight: 700;
-cursor: pointer;
-transition: all 0.3s ease;
-text-align: center;
-text-decoration: none;
-letter-spacing: 0.3px;
-}
-
-.contact-btns {
-display: flex;
-gap: 8px;
-}
-
-.contact-btns .cta-btn {
-flex: 1;
-}
-
-.contact-mail {
-background: rgba(255,255,255,0.06);
-color: var(–text);
-border: 1px solid var(–border);
-}
-.contact-mail:hover { background: rgba(255,255,255,0.12); border-color: var(–text-dim); }
-
-.contact-wa {
-background: rgba(37,211,102,0.15);
-color: #25d366;
-border: 1px solid rgba(37,211,102,0.3);
-}
-.contact-wa:hover { background: #25d366; color: #fff; }
-
-.card-period-toggle {
-display: flex;
-align-items: center;
-justify-content: center;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 4px;
-margin-bottom: 10px;
-}
-
-.card-period-toggle .sep {
-color: var(–border);
-font-size: 14px;
-user-select: none;
-}
-
-.card-period {
-flex: 1;
-background: none;
-border: none;
-color: var(–text-dim);
-font-family: ‘Outfit’, sans-serif;
-font-size: 13px;
-font-weight: 600;
-padding: 8px 4px;
-cursor: pointer;
-border-radius: 8px;
-transition: all 0.25s ease;
-}
-
-.card-period:hover { color: var(–text); }
-
-.card-period.active {
-background: var(–accent);
-color: #0a0a0f;
-}
-
-.plus .cta-btn {
-background: rgba(59,130,246,0.12);
-color: var(–plus);
-border: 1px solid rgba(59,130,246,0.3);
-}
-.plus .cta-btn:hover { background: var(–plus); color: #fff; }
-
-.pro .cta-btn {
-background: var(–pro);
-color: #0a0a0f;
-}
-.pro .cta-btn:hover { background: #ffe066; box-shadow: 0 0 30px var(–accent-glow); }
-
-.max .cta-btn {
-background: rgba(244,63,94,0.12);
-color: var(–max);
-border: 1px solid rgba(244,63,94,0.3);
-}
-.max .cta-btn:hover { background: var(–max); color: #fff; }
-
-.promax .cta-btn {
-background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(244,63,94,0.2));
-color: var(–promax);
-border: 1px solid rgba(168,85,247,0.4);
-}
-.promax .cta-btn:hover { background: var(–promax); color: #fff; box-shadow: 0 0 30px rgba(168,85,247,0.3); }
-
-/* Comparison table */
-.comparison-section {
-margin-top: 20px;
-opacity: 0;
-animation: fadeUp 0.7s ease 0.65s forwards;
-}
-
-.comparison-section h2 {
-text-align: center;
-font-size: 28px;
-font-weight: 800;
-margin-bottom: 8px;
-}
-
-.comparison-section .subtitle {
-text-align: center;
-color: var(–text-dim);
-font-size: 15px;
-margin-bottom: 30px;
-}
-
-.table-wrapper {
-overflow-x: auto;
-border-radius: 16px;
-border: 1px solid var(–border);
-background: var(–surface);
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-min-width: 600px;
-}
-
-th, td {
-padding: 14px 20px;
-text-align: left;
-font-size: 14px;
-border-bottom: 1px solid var(–border);
-}
-
-th {
-font-weight: 700;
-font-size: 13px;
-text-transform: uppercase;
-letter-spacing: 1px;
-color: var(–text-dim);
-background: var(–surface2);
-}
-
-th:nth-child(2) { color: var(–plus); }
-th:nth-child(3) { color: var(–pro); }
-th:nth-child(4) { color: var(–max); }
-
-td:first-child {
-font-weight: 500;
-color: var(–text);
-}
-
-td:not(:first-child) {
-text-align: center;
-color: var(–text-dim);
-}
-
-tr:last-child td { border-bottom: none; }
-
-tr:hover td { background: rgba(255,255,255,0.02); }
-
-.check { color: #22c55e; font-weight: 700; }
-.dash { opacity: 0.3; }
-
-/* Savings callout */
-.savings {
-text-align: center;
-margin-top: 40px;
-padding: 28px;
-background: linear-gradient(135deg, var(–accent-glow), rgba(244,63,94,0.08));
-border: 1px solid rgba(255,212,59,0.15);
-border-radius: 16px;
-opacity: 0;
-animation: fadeUp 0.7s ease 0.75s forwards;
-}
-
-.savings h3 {
-font-size: 20px;
-font-weight: 800;
-margin-bottom: 8px;
-}
-
-.savings p {
-color: var(–text-dim);
-font-size: 14px;
-line-height: 1.6;
-max-width: 640px;
-margin: 0 auto;
-}
-
-.savings .math {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 10px 18px;
-margin-top: 16px;
-font-family: ‘Space Mono’, monospace;
-font-size: 14px;
-}
-
-.savings .old-price {
-text-decoration: line-through;
-color: var(–max);
-opacity: 0.7;
-}
-
-.savings .new-price {
-color: #22c55e;
-font-weight: 700;
-}
-
-.savings .arrow { color: var(–accent); }
-
-/* Footer */
-.footer {
-text-align: center;
-margin-top: 50px;
-padding-top: 30px;
-border-top: 1px solid var(–border);
-opacity: 0;
-animation: fadeUp 0.7s ease 0.85s forwards;
-}
-
-.footer p {
-color: var(–text-dim);
-font-size: 13px;
-line-height: 1.6;
-}
-
-.footer .brand-footer {
-font-family: ‘Space Mono’, monospace;
-color: var(–accent);
-font-weight: 700;
-font-size: 14px;
-letter-spacing: 2px;
-margin-bottom: 8px;
-}
-
-/* Animations */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
-to { opacity: 1; transform: translateY(0); }
-}
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Plany Subskrypcji — Korepetycje Staberek</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { background: #0a0a0f !important; color: #e8e8f0 !important; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #1a1a24;
+      --border: #2a2a3a;
+      --text: #e8e8f0;
+      --text-dim: #8888a0;
+      --accent: #ffd43b;
+      --accent-glow: rgba(255, 212, 59, 0.15);
+      --plus: #3b82f6;
+      --pro: #ffd43b;
+      --max: #f43f5e;
+      --promax: #a855f7;
+      --plus-glow: rgba(59, 130, 246, 0.12);
+      --pro-glow: rgba(255, 212, 59, 0.12);
+      --max-glow: rgba(244, 63, 94, 0.12);
+      --promax-glow: rgba(168, 85, 247, 0.12);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg) !important;
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,212,59,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,212,59,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .header h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+
+    .header h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), #ff9f1c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      margin-top: 16px;
+      color: var(--text-dim);
+      font-size: 17px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    /* Subjects strip */
+    .subjects {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 30px auto 50px;
+      max-width: 800px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.3s forwards;
+    }
+
+    .subject-tag {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dim);
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .subject-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .subject-tag .emoji { margin-right: 6px; }
+
+    /* Pricing Grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    @media (max-width: 1100px) {
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; margin-left: auto; margin-right: auto; }
+    }
+
+    @media (max-width: 600px) {
+      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; }
+    }
+
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .plan-card:nth-child(1) { animation-delay: 0.35s; }
+    .plan-card:nth-child(2) { animation-delay: 0.45s; }
+    .plan-card:nth-child(3) { animation-delay: 0.55s; }
+    .plan-card:nth-child(4) { animation-delay: 0.65s; }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .plan-card.plus:hover { border-color: var(--plus); }
+    .plan-card.pro:hover { border-color: var(--pro); }
+    .plan-card.max:hover { border-color: var(--max); }
+    .plan-card.promax:hover { border-color: var(--promax); }
+
+    /* Glow blob */
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.5;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .plan-card.plus::before { background: var(--plus); }
+    .plan-card.pro::before { background: var(--pro); }
+    .plan-card.max::before { background: var(--max); }
+    .plan-card.promax::before { background: var(--promax); }
+
+    .plan-card:hover::before { opacity: 0.7; }
+
+    /* Badge */
+    .plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .plus .plan-badge { background: var(--plus-glow); color: var(--plus); border: 1px solid rgba(59,130,246,0.3); }
+    .pro .plan-badge { background: var(--pro-glow); color: var(--pro); border: 1px solid rgba(255,212,59,0.3); }
+    .max .plan-badge { background: var(--max-glow); color: var(--max); border: 1px solid rgba(244,63,94,0.3); }
+    .promax .plan-badge { background: var(--promax-glow); color: var(--promax); border: 1px solid rgba(168,85,247,0.3); }
+
+    .popular-flag {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--pro);
+      color: #0a0a0f;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-name {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .plan-tagline {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .plan-price {
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .plan-price .currency { font-size: 22px; font-weight: 600; vertical-align: super; margin-right: 2px; letter-spacing: 0; }
+    .plan-price .period { font-size: 16px; font-weight: 400; color: var(--text-dim); letter-spacing: 0; }
+
+    .plus .plan-price { color: var(--plus); }
+    .pro .plan-price { color: var(--pro); }
+    .max .plan-price { color: var(--max); }
+    .promax .plan-price { color: var(--promax); }
+
+    .price-note {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .price-note strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Features list */
+    .features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .features li .icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      margin-top: 1px;
+    }
+
+    .plus .features li .icon { background: var(--plus-glow); color: var(--plus); }
+    .pro .features li .icon { background: var(--pro-glow); color: var(--pro); }
+    .max .features li .icon { background: var(--max-glow); color: var(--max); }
+    .promax .features li .icon { background: var(--promax-glow); color: var(--promax); }
+
+    .cta-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+
+    .contact-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    .contact-btns .cta-btn {
+      flex: 1;
+    }
+
+    .contact-mail {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .contact-mail:hover { background: rgba(255,255,255,0.12); border-color: var(--text-dim); }
+
+    .contact-wa {
+      background: rgba(37,211,102,0.15);
+      color: #25d366;
+      border: 1px solid rgba(37,211,102,0.3);
+    }
+    .contact-wa:hover { background: #25d366; color: #fff; }
+
+    .card-period-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    .card-period-toggle .sep {
+      color: var(--border);
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .card-period {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-family: 'Outfit', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 4px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .card-period:hover { color: var(--text); }
+
+    .card-period.active {
+      background: var(--accent);
+      color: #0a0a0f;
+    }
+
+    .plus .cta-btn {
+      background: rgba(59,130,246,0.12);
+      color: var(--plus);
+      border: 1px solid rgba(59,130,246,0.3);
+    }
+    .plus .cta-btn:hover { background: var(--plus); color: #fff; }
+
+    .pro .cta-btn {
+      background: var(--pro);
+      color: #0a0a0f;
+    }
+    .pro .cta-btn:hover { background: #ffe066; box-shadow: 0 0 30px var(--accent-glow); }
+
+    .max .cta-btn {
+      background: rgba(244,63,94,0.12);
+      color: var(--max);
+      border: 1px solid rgba(244,63,94,0.3);
+    }
+    .max .cta-btn:hover { background: var(--max); color: #fff; }
+
+    .promax .cta-btn {
+      background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(244,63,94,0.2));
+      color: var(--promax);
+      border: 1px solid rgba(168,85,247,0.4);
+    }
+    .promax .cta-btn:hover { background: var(--promax); color: #fff; box-shadow: 0 0 30px rgba(168,85,247,0.3); }
+
+    /* Comparison table */
+    .comparison-section {
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.65s forwards;
+    }
+
+    .comparison-section h2 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .comparison-section .subtitle {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 15px;
+      margin-bottom: 30px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      background: var(--surface2);
+    }
+
+    th:nth-child(2) { color: var(--plus); }
+    th:nth-child(3) { color: var(--pro); }
+    th:nth-child(4) { color: var(--max); }
+    th:nth-child(5) { color: var(--promax); }
+
+    td:first-child {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    td:not(:first-child) {
+      text-align: center;
+      color: var(--text-dim);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .check { color: #22c55e; font-weight: 700; }
+    .dash { opacity: 0.3; }
+
+    /* Savings callout */
+    .savings {
+      text-align: center;
+      margin-top: 40px;
+      padding: 28px;
+      background: linear-gradient(135deg, var(--accent-glow), rgba(244,63,94,0.08));
+      border: 1px solid rgba(255,212,59,0.15);
+      border-radius: 16px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.75s forwards;
+    }
+
+    .savings h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .savings p {
+      color: var(--text-dim);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .savings .math {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 18px;
+      margin-top: 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+    }
+
+    .savings .old-price {
+      text-decoration: line-through;
+      color: var(--max);
+      opacity: 0.7;
+    }
+
+    .savings .new-price {
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+    .savings .arrow { color: var(--accent); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.85s forwards;
+    }
+
+    .footer p {
+      color: var(--text-dim);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .footer .brand-footer {
+      font-family: 'Space Mono', monospace;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+
+    /* Period tabs */
+    .period-tab {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .period-tab:hover { border-color: var(--accent); color: var(--text); }
+    .period-tab.active {
+      background: var(--accent);
+      color: #0a0a0f;
+      border-color: var(--accent);
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
 
   <!-- Header -->
-
   <header class="header">
     <div class="brand">staberek.com · ViralloLab</div>
     <h1>Plany <span class="highlight">Subskrypcji</span></h1>
@@ -585,7 +608,6 @@ to { opacity: 1; transform: translateY(0); }
   </header>
 
   <!-- Subjects -->
-
   <div class="subjects">
     <span class="subject-tag"><span class="emoji">📐</span>Matematyka</span>
     <span class="subject-tag"><span class="emoji">💻</span>Programowanie</span>
@@ -598,129 +620,127 @@ to { opacity: 1; transform: translateY(0); }
   </div>
 
   <!-- Pricing Cards -->
-
   <div class="pricing-grid">
 
-```
-<!-- PLUS -->
-<div class="plan-card plus">
-  <div class="plan-badge">⚡ Plus</div>
-  <div class="plan-name">Plus</div>
-  <div class="plan-tagline">Solidna baza — regularne sesje w spokojnym tempie, idealne na start, powtórki lub utrzymanie formy.</div>
-  <div class="plan-price">
-    <span class="currency">zł</span>520<span class="period">/mies.</span>
-  </div>
-  <div class="price-note">
-    <strong>8h zajęć</strong> w miesiącu (2 sesje/tyg × ~2h) · stawka <strong>~65 zł/h</strong>
-  </div>
-  <ul class="features">
-    <li><span class="icon">✓</span>8 godzin miesięcznie — 2 sesje tygodniowo po ~2h</li>
-    <li><span class="icon">✓</span>Dowolny przedmiot — elastycznie między sesjami</li>
-    <li><span class="icon">✓</span>Elastyczne umawianie terminów</li>
-    <li><span class="icon">✓</span>Materiały i notatki po każdej sesji</li>
-    <li><span class="icon">✓</span>Kontakt na czacie między lekcjami (pytania szybkie)</li>
-  </ul>
-  <div class="card-period-toggle" data-plan="plus">
-    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'plus')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'plus')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'plus')">Rok</button>
-  </div>
-  <div class="contact-btns">
-    <a href="/cdn-cgi/l/email-protection#680307061c09031c281b1c090a0d1a0d03460b0705" class="cta-btn contact-mail">✉ Mail</a>
-    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
-  </div>
-</div>
+    <!-- PLUS -->
+    <div class="plan-card plus">
+      <div class="plan-badge">⚡ Plus</div>
+      <div class="plan-name">Plus</div>
+      <div class="plan-tagline">Solidna baza — regularne sesje w spokojnym tempie, idealne na start, powtórki lub utrzymanie formy.</div>
+      <div class="plan-price">
+        <span class="currency">zł</span>520<span class="period">/mies.</span>
+      </div>
+      <div class="price-note">
+        <strong>8h zajęć</strong> w miesiącu (2 sesje/tyg × ~2h) · stawka <strong>~65 zł/h</strong>
+      </div>
+      <ul class="features">
+        <li><span class="icon">✓</span>8 godzin miesięcznie — 2 sesje tygodniowo po ~2h</li>
+        <li><span class="icon">✓</span>Dowolny przedmiot — elastycznie między sesjami</li>
+        <li><span class="icon">✓</span>Elastyczne umawianie terminów</li>
+        <li><span class="icon">✓</span>Materiały i notatki po każdej sesji</li>
+        <li><span class="icon">✓</span>Kontakt na czacie między lekcjami (pytania szybkie)</li>
+      </ul>
+      <div class="card-period-toggle" data-plan="plus">
+        <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'plus')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'plus')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'plus')">Rok</button>
+      </div>
+      <div class="contact-btns">
+        <a href="/cdn-cgi/l/email-protection#680307061c09031c281b1c090a0d1a0d03460b0705" class="cta-btn contact-mail">✉ Mail</a>
+        <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+      </div>
+    </div>
 
-<!-- PRO -->
-<div class="plan-card pro">
-  <div class="popular-flag">★ POPULARNE</div>
-  <div class="plan-badge">🔥 Pro</div>
-  <div class="plan-name">Pro</div>
-  <div class="plan-tagline">Poważne podejście — pełne 3-godzinne sesje, trainery online i plan nauki pod Ciebie.</div>
-  <div class="plan-price">
-    <span class="currency">zł</span>750<span class="period">/mies.</span>
-  </div>
-  <div class="price-note">
-    <strong>16h zajęć</strong> w miesiącu (2x/tyg × 3h) · stawka <strong>~47 zł/h</strong>
-  </div>
-  <ul class="features">
-    <li><span class="icon">✓</span>~16 godzin miesięcznie — 2 sesje tygodniowo po 3h</li>
-    <li><span class="icon">✓</span>Dowolny przedmiot — zmieniaj kiedy chcesz</li>
-    <li><span class="icon">✓</span>Priorytetowy kontakt czatowy 7 dni w tygodniu</li>
-    <li><span class="icon">✓</span>Dostęp do trainerów maturalnych (matma, fizyka)</li>
-    <li><span class="icon">✓</span>Indywidualny plan nauki + tracking postępów</li>
-  </ul>
-  <div class="card-period-toggle" data-plan="pro">
-    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'pro')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'pro')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'pro')">Rok</button>
-  </div>
-  <div class="contact-btns">
-    <a href="/cdn-cgi/l/email-protection#b3d8dcddc7d2d8c7f3c0c7d2d1d6c1d6d89dd0dcde" class="cta-btn contact-mail">✉ Mail</a>
-    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
-  </div>
-</div>
+    <!-- PRO -->
+    <div class="plan-card pro">
+      <div class="popular-flag">★ POPULARNE</div>
+      <div class="plan-badge">🔥 Pro</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-tagline">Poważne podejście — pełne 3-godzinne sesje, trainery online i plan nauki pod Ciebie.</div>
+      <div class="plan-price">
+        <span class="currency">zł</span>750<span class="period">/mies.</span>
+      </div>
+      <div class="price-note">
+        <strong>16h zajęć</strong> w miesiącu (2x/tyg × 3h) · stawka <strong>~47 zł/h</strong>
+      </div>
+      <ul class="features">
+        <li><span class="icon">✓</span>~16 godzin miesięcznie — 2 sesje tygodniowo po 3h</li>
+        <li><span class="icon">✓</span>Dowolny przedmiot — zmieniaj kiedy chcesz</li>
+        <li><span class="icon">✓</span>Priorytetowy kontakt czatowy 7 dni w tygodniu</li>
+        <li><span class="icon">✓</span>Dostęp do trainerów maturalnych (matma, fizyka)</li>
+        <li><span class="icon">✓</span>Indywidualny plan nauki + tracking postępów</li>
+      </ul>
+      <div class="card-period-toggle" data-plan="pro">
+        <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'pro')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'pro')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'pro')">Rok</button>
+      </div>
+      <div class="contact-btns">
+        <a href="/cdn-cgi/l/email-protection#b3d8dcddc7d2d8c7f3c0c7d2d1d6c1d6d89dd0dcde" class="cta-btn contact-mail">✉ Mail</a>
+        <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+      </div>
+    </div>
 
-<!-- MAX -->
-<div class="plan-card max">
-  <div class="plan-badge">🚀 Max</div>
-  <div class="plan-name">Max</div>
-  <div class="plan-tagline">Full commitment — intensywne 3h sesje 3 razy w tygodniu, wsparcie na każdym kroku.</div>
-  <div class="plan-price">
-    <span class="currency">zł</span>900<span class="period">/mies.</span>
-  </div>
-  <div class="price-note">
-    <strong>~24h zajęć</strong> w miesiącu (3x/tyg × 3h) · stawka <strong>~38 zł/h</strong>
-  </div>
-  <ul class="features">
-    <li><span class="icon">✓</span>~24 godziny miesięcznie — 3 sesje tygodniowo po 3h</li>
-    <li><span class="icon">✓</span>Dowolny przedmiot — zmieniaj na bieżąco</li>
-    <li><span class="icon">✓</span>Wsparcie 24/7 na czacie — priorytet absolutny</li>
-    <li><span class="icon">✓</span>Pełny dostęp do trainerów + dedykowane zestawy zadań</li>
-    <li><span class="icon">✓</span>Pomoc przy pracach dyplomowych / maturze / prawku</li>
-    <li><span class="icon">✓</span>Sesje kryzysowe przed egzaminem (dodatkowe sloty)</li>
-  </ul>
-  <div class="card-period-toggle" data-plan="max">
-    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'max')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'max')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'max')">Rok</button>
-  </div>
-  <div class="contact-btns">
-    <a href="/cdn-cgi/l/email-protection#791216170d18120d390a0d181b1c0b1c12571a1614" class="cta-btn contact-mail">✉ Mail</a>
-    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
-  </div>
-</div>
+    <!-- MAX -->
+    <div class="plan-card max">
+      <div class="plan-badge">🚀 Max</div>
+      <div class="plan-name">Max</div>
+      <div class="plan-tagline">Full commitment — intensywne 3h sesje 3 razy w tygodniu, wsparcie na każdym kroku.</div>
+      <div class="plan-price">
+        <span class="currency">zł</span>900<span class="period">/mies.</span>
+      </div>
+      <div class="price-note">
+        <strong>~24h zajęć</strong> w miesiącu (3x/tyg × 3h) · stawka <strong>~38 zł/h</strong>
+      </div>
+      <ul class="features">
+        <li><span class="icon">✓</span>~24 godziny miesięcznie — 3 sesje tygodniowo po 3h</li>
+        <li><span class="icon">✓</span>Dowolny przedmiot — zmieniaj na bieżąco</li>
+        <li><span class="icon">✓</span>Wsparcie 24/7 na czacie — priorytet absolutny</li>
+        <li><span class="icon">✓</span>Pełny dostęp do trainerów + dedykowane zestawy zadań</li>
+        <li><span class="icon">✓</span>Pomoc przy pracach dyplomowych / maturze / prawku</li>
+        <li><span class="icon">✓</span>Sesje kryzysowe przed egzaminem (dodatkowe sloty)</li>
+      </ul>
+      <div class="card-period-toggle" data-plan="max">
+        <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'max')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'max')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'max')">Rok</button>
+      </div>
+      <div class="contact-btns">
+        <a href="/cdn-cgi/l/email-protection#791216170d18120d390a0d181b1c0b1c12571a1614" class="cta-btn contact-mail">✉ Mail</a>
+        <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+      </div>
+    </div>
 
-<!-- PROMAX -->
-<div class="plan-card promax">
-  <div class="popular-flag" style="background: var(--promax);">★ BEAST MODE</div>
-  <div class="plan-badge">👑 ProMax</div>
-  <div class="plan-name">ProMax</div>
-  <div class="plan-tagline">Tryb bestii — do 4h dziennie, codziennie jeśli chcesz. Hybrydowy grafik ustalany na bieżąco.</div>
-  <div class="plan-price">
-    <span class="currency">zł</span>1 200<span class="period">/mies.</span>
-  </div>
-  <div class="price-note">
-    <strong>do ~80h zajęć</strong> w miesiącu (codziennie do 4h) · stawka <strong>od ~15 zł/h</strong>
-  </div>
-  <ul class="features">
-    <li><span class="icon">✓</span>Do 4 godzin dziennie — codziennie jeśli chcesz</li>
-    <li><span class="icon">✓</span>Hybrydowy grafik — sam decydujesz kiedy masz sesję</li>
-    <li><span class="icon">✓</span>Dowolna ilość przedmiotów — miksuj jak chcesz</li>
-    <li><span class="icon">✓</span>Wsparcie VIP 24/7 — absolutny priorytet</li>
-    <li><span class="icon">✓</span>Pełen dostęp do trainerów + dedykowane materiały</li>
-    <li><span class="icon">✓</span>Pomoc z pracami dyplomowymi / maturą / prawkiem</li>
-    <li><span class="icon">✓</span>Sesje kryzysowe + elastyczne przesuwanie terminów</li>
-  </ul>
-  <p style="font-size: 12px; color: var(--text-dim); margin-top: -12px; margin-bottom: 20px; line-height: 1.5;">* Termin każdej sesji ustalasz ze mną z wyprzedzeniem. Jeśli coś mi wypadnie — odrobimy innego dnia, godziny się nie tracą.</p>
-  <div class="card-period-toggle" data-plan="promax">
-    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'promax')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'promax')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'promax')">Rok</button>
-  </div>
-  <div class="contact-btns">
-    <a href="/cdn-cgi/l/email-protection#caa1a5a4beaba1be8ab9beaba8afb8afa1e4a9a5a7" class="cta-btn contact-mail">✉ Mail</a>
-    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
-  </div>
-</div>
-```
+    <!-- PROMAX -->
+    <div class="plan-card promax">
+      <div class="popular-flag" style="background: var(--promax);">★ BEAST MODE</div>
+      <div class="plan-badge">👑 ProMax</div>
+      <div class="plan-name">ProMax</div>
+      <div class="plan-tagline">Tryb bestii — do 4h dziennie, codziennie jeśli chcesz. Hybrydowy grafik ustalany na bieżąco.</div>
+      <div class="plan-price">
+        <span class="currency">zł</span>1 200<span class="period">/mies.</span>
+      </div>
+      <div class="price-note">
+        <strong>do ~80h zajęć</strong> w miesiącu (codziennie do 4h) · stawka <strong>od ~15 zł/h</strong>
+      </div>
+      <ul class="features">
+        <li><span class="icon">✓</span>Do 4 godzin dziennie — codziennie jeśli chcesz</li>
+        <li><span class="icon">✓</span>Hybrydowy grafik — sam decydujesz kiedy masz sesję</li>
+        <li><span class="icon">✓</span>Dowolna ilość przedmiotów — miksuj jak chcesz</li>
+        <li><span class="icon">✓</span>Wsparcie VIP 24/7 — absolutny priorytet</li>
+        <li><span class="icon">✓</span>Pełen dostęp do trainerów + dedykowane materiały</li>
+        <li><span class="icon">✓</span>Pomoc z pracami dyplomowymi / maturą / prawkiem</li>
+        <li><span class="icon">✓</span>Sesje kryzysowe + elastyczne przesuwanie terminów</li>
+      </ul>
+      <p style="font-size: 12px; color: var(--text-dim); margin-top: -12px; margin-bottom: 20px; line-height: 1.5;">
+        * Termin każdej sesji ustalasz ze mną z wyprzedzeniem. Jeśli coś mi wypadnie — odrobimy innego dnia, godziny się nie tracą.
+      </p>
+      <div class="card-period-toggle" data-plan="promax">
+        <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'promax')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'promax')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'promax')">Rok</button>
+      </div>
+      <div class="contact-btns">
+        <a href="/cdn-cgi/l/email-protection#caa1a5a4beaba1be8ab9beaba8afb8afa1e4a9a5a7" class="cta-btn contact-mail">✉ Mail</a>
+        <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+      </div>
+    </div>
 
   </div>
 
   <!-- Comparison Table -->
-
   <section class="comparison-section">
     <h2>Porównanie planów</h2>
     <p class="subtitle">Wszystko w jednym miejscu — co dostajesz w każdym pakiecie</p>
@@ -732,7 +752,7 @@ to { opacity: 1; transform: translateY(0); }
             <th>Plus</th>
             <th>Pro</th>
             <th>Max</th>
-            <th style="color: #a855f7;">ProMax</th>
+            <th>ProMax</th>
           </tr>
         </thead>
         <tbody>
@@ -830,199 +850,81 @@ to { opacity: 1; transform: translateY(0); }
         </tbody>
       </table>
     </div>
-    <p style="text-align: center; font-size: 12px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">* Hybrydowy grafik = Ty decydujesz kiedy chcesz sesję, ustalamy termin z wyprzedzeniem. Jeśli coś mi wypadnie — odrobimy innego dnia, godziny się nie tracą.</p>
+    <p style="text-align: center; font-size: 12px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">
+      * Hybrydowy grafik = Ty decydujesz kiedy chcesz sesję, ustalamy termin z wyprzedzeniem. Jeśli coś mi wypadnie — odrobimy innego dnia, godziny się nie tracą.
+    </p>
   </section>
 
   <!-- Long-term pricing -->
-
   <section class="comparison-section" style="margin-top: 50px; animation-delay: 0.75s;">
     <h2>Zapłać z góry — płać mniej</h2>
     <p class="subtitle">Im dłuższy okres, tym większy rabat. Wyższe plany mają dodatkową zniżkę.</p>
 
-```
-<!-- Period tabs -->
-<div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;" id="period-tabs">
-  <button class="period-tab active" data-period="quarter" onclick="switchPeriod('quarter')">Kwartał</button>
-  <button class="period-tab" data-period="half" onclick="switchPeriod('half')">Pół roku</button>
-  <button class="period-tab" data-period="year" onclick="switchPeriod('year')">Rok</button>
-</div>
+    <!-- Period tabs -->
+    <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;" id="period-tabs">
+      <button class="period-tab active" data-period="quarter" onclick="switchPeriod('quarter')">Kwartał</button>
+      <button class="period-tab" data-period="half" onclick="switchPeriod('half')">Pół roku</button>
+      <button class="period-tab" data-period="year" onclick="switchPeriod('year')">Rok</button>
+    </div>
 
-<div class="pricing-grid" style="opacity: 1;">
+    <div class="pricing-grid" style="opacity: 1;">
 
-  <!-- Plus periods -->
-  <div class="plan-card plus" style="opacity: 1; animation: none; padding: 24px 20px;">
-    <div class="plan-badge">⚡ Plus</div>
-    <div class="plan-price" style="font-size: 36px;" id="plus-price">
-      <span class="currency">zł</span><span class="price-value">1 373</span>
-    </div>
-    <div class="price-note" id="plus-details">
-      <span class="discount-tag" style="background: var(--plus-glow); color: var(--plus); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-12%</span>
-      · <strong>458 zł/mies.</strong> · oszczędzasz <strong>187 zł</strong>
-    </div>
-    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="plus-old">zamiast 1 560 zł</div>
-  </div>
+      <!-- Plus periods -->
+      <div class="plan-card plus" style="opacity: 1; animation: none; padding: 24px 20px;">
+        <div class="plan-badge">⚡ Plus</div>
+        <div class="plan-price" style="font-size: 36px;" id="plus-price">
+          <span class="currency">zł</span><span class="price-value">1 373</span>
+        </div>
+        <div class="price-note" id="plus-details">
+          <span class="discount-tag" style="background: var(--plus-glow); color: var(--plus); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-12%</span>
+          · <strong>458 zł/mies.</strong> · oszczędzasz <strong>187 zł</strong>
+        </div>
+        <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="plus-old">zamiast 1 560 zł</div>
+      </div>
 
-  <!-- Pro periods -->
-  <div class="plan-card pro" style="opacity: 1; animation: none; padding: 24px 20px;">
-    <div class="plan-badge">🔥 Pro</div>
-    <div class="plan-price" style="font-size: 36px;" id="pro-price">
-      <span class="currency">zł</span><span class="price-value">1 958</span>
-    </div>
-    <div class="price-note" id="pro-details">
-      <span class="discount-tag" style="background: var(--pro-glow); color: var(--pro); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-13%</span>
-      · <strong>652 zł/mies.</strong> · oszczędzasz <strong>292 zł</strong>
-    </div>
-    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="pro-old">zamiast 2 250 zł</div>
-  </div>
+      <!-- Pro periods -->
+      <div class="plan-card pro" style="opacity: 1; animation: none; padding: 24px 20px;">
+        <div class="plan-badge">🔥 Pro</div>
+        <div class="plan-price" style="font-size: 36px;" id="pro-price">
+          <span class="currency">zł</span><span class="price-value">1 958</span>
+        </div>
+        <div class="price-note" id="pro-details">
+          <span class="discount-tag" style="background: var(--pro-glow); color: var(--pro); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-13%</span>
+          · <strong>652 zł/mies.</strong> · oszczędzasz <strong>292 zł</strong>
+        </div>
+        <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="pro-old">zamiast 2 250 zł</div>
+      </div>
 
-  <!-- Max periods -->
-  <div class="plan-card max" style="opacity: 1; animation: none; padding: 24px 20px;">
-    <div class="plan-badge">🚀 Max</div>
-    <div class="plan-price" style="font-size: 36px;" id="max-price">
-      <span class="currency">zł</span><span class="price-value">2 322</span>
-    </div>
-    <div class="price-note" id="max-details">
-      <span class="discount-tag" style="background: var(--max-glow); color: var(--max); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-14%</span>
-      · <strong>774 zł/mies.</strong> · oszczędzasz <strong>378 zł</strong>
-    </div>
-    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="max-old">zamiast 2 700 zł</div>
-  </div>
+      <!-- Max periods -->
+      <div class="plan-card max" style="opacity: 1; animation: none; padding: 24px 20px;">
+        <div class="plan-badge">🚀 Max</div>
+        <div class="plan-price" style="font-size: 36px;" id="max-price">
+          <span class="currency">zł</span><span class="price-value">2 322</span>
+        </div>
+        <div class="price-note" id="max-details">
+          <span class="discount-tag" style="background: var(--max-glow); color: var(--max); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-14%</span>
+          · <strong>774 zł/mies.</strong> · oszczędzasz <strong>378 zł</strong>
+        </div>
+        <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="max-old">zamiast 2 700 zł</div>
+      </div>
 
-  <!-- ProMax periods -->
-  <div class="plan-card promax" style="opacity: 1; animation: none; padding: 24px 20px;">
-    <div class="plan-badge">👑 ProMax</div>
-    <div class="plan-price" style="font-size: 36px;" id="promax-price">
-      <span class="currency">zł</span><span class="price-value">3 024</span>
-    </div>
-    <div class="price-note" id="promax-details">
-      <span class="discount-tag" style="background: var(--promax-glow); color: var(--promax); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-16%</span>
-      · <strong>1 008 zł/mies.</strong> · oszczędzasz <strong>576 zł</strong>
-    </div>
-    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="promax-old">zamiast 3 600 zł</div>
-  </div>
+      <!-- ProMax periods -->
+      <div class="plan-card promax" style="opacity: 1; animation: none; padding: 24px 20px;">
+        <div class="plan-badge">👑 ProMax</div>
+        <div class="plan-price" style="font-size: 36px;" id="promax-price">
+          <span class="currency">zł</span><span class="price-value">3 024</span>
+        </div>
+        <div class="price-note" id="promax-details">
+          <span class="discount-tag" style="background: var(--promax-glow); color: var(--promax); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-16%</span>
+          · <strong>1 008 zł/mies.</strong> · oszczędzasz <strong>576 zł</strong>
+        </div>
+        <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="promax-old">zamiast 3 600 zł</div>
+      </div>
 
-</div>
-```
-
+    </div>
   </section>
 
-  <style>
-    .period-tab {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      padding: 10px 24px;
-      border-radius: 100px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .period-tab:hover { border-color: var(--accent); color: var(--text); }
-    .period-tab.active {
-      background: var(--accent);
-      color: #0a0a0f;
-      border-color: var(--accent);
-    }
-  </style>
-
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-
-```
-const pricingData = {
-  quarter: {
-    plus:   { price: "1 373", discount: 12, monthly: 458, saving: 187, full: "1 560" },
-    pro:    { price: "1 958", discount: 13, monthly: 652, saving: 292, full: "2 250" },
-    max:    { price: "2 322", discount: 14, monthly: 774, saving: 378, full: "2 700" },
-    promax: { price: "3 024", discount: 16, monthly: "1 008", saving: 576, full: "3 600" }
-  },
-  half: {
-    plus:   { price: "2 434", discount: 22, monthly: 406, saving: 686, full: "3 120" },
-    pro:    { price: "3 465", discount: 23, monthly: 578, saving: "1 035", full: "4 500" },
-    max:    { price: "4 104", discount: 24, monthly: 684, saving: "1 296", full: "5 400" },
-    promax: { price: "5 328", discount: 26, monthly: 888, saving: "1 872", full: "7 200" }
-  },
-  year: {
-    plus:   { price: "2 995", discount: 52, monthly: 250, saving: "3 245", full: "6 240" },
-    pro:    { price: "4 230", discount: 53, monthly: 352, saving: "4 770", full: "9 000" },
-    max:    { price: "4 968", discount: 54, monthly: 414, saving: "5 832", full: "10 800" },
-    promax: { price: "5 800", discount: 60, monthly: 483, saving: "8 600", full: "14 400" }
-  }
-};
-
-function switchPeriod(period) {
-  document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`[data-period="${period}"]`).classList.add('active');
-
-  ['plus', 'pro', 'max', 'promax'].forEach(plan => {
-    const d = pricingData[period][plan];
-    const colorVar = plan === 'promax' ? 'var(--promax)' : plan === 'max' ? 'var(--max)' : plan === 'pro' ? 'var(--pro)' : 'var(--plus)';
-    const glowVar = plan === 'promax' ? 'var(--promax-glow)' : plan === 'max' ? 'var(--max-glow)' : plan === 'pro' ? 'var(--pro-glow)' : 'var(--plus-glow)';
-
-    document.querySelector(`#${plan}-price .price-value`).textContent = d.price;
-    document.getElementById(`${plan}-details`).innerHTML =
-      `<span class="discount-tag" style="background: ${glowVar}; color: ${colorVar}; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-${d.discount}%</span>` +
-      ` · <strong>${d.monthly} zł/mies.</strong> · oszczędzasz <strong>${d.saving} zł</strong>`;
-    document.getElementById(`${plan}-old`).textContent = `zamiast ${d.full} zł`;
-  });
-}
-```
-
-  </script>
-
-  <script>
-    // Card-level period switching (month/quarter/year per card)
-    const cardPrices = {
-      month: {
-        plus:   { price: "520", period: "/mies." },
-        pro:    { price: "750", period: "/mies." },
-        max:    { price: "900", period: "/mies." },
-        promax: { price: "1 200", period: "/mies." }
-      },
-      quarter: {
-        plus:   { price: "1 373", period: "/kwartał", discount: 12 },
-        pro:    { price: "1 958", period: "/kwartał", discount: 13 },
-        max:    { price: "2 322", period: "/kwartał", discount: 14 },
-        promax: { price: "3 024", period: "/kwartał", discount: 16 }
-      },
-      year: {
-        plus:   { price: "2 995", period: "/rok", discount: 52 },
-        pro:    { price: "4 230", period: "/rok", discount: 53 },
-        max:    { price: "4 968", period: "/rok", discount: 54 },
-        promax: { price: "5 800", period: "/rok", discount: 60 }
-      }
-    };
-
-    function selectCardPeriod(btn, plan) {
-      const toggle = btn.closest('.card-period-toggle');
-      toggle.querySelectorAll('.card-period').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const period = btn.dataset.p;
-      const d = cardPrices[period][plan];
-      const card = toggle.closest('.plan-card');
-      const priceEl = card.querySelector('.plan-price');
-
-      // Update price display
-      const currency = priceEl.querySelector('.currency');
-      const periodSpan = priceEl.querySelector('.period');
-      // Remove old discount tag if any
-      const oldTag = priceEl.querySelector('.card-discount');
-      if (oldTag) oldTag.remove();
-
-      // Set price text (everything between currency and period)
-      const priceText = priceEl.childNodes;
-      // Rebuild price content
-      priceEl.innerHTML = `<span class="currency">zł</span>${d.price}<span class="period">${d.period}</span>`;
-      if (d.discount) {
-        priceEl.innerHTML += ` <span class="card-discount" style="font-size: 14px; font-weight: 700; background: rgba(34,197,94,0.15); color: #22c55e; padding: 2px 8px; border-radius: 6px; vertical-align: middle; letter-spacing: 0;">-${d.discount}%</span>`;
-      }
-    }
-  </script>
-
   <!-- Savings callout -->
-
   <div class="savings">
     <h3>💰 Dlaczego subskrypcja się opłaca?</h3>
     <p>Jednorazowa sesja kosztuje 85 zł/h. W planie ProMax stawka spada nawet do ~15 zł/h — to ponad 80% taniej. Im więcej się uczysz, tym więcej oszczędzasz.</p>
@@ -1034,13 +936,92 @@ function switchPeriod(period) {
   </div>
 
   <!-- Footer -->
-    <footer class="footer">
+  <footer class="footer">
     <div class="brand-footer">STABEREK.COM</div>
     <p>Zajęcia online lub stacjonarnie (Bytom / Śląsk) · Faktura na życzenie<br>
-    Kontakt: staberek.com · TikTok · YouTube</p>
+      Kontakt: staberek.com · TikTok · YouTube</p>
     <p style="margin-top: 12px; font-size: 11px; opacity: 0.4;">© StaberekCode – autorski komponent ViralLab 2026</p>
   </footer>
 
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+  const pricingData = {
+    quarter: {
+      plus:   { price: "1 373", discount: 12, monthly: 458, saving: 187, full: "1 560" },
+      pro:    { price: "1 958", discount: 13, monthly: 652, saving: 292, full: "2 250" },
+      max:    { price: "2 322", discount: 14, monthly: 774, saving: 378, full: "2 700" },
+      promax: { price: "3 024", discount: 16, monthly: "1 008", saving: 576, full: "3 600" }
+    },
+    half: {
+      plus:   { price: "2 434", discount: 22, monthly: 406, saving: 686, full: "3 120" },
+      pro:    { price: "3 465", discount: 23, monthly: 578, saving: "1 035", full: "4 500" },
+      max:    { price: "4 104", discount: 24, monthly: 684, saving: "1 296", full: "5 400" },
+      promax: { price: "5 328", discount: 26, monthly: 888, saving: "1 872", full: "7 200" }
+    },
+    year: {
+      plus:   { price: "2 995", discount: 52, monthly: 250, saving: "3 245", full: "6 240" },
+      pro:    { price: "4 230", discount: 53, monthly: 352, saving: "4 770", full: "9 000" },
+      max:    { price: "4 968", discount: 54, monthly: 414, saving: "5 832", full: "10 800" },
+      promax: { price: "5 800", discount: 60, monthly: 483, saving: "8 600", full: "14 400" }
+    }
+  };
+
+  function switchPeriod(period) {
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`[data-period="${period}"]`).classList.add('active');
+
+    ['plus', 'pro', 'max', 'promax'].forEach(plan => {
+      const d = pricingData[period][plan];
+      const colorVar = plan === 'promax' ? 'var(--promax)' : plan === 'max' ? 'var(--max)' : plan === 'pro' ? 'var(--pro)' : 'var(--plus)';
+      const glowVar = plan === 'promax' ? 'var(--promax-glow)' : plan === 'max' ? 'var(--max-glow)' : plan === 'pro' ? 'var(--pro-glow)' : 'var(--plus-glow)';
+
+      document.querySelector(`#${plan}-price .price-value`).textContent = d.price;
+      document.getElementById(`${plan}-details`).innerHTML =
+        `<span class="discount-tag" style="background: ${glowVar}; color: ${colorVar}; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-${d.discount}%</span>` +
+        ` · <strong>${d.monthly} zł/mies.</strong> · oszczędzasz <strong>${d.saving} zł</strong>`;
+      document.getElementById(`${plan}-old`).textContent = `zamiast ${d.full} zł`;
+    });
+  }
+
+  const cardPrices = {
+    month: {
+      plus:   { price: "520", period: "/mies." },
+      pro:    { price: "750", period: "/mies." },
+      max:    { price: "900", period: "/mies." },
+      promax: { price: "1 200", period: "/mies." }
+    },
+    quarter: {
+      plus:   { price: "1 373", period: "/kwartał", discount: 12 },
+      pro:    { price: "1 958", period: "/kwartał", discount: 13 },
+      max:    { price: "2 322", period: "/kwartał", discount: 14 },
+      promax: { price: "3 024", period: "/kwartał", discount: 16 }
+    },
+    year: {
+      plus:   { price: "2 995", period: "/rok", discount: 52 },
+      pro:    { price: "4 230", period: "/rok", discount: 53 },
+      max:    { price: "4 968", period: "/rok", discount: 54 },
+      promax: { price: "5 800", period: "/rok", discount: 60 }
+    }
+  };
+
+  function selectCardPeriod(btn, plan) {
+    const toggle = btn.closest('.card-period-toggle');
+    toggle.querySelectorAll('.card-period').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const period = btn.dataset.p;
+    const d = cardPrices[period][plan];
+    const card = toggle.closest('.plan-card');
+    const priceEl = card.querySelector('.plan-price');
+
+    priceEl.innerHTML = `<span class="currency">zł</span>${d.price}<span class="period">${d.period}</span>`;
+    if (d.discount) {
+      priceEl.innerHTML += ` <span class="card-discount" style="font-size: 14px; font-weight: 700; background: rgba(34,197,94,0.15); color: #22c55e; padding: 2px 8px; border-radius: 6px; vertical-align: middle; letter-spacing: 0;">-${d.discount}%</span>`;
+    }
+  }
+</script>
 
 </body>
 </html>
