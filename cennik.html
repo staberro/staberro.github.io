@@ -19,9 +19,11 @@
     --plus: #3b82f6;
     --pro: #ffd43b;
     --max: #f43f5e;
+    --promax: #a855f7;
     --plus-glow: rgba(59, 130, 246, 0.12);
     --pro-glow: rgba(255, 212, 59, 0.12);
     --max-glow: rgba(244, 63, 94, 0.12);
+    --promax-glow: rgba(168, 85, 247, 0.12);
   }
 
 - { margin: 0; padding: 0; box-sizing: border-box; }
@@ -135,13 +137,17 @@ background: var(–accent-glow);
 /* Pricing Grid */
 .pricing-grid {
 display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 20px;
+grid-template-columns: repeat(4, 1fr);
+gap: 16px;
 margin-bottom: 50px;
 }
 
-@media (max-width: 900px) {
-.pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
+@media (max-width: 1100px) {
+.pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; margin-left: auto; margin-right: auto; }
+}
+
+@media (max-width: 600px) {
+.pricing-grid { grid-template-columns: 1fr; max-width: 440px; }
 }
 
 .plan-card {
@@ -159,6 +165,7 @@ animation: fadeUp 0.7s ease forwards;
 .plan-card:nth-child(1) { animation-delay: 0.35s; }
 .plan-card:nth-child(2) { animation-delay: 0.45s; }
 .plan-card:nth-child(3) { animation-delay: 0.55s; }
+.plan-card:nth-child(4) { animation-delay: 0.65s; }
 
 .plan-card:hover {
 transform: translateY(-4px);
@@ -167,6 +174,7 @@ transform: translateY(-4px);
 .plan-card.plus:hover { border-color: var(–plus); }
 .plan-card.pro:hover { border-color: var(–pro); }
 .plan-card.max:hover { border-color: var(–max); }
+.plan-card.promax:hover { border-color: var(–promax); }
 
 /* Glow blob */
 .plan-card::before {
@@ -186,6 +194,7 @@ transition: opacity 0.3s;
 .plan-card.plus::before { background: var(–plus); }
 .plan-card.pro::before { background: var(–pro); }
 .plan-card.max::before { background: var(–max); }
+.plan-card.promax::before { background: var(–promax); }
 
 .plan-card:hover::before { opacity: 0.7; }
 
@@ -207,6 +216,7 @@ margin-bottom: 20px;
 .plus .plan-badge { background: var(–plus-glow); color: var(–plus); border: 1px solid rgba(59,130,246,0.3); }
 .pro .plan-badge { background: var(–pro-glow); color: var(–pro); border: 1px solid rgba(255,212,59,0.3); }
 .max .plan-badge { background: var(–max-glow); color: var(–max); border: 1px solid rgba(244,63,94,0.3); }
+.promax .plan-badge { background: var(–promax-glow); color: var(–promax); border: 1px solid rgba(168,85,247,0.3); }
 
 .popular-flag {
 position: absolute;
@@ -249,6 +259,7 @@ z-index: 1;
 .plus .plan-price { color: var(–plus); }
 .pro .plan-price { color: var(–pro); }
 .max .plan-price { color: var(–max); }
+.promax .plan-price { color: var(–promax); }
 
 .price-note {
 font-size: 13px;
@@ -296,21 +307,83 @@ margin-top: 1px;
 .plus .features li .icon { background: var(–plus-glow); color: var(–plus); }
 .pro .features li .icon { background: var(–pro-glow); color: var(–pro); }
 .max .features li .icon { background: var(–max-glow); color: var(–max); }
+.promax .features li .icon { background: var(–promax-glow); color: var(–promax); }
 
 .cta-btn {
 display: block;
 width: 100%;
-padding: 14px;
+padding: 12px;
 border: none;
 border-radius: 12px;
 font-family: ‘Outfit’, sans-serif;
-font-size: 15px;
+font-size: 13px;
 font-weight: 700;
 cursor: pointer;
 transition: all 0.3s ease;
 text-align: center;
 text-decoration: none;
 letter-spacing: 0.3px;
+}
+
+.contact-btns {
+display: flex;
+gap: 8px;
+}
+
+.contact-btns .cta-btn {
+flex: 1;
+}
+
+.contact-mail {
+background: rgba(255,255,255,0.06);
+color: var(–text);
+border: 1px solid var(–border);
+}
+.contact-mail:hover { background: rgba(255,255,255,0.12); border-color: var(–text-dim); }
+
+.contact-wa {
+background: rgba(37,211,102,0.15);
+color: #25d366;
+border: 1px solid rgba(37,211,102,0.3);
+}
+.contact-wa:hover { background: #25d366; color: #fff; }
+
+.card-period-toggle {
+display: flex;
+align-items: center;
+justify-content: center;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 4px;
+margin-bottom: 10px;
+}
+
+.card-period-toggle .sep {
+color: var(–border);
+font-size: 14px;
+user-select: none;
+}
+
+.card-period {
+flex: 1;
+background: none;
+border: none;
+color: var(–text-dim);
+font-family: ‘Outfit’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+padding: 8px 4px;
+cursor: pointer;
+border-radius: 8px;
+transition: all 0.25s ease;
+}
+
+.card-period:hover { color: var(–text); }
+
+.card-period.active {
+background: var(–accent);
+color: #0a0a0f;
 }
 
 .plus .cta-btn {
@@ -332,6 +405,13 @@ color: var(–max);
 border: 1px solid rgba(244,63,94,0.3);
 }
 .max .cta-btn:hover { background: var(–max); color: #fff; }
+
+.promax .cta-btn {
+background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(244,63,94,0.2));
+color: var(–promax);
+border: 1px solid rgba(168,85,247,0.4);
+}
+.promax .cta-btn:hover { background: var(–promax); color: #fff; box-shadow: 0 0 30px rgba(168,85,247,0.3); }
 
 /* Comparison table */
 .comparison-section {
@@ -525,19 +605,25 @@ to { opacity: 1; transform: translateY(0); }
   <div class="plan-name">Plus</div>
   <div class="plan-tagline">Solidna baza — regularne sesje w spokojnym tempie, idealne na start, powtórki lub utrzymanie formy.</div>
   <div class="plan-price">
-    <span class="currency">zł</span>559<span class="period">/mies.</span>
+    <span class="currency">zł</span>520<span class="period">/mies.</span>
   </div>
   <div class="price-note">
-    <strong>8h zajęć</strong> w miesiącu (2 sesje/tyg × ~2h) · stawka <strong>~70 zł/h</strong>
+    <strong>8h zajęć</strong> w miesiącu (2 sesje/tyg × ~2h) · stawka <strong>~65 zł/h</strong>
   </div>
   <ul class="features">
     <li><span class="icon">✓</span>8 godzin miesięcznie — 2 sesje tygodniowo po ~2h</li>
+    <li><span class="icon">✓</span>Dowolny przedmiot — elastycznie między sesjami</li>
     <li><span class="icon">✓</span>Elastyczne umawianie terminów</li>
     <li><span class="icon">✓</span>Materiały i notatki po każdej sesji</li>
     <li><span class="icon">✓</span>Kontakt na czacie między lekcjami (pytania szybkie)</li>
-    <li><span class="icon">✓</span>1 przedmiot w pakiecie</li>
   </ul>
-  <a href="#" class="cta-btn">Wybieram Plus →</a>
+  <div class="card-period-toggle" data-plan="plus">
+    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'plus')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'plus')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'plus')">Rok</button>
+  </div>
+  <div class="contact-btns">
+    <a href="mailto:kontakt@staberek.com" class="cta-btn contact-mail">✉ Mail</a>
+    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+  </div>
 </div>
 
 <!-- PRO -->
@@ -545,45 +631,86 @@ to { opacity: 1; transform: translateY(0); }
   <div class="popular-flag">★ POPULARNE</div>
   <div class="plan-badge">🔥 Pro</div>
   <div class="plan-name">Pro</div>
-  <div class="plan-tagline">Poważne podejście — dłuższe sesje, więcej tematów, dostęp do autorskich trainerów online.</div>
+  <div class="plan-tagline">Poważne podejście — pełne 3-godzinne sesje, trainery online i plan nauki pod Ciebie.</div>
   <div class="plan-price">
-    <span class="currency">zł</span>899<span class="period">/mies.</span>
+    <span class="currency">zł</span>750<span class="period">/mies.</span>
   </div>
   <div class="price-note">
-    <strong>16h zajęć</strong> w miesiącu (2x/tyg × ~2-3h) · stawka <strong>~56 zł/h</strong>
+    <strong>16h zajęć</strong> w miesiącu (2x/tyg × 3h) · stawka <strong>~47 zł/h</strong>
   </div>
   <ul class="features">
-    <li><span class="icon">✓</span>16 godzin miesięcznie — 2 sesje tygodniowo po 2-3h</li>
-    <li><span class="icon">✓</span>Do 2 przedmiotów w pakiecie</li>
+    <li><span class="icon">✓</span>~16 godzin miesięcznie — 2 sesje tygodniowo po 3h</li>
+    <li><span class="icon">✓</span>Dowolny przedmiot — zmieniaj kiedy chcesz</li>
     <li><span class="icon">✓</span>Priorytetowy kontakt czatowy 7 dni w tygodniu</li>
     <li><span class="icon">✓</span>Dostęp do trainerów maturalnych (matma, fizyka)</li>
     <li><span class="icon">✓</span>Indywidualny plan nauki + tracking postępów</li>
-    <li><span class="icon">✓</span>Nagrania z lekcji (na życzenie)</li>
   </ul>
-  <a href="#" class="cta-btn">Wybieram Pro →</a>
+  <div class="card-period-toggle" data-plan="pro">
+    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'pro')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'pro')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'pro')">Rok</button>
+  </div>
+  <div class="contact-btns">
+    <a href="mailto:kontakt@staberek.com" class="cta-btn contact-mail">✉ Mail</a>
+    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+  </div>
 </div>
 
 <!-- MAX -->
 <div class="plan-card max">
   <div class="plan-badge">🚀 Max</div>
   <div class="plan-name">Max</div>
-  <div class="plan-tagline">Full commitment — intensywne sesje, wsparcie na każdym kroku, pomoc z pracami i egzaminami.</div>
+  <div class="plan-tagline">Full commitment — intensywne 3h sesje 3 razy w tygodniu, wsparcie na każdym kroku.</div>
   <div class="plan-price">
-    <span class="currency">zł</span>1 099<span class="period">/mies.</span>
+    <span class="currency">zł</span>900<span class="period">/mies.</span>
   </div>
   <div class="price-note">
-    <strong>24h zajęć</strong> w miesiącu (3x/tyg × ~2-3h) · stawka <strong>~46 zł/h</strong>
+    <strong>~24h zajęć</strong> w miesiącu (3x/tyg × 3h) · stawka <strong>~38 zł/h</strong>
   </div>
   <ul class="features">
-    <li><span class="icon">✓</span>24 godziny miesięcznie — 3 sesje tygodniowo po 2-3h</li>
-    <li><span class="icon">✓</span>Bez limitu przedmiotów</li>
+    <li><span class="icon">✓</span>~24 godziny miesięcznie — 3 sesje tygodniowo po 3h</li>
+    <li><span class="icon">✓</span>Dowolny przedmiot — zmieniaj na bieżąco</li>
     <li><span class="icon">✓</span>Wsparcie 24/7 na czacie — priorytet absolutny</li>
     <li><span class="icon">✓</span>Pełny dostęp do trainerów + dedykowane zestawy zadań</li>
     <li><span class="icon">✓</span>Pomoc przy pracach dyplomowych / maturze / prawku</li>
     <li><span class="icon">✓</span>Sesje kryzysowe przed egzaminem (dodatkowe sloty)</li>
-    <li><span class="icon">✓</span>Nagrania + materiały wideo z objaśnieniami</li>
   </ul>
-  <a href="#" class="cta-btn">Wybieram Max →</a>
+  <div class="card-period-toggle" data-plan="max">
+    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'max')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'max')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'max')">Rok</button>
+  </div>
+  <div class="contact-btns">
+    <a href="mailto:kontakt@staberek.com" class="cta-btn contact-mail">✉ Mail</a>
+    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+  </div>
+</div>
+
+<!-- PROMAX -->
+<div class="plan-card promax">
+  <div class="popular-flag" style="background: var(--promax);">★ BEAST MODE</div>
+  <div class="plan-badge">👑 ProMax</div>
+  <div class="plan-name">ProMax</div>
+  <div class="plan-tagline">Tryb bestii — do 4h dziennie, codziennie jeśli chcesz. Hybrydowy grafik ustalany na bieżąco.</div>
+  <div class="plan-price">
+    <span class="currency">zł</span>1 200<span class="period">/mies.</span>
+  </div>
+  <div class="price-note">
+    <strong>do ~80h zajęć</strong> w miesiącu (codziennie do 4h) · stawka <strong>od ~15 zł/h</strong>
+  </div>
+  <ul class="features">
+    <li><span class="icon">✓</span>Do 4 godzin dziennie — codziennie jeśli chcesz</li>
+    <li><span class="icon">✓</span>Hybrydowy grafik — sam decydujesz kiedy masz sesję</li>
+    <li><span class="icon">✓</span>Dowolna ilość przedmiotów — miksuj jak chcesz</li>
+    <li><span class="icon">✓</span>Wsparcie VIP 24/7 — absolutny priorytet</li>
+    <li><span class="icon">✓</span>Pełen dostęp do trainerów + dedykowane materiały</li>
+    <li><span class="icon">✓</span>Pomoc z pracami dyplomowymi / maturą / prawkiem</li>
+    <li><span class="icon">✓</span>Sesje kryzysowe + elastyczne przesuwanie terminów</li>
+  </ul>
+  <p style="font-size: 12px; color: var(--text-dim); margin-top: -12px; margin-bottom: 20px; line-height: 1.5;">* Termin każdej sesji ustalasz ze mną z wyprzedzeniem. Jeśli coś mi wypadnie — odrobimy innego dnia, godziny się nie tracą.</p>
+  <div class="card-period-toggle" data-plan="promax">
+    <button class="card-period active" data-p="month" onclick="selectCardPeriod(this,'promax')">Miesiąc</button><span class="sep">|</span><button class="card-period" data-p="quarter" onclick="selectCardPeriod(this,'promax')">Kwartał</button><span class="sep">|</span><button class="card-period" data-p="year" onclick="selectCardPeriod(this,'promax')">Rok</button>
+  </div>
+  <div class="contact-btns">
+    <a href="mailto:kontakt@staberek.com" class="cta-btn contact-mail">✉ Mail</a>
+    <a href="https://wa.me/48451646851" target="_blank" class="cta-btn contact-wa">💬 WhatsApp</a>
+  </div>
 </div>
 ```
 
@@ -602,47 +729,62 @@ to { opacity: 1; transform: translateY(0); }
             <th>Plus</th>
             <th>Pro</th>
             <th>Max</th>
+            <th style="color: #a855f7;">ProMax</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Godziny / miesiąc</td>
             <td>8h</td>
-            <td>16h</td>
-            <td>24h</td>
+            <td>~16h</td>
+            <td>~24h</td>
+            <td>do ~80h</td>
           </tr>
           <tr>
             <td>Format sesji</td>
             <td>2x/tyg × ~2h</td>
-            <td>2x/tyg × 2-3h</td>
-            <td>3x/tyg × 2-3h</td>
+            <td>2x/tyg × 3h</td>
+            <td>3x/tyg × 3h</td>
+            <td>codziennie × do 4h</td>
           </tr>
           <tr>
             <td>Efektywna stawka za godzinę</td>
-            <td>~70 zł</td>
-            <td>~56 zł</td>
-            <td>~46 zł</td>
+            <td>~65 zł</td>
+            <td>~47 zł</td>
+            <td>~38 zł</td>
+            <td>od ~15 zł</td>
           </tr>
           <tr>
             <td>Oszczędność vs jednorazowe (85 zł/h)</td>
-            <td>121 zł</td>
-            <td>461 zł</td>
-            <td>941 zł</td>
+            <td>160 zł</td>
+            <td>610 zł</td>
+            <td>1 140 zł</td>
+            <td>do 5 600 zł</td>
           </tr>
           <tr>
-            <td>Liczba przedmiotów</td>
-            <td>1</td>
-            <td>do 2</td>
-            <td>bez limitu</td>
+            <td>Przedmioty</td>
+            <td>dowolny</td>
+            <td>dowolny</td>
+            <td>dowolny</td>
+            <td>dowolny mix</td>
+          </tr>
+          <tr>
+            <td>Grafik sesji</td>
+            <td>elastyczny</td>
+            <td>elastyczny</td>
+            <td>elastyczny</td>
+            <td>hybrydowy*</td>
           </tr>
           <tr>
             <td>Kontakt między lekcjami</td>
             <td>czat (pytania)</td>
             <td>priorytet 7/7</td>
             <td>24/7 VIP</td>
+            <td>24/7 VIP</td>
           </tr>
           <tr>
             <td>Materiały po lekcji</td>
+            <td class="check">✓</td>
             <td class="check">✓</td>
             <td class="check">✓</td>
             <td class="check">✓</td>
@@ -652,17 +794,13 @@ to { opacity: 1; transform: translateY(0); }
             <td class="dash">—</td>
             <td class="check">✓</td>
             <td class="check">✓</td>
+            <td class="check">✓</td>
           </tr>
           <tr>
             <td>Plan nauki + tracking postępów</td>
             <td class="dash">—</td>
             <td class="check">✓</td>
             <td class="check">✓</td>
-          </tr>
-          <tr>
-            <td>Nagrania z lekcji</td>
-            <td class="dash">—</td>
-            <td>na życzenie</td>
             <td class="check">✓</td>
           </tr>
           <tr>
@@ -670,11 +808,13 @@ to { opacity: 1; transform: translateY(0); }
             <td class="dash">—</td>
             <td class="dash">—</td>
             <td class="check">✓</td>
+            <td class="check">✓</td>
           </tr>
           <tr>
             <td>Pomoc z pracami / egzaminami</td>
             <td class="dash">—</td>
             <td class="dash">—</td>
+            <td class="check">✓</td>
             <td class="check">✓</td>
           </tr>
           <tr>
@@ -682,21 +822,207 @@ to { opacity: 1; transform: translateY(0); }
             <td class="dash">—</td>
             <td class="dash">—</td>
             <td class="check">✓</td>
+            <td class="check">✓</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <p style="text-align: center; font-size: 12px; color: var(--text-dim); margin-top: 14px; line-height: 1.6;">* Hybrydowy grafik = Ty decydujesz kiedy chcesz sesję, ustalamy termin z wyprzedzeniem. Jeśli coś mi wypadnie — odrobimy innego dnia, godziny się nie tracą.</p>
   </section>
+
+  <!-- Long-term pricing -->
+
+  <section class="comparison-section" style="margin-top: 50px; animation-delay: 0.75s;">
+    <h2>Zapłać z góry — płać mniej</h2>
+    <p class="subtitle">Im dłuższy okres, tym większy rabat. Wyższe plany mają dodatkową zniżkę.</p>
+
+```
+<!-- Period tabs -->
+<div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;" id="period-tabs">
+  <button class="period-tab active" data-period="quarter" onclick="switchPeriod('quarter')">Kwartał</button>
+  <button class="period-tab" data-period="half" onclick="switchPeriod('half')">Pół roku</button>
+  <button class="period-tab" data-period="year" onclick="switchPeriod('year')">Rok</button>
+</div>
+
+<div class="pricing-grid" style="opacity: 1;">
+
+  <!-- Plus periods -->
+  <div class="plan-card plus" style="opacity: 1; animation: none; padding: 24px 20px;">
+    <div class="plan-badge">⚡ Plus</div>
+    <div class="plan-price" style="font-size: 36px;" id="plus-price">
+      <span class="currency">zł</span><span class="price-value">1 373</span>
+    </div>
+    <div class="price-note" id="plus-details">
+      <span class="discount-tag" style="background: var(--plus-glow); color: var(--plus); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-12%</span>
+      · <strong>458 zł/mies.</strong> · oszczędzasz <strong>187 zł</strong>
+    </div>
+    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="plus-old">zamiast 1 560 zł</div>
+  </div>
+
+  <!-- Pro periods -->
+  <div class="plan-card pro" style="opacity: 1; animation: none; padding: 24px 20px;">
+    <div class="plan-badge">🔥 Pro</div>
+    <div class="plan-price" style="font-size: 36px;" id="pro-price">
+      <span class="currency">zł</span><span class="price-value">1 958</span>
+    </div>
+    <div class="price-note" id="pro-details">
+      <span class="discount-tag" style="background: var(--pro-glow); color: var(--pro); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-13%</span>
+      · <strong>652 zł/mies.</strong> · oszczędzasz <strong>292 zł</strong>
+    </div>
+    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="pro-old">zamiast 2 250 zł</div>
+  </div>
+
+  <!-- Max periods -->
+  <div class="plan-card max" style="opacity: 1; animation: none; padding: 24px 20px;">
+    <div class="plan-badge">🚀 Max</div>
+    <div class="plan-price" style="font-size: 36px;" id="max-price">
+      <span class="currency">zł</span><span class="price-value">2 322</span>
+    </div>
+    <div class="price-note" id="max-details">
+      <span class="discount-tag" style="background: var(--max-glow); color: var(--max); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-14%</span>
+      · <strong>774 zł/mies.</strong> · oszczędzasz <strong>378 zł</strong>
+    </div>
+    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="max-old">zamiast 2 700 zł</div>
+  </div>
+
+  <!-- ProMax periods -->
+  <div class="plan-card promax" style="opacity: 1; animation: none; padding: 24px 20px;">
+    <div class="plan-badge">👑 ProMax</div>
+    <div class="plan-price" style="font-size: 36px;" id="promax-price">
+      <span class="currency">zł</span><span class="price-value">3 024</span>
+    </div>
+    <div class="price-note" id="promax-details">
+      <span class="discount-tag" style="background: var(--promax-glow); color: var(--promax); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-16%</span>
+      · <strong>1 008 zł/mies.</strong> · oszczędzasz <strong>576 zł</strong>
+    </div>
+    <div style="font-size: 12px; color: var(--text-dim); text-decoration: line-through;" id="promax-old">zamiast 3 600 zł</div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <style>
+    .period-tab {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .period-tab:hover { border-color: var(--accent); color: var(--text); }
+    .period-tab.active {
+      background: var(--accent);
+      color: #0a0a0f;
+      border-color: var(--accent);
+    }
+  </style>
+
+  <script>
+    const pricingData = {
+      quarter: {
+        plus:   { price: "1 373", discount: 12, monthly: 458, saving: 187, full: "1 560" },
+        pro:    { price: "1 958", discount: 13, monthly: 652, saving: 292, full: "2 250" },
+        max:    { price: "2 322", discount: 14, monthly: 774, saving: 378, full: "2 700" },
+        promax: { price: "3 024", discount: 16, monthly: "1 008", saving: 576, full: "3 600" }
+      },
+      half: {
+        plus:   { price: "2 434", discount: 22, monthly: 406, saving: 686, full: "3 120" },
+        pro:    { price: "3 465", discount: 23, monthly: 578, saving: "1 035", full: "4 500" },
+        max:    { price: "4 104", discount: 24, monthly: 684, saving: "1 296", full: "5 400" },
+        promax: { price: "5 328", discount: 26, monthly: 888, saving: "1 872", full: "7 200" }
+      },
+      year: {
+        plus:   { price: "2 995", discount: 52, monthly: 250, saving: "3 245", full: "6 240" },
+        pro:    { price: "4 230", discount: 53, monthly: 352, saving: "4 770", full: "9 000" },
+        max:    { price: "4 968", discount: 54, monthly: 414, saving: "5 832", full: "10 800" },
+        promax: { price: "5 800", discount: 60, monthly: 483, saving: "8 600", full: "14 400" }
+      }
+    };
+
+    function switchPeriod(period) {
+      document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`[data-period="${period}"]`).classList.add('active');
+
+      ['plus', 'pro', 'max', 'promax'].forEach(plan => {
+        const d = pricingData[period][plan];
+        const colorVar = plan === 'promax' ? 'var(--promax)' : plan === 'max' ? 'var(--max)' : plan === 'pro' ? 'var(--pro)' : 'var(--plus)';
+        const glowVar = plan === 'promax' ? 'var(--promax-glow)' : plan === 'max' ? 'var(--max-glow)' : plan === 'pro' ? 'var(--pro-glow)' : 'var(--plus-glow)';
+
+        document.querySelector(`#${plan}-price .price-value`).textContent = d.price;
+        document.getElementById(`${plan}-details`).innerHTML =
+          `<span class="discount-tag" style="background: ${glowVar}; color: ${colorVar}; padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 12px;">-${d.discount}%</span>` +
+          ` · <strong>${d.monthly} zł/mies.</strong> · oszczędzasz <strong>${d.saving} zł</strong>`;
+        document.getElementById(`${plan}-old`).textContent = `zamiast ${d.full} zł`;
+      });
+    }
+  </script>
+
+  <script>
+    // Card-level period switching (month/quarter/year per card)
+    const cardPrices = {
+      month: {
+        plus:   { price: "520", period: "/mies." },
+        pro:    { price: "750", period: "/mies." },
+        max:    { price: "900", period: "/mies." },
+        promax: { price: "1 200", period: "/mies." }
+      },
+      quarter: {
+        plus:   { price: "1 373", period: "/kwartał", discount: 12 },
+        pro:    { price: "1 958", period: "/kwartał", discount: 13 },
+        max:    { price: "2 322", period: "/kwartał", discount: 14 },
+        promax: { price: "3 024", period: "/kwartał", discount: 16 }
+      },
+      year: {
+        plus:   { price: "2 995", period: "/rok", discount: 52 },
+        pro:    { price: "4 230", period: "/rok", discount: 53 },
+        max:    { price: "4 968", period: "/rok", discount: 54 },
+        promax: { price: "5 800", period: "/rok", discount: 60 }
+      }
+    };
+
+    function selectCardPeriod(btn, plan) {
+      const toggle = btn.closest('.card-period-toggle');
+      toggle.querySelectorAll('.card-period').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const period = btn.dataset.p;
+      const d = cardPrices[period][plan];
+      const card = toggle.closest('.plan-card');
+      const priceEl = card.querySelector('.plan-price');
+
+      // Update price display
+      const currency = priceEl.querySelector('.currency');
+      const periodSpan = priceEl.querySelector('.period');
+      // Remove old discount tag if any
+      const oldTag = priceEl.querySelector('.card-discount');
+      if (oldTag) oldTag.remove();
+
+      // Set price text (everything between currency and period)
+      const priceText = priceEl.childNodes;
+      // Rebuild price content
+      priceEl.innerHTML = `<span class="currency">zł</span>${d.price}<span class="period">${d.period}</span>`;
+      if (d.discount) {
+        priceEl.innerHTML += ` <span class="card-discount" style="font-size: 14px; font-weight: 700; background: rgba(34,197,94,0.15); color: #22c55e; padding: 2px 8px; border-radius: 6px; vertical-align: middle; letter-spacing: 0;">-${d.discount}%</span>`;
+      }
+    }
+  </script>
 
   <!-- Savings callout -->
 
   <div class="savings">
     <h3>💰 Dlaczego subskrypcja się opłaca?</h3>
-    <p>Jednorazowa sesja kosztuje 85 zł/h. W planie Max płacisz tylko ~46 zł/h — to prawie połowa ceny. Im więcej się uczysz, tym więcej oszczędzasz.</p>
+    <p>Jednorazowa sesja kosztuje 85 zł/h. W planie ProMax stawka spada nawet do ~15 zł/h — to ponad 80% taniej. Im więcej się uczysz, tym więcej oszczędzasz.</p>
     <div class="math">
-      <span class="old-price">24h × 85 zł = 2 040 zł</span>
+      <span class="old-price">80h × 85 zł = 6 800 zł</span>
       <span class="arrow">→</span>
-      <span class="new-price">Max = 1 099 zł (oszczędzasz 941 zł!)</span>
+      <span class="new-price">ProMax = 1 200 zł (oszczędzasz do 5 600 zł!)</span>
     </div>
   </div>
 
